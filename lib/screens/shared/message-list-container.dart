@@ -33,6 +33,7 @@ class CustomMessageListContainer extends StatelessWidget {
               ),
               Text(
                 headText,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ],
