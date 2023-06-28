@@ -104,7 +104,6 @@ class _ChatPageState extends State<ChatPage> {
           child: Column(
             children: [
               Container(
-                height: MediaQuery.of(context).size.height * 0.75,
                 child: SingleChildScrollView(
                   physics: ScrollPhysics(),
                   child: ListView.builder(
@@ -121,26 +120,30 @@ class _ChatPageState extends State<ChatPage> {
                       }),
                 ),
               ),
-              TextFormField(
-                obscureText: false,
-                decoration: InputDecoration(
-                  labelText: 'Message',
-                  suffixIcon: Row(
-                    mainAxisSize: MainAxisSize.min, // added line
-                    children: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.image_outlined),
-                        onPressed: () {},
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.send),
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ],
+          ),
+        ),
+      ),
+      floatingActionButton: Container(
+        color: Colors.white,
+        padding: EdgeInsets.only(left: 20),
+        child: TextFormField(
+          obscureText: false,
+          decoration: InputDecoration(
+            labelText: 'Message',
+            suffixIcon: Row(
+              mainAxisSize: MainAxisSize.min, // added line
+              children: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.image_outlined),
+                  onPressed: () {},
+                ),
+                IconButton(
+                  icon: const Icon(Icons.send),
+                  onPressed: () {},
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -22,7 +22,26 @@ class _MeasurementResultWeightPageState
   void initState() {
     super.initState();
     data = dataWeek;
+    setFillThreshold();
   }
+
+  setFillThreshold() {
+    redHigh = [];
+    redLow = [];
+    yellowHigh = [];
+    yellowLow = [];
+    data.forEach((element) {
+      redHigh.add(_SalesData(element.year, 120));
+      redLow.add(_SalesData(element.year, 40));
+      yellowHigh.add(_SalesData(element.year, 100));
+      yellowLow.add(_SalesData(element.year, 60));
+    });
+  }
+
+  List<_SalesData> redHigh = [];
+  List<_SalesData> redLow = [];
+  List<_SalesData> yellowHigh = [];
+  List<_SalesData> yellowLow = [];
 
   int periodType = 10; // 10 week, 20 month, 30 year
 
@@ -115,6 +134,7 @@ class _MeasurementResultWeightPageState
                         setState(() {
                           periodType = 10;
                           data = dataWeek;
+                          setFillThreshold();
                         });
                       },
                       child: Text(
@@ -129,6 +149,7 @@ class _MeasurementResultWeightPageState
                         setState(() {
                           periodType = 20;
                           data = dataMonth;
+                          setFillThreshold();
                         });
                       },
                       child: Text(
@@ -143,6 +164,7 @@ class _MeasurementResultWeightPageState
                         setState(() {
                           periodType = 30;
                           data = dataYear;
+                          setFillThreshold();
                         });
                       },
                       child: Text(
@@ -167,14 +189,50 @@ class _MeasurementResultWeightPageState
                 tooltipBehavior: TooltipBehavior(enable: true),
                 series: <ChartSeries<_SalesData, String>>[
                   LineSeries<_SalesData, String>(
-                      dataSource: data,
+                      dataSource: redHigh,
                       color: Colors.red,
                       xValueMapper: (_SalesData sales, _) => sales.year,
                       yValueMapper: (_SalesData sales, _) => sales.sales,
                       name: 'Gewicht',
                       // Enable data label
                       dataLabelSettings:
-                          const DataLabelSettings(isVisible: false))
+                          const DataLabelSettings(isVisible: false)),
+                  LineSeries<_SalesData, String>(
+                      dataSource: yellowHigh,
+                      color: Colors.amber,
+                      xValueMapper: (_SalesData sales, _) => sales.year,
+                      yValueMapper: (_SalesData sales, _) => sales.sales,
+                      name: 'Gewicht',
+                      // Enable data label
+                      dataLabelSettings:
+                          const DataLabelSettings(isVisible: false)),
+                  LineSeries<_SalesData, String>(
+                      dataSource: yellowLow,
+                      color: Colors.amber,
+                      xValueMapper: (_SalesData sales, _) => sales.year,
+                      yValueMapper: (_SalesData sales, _) => sales.sales,
+                      name: 'Gewicht',
+                      // Enable data label
+                      dataLabelSettings:
+                          const DataLabelSettings(isVisible: false)),
+                  LineSeries<_SalesData, String>(
+                      dataSource: data,
+                      color: Colors.blue[900],
+                      xValueMapper: (_SalesData sales, _) => sales.year,
+                      yValueMapper: (_SalesData sales, _) => sales.sales,
+                      name: 'Gewicht',
+                      // Enable data label
+                      dataLabelSettings:
+                          const DataLabelSettings(isVisible: false)),
+                  LineSeries<_SalesData, String>(
+                      dataSource: redLow,
+                      color: Colors.red,
+                      xValueMapper: (_SalesData sales, _) => sales.year,
+                      yValueMapper: (_SalesData sales, _) => sales.sales,
+                      name: 'Gewicht',
+                      // Enable data label
+                      dataLabelSettings:
+                          const DataLabelSettings(isVisible: false)),
                 ],
               ),
               ElevatedButton(
