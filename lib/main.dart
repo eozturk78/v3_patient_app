@@ -8,14 +8,20 @@ import 'package:patient_app/screens/comunication/medical-plan-1.dart';
 import 'package:patient_app/screens/comunication/medical-plan-2.dart';
 import 'package:patient_app/screens/comunication/messages.dart';
 import 'package:patient_app/screens/home/home.dart';
+import 'package:patient_app/screens/info/documents-details.dart';
+import 'package:patient_app/screens/info/documents.dart';
+import 'package:patient_app/screens/info/enlightenment.dart';
 import 'package:patient_app/screens/info/info.dart';
+import 'package:patient_app/screens/info/libraries.dart';
 import 'package:patient_app/screens/login/login.dart';
 import 'package:patient_app/screens/measurement-result/measurement-result-blutdruck.dart';
 import 'package:patient_app/screens/measurement-result/measurement-result-pulse.dart';
 import 'package:patient_app/screens/measurement-result/measurement-result-saturation.dart';
 import 'package:patient_app/screens/measurement-result/measurement-result-temperature.dart';
 import 'package:patient_app/screens/measurement-result/measurement-result-weight.dart';
+import 'package:patient_app/screens/medication/medication-plan-list.dart';
 import 'package:patient_app/screens/medication/medication.dart';
+import 'package:patient_app/screens/medication/recipes.dart';
 import 'package:patient_app/screens/profile/profile.dart';
 import 'package:patient_app/screens/quick-access/quick-access.dart';
 
@@ -61,6 +67,12 @@ class MyApp extends StatelessWidget {
         "/medical-plan-1": (context) => const MedicalPlan1Page(),
         "/medical-plan-2": (context) => const MedicalPlan2Page(),
         "/calendar": (context) => const CalendarPage(),
+        "/medication-plan-list": (context) => const MedicationPlanListPage(),
+        "/recipes": (context) => const RecipesPage(),
+        "/libraries": (context) => const LibraryListPage(),
+        "/enlightenment": (context) => const EnlightenmentPage(),
+        "/documents": (context) => const DocumentListPage(),
+        "/document-details": (context) => const DocumentDetailsPage(),
       },
     );
   }

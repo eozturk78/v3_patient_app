@@ -37,7 +37,7 @@ class _MedicationPageState extends State<MedicationPage> {
                   child: const CustomListComponent(Icons.text_snippet_outlined,
                       "Medikamentenplan", null, null, 10),
                   onTap: () {
-                    Navigator.of(context).pushNamed('/measurement-result');
+                    Navigator.of(context).pushNamed('/medication-plan-list');
                   },
                 ),
                 Spacer(),
@@ -48,10 +48,7 @@ class _MedicationPageState extends State<MedicationPage> {
                       null,
                       null,
                       20),
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed('/measurement-result-weight');
-                  },
+                  onTap: () {},
                 ),
               ],
             ),
@@ -66,9 +63,7 @@ class _MedicationPageState extends State<MedicationPage> {
                       null,
                       null,
                       10),
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/measurement-result');
-                  },
+                  onTap: () {},
                 ),
               ],
             ),

@@ -34,10 +34,10 @@ class _InfoPageState extends State<InfoPage> {
             Row(
               children: [
                 GestureDetector(
-                  child: const CustomListComponent(Icons.book_online_outlined,
-                      "Medikamentenplan", null, null, 10),
+                  child: const CustomListComponent(
+                      Icons.book_online_outlined, "Bibliothek", null, null, 10),
                   onTap: () {
-                    Navigator.of(context).pushNamed('/measurement-result');
+                    Navigator.of(context).pushNamed('/libraries');
                   },
                 ),
                 Spacer(),
@@ -61,15 +61,15 @@ class _InfoPageState extends State<InfoPage> {
                       null,
                       10),
                   onTap: () {
-                    Navigator.of(context).pushNamed('/measurement-result');
+                    Navigator.of(context).pushNamed('/enlightenment');
                   },
                 ),
                 Spacer(),
                 GestureDetector(
                   child: const CustomListComponent(Icons.text_snippet_outlined,
-                      "Aufklärung", null, null, 10),
+                      "Meine Dokumente", null, null, 10),
                   onTap: () {
-                    Navigator.of(context).pushNamed('/measurement-result');
+                    Navigator.of(context).pushNamed('/documents');
                   },
                 ),
               ],
