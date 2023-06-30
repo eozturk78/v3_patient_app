@@ -348,19 +348,24 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
               SizedBox(
                 height: 20,
               ),
-              const Row(
+              Row(
                 children: [
                   Icon(
                     Icons.info,
                     color: Color.fromARGB(255, 0, 90, 47),
                   ),
-                  Text(
-                    "Mehr Informationen über die Einstufung Ihrer Messwerte",
-                    style: TextStyle(
-                        overflow: TextOverflow.ellipsis,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/blutdruck-description');
+                    },
+                    child: Text(
+                      "Mehr Informationen über die Einstufung Ihrer Messwerte",
+                      style: TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue),
+                    ),
                   )
                 ],
               )

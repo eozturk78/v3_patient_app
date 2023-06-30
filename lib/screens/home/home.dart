@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                       "Bitte Fragebögen beantworten",
                       10),
                   onTap: () {
-                    Navigator.of(context).pushNamed('/measurement-result');
+                    Navigator.of(context).pushNamed('/questionnaire-1');
                   },
                 ),
               ],

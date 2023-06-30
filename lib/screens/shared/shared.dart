@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../colors/colors.dart';
+
 leading(String title, BuildContext context) {
   return AppBar(
     title: Text(
@@ -59,4 +61,11 @@ TextStyle selectedPeriod = TextStyle(
   color: Colors.black,
   fontSize: 20,
   decoration: TextDecoration.underline,
+);
+
+TextStyle articleTitle =
+    TextStyle(fontWeight: FontWeight.bold, color: mainItemColor, fontSize: 15);
+
+ButtonStyle descriptionNotStyle = ElevatedButton.styleFrom(
+  primary: descriptionNotSelectedButton,
 );

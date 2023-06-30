@@ -7,6 +7,11 @@ import 'package:patient_app/screens/comunication/comunication.dart';
 import 'package:patient_app/screens/comunication/medical-plan-1.dart';
 import 'package:patient_app/screens/comunication/medical-plan-2.dart';
 import 'package:patient_app/screens/comunication/messages.dart';
+import 'package:patient_app/screens/description/blutdruck-description.dart';
+import 'package:patient_app/screens/description/pulse-description.dart';
+import 'package:patient_app/screens/description/saturation-description.dart';
+import 'package:patient_app/screens/description/temperature-description.dart';
+import 'package:patient_app/screens/description/weight-description.dart';
 import 'package:patient_app/screens/home/home.dart';
 import 'package:patient_app/screens/info/documents-details.dart';
 import 'package:patient_app/screens/info/documents.dart';
@@ -23,6 +28,15 @@ import 'package:patient_app/screens/medication/medication-plan-list.dart';
 import 'package:patient_app/screens/medication/medication.dart';
 import 'package:patient_app/screens/medication/recipes.dart';
 import 'package:patient_app/screens/profile/profile.dart';
+import 'package:patient_app/screens/questionnaire/questionnaire-1.dart';
+import 'package:patient_app/screens/questionnaire/questionnaire-2.dart';
+import 'package:patient_app/screens/questionnaire/questionnaire-3.dart';
+import 'package:patient_app/screens/questionnaire/questionnaire-4.dart';
+import 'package:patient_app/screens/questionnaire/questionnaire-5.dart';
+import 'package:patient_app/screens/questionnaire/questionnaire-6.dart';
+import 'package:patient_app/screens/questionnaire/questionnaire-7.dart';
+import 'package:patient_app/screens/questionnaire/questionnaire-8.dart';
+import 'package:patient_app/screens/questionnaire/questionnaire-9.dart';
 import 'package:patient_app/screens/quick-access/quick-access.dart';
 
 void main() {
@@ -73,6 +87,21 @@ class MyApp extends StatelessWidget {
         "/enlightenment": (context) => const EnlightenmentPage(),
         "/documents": (context) => const DocumentListPage(),
         "/document-details": (context) => const DocumentDetailsPage(),
+        "/questionnaire-1": (context) => const Questionnaire1Page(),
+        "/questionnaire-2": (context) => const Questionnaire2Page(),
+        "/questionnaire-3": (context) => const Questionnaire3Page(),
+        "/questionnaire-4": (context) => const Questionnaire4Page(),
+        "/questionnaire-5": (context) => const Questionnaire5Page(),
+        "/questionnaire-6": (context) => const Questionnaire6Page(),
+        "/questionnaire-7": (context) => const Questionnaire7Page(),
+        "/questionnaire-8": (context) => const Questionnaire8Page(),
+        "/questionnaire-9": (context) => const Questionnaire9Page(),
+        "/blutdruck-description": (context) => const BlutdruckDescriptionPage(),
+        "/weight-description": (context) => const WeightDescriptionPage(),
+        "/saturation-description": (context) => const SaturationDescriptionPage(),
+        "/pulse-description": (context) => const PulseDescriptionPage(),
+        "/temperature-description": (context) =>
+            const TemperatureDescriptionPage(),
       },
     );
   }

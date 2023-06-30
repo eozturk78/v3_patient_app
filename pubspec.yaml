@@ -70,6 +70,10 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
      - assets/images/
+     - assets/images/blutdruck-text-img.png
+     - assets/images/weight-text-img.png
+     - assets/images/saturation-text-img.png
+     - assets/images/pulse-text-img.png
 
   fonts:
     - family: righteous
