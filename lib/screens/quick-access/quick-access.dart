@@ -70,23 +70,17 @@ class _QuickAccessPageState extends State<QuickAccessPage> {
         },
         children: [
           FloatingActionButton.extended(
-            onPressed: () => {
-              // フローティングアクションボタンを押された時の処理.
-            },
+            onPressed: () => {},
             icon: new Icon(Icons.dock_outlined),
             label: Text("Videosprechstunde"),
           ),
           FloatingActionButton.extended(
-            onPressed: () => {
-              // フローティングアクションボタンを押された時の処理.
-            },
+            onPressed: () => {},
             icon: new Icon(Icons.dock_outlined),
             label: Text("Medikamentenplan"),
           ),
           FloatingActionButton.extended(
-            onPressed: () => {
-              // フローティングアクションボタンを押された時の処理.
-            },
+            onPressed: () => {},
             icon: new Icon(Icons.dock_outlined),
             label: Text("Blutdruckmessung"),
           ),

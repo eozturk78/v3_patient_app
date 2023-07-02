@@ -7,6 +7,7 @@ import 'package:patient_app/screens/shared/shared.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../shared/bottom-menu.dart';
+import '../shared/sub-total.dart';
 
 class MeasurementResultPulsePage extends StatefulWidget {
   const MeasurementResultPulsePage({super.key});
@@ -69,8 +70,13 @@ class _MeasurementResultPulsePageState
     _SalesData('03.06.2023', 55),
     _SalesData('10.06.2023', 96),
     _SalesData('12.06.2023', 53),
-    _SalesData('23.06.2023', 67),
-    _SalesData('20.06.2023', 57),
+    _SalesData('19.06.2023', 58),
+    _SalesData('20.06.2023', 67),
+    _SalesData('21.06.2023', 55),
+    _SalesData('22.06.2023', 60),
+    _SalesData('23.06.2023', 60),
+    _SalesData('24.06.2023', 57),
+    _SalesData('25.06.2023', 55),
     _SalesData('26.06.2023', 55),
   ];
 
@@ -88,7 +94,13 @@ class _MeasurementResultPulsePageState
     _SalesData('03.06.2023', 80),
     _SalesData('10.06.2023', 60),
     _SalesData('12.06.2023', 56),
-    _SalesData('23.06.2023', 64),
+    _SalesData('19.06.2023', 58),
+    _SalesData('20.06.2023', 67),
+    _SalesData('21.06.2023', 55),
+    _SalesData('22.06.2023', 60),
+    _SalesData('23.06.2023', 60),
+    _SalesData('24.06.2023', 57),
+    _SalesData('25.06.2023', 55),
     _SalesData('26.06.2023', 55),
   ];
 
@@ -189,7 +201,7 @@ class _MeasurementResultPulsePageState
                       color: Colors.red,
                       xValueMapper: (_SalesData sales, _) => sales.year,
                       yValueMapper: (_SalesData sales, _) => sales.sales,
-                      name: 'Gewicht',
+                      name: 'Herzfrequenz',
                       // Enable data label
                       dataLabelSettings:
                           const DataLabelSettings(isVisible: false)),
@@ -198,7 +210,7 @@ class _MeasurementResultPulsePageState
                       color: Colors.amber,
                       xValueMapper: (_SalesData sales, _) => sales.year,
                       yValueMapper: (_SalesData sales, _) => sales.sales,
-                      name: 'Gewicht',
+                      name: 'Herzfrequenz',
                       // Enable data label
                       dataLabelSettings:
                           const DataLabelSettings(isVisible: false)),
@@ -207,7 +219,7 @@ class _MeasurementResultPulsePageState
                       color: Colors.amber,
                       xValueMapper: (_SalesData sales, _) => sales.year,
                       yValueMapper: (_SalesData sales, _) => sales.sales,
-                      name: 'Gewicht',
+                      name: 'Herzfrequenz',
                       // Enable data label
                       dataLabelSettings:
                           const DataLabelSettings(isVisible: false)),
@@ -216,7 +228,7 @@ class _MeasurementResultPulsePageState
                       color: Colors.blue[900],
                       xValueMapper: (_SalesData sales, _) => sales.year,
                       yValueMapper: (_SalesData sales, _) => sales.sales,
-                      name: 'Gewicht',
+                      name: 'Herzfrequenz',
                       // Enable data label
                       dataLabelSettings:
                           const DataLabelSettings(isVisible: false)),
@@ -225,7 +237,7 @@ class _MeasurementResultPulsePageState
                       color: Colors.red,
                       xValueMapper: (_SalesData sales, _) => sales.year,
                       yValueMapper: (_SalesData sales, _) => sales.sales,
-                      name: 'Gewicht',
+                      name: 'Herzfrequenz',
                       // Enable data label
                       dataLabelSettings:
                           const DataLabelSettings(isVisible: false)),
@@ -236,21 +248,23 @@ class _MeasurementResultPulsePageState
                   minimumSize: const Size.fromHeight(40),
                   primary: mainButtonColor,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed("/questionnaire-2");
+                },
                 child: const Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.thermostat_outlined),
-                    Text("Blutdruckmessung durchführen ")
+                    Text("Messung durchführen")
                   ],
                 ),
               ),
               const Row(
                 children: [
-                  CustomListComponent(null, "Gestern", "66.2 %", null, null),
+                  CustomSubTotal(null, "Gestern", "66.2 %", null, null),
                   Spacer(),
-                  CustomListComponent(null, "Heute", "66.2 bpm", null, null),
+                  CustomSubTotal(null, "Heute", "66.2 bpm", null, null),
                 ],
               ),
               SizedBox(
@@ -269,8 +283,7 @@ class _MeasurementResultPulsePageState
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context)
-                          .pushNamed('/pulse-description');
+                      Navigator.of(context).pushNamed('/pulse-description');
                     },
                     child: Text(
                       "Mehr Informationen über die Einstufung Ihrer Messwerte",

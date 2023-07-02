@@ -26,7 +26,7 @@ class _TemperatureDescriptionPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Vitalwerte!', context),
+      appBar: leadingDescSubpage('Vitalwerte!', context),
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(

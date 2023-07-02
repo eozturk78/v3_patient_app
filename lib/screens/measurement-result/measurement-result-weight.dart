@@ -7,6 +7,7 @@ import 'package:patient_app/screens/shared/shared.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../shared/bottom-menu.dart';
+import '../shared/sub-total.dart';
 
 class MeasurementResultWeightPage extends StatefulWidget {
   const MeasurementResultWeightPage({super.key});
@@ -61,22 +62,24 @@ class _MeasurementResultWeightPageState
     _SalesData('05.03.2023', 97),
     _SalesData('10.03.2023', 97.2),
     _SalesData('25.03.2023', 97),
-    _SalesData('18.03.2023', 97.8),
-    _SalesData('03.04.2023', 100),
-    _SalesData('06.04.2023', 101),
-    _SalesData('12.04.2023', 101.2),
-    _SalesData('16.04.2023', 101.1),
-    _SalesData('20.04.2023', 101.3),
-    _SalesData('01.05.2023', 102),
-    _SalesData('05.05.2023', 102.3),
-    _SalesData('08.05.2023', 102),
-    _SalesData('15.05.2023', 102.5),
-    _SalesData('03.06.2023', 103),
-    _SalesData('10.06.2023', 103),
-    _SalesData('12.06.2023', 102.4),
-    _SalesData('23.06.2023', 103.4),
-    _SalesData('20.06.2023', 103),
-    _SalesData('26.06.2023', 102.6),
+    _SalesData('26.03.2023', 99.5),
+    _SalesData('28.03.2023', 100),
+    _SalesData('31.03.2023', 101),
+    _SalesData('09.04.2023', 103),
+    _SalesData('09.04.2023', 104),
+    _SalesData('09.04.2023', 103.2),
+    _SalesData('23.04.2023', 103),
+    _SalesData('01.05.2023', 103.5),
+    _SalesData('08.05.2023', 103),
+    _SalesData('09.05.2023', 103),
+    _SalesData('19.06.2023', 102.5),
+    _SalesData('20.06.2023', 103.5),
+    _SalesData('21.06.2023', 103.3),
+    _SalesData('22.06.2023', 103.3),
+    _SalesData('23.06.2023', 104),
+    _SalesData('24.06.2023', 103.5),
+    _SalesData('25.06.2023', 102.6),
+    _SalesData('26.06.2023', 102.2),
   ];
 
   List<_SalesData> dataMonth = [
@@ -240,21 +243,23 @@ class _MeasurementResultWeightPageState
                   minimumSize: const Size.fromHeight(40),
                   primary: mainButtonColor,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed("/questionnaire-1");
+                },
                 child: const Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.thermostat_outlined),
-                    Text("Blutdruckmessung durchführen ")
+                    Text("Messung durchführen")
                   ],
                 ),
               ),
               const Row(
                 children: [
-                  CustomListComponent(null, "Gestern", "103.2 KG", null, null),
+                  CustomSubTotal(null, "Gestern", "103.2 KG", null, null),
                   Spacer(),
-                  CustomListComponent(null, "Heute", "103 KG", null, null),
+                  CustomSubTotal(null, "Heute", "103 KG", null, null),
                 ],
               ),
               SizedBox(

@@ -15,7 +15,6 @@ class CustomListComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.45,
       margin: EdgeInsets.only(bottom: 10),
       padding: EdgeInsets.only(top: 10, bottom: 10, left: 2),
       decoration: BoxDecoration(
@@ -26,9 +25,7 @@ class CustomListComponent extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(5),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Row(
         children: [
           if (iconData != null)
             Icon(
@@ -37,38 +34,42 @@ class CustomListComponent extends StatelessWidget {
               color: iconColor,
             ),
           SizedBox(
-            height: 5,
+            width: 10,
           ),
-          Text(
-            headText,
-            style: TextStyle(fontWeight: FontWeight.bold, color: menuTextColor),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          if (subText != null)
-            Text(
-              subText!,
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: menuTextColor),
-            ),
-          SizedBox(
-            height: 5,
-          ),
-          if (warningText != null)
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.4,
-              child: Text(
-                warningText!,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                headText,
                 style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: colorState == 10
-                      ? const Color.fromARGB(255, 194, 13, 0)
-                      : Color.fromARGB(255, 1, 68, 59),
+                    color: menuTextColor, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                subText!,
+                style: TextStyle(
+                    color: menuTextColor, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              SizedBox(
+                child: Text(
+                  warningText!,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: colorState == 10
+                        ? const Color.fromARGB(255, 194, 13, 0)
+                        : Color.fromARGB(255, 1, 68, 59),
+                  ),
                 ),
               ),
-            ),
+            ],
+          ),
         ],
       ),
     );

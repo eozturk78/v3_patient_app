@@ -52,10 +52,7 @@ class _ComunicationPageState extends State<ComunicationPage> {
                       null,
                       null,
                       20),
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed('/measurement-result-weight');
-                  },
+                  onTap: () {},
                 ),
               ],
             ),

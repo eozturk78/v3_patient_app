@@ -7,6 +7,7 @@ import 'package:patient_app/screens/shared/shared.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../shared/bottom-menu.dart';
+import '../shared/sub-total.dart';
 
 class MeasurementResultTemperaturePage extends StatefulWidget {
   const MeasurementResultTemperaturePage({super.key});
@@ -92,7 +93,13 @@ class _MeasurementResultTemperaturePageState
     _SalesData('03.06.2023', 36.7),
     _SalesData('10.06.2023', 36),
     _SalesData('12.06.2023', 36.4),
-    _SalesData('23.06.2023', 36.2),
+    _SalesData('19.06.2023', 36.9),
+    _SalesData('20.06.2023', 37),
+    _SalesData('21.06.2023', 36.8),
+    _SalesData('22.06.2023', 37),
+    _SalesData('23.06.2023', 35),
+    _SalesData('24.06.2023', 36),
+    _SalesData('25.06.2023', 36.2),
     _SalesData('26.06.2023', 36),
   ];
 
@@ -189,7 +196,7 @@ class _MeasurementResultTemperaturePageState
                       color: Colors.red,
                       xValueMapper: (_SalesData sales, _) => sales.year,
                       yValueMapper: (_SalesData sales, _) => sales.sales,
-                      name: 'Gewicht',
+                      name: 'Temperatur',
                       // Enable data label
                       dataLabelSettings:
                           const DataLabelSettings(isVisible: false)),
@@ -198,7 +205,7 @@ class _MeasurementResultTemperaturePageState
                       color: Colors.amber,
                       xValueMapper: (_SalesData sales, _) => sales.year,
                       yValueMapper: (_SalesData sales, _) => sales.sales,
-                      name: 'Gewicht',
+                      name: 'Temperatur',
                       // Enable data label
                       dataLabelSettings:
                           const DataLabelSettings(isVisible: false)),
@@ -207,7 +214,7 @@ class _MeasurementResultTemperaturePageState
                       color: Colors.amber,
                       xValueMapper: (_SalesData sales, _) => sales.year,
                       yValueMapper: (_SalesData sales, _) => sales.sales,
-                      name: 'Gewicht',
+                      name: 'Temperatur',
                       // Enable data label
                       dataLabelSettings:
                           const DataLabelSettings(isVisible: false)),
@@ -216,7 +223,7 @@ class _MeasurementResultTemperaturePageState
                       color: Colors.blue[900],
                       xValueMapper: (_SalesData sales, _) => sales.year,
                       yValueMapper: (_SalesData sales, _) => sales.sales,
-                      name: 'Gewicht',
+                      name: 'Temperatur',
                       // Enable data label
                       dataLabelSettings:
                           const DataLabelSettings(isVisible: false)),
@@ -225,7 +232,7 @@ class _MeasurementResultTemperaturePageState
                       color: Colors.red,
                       xValueMapper: (_SalesData sales, _) => sales.year,
                       yValueMapper: (_SalesData sales, _) => sales.sales,
-                      name: 'Gewicht',
+                      name: 'Temperatur',
                       // Enable data label
                       dataLabelSettings:
                           const DataLabelSettings(isVisible: false)),
@@ -236,21 +243,23 @@ class _MeasurementResultTemperaturePageState
                   minimumSize: const Size.fromHeight(40),
                   primary: mainButtonColor,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed("/questionnaire-4");
+                },
                 child: const Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.thermostat_outlined),
-                    Text("Blutdruckmessung durchführen ")
+                    Text("Messung durchführen")
                   ],
                 ),
               ),
               const Row(
                 children: [
-                  CustomListComponent(null, "Gestern", "36,6 C°", null, null),
+                  CustomSubTotal(null, "Gestern", "36,6 C°", null, null),
                   Spacer(),
-                  CustomListComponent(null, "Heute", "36 C°", null, null),
+                  CustomSubTotal(null, "Heute", "36 C°", null, null),
                 ],
               ),
               SizedBox(
@@ -261,7 +270,7 @@ class _MeasurementResultTemperaturePageState
               SizedBox(
                 height: 20,
               ),
-               Row(
+              Row(
                 children: [
                   Icon(
                     Icons.info,
@@ -269,7 +278,8 @@ class _MeasurementResultTemperaturePageState
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed('/temperature-description');
+                      Navigator.of(context)
+                          .pushNamed('/temperature-description');
                     },
                     child: Text(
                       "Mehr Informationen über die Einstufung Ihrer Messwerte",

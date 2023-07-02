@@ -7,6 +7,7 @@ import 'package:patient_app/screens/shared/shared.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../shared/bottom-menu.dart';
+import '../shared/sub-total.dart';
 
 class MeasurementResultSaturationPage extends StatefulWidget {
   const MeasurementResultSaturationPage({super.key});
@@ -57,23 +58,27 @@ class _MeasurementResultSaturationPageState
     _SalesData('03.03.2023', 99),
     _SalesData('05.03.2023', 94),
     _SalesData('10.03.2023', 98),
-    _SalesData('25.03.2023', 99),
-    _SalesData('18.03.2023', 97),
-    _SalesData('03.04.2023', 95),
-    _SalesData('06.04.2023', 99),
-    _SalesData('12.04.2023', 98),
-    _SalesData('16.04.2023', 99),
-    _SalesData('20.04.2023', 98),
-    _SalesData('01.05.2023', 97),
-    _SalesData('05.05.2023', 99),
-    _SalesData('08.05.2023', 97),
-    _SalesData('15.05.2023', 98),
+    _SalesData('26.03.2023', 96),
+    _SalesData('28.03.2023', 98),
+    _SalesData('31.03.2023', 99),
+    _SalesData('09.04.2023', 97),
+    _SalesData('09.04.2023', 99),
+    _SalesData('09.04.2023', 96),
+    _SalesData('23.04.2023', 96),
+    _SalesData('01.05.2023', 95),
+    _SalesData('08.05.2023', 98),
+    _SalesData('09.05.2023', 99),
     _SalesData('03.06.2023', 99),
-    _SalesData('10.06.2023', 96),
-    _SalesData('12.06.2023', 99),
+    _SalesData('10.06.2023', 97),
+    _SalesData('12.06.2023', 98),
+    _SalesData('19.06.2023', 96),
+    _SalesData('20.06.2023', 97),
+    _SalesData('21.06.2023', 95),
+    _SalesData('22.06.2023', 99),
     _SalesData('23.06.2023', 97),
-    _SalesData('20.06.2023', 98),
-    _SalesData('26.06.2023', 99),
+    _SalesData('24.06.2023', 96),
+    _SalesData('25.06.2023', 99),
+    _SalesData('26.06.2023', 98),
   ];
 
   List<_SalesData> dataMonth = [
@@ -90,8 +95,14 @@ class _MeasurementResultSaturationPageState
     _SalesData('03.06.2023', 99),
     _SalesData('10.06.2023', 97),
     _SalesData('12.06.2023', 98),
-    _SalesData('23.06.2023', 99),
-    _SalesData('26.06.2023', 96),
+    _SalesData('19.06.2023', 96),
+    _SalesData('20.06.2023', 97),
+    _SalesData('21.06.2023', 95),
+    _SalesData('22.06.2023', 99),
+    _SalesData('23.06.2023', 97),
+    _SalesData('24.06.2023', 96),
+    _SalesData('25.06.2023', 99),
+    _SalesData('26.06.2023', 98),
   ];
 
   List<_SalesData> dataWeek = [
@@ -187,7 +198,7 @@ class _MeasurementResultSaturationPageState
                       color: Colors.amber,
                       xValueMapper: (_SalesData sales, _) => sales.year,
                       yValueMapper: (_SalesData sales, _) => sales.sales,
-                      name: 'Gewicht',
+                      name: 'Sauerstoffsättigung',
                       // Enable data label
                       dataLabelSettings:
                           const DataLabelSettings(isVisible: false)),
@@ -196,7 +207,7 @@ class _MeasurementResultSaturationPageState
                       color: Colors.amber,
                       xValueMapper: (_SalesData sales, _) => sales.year,
                       yValueMapper: (_SalesData sales, _) => sales.sales,
-                      name: 'Gewicht',
+                      name: 'Sauerstoffsättigung',
                       // Enable data label
                       dataLabelSettings:
                           const DataLabelSettings(isVisible: false)),
@@ -205,7 +216,7 @@ class _MeasurementResultSaturationPageState
                       color: Colors.blue[900],
                       xValueMapper: (_SalesData sales, _) => sales.year,
                       yValueMapper: (_SalesData sales, _) => sales.sales,
-                      name: 'Gewicht',
+                      name: 'Sauerstoffsättigung',
                       // Enable data label
                       dataLabelSettings:
                           const DataLabelSettings(isVisible: false)),
@@ -216,21 +227,23 @@ class _MeasurementResultSaturationPageState
                   minimumSize: const Size.fromHeight(40),
                   primary: mainButtonColor,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed("/questionnaire-5");
+                },
                 child: const Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.thermostat_outlined),
-                    Text("Blutdruckmessung durchführen ")
+                    Text("Messung durchführen")
                   ],
                 ),
               ),
               const Row(
                 children: [
-                  CustomListComponent(null, "Gestern", "96 %", null, null),
+                  CustomSubTotal(null, "Gestern", "96 %", null, null),
                   Spacer(),
-                  CustomListComponent(null, "Heute", "97 %", null, null),
+                  CustomSubTotal(null, "Heute", "97 %", null, null),
                 ],
               ),
               SizedBox(

@@ -56,6 +56,35 @@ leadingSubpage(String title, BuildContext context) {
   );
 }
 
+leadingDescSubpage(String title, BuildContext context) {
+  return AppBar(
+    leading: IconButton(
+      icon: Icon(Icons.arrow_back, color: Colors.black),
+      onPressed: () => Navigator.of(context).pushNamed("/main"),
+    ),
+    title: Text(
+      title,
+      style: TextStyle(color: Colors.black),
+    ),
+    shadowColor: null,
+    elevation: 0.0,
+    centerTitle: true,
+    automaticallyImplyLeading: false,
+    backgroundColor: Colors.white,
+    actions: <Widget>[
+      IconButton(
+        icon: const Icon(
+          Icons.person_outline,
+          color: Colors.black,
+        ),
+        onPressed: () {
+          Navigator.of(context).pushNamed("/profile");
+        },
+      )
+    ],
+  );
+}
+
 TextStyle selectedPeriod = TextStyle(
   fontWeight: FontWeight.bold,
   color: Colors.black,
