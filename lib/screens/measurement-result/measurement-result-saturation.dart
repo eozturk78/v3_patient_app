@@ -62,8 +62,6 @@ class _MeasurementResultSaturationPageState
     _SalesData('28.03.2023', 98),
     _SalesData('31.03.2023', 99),
     _SalesData('09.04.2023', 97),
-    _SalesData('09.04.2023', 99),
-    _SalesData('09.04.2023', 96),
     _SalesData('23.04.2023', 96),
     _SalesData('01.05.2023', 95),
     _SalesData('08.05.2023', 98),
@@ -79,6 +77,10 @@ class _MeasurementResultSaturationPageState
     _SalesData('24.06.2023', 96),
     _SalesData('25.06.2023', 99),
     _SalesData('26.06.2023', 98),
+    _SalesData('27.06.2023', 100),
+    _SalesData('28.06.2023', 100),
+    _SalesData('29.06.2023', 98),
+    _SalesData('02.07.2023', 99),
   ];
 
   List<_SalesData> dataMonth = [
@@ -103,17 +105,20 @@ class _MeasurementResultSaturationPageState
     _SalesData('24.06.2023', 96),
     _SalesData('25.06.2023', 99),
     _SalesData('26.06.2023', 98),
+    _SalesData('27.06.2023', 100),
+    _SalesData('28.06.2023', 100),
+    _SalesData('29.06.2023', 98),
+    _SalesData('02.07.2023', 99),
   ];
 
   List<_SalesData> dataWeek = [
-    _SalesData('19.06.2023', 96),
-    _SalesData('20.06.2023', 97),
-    _SalesData('21.06.2023', 95),
-    _SalesData('22.06.2023', 99),
-    _SalesData('23.06.2023', 97),
     _SalesData('24.06.2023', 96),
     _SalesData('25.06.2023', 99),
     _SalesData('26.06.2023', 98),
+    _SalesData('27.06.2023', 100),
+    _SalesData('28.06.2023', 100),
+    _SalesData('29.06.2023', 98),
+    _SalesData('02.07.2023', 99),
   ];
 
   List<_SalesData> data = [];

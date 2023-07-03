@@ -60,8 +60,8 @@ class _MeasurementResultTemperaturePageState
     _SalesData('03.03.2023', 36.2),
     _SalesData('05.03.2023', 35.8),
     _SalesData('10.03.2023', 35.6),
-    _SalesData('25.03.2023', 37),
     _SalesData('18.03.2023', 37.2),
+    _SalesData('25.03.2023', 37),
     _SalesData('03.04.2023', 36.8),
     _SalesData('06.04.2023', 36.9),
     _SalesData('12.04.2023', 36),
@@ -74,9 +74,13 @@ class _MeasurementResultTemperaturePageState
     _SalesData('03.06.2023', 37.2),
     _SalesData('10.06.2023', 36.2),
     _SalesData('12.06.2023', 36.3),
-    _SalesData('23.06.2023', 36.6),
     _SalesData('20.06.2023', 36),
-    _SalesData('26.06.2023', 38),
+    _SalesData('23.06.2023', 36.6),
+    _SalesData('26.06.2023', 36.4),
+    _SalesData('27.06.2023', 36.1),
+    _SalesData('28.06.2023', 36.1),
+    _SalesData('29.06.2023', 36.5),
+    _SalesData('02.07.2023', 36.3),
   ];
 
   List<_SalesData> dataMonth = [
@@ -100,18 +104,21 @@ class _MeasurementResultTemperaturePageState
     _SalesData('23.06.2023', 35),
     _SalesData('24.06.2023', 36),
     _SalesData('25.06.2023', 36.2),
-    _SalesData('26.06.2023', 36),
+    _SalesData('26.06.2023', 36.4),
+    _SalesData('27.06.2023', 36.1),
+    _SalesData('28.06.2023', 36.1),
+    _SalesData('29.06.2023', 36.5),
+    _SalesData('02.07.2023', 36.3),
   ];
 
   List<_SalesData> dataWeek = [
-    _SalesData('19.06.2023', 36.9),
-    _SalesData('20.06.2023', 37),
-    _SalesData('21.06.2023', 36.8),
-    _SalesData('22.06.2023', 37),
     _SalesData('23.06.2023', 35),
-    _SalesData('24.06.2023', 36),
     _SalesData('25.06.2023', 36.2),
-    _SalesData('26.06.2023', 36),
+    _SalesData('26.06.2023', 36.4),
+    _SalesData('27.06.2023', 36.1),
+    _SalesData('28.06.2023', 36.1),
+    _SalesData('29.06.2023', 36.5),
+    _SalesData('02.07.2023', 36.3),
   ];
 
   List<_SalesData> data = [];
