@@ -270,8 +270,8 @@ class _MeasurementResultPulsePageState
               SizedBox(
                 height: 20,
               ),
-              const Text(
-                  "Der Blutdruck ist der messbare Druck des Blutes in den Arterien, während es vom Herzen durch den Körper gepumpt wird. Ein gesunder Blutdruck ist ein wichtiger Teil der Gesundheitsvorsorge. Denn Bluthochdruck (Hypertonie) erhöht nachweislich das Risiko für ernsthafte Erkrankungen wie Herzinfarkt, Herzversagen, Schlaganfall und Nierenschäden."),
+              Text(
+                  "Die Herzfrequenz ist ein wichtiger Indikator für die Aktivität des Herzens und spielt eine zentrale Rolle bei der Beurteilung der kardiovaskulären Gesundheit. Die Herzfrequenz bezieht sich auf die Anzahl der Herzschläge pro Minute. Sie gibt an, wie oft sich das Herz zusammenzieht und Blut durch den Körper pumpt. Die Herzfrequenz kann variieren und wird von verschiedenen Faktoren beeinflusst, einschließlich körperlicher Aktivität, emotionaler Zustand, Alter und allgemeiner Gesundheitszustand."),
               SizedBox(
                 height: 20,
               ),

@@ -5,6 +5,7 @@ import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 
 import '../shared/bottom-menu.dart';
+import '../shared/sub-total.dart';
 
 class InfoPage extends StatefulWidget {
   const InfoPage({super.key});
@@ -34,7 +35,7 @@ class _InfoPageState extends State<InfoPage> {
             Row(
               children: [
                 GestureDetector(
-                  child: const CustomListComponent(
+                  child: const CustomSubTotal(
                       Icons.book_online_outlined, "Bibliothek", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/libraries');
@@ -42,19 +43,16 @@ class _InfoPageState extends State<InfoPage> {
                 ),
                 Spacer(),
                 GestureDetector(
-                  child: const CustomListComponent(
+                  child: const CustomSubTotal(
                       Icons.question_answer_outlined, "FAQ", null, null, 20),
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed('/measurement-result-weight');
-                  },
+                  onTap: () {},
                 ),
               ],
             ),
             Row(
               children: [
                 GestureDetector(
-                  child: const CustomListComponent(
+                  child: const CustomSubTotal(
                       Icons.medical_information_outlined,
                       "Aufklärung",
                       null,
@@ -66,7 +64,7 @@ class _InfoPageState extends State<InfoPage> {
                 ),
                 Spacer(),
                 GestureDetector(
-                  child: const CustomListComponent(Icons.text_snippet_outlined,
+                  child: const CustomSubTotal(Icons.text_snippet_outlined,
                       "Meine Dokumente", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/documents');

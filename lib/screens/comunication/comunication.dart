@@ -5,6 +5,7 @@ import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 
 import '../shared/bottom-menu.dart';
+import '../shared/sub-total.dart';
 
 class ComunicationPage extends StatefulWidget {
   const ComunicationPage({super.key});
@@ -34,24 +35,16 @@ class _ComunicationPageState extends State<ComunicationPage> {
             Row(
               children: [
                 GestureDetector(
-                  child: const CustomListComponent(
-                      Icons.chat_bubble_outline_rounded,
-                      "Mitteilungen",
-                      null,
-                      null,
-                      10),
+                  child: const CustomSubTotal(Icons.chat_bubble_outline_rounded,
+                      "Mitteilungen", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/messages');
                   },
                 ),
                 Spacer(),
                 GestureDetector(
-                  child: const CustomListComponent(
-                      Icons.monitor_weight_outlined,
-                      "Videosprechstunde",
-                      null,
-                      null,
-                      20),
+                  child: const CustomSubTotal(
+                      Icons.video_call, "Videosprechstunde", null, null, 20),
                   onTap: () {},
                 ),
               ],
@@ -61,12 +54,8 @@ class _ComunicationPageState extends State<ComunicationPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  child: const CustomListComponent(
-                      Icons.calendar_month_outlined,
-                      "Kalender",
-                      null,
-                      null,
-                      10),
+                  child: const CustomSubTotal(Icons.calendar_month_outlined,
+                      "Kalender", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/calendar');
                   },

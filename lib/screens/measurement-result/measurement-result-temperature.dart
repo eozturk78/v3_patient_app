@@ -265,8 +265,8 @@ class _MeasurementResultTemperaturePageState
               SizedBox(
                 height: 20,
               ),
-              const Text(
-                  "Der Blutdruck ist der messbare Druck des Blutes in den Arterien, während es vom Herzen durch den Körper gepumpt wird. Ein gesunder Blutdruck ist ein wichtiger Teil der Gesundheitsvorsorge. Denn Bluthochdruck (Hypertonie) erhöht nachweislich das Risiko für ernsthafte Erkrankungen wie Herzinfarkt, Herzversagen, Schlaganfall und Nierenschäden."),
+              Text(
+                  "Die Körpertemperatur ist ein wichtiger Parameter zur Beurteilung des Gesundheitszustands eines Menschen. In diesem Artikel werden wir die Bedeutung der Körpertemperatur erklären, verschiedene Messmethoden diskutieren und die Auswirkungen von abnormalen Körpertemperaturen auf den Körper betrachten."),
               SizedBox(
                 height: 20,
               ),

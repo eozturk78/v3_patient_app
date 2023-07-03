@@ -265,8 +265,8 @@ class _MeasurementResultWeightPageState
               SizedBox(
                 height: 20,
               ),
-              const Text(
-                  "Der Blutdruck ist der messbare Druck des Blutes in den Arterien, während es vom Herzen durch den Körper gepumpt wird. Ein gesunder Blutdruck ist ein wichtiger Teil der Gesundheitsvorsorge. Denn Bluthochdruck (Hypertonie) erhöht nachweislich das Risiko für ernsthafte Erkrankungen wie Herzinfarkt, Herzversagen, Schlaganfall und Nierenschäden."),
+              Text(
+                  "Ein gesundes Körpergewicht ist von entscheidender Bedeutung für chronisch kranke Patienten, da es das Risiko von Komplikationen verringern kann. Übergewicht kann das Fortschreiten bestimmter Krankheiten wie Diabetes, Herzerkrankungen und Gelenkproblemen verschlimmern. Ein gesundes Gewicht kann auch die Effektivität der medizinischen Behandlung verbessern und die allgemeine Lebensqualität steigern."),
               SizedBox(
                 height: 20,
               ),

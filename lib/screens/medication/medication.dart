@@ -5,6 +5,7 @@ import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 
 import '../shared/bottom-menu.dart';
+import '../shared/sub-total.dart';
 
 class MedicationPage extends StatefulWidget {
   const MedicationPage({super.key});
@@ -34,7 +35,7 @@ class _MedicationPageState extends State<MedicationPage> {
             Row(
               children: [
                 GestureDetector(
-                  child: const CustomListComponent(Icons.text_snippet_outlined,
+                  child: const CustomSubTotal(Icons.text_snippet_outlined,
                       "Medikamentenplan", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/medication-plan-list');
@@ -42,7 +43,7 @@ class _MedicationPageState extends State<MedicationPage> {
                 ),
                 Spacer(),
                 GestureDetector(
-                  child: const CustomListComponent(
+                  child: const CustomSubTotal(
                       Icons.medical_information_outlined,
                       "Rezept",
                       null,
@@ -57,12 +58,8 @@ class _MedicationPageState extends State<MedicationPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  child: const CustomListComponent(
-                      Icons.medication_liquid_outlined,
-                      "Polymed. Check",
-                      null,
-                      null,
-                      10),
+                  child: const CustomSubTotal(Icons.medication_liquid_outlined,
+                      "Polymed. Check", null, null, 10),
                   onTap: () {},
                 ),
               ],

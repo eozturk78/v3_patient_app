@@ -249,8 +249,8 @@ class _MeasurementResultSaturationPageState
               SizedBox(
                 height: 20,
               ),
-              const Text(
-                  "Der Blutdruck ist der messbare Druck des Blutes in den Arterien, während es vom Herzen durch den Körper gepumpt wird. Ein gesunder Blutdruck ist ein wichtiger Teil der Gesundheitsvorsorge. Denn Bluthochdruck (Hypertonie) erhöht nachweislich das Risiko für ernsthafte Erkrankungen wie Herzinfarkt, Herzversagen, Schlaganfall und Nierenschäden."),
+              Text(
+                  "Sauerstoff ist überlebenswichtig und für jede Körperzelle und -funktion notwendig. Damit unser Körper mit genug Sauerstoff versorgt wird, muss das Zusammenspiel aus Atmung, Kreislauf und der Gewebsdurchblutung stimmen. Die Sauerstoffsättigung gibt den Sauerstoffgehalt im Blut an."),
               SizedBox(
                 height: 20,
               ),

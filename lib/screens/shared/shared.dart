@@ -60,7 +60,7 @@ leadingDescSubpage(String title, BuildContext context) {
   return AppBar(
     leading: IconButton(
       icon: Icon(Icons.arrow_back, color: Colors.black),
-      onPressed: () => Navigator.of(context).pushNamed("/main"),
+      onPressed: () => Navigator.of(context).pushNamed("/home"),
     ),
     title: Text(
       title,
