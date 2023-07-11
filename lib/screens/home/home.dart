@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../shared/bottom-menu.dart';
 
@@ -14,15 +15,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String title = "";
   @override
-  void initState() {
+  initState() {
+    getPatientInfo();
     super.initState();
+  }
+
+  getPatientInfo() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      title = pref.getString("patientTitle") ?? "";
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leading('Hallo Max Mustermann!', context),
+      appBar: leading('Hallo ${title}!', context),
       body: Center(
           child: Padding(
               padding: const EdgeInsets.all(15),
