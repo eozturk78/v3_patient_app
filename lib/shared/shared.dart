@@ -32,4 +32,17 @@ class Shared {
   prePareNumberForRequest(String number) {
     return number.replaceAll(".", "").replaceAll(",", ".");
   }
+
+  getBaseName(String url) {
+    return url.toString().substring(url.lastIndexOf('/') + 1);
+  }
+
+  formatDate(String date) {
+    DateTime parseDate =
+        new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse(date);
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('dd.MM.yy');
+    var outputDate = outputFormat.format(inputDate);
+    return outputDate;
+  }
 }

@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../shared/shared.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/sub-total.dart';
 
@@ -17,265 +19,55 @@ class MeasurementResultPage extends StatefulWidget {
 }
 
 class _MeasurementResultPageState extends State<MeasurementResultPage> {
+  Apis apis = Apis();
+  Shared sh = Shared();
+  DateTime today = DateTime.now();
+
   @override
   void initState() {
     super.initState();
-    dataS = dataSWeek;
-    dataD = dataDWeek;
-    dataPulse = dataPulseWeek;
+    today = today.add(const Duration(days: -8));
+    onGetMeasurementList(today, 'blood_pressure');
+  }
+
+  onGetMeasurementList(DateTime date, String bp) {
+    List<_SalesData> data1 = [], data2 = [], data3 = [];
+    apis.getMeasurementList(date, bp).then((value) {
+      var results = value['results'] as List;
+      results.sort((a, b) => a['timestamp'].compareTo(b['timestamp']));
+      for (var result in results) {
+        var measurementDate = DateTime.parse(result['timestamp']);
+        // ignore: unrelated_type_equality_checks
+        if ((date.compareTo(measurementDate) < 0) &&
+            (measurementDate.compareTo(DateTime.now()) < 0)) {
+          var timestamp = sh.formatDate(result['timestamp']);
+          if (bp == 'blood_pressure') {
+            var systolic = result['measurement']['systolic'];
+            data1.add(_SalesData(timestamp, systolic));
+            var diastolic = result['measurement']['diastolic'];
+            data2.add(_SalesData(timestamp, diastolic));
+          } else {
+            var pulse = result['measurement']['value'];
+
+            data3.add(_SalesData(timestamp, pulse));
+          }
+        }
+      }
+      setState(() {
+        if (bp == 'blood_pressure') {
+          dataS = data1;
+          dataD = data2;
+        } else {
+          dataPulse = data3;
+
+          if (dataS.length != dataPulse.length) {}
+        }
+      });
+      if (bp == "blood_pressure") onGetMeasurementList(date, 'pulse');
+    });
   }
 
   int periodType = 10; // 10 week, 20 month, 30 year
-
-  List<_SalesData> dataSYear = [
-    _SalesData('07.01.2023', 106),
-    _SalesData('08.01.2023', 110),
-    _SalesData('09.01.2023', 111),
-    _SalesData('10.01.2023', 122),
-    _SalesData('11.01.2023', 120),
-    _SalesData('23.02.2023', 116),
-    _SalesData('24.02.2023', 104),
-    _SalesData('25.02.2023', 113),
-    _SalesData('26.02.2023', 110),
-    _SalesData('27.02.2023', 108),
-    _SalesData('01.03.2023', 124),
-    _SalesData('03.03.2023', 110),
-    _SalesData('05.03.2023', 116),
-    _SalesData('10.03.2023', 115),
-    _SalesData('18.03.2023', 116),
-    _SalesData('25.03.2023', 112),
-    _SalesData('26.03.2023', 113),
-    _SalesData('28.03.2023', 112),
-    _SalesData('31.03.2023', 108),
-    _SalesData('03.04.2023', 120),
-    _SalesData('06.04.2023', 119),
-    _SalesData('09.04.2023', 115),
-    _SalesData('10.04.2023', 111),
-    _SalesData('11.04.2023', 122),
-    _SalesData('12.04.2023', 124),
-    _SalesData('16.04.2023', 122),
-    _SalesData('20.04.2023', 116),
-    _SalesData('23.04.2023', 119),
-    _SalesData('01.05.2023', 127),
-    _SalesData('05.05.2023', 109),
-    _SalesData('08.05.2023', 116),
-    _SalesData('09.05.2023', 124),
-    _SalesData('15.05.2023', 119),
-    _SalesData('03.06.2023', 127),
-    _SalesData('10.06.2023', 124),
-    _SalesData('12.06.2023', 110),
-    _SalesData('19.06.2023', 118),
-    _SalesData('20.06.2023', 120),
-    _SalesData('21.06.2023', 125),
-    _SalesData('22.06.2023', 127),
-    _SalesData('23.06.2023', 139),
-    _SalesData('24.06.2023', 146),
-    _SalesData('25.06.2023', 116),
-    _SalesData('26.06.2023', 124),
-  ];
-  List<_SalesData> dataDYear = [
-    _SalesData('07.01.2023', 75),
-    _SalesData('08.01.2023', 70),
-    _SalesData('09.01.2023', 68),
-    _SalesData('10.01.2023', 72),
-    _SalesData('11.01.2023', 75),
-    _SalesData('23.02.2023', 67),
-    _SalesData('24.02.2023', 65),
-    _SalesData('25.02.2023', 61),
-    _SalesData('26.02.2023', 57),
-    _SalesData('27.02.2023', 55),
-    _SalesData('03.03.2023', 79),
-    _SalesData('05.03.2023', 65),
-    _SalesData('10.03.2023', 72),
-    _SalesData('18.03.2023', 72),
-    _SalesData('25.03.2023', 70),
-    _SalesData('26.03.2023', 83),
-    _SalesData('28.03.2023', 79),
-    _SalesData('31.03.2023', 81),
-    _SalesData('03.04.2023', 77),
-    _SalesData('06.04.2023', 80),
-    _SalesData('09.04.2023', 83),
-    _SalesData('10.04.2023', 75),
-    _SalesData('11.04.2023', 71),
-    _SalesData('12.04.2023', 85),
-    _SalesData('16.04.2023', 72),
-    _SalesData('20.04.2023', 75),
-    _SalesData('23.04.2023', 78),
-    _SalesData('01.05.2023', 79),
-    _SalesData('05.05.2023', 80),
-    _SalesData('08.05.2023', 82),
-    _SalesData('09.05.2023', 81),
-    _SalesData('15.05.2023', 70),
-    _SalesData('03.06.2023', 75),
-    _SalesData('10.06.2023', 96),
-    _SalesData('12.06.2023', 73),
-    _SalesData('19.06.2023', 74),
-    _SalesData('20.06.2023', 80),
-    _SalesData('21.06.2023', 78),
-    _SalesData('22.06.2023', 80),
-    _SalesData('23.06.2023', 78),
-    _SalesData('24.06.2023', 91),
-    _SalesData('25.06.2023', 67),
-    _SalesData('26.06.2023', 73),
-  ];
-  List<_SalesData> dataPulseYear = [
-    _SalesData('07.01.2023', 71),
-    _SalesData('08.01.2023', 59),
-    _SalesData('09.01.2023', 64),
-    _SalesData('10.01.2023', 77),
-    _SalesData('11.01.2023', 75),
-    _SalesData('23.02.2023', 72),
-    _SalesData('24.02.2023', 85),
-    _SalesData('25.02.2023', 66),
-    _SalesData('26.02.2023', 61),
-    _SalesData('27.02.2023', 63),
-    _SalesData('05.03.2023', 65),
-    _SalesData('10.03.2023', 72),
-    _SalesData('18.03.2023', 72),
-    _SalesData('25.03.2023', 70),
-    _SalesData('26.03.2023', 93),
-    _SalesData('28.03.2023', 77),
-    _SalesData('31.03.2023', 94),
-    _SalesData('03.04.2023', 80),
-    _SalesData('06.04.2023', 62),
-    _SalesData('09.04.2023', 84),
-    _SalesData('10.04.2023', 73),
-    _SalesData('11.04.2023', 75),
-    _SalesData('12.04.2023', 64),
-    _SalesData('16.04.2023', 63),
-    _SalesData('20.04.2023', 59),
-    _SalesData('23.04.2023', 78),
-    _SalesData('01.05.2023', 68),
-    _SalesData('05.05.2023', 70),
-    _SalesData('08.05.2023', 62),
-    _SalesData('09.05.2023', 75),
-    _SalesData('15.05.2023', 65),
-    _SalesData('03.06.2023', 55),
-    _SalesData('10.06.2023', 65),
-    _SalesData('12.06.2023', 53),
-    _SalesData('19.06.2023', 58),
-    _SalesData('20.06.2023', 67),
-    _SalesData('21.06.2023', 55),
-    _SalesData('22.06.2023', 60),
-    _SalesData('23.06.2023', 60),
-    _SalesData('24.06.2023', 57),
-    _SalesData('25.06.2023', 55),
-    _SalesData('26.06.2023', 55),
-  ];
-
-  List<_SalesData> dataSMonth = [
-    _SalesData('26.03.2023', 113),
-    _SalesData('28.03.2023', 112),
-    _SalesData('31.03.2023', 108),
-    _SalesData('09.04.2023', 115),
-    _SalesData('10.04.2023', 111),
-    _SalesData('11.04.2023', 122),
-    _SalesData('23.04.2023', 119),
-    _SalesData('01.05.2023', 127),
-    _SalesData('08.05.2023', 122),
-    _SalesData('09.05.2023', 124),
-    _SalesData('03.06.2023', 108),
-    _SalesData('10.06.2023', 124),
-    _SalesData('12.06.2023', 124),
-    _SalesData('19.06.2023', 118),
-    _SalesData('20.06.2023', 120),
-    _SalesData('21.06.2023', 125),
-    _SalesData('22.06.2023', 127),
-    _SalesData('23.06.2023', 139),
-    _SalesData('24.06.2023', 146),
-    _SalesData('25.06.2023', 116),
-    _SalesData('26.06.2023', 124),
-  ];
-  List<_SalesData> dataDMonth = [
-    _SalesData('26.03.2023', 83),
-    _SalesData('28.03.2023', 79),
-    _SalesData('31.03.2023', 81),
-    _SalesData('09.04.2023', 83),
-    _SalesData('10.04.2023', 75),
-    _SalesData('11.04.2023', 71),
-    _SalesData('23.04.2023', 78),
-    _SalesData('01.05.2023', 79),
-    _SalesData('08.05.2023', 82),
-    _SalesData('09.05.2023', 81),
-    _SalesData('03.06.2023', 80),
-    _SalesData('10.06.2023', 78),
-    _SalesData('12.06.2023', 91),
-    _SalesData('19.06.2023', 74),
-    _SalesData('20.06.2023', 80),
-    _SalesData('21.06.2023', 78),
-    _SalesData('22.06.2023', 80),
-    _SalesData('23.06.2023', 78),
-    _SalesData('24.06.2023', 91),
-    _SalesData('25.06.2023', 67),
-    _SalesData('26.06.2023', 73),
-  ];
-  List<_SalesData> dataPulseMonth = [
-    _SalesData('26.03.2023', 93),
-    _SalesData('28.03.2023', 77),
-    _SalesData('31.03.2023', 94),
-    _SalesData('09.04.2023', 84),
-    _SalesData('10.04.2023', 73),
-    _SalesData('11.04.2023', 75),
-    _SalesData('23.04.2023', 78),
-    _SalesData('01.05.2023', 68),
-    _SalesData('08.05.2023', 62),
-    _SalesData('09.05.2023', 75),
-    _SalesData('03.06.2023', 80),
-    _SalesData('10.06.2023', 60),
-    _SalesData('12.06.2023', 56),
-    _SalesData('19.06.2023', 58),
-    _SalesData('20.06.2023', 67),
-    _SalesData('21.06.2023', 55),
-    _SalesData('22.06.2023', 60),
-    _SalesData('23.06.2023', 60),
-    _SalesData('24.06.2023', 57),
-    _SalesData('25.06.2023', 55),
-    _SalesData('26.06.2023', 55),
-  ];
-
-  List<_SalesData> dataSWeek = [
-    _SalesData('19.06.2023', 118),
-    _SalesData('20.06.2023', 120),
-    _SalesData('21.06.2023', 125),
-    _SalesData('22.06.2023', 127),
-    _SalesData('23.06.2023', 139),
-    _SalesData('24.06.2023', 146),
-    _SalesData('25.06.2023', 116),
-    _SalesData('26.06.2023', 124),
-    _SalesData('27.06.2023', 110),
-    _SalesData('28.06.2023', 134),
-    _SalesData('29.06.2023', 110),
-    _SalesData('02.07.2023', 110),
-  ];
-  List<_SalesData> dataDWeek = [
-    _SalesData('19.06.2023', 74),
-    _SalesData('20.06.2023', 80),
-    _SalesData('21.06.2023', 78),
-    _SalesData('22.06.2023', 80),
-    _SalesData('23.06.2023', 78),
-    _SalesData('24.06.2023', 91),
-    _SalesData('25.06.2023', 67),
-    _SalesData('26.06.2023', 73),
-    _SalesData('27.06.2023', 72),
-    _SalesData('28.06.2023', 80),
-    _SalesData('29.06.2023', 60),
-    _SalesData('02.07.2023', 75),
-  ];
-  List<_SalesData> dataPulseWeek = [
-    _SalesData('19.06.2023', 58),
-    _SalesData('20.06.2023', 67),
-    _SalesData('21.06.2023', 55),
-    _SalesData('22.06.2023', 60),
-    _SalesData('23.06.2023', 60),
-    _SalesData('24.06.2023', 57),
-    _SalesData('25.06.2023', 55),
-    _SalesData('26.06.2023', 55),
-    _SalesData('27.06.2023', 70),
-    _SalesData('28.06.2023', 66),
-    _SalesData('29.06.2023', 78),
-    _SalesData('02.07.2023', 78),
-  ];
-
   List<_SalesData> dataS = [];
   List<_SalesData> dataD = [];
   List<_SalesData> dataPulse = [];
@@ -300,9 +92,12 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                       onPressed: () {
                         setState(() {
                           periodType = 10;
-                          dataS = dataSWeek;
-                          dataD = dataDWeek;
-                          dataPulse = dataPulseWeek;
+                          var d = DateTime.now().add(const Duration(days: -8));
+
+                          dataD = [];
+                          dataS = [];
+                          dataPulse = [];
+                          onGetMeasurementList(d, 'blood_pressure');
                         });
                       },
                       child: Text(
@@ -316,9 +111,13 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                       onPressed: () {
                         setState(() {
                           periodType = 20;
-                          dataS = dataSMonth;
-                          dataD = dataDMonth;
-                          dataPulse = dataPulseMonth;
+                          var d = DateTime.now().add(const Duration(days: -91));
+
+                          dataD = [];
+                          dataS = [];
+                          dataPulse = [];
+                          onGetMeasurementList(d, 'blood_pressure');
+                          // onGetMeasurementList(today, 'pulse');
                         });
                       },
                       child: Text(
@@ -332,9 +131,14 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                       onPressed: () {
                         setState(() {
                           periodType = 30;
-                          dataS = dataSYear;
-                          dataD = dataDYear;
-                          dataPulse = dataPulseYear;
+                          var d =
+                              DateTime.now().add(const Duration(days: -366));
+
+                          dataD = [];
+                          dataS = [];
+                          dataPulse = [];
+                          onGetMeasurementList(d, 'blood_pressure');
+                          //
                         });
                       },
                       child: Text(
@@ -350,7 +154,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
               ),
               //Initialize the chart widget
               SfCartesianChart(
-                primaryXAxis: CategoryAxis(),
+                primaryXAxis: CategoryAxis(arrangeByIndex: true),
                 // Chart title
                 title: ChartTitle(text: ''),
                 // Enable legend
@@ -360,7 +164,8 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                 series: <ChartSeries<_SalesData, String>>[
                   LineSeries<_SalesData, String>(
                       dataSource: dataS,
-                      xValueMapper: (_SalesData sales, _) => sales.year,
+                      xValueMapper: (_SalesData sales, _) =>
+                          sales.date.toString(),
                       yValueMapper: (_SalesData sales, _) => sales.sales,
                       name: 'Systolischer',
                       // Enable data label
@@ -368,7 +173,8 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                           const DataLabelSettings(isVisible: false)),
                   LineSeries<_SalesData, String>(
                       dataSource: dataD,
-                      xValueMapper: (_SalesData sales, _) => sales.year,
+                      xValueMapper: (_SalesData sales, _) =>
+                          sales.date.toString(),
                       yValueMapper: (_SalesData sales, _) => sales.sales,
                       name: 'Diastolischer',
                       // Enable data label
@@ -376,7 +182,8 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                           const DataLabelSettings(isVisible: false)),
                   LineSeries<_SalesData, String>(
                       dataSource: dataPulse,
-                      xValueMapper: (_SalesData sales, _) => sales.year,
+                      xValueMapper: (_SalesData sales, _) =>
+                          sales.date.toString(),
                       yValueMapper: (_SalesData sales, _) => sales.sales,
                       name: 'Pulse',
                       // Enable data label
@@ -447,8 +254,8 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
 }
 
 class _SalesData {
-  _SalesData(this.year, this.sales);
+  _SalesData(this.date, this.sales);
 
-  final String year;
+  final String date;
   final double sales;
 }

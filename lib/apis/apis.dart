@@ -8,13 +8,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../shared/shared.dart';
 import '../shared/toast.dart';
+import 'package:intl/intl.dart';
 
 class Apis {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   Shared sh = new Shared();
   String lang = 'tr-TR';
   String? baseUrl = 'https://v2test-api.imc-app.de/api';
-
+  String? othBaseUrl = 'https://praxiskamalmeo-test.oth.io';
   Future login(String email, String password) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/patientlogin';
@@ -32,8 +33,6 @@ class Apis {
   Future patientInfo() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/patientinfo';
-    print(finalUrl);
-
     var result = await http.get(Uri.parse(finalUrl), headers: {
       'Content-Type': 'application/text',
       'lang': lang,
@@ -42,8 +41,20 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future getMeasurementList(DateTime date, String type) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var patientId = pref.getString('patientId');
+    var dateString = date.toString().replaceAll(" ", "T").toString();
+    String finalUrl =
+        '$othBaseUrl/clinician/api/patients/$patientId/measurements?type=$type&from=$dateString&max=10000';
+    var result = await http.get(Uri.parse(finalUrl), headers: {
+      'Authorization': 'Bearer ${pref.getString('token').toString()}'
+    });
+    return getResponseFromApi(result);
+  }
+
   getResponseFromApi(Response result) {
-    var body = jsonDecode(result.body);
+    var body =  jsonDecode(result.body);
     if (body['errors'] == null || body['errors']?.length == 0) {
       try {
         return body;

@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:patient_app/shared/shared.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../apis/apis.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/sub-total.dart';
 
@@ -19,11 +21,36 @@ class MeasurementResultSaturationPage extends StatefulWidget {
 
 class _MeasurementResultSaturationPageState
     extends State<MeasurementResultSaturationPage> {
+  Apis apis = Apis();
+  Shared sh = Shared();
+  DateTime today = DateTime.now();
   @override
   void initState() {
     super.initState();
-    data = dataWeek;
-    setFillThreshold();
+    today = today.add(const Duration(days: -8));
+    onGetMeasurementList(today, 'saturation');
+  }
+
+  onGetMeasurementList(DateTime date, String bp) {
+    List<_SalesData> dataFrom = [];
+    apis.getMeasurementList(date, bp).then((value) {
+      var results = value['results'] as List;
+      results.sort((a, b) => a['timestamp'].compareTo(b['timestamp']));
+      for (var result in results) {
+        var measurementDate = DateTime.parse(result['timestamp']);
+        // ignore: unrelated_type_equality_checks
+        if ((date.compareTo(measurementDate) < 0) &&
+            (measurementDate.compareTo(DateTime.now()) < 0)) {
+          var timestamp = sh.formatDate(result['timestamp']);
+          var value = result['measurement']['value'];
+          dataFrom.add(_SalesData(timestamp, value));
+        }
+      }
+      setState(() {
+        data = dataFrom;
+        setFillThreshold();
+      });
+    });
   }
 
   setFillThreshold() {
@@ -42,84 +69,6 @@ class _MeasurementResultSaturationPageState
   List<_SalesData> yellowHigh = [];
   List<_SalesData> yellowLow = [];
   int periodType = 10; // 10 week, 20 month, 30 year
-
-  List<_SalesData> dataYear = [
-    _SalesData('07.01.2023', 96),
-    _SalesData('08.01.2023', 95),
-    _SalesData('09.01.2023', 99),
-    _SalesData('10.01.2023', 98),
-    _SalesData('11.01.2023', 99),
-    _SalesData('23.02.2023', 96),
-    _SalesData('24.02.2023', 96),
-    _SalesData('25.02.2023', 96),
-    _SalesData('26.02.2023', 95),
-    _SalesData('27.02.2023', 99),
-    _SalesData('01.03.2023', 98),
-    _SalesData('03.03.2023', 99),
-    _SalesData('05.03.2023', 94),
-    _SalesData('10.03.2023', 98),
-    _SalesData('26.03.2023', 96),
-    _SalesData('28.03.2023', 98),
-    _SalesData('31.03.2023', 99),
-    _SalesData('09.04.2023', 97),
-    _SalesData('23.04.2023', 96),
-    _SalesData('01.05.2023', 95),
-    _SalesData('08.05.2023', 98),
-    _SalesData('09.05.2023', 99),
-    _SalesData('03.06.2023', 99),
-    _SalesData('10.06.2023', 97),
-    _SalesData('12.06.2023', 98),
-    _SalesData('19.06.2023', 96),
-    _SalesData('20.06.2023', 97),
-    _SalesData('21.06.2023', 95),
-    _SalesData('22.06.2023', 99),
-    _SalesData('23.06.2023', 97),
-    _SalesData('24.06.2023', 96),
-    _SalesData('25.06.2023', 99),
-    _SalesData('26.06.2023', 98),
-    _SalesData('27.06.2023', 100),
-    _SalesData('28.06.2023', 100),
-    _SalesData('29.06.2023', 98),
-    _SalesData('02.07.2023', 99),
-  ];
-
-  List<_SalesData> dataMonth = [
-    _SalesData('26.03.2023', 96),
-    _SalesData('28.03.2023', 98),
-    _SalesData('31.03.2023', 99),
-    _SalesData('09.04.2023', 97),
-    _SalesData('09.04.2023', 99),
-    _SalesData('09.04.2023', 96),
-    _SalesData('23.04.2023', 96),
-    _SalesData('01.05.2023', 95),
-    _SalesData('08.05.2023', 98),
-    _SalesData('09.05.2023', 99),
-    _SalesData('03.06.2023', 99),
-    _SalesData('10.06.2023', 97),
-    _SalesData('12.06.2023', 98),
-    _SalesData('19.06.2023', 96),
-    _SalesData('20.06.2023', 97),
-    _SalesData('21.06.2023', 95),
-    _SalesData('22.06.2023', 99),
-    _SalesData('23.06.2023', 97),
-    _SalesData('24.06.2023', 96),
-    _SalesData('25.06.2023', 99),
-    _SalesData('26.06.2023', 98),
-    _SalesData('27.06.2023', 100),
-    _SalesData('28.06.2023', 100),
-    _SalesData('29.06.2023', 98),
-    _SalesData('02.07.2023', 99),
-  ];
-
-  List<_SalesData> dataWeek = [
-    _SalesData('24.06.2023', 96),
-    _SalesData('25.06.2023', 99),
-    _SalesData('26.06.2023', 98),
-    _SalesData('27.06.2023', 100),
-    _SalesData('28.06.2023', 100),
-    _SalesData('29.06.2023', 98),
-    _SalesData('02.07.2023', 99),
-  ];
 
   List<_SalesData> data = [];
 
@@ -143,8 +92,8 @@ class _MeasurementResultSaturationPageState
                       onPressed: () {
                         setState(() {
                           periodType = 10;
-                          data = dataWeek;
-                          setFillThreshold();
+                          var d = DateTime.now().add(const Duration(days: -8));
+                          onGetMeasurementList(d, 'saturation');
                         });
                       },
                       child: Text(
@@ -158,8 +107,8 @@ class _MeasurementResultSaturationPageState
                       onPressed: () {
                         setState(() {
                           periodType = 20;
-                          data = dataMonth;
-                          setFillThreshold();
+                          var d = DateTime.now().add(const Duration(days: -91));
+                          onGetMeasurementList(d, 'saturation');
                         });
                       },
                       child: Text(
@@ -173,8 +122,9 @@ class _MeasurementResultSaturationPageState
                       onPressed: () {
                         setState(() {
                           periodType = 30;
-                          data = dataYear;
-                          setFillThreshold();
+                          var d =
+                              DateTime.now().add(const Duration(days: -366));
+                          onGetMeasurementList(d, 'saturation');
                         });
                       },
                       child: Text(

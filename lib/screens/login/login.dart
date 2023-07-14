@@ -115,6 +115,8 @@ class _LoginPageState extends State<LoginPage> {
                         pref.setString('token', value['token']);
 
                         await apis.patientInfo().then((value) {
+                          var p = sh.getBaseName(value['links']['self']);
+                          pref.setString('patientId', '${p}');
                           pref.setString('patientTitle',
                               '${value["firstName"]} ${value["lastName"]}');
                           Navigator.of(context).pushReplacementNamed("/home");
