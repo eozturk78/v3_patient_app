@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   onPressed: () async {
                     final isValid = _formKey.currentState?.validate();
-                    if (!isValid!) return;
+                    if (!isValid! || isSendEP) return;
 
                     SharedPreferences pref =
                         await SharedPreferences.getInstance();
@@ -118,16 +118,34 @@ class _LoginPageState extends State<LoginPage> {
                         pref.setString('token', value['token']);
 
                         await apis.patientInfo().then((value) {
+                          setState(() {
+                            isSendEP = false;
+                          });
                           var p = sh.getBaseName(value['links']['self']);
                           pref.setString('patientId', '${p}');
                           pref.setString('patientTitle',
                               '${value["firstName"]} ${value["lastName"]}');
                           Navigator.of(context).pushReplacementNamed("/home");
+                        }, onError: (err) {
+                          setState(() {
+                            isSendEP = false;
+                          });
                         });
                       }
+                    }, onError: (err) {
+                      setState(() {
+                        isSendEP = false;
+                      });
                     });
                   },
-                  child: const Text("Send"),
+                  child: !isSendEP
+                      ? const Text("Send")
+                      : Transform.scale(
+                          scale: 0.5,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          )),
                 ),
                 const SizedBox(
                   height: 15,
