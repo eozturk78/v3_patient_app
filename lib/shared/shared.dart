@@ -4,16 +4,16 @@ class Shared {
   var outputFormat = DateFormat('dd/MM/yyyy HH:mm');
   emailValidator(text) {
     if (text == null || text.isEmpty) {
-      return 'Bu alan gereklidir';
+      return 'This field is required';
     } else if (!(text.contains('@')) && text.isNotEmpty) {
-      return "Geçerli bir e-posta girin.";
+      return "Enter valid email.";
     }
     return null;
   }
 
   textValidator(text) {
     if (text == null || text?.isEmpty) {
-      return 'Bu alan gereklidir';
+      return 'This field is required';
     }
     return null;
   }

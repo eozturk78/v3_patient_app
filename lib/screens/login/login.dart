@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   bool remeberMeState = false;
   bool check1 = false;
   bool check2 = false;
-
+  bool isSendEP = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -108,6 +108,9 @@ class _LoginPageState extends State<LoginPage> {
                     } else {
                       pref.clear();
                     }
+                    setState(() {
+                      isSendEP = true;
+                    });
                     await apis
                         .login(userNameController.text, passwordController.text)
                         .then((value) async {
