@@ -27,6 +27,7 @@ import 'package:patient_app/screens/measurement-result/measurement-result-weight
 import 'package:patient_app/screens/medication/medication-plan-list.dart';
 import 'package:patient_app/screens/medication/medication.dart';
 import 'package:patient_app/screens/medication/recipes.dart';
+import 'package:patient_app/screens/profile/about-me/about-me.dart';
 import 'package:patient_app/screens/profile/profile.dart';
 import 'package:patient_app/screens/questionnaire/questionnaire-1.dart';
 import 'package:patient_app/screens/questionnaire/questionnaire-2.dart';
@@ -98,10 +99,12 @@ class MyApp extends StatelessWidget {
         "/questionnaire-9": (context) => const Questionnaire9Page(),
         "/blutdruck-description": (context) => const BlutdruckDescriptionPage(),
         "/weight-description": (context) => const WeightDescriptionPage(),
-        "/saturation-description": (context) => const SaturationDescriptionPage(),
+        "/saturation-description": (context) =>
+            const SaturationDescriptionPage(),
         "/pulse-description": (context) => const PulseDescriptionPage(),
         "/temperature-description": (context) =>
             const TemperatureDescriptionPage(),
+        "/about-me": (context) => const AboutMe(),
       },
     );
   }

@@ -21,13 +21,18 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingSubpage('Mein Benutzerprofil!', context),
-      body: const Center(
+      body: Center(
           child: Padding(
         padding: EdgeInsets.all(15),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              CustomProfileMenu(Icons.heat_pump_sharp, "Über mich"),
+              GestureDetector(
+                child: CustomProfileMenu(Icons.heat_pump_sharp, "Über mich"),
+                onTap: () {
+                  Navigator.of(context).pushNamed("/about-me");
+                },
+              ),
               CustomProfileMenu(Icons.add_box_outlined, "Meine Diagnosen"),
               CustomProfileMenu(
                   Icons.medical_information, "Meine medizinischen Kontakte"),
