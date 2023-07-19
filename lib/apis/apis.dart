@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -74,11 +75,35 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future getPatientThreadMessages(String thread) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/getpatientthreadmessages?thread=${thread}';
+    var result = await http.get(Uri.parse(finalUrl), headers: {
+      'Content-Type': 'application/text',
+      'lang': lang,
+      'token': pref.getString('token').toString()
+    });
+    return getResponseFromApi(result);
+  }
+
+  Future getAttachmentDataUrl(imageUrl) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/getattachmentdataurl?url=$imageUrl';
+    var result = await http.get(Uri.parse(finalUrl),
+        headers: {'lang': lang, 'token': pref.getString('token').toString()});
+    final data = result.bodyBytes;
+    // and encode them to base64
+    final base64data = base64Encode(data);
+    Uint8List _bytesImage = Base64Decoder().convert(base64data);
+
+    return _bytesImage;
+
+    //return getResponseFromApi(result);
+  }
+
   getResponseFromApi(Response result) {
-    print(result.body);
     var body = jsonDecode(result.body);
-    if (body != null &&
-        (body['errors'] == null || body['errors']?.length == 0)) {
+    if (result.statusCode == 200) {
       try {
         return body;
       } on Exception catch (err) {

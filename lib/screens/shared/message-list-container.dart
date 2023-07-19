@@ -14,6 +14,7 @@ class CustomMessageListContainer extends StatelessWidget {
     return Container(
       height: 75.0,
       width: MediaQuery.of(context).size.width * 0.90,
+      padding: EdgeInsets.only(left: 5, right: 5),
       decoration: BoxDecoration(
         border: Border.all(
           color: Color.fromARGB(255, 233, 232, 232),
@@ -22,7 +23,7 @@ class CustomMessageListContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
@@ -30,6 +31,9 @@ class CustomMessageListContainer extends StatelessWidget {
                 iconData,
                 size: 40,
                 color: iconColor,
+              ),
+              SizedBox(
+                width: 10,
               ),
               Text(
                 headText,

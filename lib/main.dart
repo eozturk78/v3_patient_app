@@ -5,7 +5,6 @@ import 'package:patient_app/screens/comunication/calendar.dart';
 import 'package:patient_app/screens/comunication/chat.dart';
 import 'package:patient_app/screens/comunication/comunication.dart';
 import 'package:patient_app/screens/comunication/medical-plan-1.dart';
-import 'package:patient_app/screens/comunication/medical-plan-2.dart';
 import 'package:patient_app/screens/comunication/messages.dart';
 import 'package:patient_app/screens/description/blutdruck-description.dart';
 import 'package:patient_app/screens/description/pulse-description.dart';
@@ -80,7 +79,6 @@ class MyApp extends StatelessWidget {
         "/messages": (context) => const MessagesPage(),
         "/chat": (context) => const ChatPage(),
         "/medical-plan-1": (context) => const MedicalPlan1Page(),
-        "/medical-plan-2": (context) => const MedicalPlan2Page(),
         "/calendar": (context) => const CalendarPage(),
         "/medication-plan-list": (context) => const MedicationPlanListPage(),
         "/recipes": (context) => const RecipesPage(),
