@@ -50,6 +50,7 @@ class _AboutMeState extends State<AboutMe> {
       body: Padding(
         padding: EdgeInsets.all(15),
         child: SingleChildScrollView(
+          child: Center(
             child: isStarted
                 ? CircularProgressIndicator(
                     color: mainButtonColor,
@@ -74,7 +75,7 @@ class _AboutMeState extends State<AboutMe> {
                           SizedBox(
                             height: 20,
                           ),
-                          Text("About Me",
+                          Text("Über mich",
                               style: TextStyle(fontWeight: FontWeight.bold)),
                           SizedBox(
                             height: 10,
@@ -124,7 +125,7 @@ class _AboutMeState extends State<AboutMe> {
                           SizedBox(
                             height: 20,
                           ),
-                          Text("Contact Info",
+                          Text("Kontaktinformationen",
                               style: TextStyle(fontWeight: FontWeight.bold)),
                           SizedBox(
                             height: 10,
@@ -198,7 +199,7 @@ class _AboutMeState extends State<AboutMe> {
                           SizedBox(
                             height: 20,
                           ),
-                          Text("Patient Groups",
+                          Text("Patientengruppen",
                               style: TextStyle(fontWeight: FontWeight.bold)),
                           SizedBox(
                             height: 10,
@@ -230,7 +231,9 @@ class _AboutMeState extends State<AboutMe> {
                             ),
                           )
                         ],
-                      )),
+                      ),
+          ),
+        ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
       bottomNavigationBar: BottomNavigatorBar(0),
     );

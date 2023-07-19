@@ -4,9 +4,9 @@ import 'package:patient_app/colors/colors.dart';
 
 class CustomMedicationPlanBox extends StatelessWidget {
   final String nameOfMP;
-  final String dateTime;
+  String? dateTime;
   final String doctor;
-  const CustomMedicationPlanBox(this.nameOfMP, this.dateTime, this.doctor,
+  CustomMedicationPlanBox(this.nameOfMP, this.dateTime, this.doctor,
       {super.key});
 
   @override
@@ -60,7 +60,7 @@ class CustomMedicationPlanBox extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  dateTime,
+                  dateTime ?? "",
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.grey),
                 ),

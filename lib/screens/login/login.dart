@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
+import 'package:patient_app/shared/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../apis/apis.dart';
@@ -111,9 +112,11 @@ class _LoginPageState extends State<LoginPage> {
                     setState(() {
                       isSendEP = true;
                     });
+                    showToast("login clicked");
                     await apis
                         .login(userNameController.text, passwordController.text)
                         .then((value) async {
+                      print(value);
                       if (value != null) {
                         pref.setString('token', value['token']);
 
@@ -135,6 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                     }, onError: (err) {
                       setState(() {
                         isSendEP = false;
+                        showToast("error appears");
                       });
                     });
                   },

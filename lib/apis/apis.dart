@@ -15,11 +15,10 @@ class Apis {
   Shared sh = new Shared();
   String lang = 'tr-TR';
   String? baseUrl = 'https://v2test-api.imc-app.de/api';
+  String? apiPublic = 'https://v2test-api.imc-app.de';
   String? othBaseUrl = 'https://praxiskamalmeo-test.oth.io';
   Future login(String email, String password) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/patientlogin';
-    print(finalUrl);
     var params = {
       'username': email.toString(),
       'password': password.toString()
@@ -53,9 +52,33 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future getPatientMedicalPlanList() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/getpatientmedicalplan';
+    var result = await http.get(Uri.parse(finalUrl), headers: {
+      'Content-Type': 'application/text',
+      'lang': lang,
+      'token': pref.getString('token').toString()
+    });
+    return getResponseFromApi(result);
+  }
+
+  Future getPatientNotificationList() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/getpatientnotificationlist';
+    var result = await http.get(Uri.parse(finalUrl), headers: {
+      'Content-Type': 'application/text',
+      'lang': lang,
+      'token': pref.getString('token').toString()
+    });
+    return getResponseFromApi(result);
+  }
+
   getResponseFromApi(Response result) {
-    var body =  jsonDecode(result.body);
-    if (body['errors'] == null || body['errors']?.length == 0) {
+    print(result.body);
+    var body = jsonDecode(result.body);
+    if (body != null &&
+        (body['errors'] == null || body['errors']?.length == 0)) {
       try {
         return body;
       } on Exception catch (err) {
@@ -63,6 +86,7 @@ class Apis {
         throw Exception("Something went wrong");
       }
     } else {
+      print(body['message']);
       showToast(body['message']);
       throw Exception(body['message']);
     }

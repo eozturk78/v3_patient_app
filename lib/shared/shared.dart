@@ -38,10 +38,28 @@ class Shared {
   }
 
   formatDate(String date) {
-    DateTime parseDate =
-        new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse(date);
+    DateTime parseDate;
+    parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse(date);
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat('dd.MM.yy');
+    var outputDate = outputFormat.format(inputDate);
+    return outputDate;
+  }
+
+  formatDateTime(String date) {
+    DateTime parseDate;
+    parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse(date);
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('dd.MM.yy HH:mm');
+    var outputDate = outputFormat.format(inputDate);
+    return outputDate;
+  }
+
+  formatDateImc(String date) {
+    DateTime parseDate = new DateFormat("yyyy-MM-dd HH:mm:ss").parse(date);
+
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('dd.MM.yyyy');
     var outputDate = outputFormat.format(inputDate);
     return outputDate;
   }
