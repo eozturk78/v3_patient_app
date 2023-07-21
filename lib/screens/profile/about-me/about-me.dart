@@ -52,9 +52,10 @@ class _AboutMeState extends State<AboutMe> {
         child: SingleChildScrollView(
           child: Center(
             child: isStarted
-                ? CircularProgressIndicator(
+                ? Center(
+                    child: CircularProgressIndicator(
                     color: mainButtonColor,
-                  )
+                  ))
                 : aboutPatient == null
                     ? Center(child: Text("no data found"))
                     : Column(
@@ -69,6 +70,7 @@ class _AboutMeState extends State<AboutMe> {
                           Center(
                             child: Text(
                               '${aboutPatient["firstName"]} ${aboutPatient["lastName"]}',
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(fontSize: 30),
                             ),
                           ),
@@ -83,6 +85,7 @@ class _AboutMeState extends State<AboutMe> {
                           Container(
                             decoration: infoBoxDecoration,
                             padding: EdgeInsets.all(20),
+                            margin: EdgeInsets.all(10),
                             child: Column(
                               children: [
                                 Row(
@@ -115,7 +118,7 @@ class _AboutMeState extends State<AboutMe> {
                                 SizedBox(
                                   height: 20,
                                 ),
-                                Text(aboutPatient['comment']),
+                                Text(aboutPatient['comment'] ?? ""),
                                 SizedBox(
                                   height: 20,
                                 )
@@ -133,6 +136,7 @@ class _AboutMeState extends State<AboutMe> {
                           Container(
                             decoration: infoBoxDecoration,
                             padding: EdgeInsets.all(20),
+                            margin: EdgeInsets.all(10),
                             child: Column(
                               children: [
                                 Row(
@@ -144,7 +148,7 @@ class _AboutMeState extends State<AboutMe> {
                                     SizedBox(
                                       width: 15,
                                     ),
-                                    Text(aboutPatient['email'])
+                                    Text(aboutPatient['email'] ?? "")
                                   ],
                                 ),
                                 SizedBox(
@@ -159,7 +163,7 @@ class _AboutMeState extends State<AboutMe> {
                                     SizedBox(
                                       width: 15,
                                     ),
-                                    Text(aboutPatient['mobilePhone'])
+                                    Text(aboutPatient['mobilePhone'] ?? "")
                                   ],
                                 ),
                                 SizedBox(
@@ -174,7 +178,7 @@ class _AboutMeState extends State<AboutMe> {
                                     SizedBox(
                                       width: 15,
                                     ),
-                                    Text(aboutPatient['phone'])
+                                    Text(aboutPatient['phone'] ?? "")
                                   ],
                                 ),
                                 SizedBox(
@@ -207,6 +211,7 @@ class _AboutMeState extends State<AboutMe> {
                           Container(
                             decoration: infoBoxDecoration,
                             padding: EdgeInsets.all(20),
+                            margin: EdgeInsets.all(10),
                             child: Column(
                               children: [
                                 for (var item in aboutPatient['patientGroups'])

@@ -3,8 +3,30 @@ import 'package:photo_view/photo_view.dart';
 
 import '../../colors/colors.dart';
 
+leadingWithoutProfile(String title, BuildContext context) {
+  return AppBar(
+    leading: IconButton(
+      icon: Icon(Icons.arrow_back, color: Colors.black),
+      onPressed: () => Navigator.of(context).pop(),
+    ),
+    title: Text(
+      title,
+      style: TextStyle(color: Colors.black),
+    ),
+    shadowColor: null,
+    elevation: 0.0,
+    centerTitle: true,
+    automaticallyImplyLeading: false,
+    backgroundColor: Colors.white,
+  );
+}
+
 leading(String title, BuildContext context) {
   return AppBar(
+    leading: IconButton(
+      icon: Icon(Icons.arrow_back, color: Colors.black),
+      onPressed: () => Navigator.of(context).pushNamed("/redirection"),
+    ),
     title: Text(
       title,
       style: TextStyle(color: Colors.black),
@@ -100,3 +122,6 @@ ButtonStyle descriptionNotStyle = ElevatedButton.styleFrom(
   primary: descriptionNotSelectedButton,
 );
 
+TextStyle labelText = TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
+
+TextStyle selectionLabel = TextStyle(color: Colors.black, fontSize: 20);

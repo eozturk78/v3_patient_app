@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../shared/bottom-menu.dart';
 import '../shared/profile-menu.dart';
@@ -61,7 +62,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   Icons.summarize_outlined, "Nutzungsbedingungen"),
               CustomProfileMenu(Icons.summarize_outlined, "Datenschutz"),
               CustomProfileMenu(Icons.summarize_outlined, "Impressum "),
-              CustomProfileMenu(Icons.summarize_outlined, "Abmelden "),
+              GestureDetector(
+                child: CustomProfileMenu(Icons.summarize_outlined, "Abmelden "),
+                onTap: () async {
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
+                  pref.remove("token");
+                  Navigator.of(context).pushNamed("/login");
+                },
+              ),
               Text("Version 1.2.1"),
             ],
           ),

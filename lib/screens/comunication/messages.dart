@@ -22,8 +22,10 @@ class MessagesPage extends StatefulWidget {
 class _MessagesPageState extends State<MessagesPage> {
   Apis apis = Apis();
   List<MessageNotification> notificationList = [];
+  List<MessageNotification> threadList = [];
   Shared sh = Shared();
   bool isStarted = true;
+
   @override
   void initState() {
     super.initState();
@@ -39,6 +41,10 @@ class _MessagesPageState extends State<MessagesPage> {
                 notificationList
                     .sort((a, b) => b.createdAt.compareTo(a.createdAt));
                 isStarted = false;
+
+                threadList = notificationList
+                    .where((element) => element.notificationtype != 10)
+                    .toList();
               }),
             }, onError: (err) {
       setState(() {
@@ -93,6 +99,8 @@ class _MessagesPageState extends State<MessagesPage> {
                                     } else {
                                       SharedPreferences pref =
                                           await SharedPreferences.getInstance();
+                                      pref.setString("organization",
+                                          element.organization ?? "");
                                       pref.setString(
                                           "thread", element.thread ?? "");
                                       Navigator.pushNamed(context, '/chat');
@@ -130,25 +138,16 @@ class _MessagesPageState extends State<MessagesPage> {
           debugPrint('afterClose');
         },
         children: [
-          FloatingActionButton.extended(
-            onPressed: () => {},
-            icon: new Icon(Icons.image),
-            label: Text("Fotogalerie"),
-          ),
-          FloatingActionButton.extended(
-            onPressed: () => {
-              // フローティングアクションボタンを押された時の処理.
-            },
-            icon: new Icon(Icons.image),
-            label: Text("Foto aufnehmen"),
-          ),
-          FloatingActionButton.extended(
-            onPressed: () => {
-              // フローティングアクションボタンを押された時の処理.
-            },
-            icon: new Icon(Icons.image),
-            label: Text("Datei auswählen"),
-          ),
+          for (var item in threadList)
+            FloatingActionButton.extended(
+              onPressed: () async {
+                SharedPreferences pref = await SharedPreferences.getInstance();
+                pref.setString("thread", item.thread ?? "");
+                Navigator.pushNamed(context, '/chat');
+              },
+              icon: new Icon(Icons.medical_information),
+              label: Text(item.notificationTitle),
+            ),
         ],
       ),
       bottomNavigationBar: BottomNavigatorBar(1),

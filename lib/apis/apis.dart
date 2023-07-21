@@ -24,6 +24,7 @@ class Apis {
       'username': email.toString(),
       'password': password.toString()
     };
+    print(finalUrl);
     var result = await http.post(Uri.parse(finalUrl),
         body: jsonEncode(params),
         headers: {'Content-Type': 'application/text', 'lang': lang});
@@ -87,23 +88,50 @@ class Apis {
   }
 
   Future getAttachmentDataUrl(imageUrl) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/getattachmentdataurl?url=$imageUrl';
+      var result = await http.get(Uri.parse(finalUrl),
+          headers: {'lang': lang, 'token': pref.getString('token').toString()});
+      final data = result.bodyBytes;
+      // and encode them to base64
+      final base64data = base64Encode(data);
+      Uint8List _bytesImage = Base64Decoder().convert(base64data);
+      return _bytesImage;
+    } catch (err) {
+      throw Exception("can't decode");
+    }
+  }
+
+  Future sendMessage(String message, String organization) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    String finalUrl = '$baseUrl/getattachmentdataurl?url=$imageUrl';
-    var result = await http.get(Uri.parse(finalUrl),
+    String finalUrl = '$baseUrl/sendmessage';
+    var params = {'message': message.toString(), 'organization': organization};
+    var result = await http.post(Uri.parse(finalUrl),
+        body: params,
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
-    final data = result.bodyBytes;
-    // and encode them to base64
-    final base64data = base64Encode(data);
-    Uint8List _bytesImage = Base64Decoder().convert(base64data);
+    return getResponseFromApi(result);
+  }
 
-    return _bytesImage;
-
-    //return getResponseFromApi(result);
+  Future sendMessageWithAttachment(
+      String message, image, String organization) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/sendmessage';
+    var params = {
+      'message': message.toString(),
+      'image': image,
+      'organization': organization
+    };
+    var result = await http.post(Uri.parse(finalUrl),
+        body: params,
+        headers: {'lang': lang, 'token': pref.getString('token').toString()});
+    return getResponseFromApi(result);
   }
 
   getResponseFromApi(Response result) {
+    print(result.statusCode);
     var body = jsonDecode(result.body);
-    if (result.statusCode == 200) {
+    if (result.statusCode == 200 || result.statusCode == 201) {
       try {
         return body;
       } on Exception catch (err) {
@@ -111,7 +139,7 @@ class Apis {
         throw Exception("Something went wrong");
       }
     } else {
-      print(body['message']);
+      body = jsonDecode(body);
       showToast(body['message']);
       throw Exception(body['message']);
     }

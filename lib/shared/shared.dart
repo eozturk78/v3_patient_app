@@ -39,7 +39,7 @@ class Shared {
 
   formatDate(String date) {
     DateTime parseDate;
-    parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse(date);
+    parseDate = new DateFormat("yyyy-MM-ddTHH:mm:ss.SSS").parse(date);
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat('dd.MM.yy');
     var outputDate = outputFormat.format(inputDate);
@@ -47,11 +47,15 @@ class Shared {
   }
 
   formatDateTime(String date) {
-    DateTime parseDate;
-    parseDate = new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('dd.MM.yy HH:mm');
-    var outputDate = outputFormat.format(inputDate);
+    var d = DateTime.parse(date).toLocal();
+    print(d);
+    var listData = d.toString().split(" ");
+    var dateList = listData[0].split("-");
+    var time = listData[1].substring(0, 5);
+    var day = dateList[2];
+    var month = dateList[1];
+    var year = dateList[0];
+    var outputDate = '$day.$month.$year $time';
     return outputDate;
   }
 

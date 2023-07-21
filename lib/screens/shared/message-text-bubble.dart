@@ -45,23 +45,28 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
     setState(() {
       widget.startedLoadImage = true;
     });
-    apis.getAttachmentDataUrl(widget.image).then((value) {
-      setState(() {
-        imageText = value;
-      });
-      setState(() {
-        widget.startedLoadImage = false;
-      });
-    },
-        onError: (err) => setState(() {
-              widget.startedLoadImage = false;
-            }));
+    apis.getAttachmentDataUrl(widget.image).then(
+      (value) {
+        setState(
+          () {
+            imageText = value;
+            widget.startedLoadImage = false;
+          },
+        );
+      },
+      onError: (err) => setState(
+        () {
+          imageText = null;
+          widget.startedLoadImage = false;
+        },
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: widget.senderType == 10
+      crossAxisAlignment: widget.senderType == 20
           ? CrossAxisAlignment.end
           : CrossAxisAlignment.start,
       children: [
@@ -74,7 +79,7 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
               ? MediaQuery.of(context).size.width * 0.7
               : MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            color: widget.senderType == 10 ? mainItemColor : Colors.grey,
+            color: widget.senderType == 20 ? mainItemColor : Colors.grey,
             border: Border.all(
               color: Color.fromARGB(255, 233, 232, 232),
               width: 1,
@@ -99,14 +104,29 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
                       builder: (context) => onOpenImage(context, imageText!),
                     ).then((value) {});
                   },
-                  child: Image.memory(
-                    imageText!,
+                  child: SizedBox(
+                    height: 200,
+                    child: Image.memory(
+                      imageText!,
+                      errorBuilder: (context, error, stackTrace) => SizedBox(
+                        width: 0,
+                        height: 0,
+                      ),
+                    ),
                   ),
                 ),
               if (widget.startedLoadImage)
-                CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: mainButtonColor,
+                SizedBox(
+                  height: 200,
+                  child: Center(
+                    child: Transform.scale(
+                      scale: 0.5,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: mainButtonColor,
+                      ),
+                    ),
+                  ),
                 )
             ],
           ),
@@ -127,7 +147,6 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
       imageText,
       height: 200,
     );
-
     return AlertDialog(
       backgroundColor: Colors.transparent,
       insetPadding: EdgeInsets.all(0),
@@ -139,7 +158,7 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
             child: PhotoView.customChild(
               backgroundDecoration: BoxDecoration(color: Colors.transparent),
               child: image,
-              minScale: PhotoViewComputedScale.contained * 1.2,
+              minScale: PhotoViewComputedScale.contained * 1,
               initialScale: PhotoViewComputedScale.contained,
               basePosition: Alignment.center,
             ),

@@ -7,6 +7,7 @@ class MessageNotification {
   String? createdBy;
   String? attachment;
   String? thread;
+  String? organization;
 
   MessageNotification(
       {required this.notificationId,
@@ -16,7 +17,8 @@ class MessageNotification {
       required this.createdAt,
       required this.createdBy,
       this.attachment,
-      this.thread});
+      this.thread,
+      this.organization});
 
   factory MessageNotification.fromJson(Map<String, dynamic> json) {
     return MessageNotification(
@@ -28,6 +30,7 @@ class MessageNotification {
       createdBy: json['createdby'],
       attachment: json['attachment'],
       thread: json['thread'],
+      organization: json['organization'],
     );
   }
 }

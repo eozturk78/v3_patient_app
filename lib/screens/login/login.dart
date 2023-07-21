@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
+import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,6 +44,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: leadingWithoutProfile('Amnelden', context),
       body: Padding(
         padding: EdgeInsets.all(30),
         child: SingleChildScrollView(
@@ -112,11 +114,9 @@ class _LoginPageState extends State<LoginPage> {
                     setState(() {
                       isSendEP = true;
                     });
-                    showToast("login clicked");
                     await apis
                         .login(userNameController.text, passwordController.text)
                         .then((value) async {
-                      print(value);
                       if (value != null) {
                         pref.setString('token', value['token']);
 
@@ -136,9 +136,9 @@ class _LoginPageState extends State<LoginPage> {
                         });
                       }
                     }, onError: (err) {
+                      print(err);
                       setState(() {
                         isSendEP = false;
-                        showToast("error appears");
                       });
                     });
                   },
@@ -150,40 +150,6 @@ class _LoginPageState extends State<LoginPage> {
                             strokeWidth: 2,
                             color: Colors.white,
                           )),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: check1,
-                      onChanged: ((value) => setState(() {
-                            check1 = !check1;
-                          })),
-                    ),
-                    Text("I agree the terms and conditions."),
-                  ],
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Checkbox(
-                      value: check2,
-                      onChanged: ((value) => setState(() {
-                            check2 = !check2;
-                          })),
-                    ),
-                    const Expanded(
-                      child: Text(
-                        "I consent to the processing of my personal data within the scope of using the app in accordance with the privacy statement [enter the link to privacy statement]. I can revoke my consent with effect for the future at any time",
-                      ),
-                    )
-                  ],
                 ),
               ],
             ),

@@ -38,6 +38,10 @@ import 'package:patient_app/screens/questionnaire/questionnaire-7.dart';
 import 'package:patient_app/screens/questionnaire/questionnaire-8.dart';
 import 'package:patient_app/screens/questionnaire/questionnaire-9.dart';
 import 'package:patient_app/screens/quick-access/quick-access.dart';
+import 'package:patient_app/screens/redirection/redirection.dart';
+import 'package:patient_app/screens/registration/registration-1.dart';
+import 'package:patient_app/screens/registration/registration-2.dart';
+import 'package:patient_app/screens/registration/registration-3.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,6 +54,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      color: Colors.transparent,
       debugShowCheckedModeBanner: false,
       title: 'iMedCom Patient App',
       theme: ThemeData(
@@ -103,6 +108,10 @@ class MyApp extends StatelessWidget {
         "/temperature-description": (context) =>
             const TemperatureDescriptionPage(),
         "/about-me": (context) => const AboutMe(),
+        "/registration-1": (context) => const Registration1Page(),
+        "/registration-2": (context) => const Registration2Page(),
+        "/registration-3": (context) => const Registration3Page(),
+        "/redirection": (context) => const RedirectionPage(),
       },
     );
   }
@@ -124,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Timer(
       Duration(seconds: 3),
       (() {
-        Navigator.of(context).pushReplacementNamed("/login");
+        Navigator.of(context).pushReplacementNamed("/redirection");
       }),
     );
   }
