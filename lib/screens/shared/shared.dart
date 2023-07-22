@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../../colors/colors.dart';
+import '../../shared/shared.dart';
 
 leadingWithoutProfile(String title, BuildContext context) {
   return AppBar(
@@ -47,6 +48,20 @@ leading(String title, BuildContext context) {
         },
       )
     ],
+  );
+}
+
+leadingWithoutIcon(String title, BuildContext context) {
+  return AppBar(
+    title: Text(
+      title,
+      style: TextStyle(color: Colors.black),
+    ),
+    shadowColor: null,
+    elevation: 0.0,
+    centerTitle: true,
+    automaticallyImplyLeading: false,
+    backgroundColor: Colors.white,
   );
 }
 
@@ -108,20 +123,91 @@ leadingDescSubpage(String title, BuildContext context) {
   );
 }
 
-TextStyle selectedPeriod = TextStyle(
+checkPassword(String password) {
+  Shared sh = Shared();
+  return Column(
+    children: [
+      Row(
+        children: [
+          Icon(
+            password.length < 10 ? Icons.close : Icons.check,
+            color: password.length < 10
+                ? Colors.red
+                : const Color.fromARGB(255, 1, 61, 32),
+          ),
+          Flexible(
+              child: Text(
+            "Muss mindestens aus 10 Zeichen bestehen",
+            style: password.length < 10
+                ? TextStyle(color: Colors.red)
+                : TextStyle(color: const Color.fromARGB(255, 1, 61, 32)),
+          ))
+        ],
+      ),
+      Row(
+        children: [
+          Icon(
+            !sh.hasUpperCase(password) ? Icons.close : Icons.check,
+            color: !sh.hasUpperCase(password)
+                ? Colors.red
+                : const Color.fromARGB(255, 1, 61, 32),
+          ),
+          Flexible(
+              child: Text("Muss mindestens einen Großbuchstaben enthalten",
+                  style: !sh.hasUpperCase(password)
+                      ? TextStyle(color: Colors.red)
+                      : TextStyle(color: const Color.fromARGB(255, 1, 61, 32))))
+        ],
+      ),
+      Row(
+        children: [
+          Icon(
+            !sh.hasLowerCase(password) ? Icons.close : Icons.check,
+            color: !sh.hasLowerCase(password)
+                ? Colors.red
+                : const Color.fromARGB(255, 1, 61, 32),
+          ),
+          Flexible(
+              child: Text("Muss mindestens einen Kleinbuchstaben enthalten",
+                  style: !sh.hasLowerCase(password)
+                      ? TextStyle(color: Colors.red)
+                      : TextStyle(color: const Color.fromARGB(255, 1, 61, 32))))
+        ],
+      ),
+      Row(
+        children: [
+          Icon(
+            !sh.hasSpecialChars(password) ? Icons.close : Icons.check,
+            color: !sh.hasSpecialChars(password)
+                ? Colors.red
+                : const Color.fromARGB(255, 1, 61, 32),
+          ),
+          Flexible(
+              child: Text("Muss mindestens ein Symbol oder Zahl enthalten ",
+                  style: !sh.hasSpecialChars(password)
+                      ? TextStyle(color: Colors.red)
+                      : TextStyle(color: const Color.fromARGB(255, 1, 61, 32))))
+        ],
+      ),
+    ],
+  );
+}
+
+TextStyle selectedPeriod = const TextStyle(
   fontWeight: FontWeight.bold,
   color: Colors.black,
   fontSize: 20,
   decoration: TextDecoration.underline,
 );
 
-TextStyle articleTitle =
-    TextStyle(fontWeight: FontWeight.bold, color: mainItemColor, fontSize: 15);
+TextStyle articleTitle = const TextStyle(
+    fontWeight: FontWeight.bold, color: mainItemColor, fontSize: 15);
 
 ButtonStyle descriptionNotStyle = ElevatedButton.styleFrom(
   primary: descriptionNotSelectedButton,
 );
 
-TextStyle labelText = TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
+TextStyle labelText =
+    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
 
-TextStyle selectionLabel = TextStyle(color: Colors.black, fontSize: 20);
+TextStyle selectionLabel = const TextStyle(color: Colors.black, fontSize: 20);

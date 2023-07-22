@@ -128,6 +128,37 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future registerPatient(
+      String userName,
+      String firstName,
+      String lastName,
+      String birthDate,
+      String weight,
+      String height,
+      String gender,
+      String email,
+      String password,
+      String sex) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/registerPatient';
+
+    var params = {
+      'userName': userName,
+      'email': userName,
+      'password': password,
+      'firstName': firstName,
+      'lastName': lastName,
+      'birthDate': birthDate.toString().substring(0, 10),
+      'weight': weight,
+      'height': height,
+      'sex': sex
+    };
+    print(params);
+    var result = await http
+        .post(Uri.parse(finalUrl), body: params, headers: {'lang': lang}); /**/
+    return getResponseFromApi(result);
+  }
+
   getResponseFromApi(Response result) {
     print(result.statusCode);
     var body = jsonDecode(result.body);

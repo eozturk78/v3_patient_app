@@ -39,9 +39,11 @@ import 'package:patient_app/screens/questionnaire/questionnaire-8.dart';
 import 'package:patient_app/screens/questionnaire/questionnaire-9.dart';
 import 'package:patient_app/screens/quick-access/quick-access.dart';
 import 'package:patient_app/screens/redirection/redirection.dart';
+import 'package:patient_app/screens/registration/regiartion-completed.dart';
 import 'package:patient_app/screens/registration/registration-1.dart';
 import 'package:patient_app/screens/registration/registration-2.dart';
 import 'package:patient_app/screens/registration/registration-3.dart';
+import 'package:patient_app/screens/registration/registration-4.dart';
 
 void main() {
   runApp(const MyApp());
@@ -111,6 +113,9 @@ class MyApp extends StatelessWidget {
         "/registration-1": (context) => const Registration1Page(),
         "/registration-2": (context) => const Registration2Page(),
         "/registration-3": (context) => const Registration3Page(),
+        "/registration-4": (context) => const Registration4Page(),
+        "/created-account-successfully": (context) =>
+            const RegistrationCompletedPage(),
         "/redirection": (context) => const RedirectionPage(),
       },
     );

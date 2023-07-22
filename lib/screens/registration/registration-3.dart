@@ -2,11 +2,11 @@ import 'package:bottom_picker/bottom_picker.dart';
 import 'package:bottom_picker/resources/arrays.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:numberpicker/numberpicker.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/shared/toast.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 import '../../apis/apis.dart';
 import '../../shared/shared.dart';
@@ -25,8 +25,13 @@ class _Registration3PageState extends State<Registration3Page> {
   Shared sh = new Shared();
   bool isSendEP = false;
   DateTime _selectedDate = DateTime.now().add(const Duration(days: 365));
-  int _currentIntValue = 10;
-
+  String _selectedDateLabel = "Geburtsdatum auswählen";
+  String _selectedGender = "Wähle Geschlecht";
+  String _selectedHeight = "160 cm";
+  String _selectedWeight = "70 kg";
+  String _selectedSex = "";
+  int _currentIntValue = 160;
+  double _currentDoubleValue = 70;
   @override
   void initState() {
     // TODO: implement initState
@@ -69,77 +74,91 @@ class _Registration3PageState extends State<Registration3Page> {
                         height: 40,
                       ),
                       GestureDetector(
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Geburtsdatum",
-                                  style: labelText,
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  "Select date",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      color: const Color.fromARGB(
-                                          255, 85, 85, 85)),
-                                ),
-                              ]),
-                          onTap: () {
-                            showGeneralDialog(
-                                barrierLabel: "Label",
-                                barrierDismissible: true,
-                                barrierColor: Colors.black.withOpacity(0.5),
-                                transitionDuration: Duration(milliseconds: 200),
-                                context: context,
-                                pageBuilder: (context, anim1, anim2) {
-                                  return Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Container(
-                                      height: 250,
-                                      child: Scaffold(
-                                        body: ScrollDatePicker(
-                                          options: DatePickerOptions(
-                                            isLoop: false,
-                                          ),
-                                          scrollViewOptions:
-                                              DatePickerScrollViewOptions(),
-                                          selectedDate: _selectedDate,
-                                          locale: Locale('de'),
-                                          onDateTimeChanged: (DateTime value) {
-                                            setState(() {
-                                              _selectedDate = value;
-                                              print(_selectedDate);
-                                            });
-                                          },
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Geburtsdatum",
+                                style: labelText,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                _selectedDateLabel,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color:
+                                        const Color.fromARGB(255, 85, 85, 85)),
+                              ),
+                            ]),
+                        onTap: () {
+                          showGeneralDialog(
+                              barrierLabel: "Label",
+                              barrierColor: Colors.black.withOpacity(0.5),
+                              transitionDuration: Duration(milliseconds: 200),
+                              context: context,
+                              barrierDismissible: true,
+                              pageBuilder: (context, anim1, anim2) {
+                                return Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                    height: 250,
+                                    child: Scaffold(
+                                      body: ScrollDatePicker(
+                                        options: const DatePickerOptions(
+                                          isLoop: false,
                                         ),
-                                      ),
-                                      margin: EdgeInsets.only(
-                                          top: 50,
-                                          left: 10,
-                                          right: 10,
-                                          bottom: 10),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(40),
+                                        scrollViewOptions:
+                                            const DatePickerScrollViewOptions(),
+                                        selectedDate: _selectedDate,
+                                        locale: const Locale('de'),
+                                        onDateTimeChanged: (DateTime value) {
+                                          setState(() {
+                                            _selectedDate = value;
+
+                                            _selectedDateLabel = sh
+                                                .formatDateTime(
+                                                    _selectedDate.toString())
+                                                .toString()
+                                                .substring(0, 10);
+                                          });
+                                        },
                                       ),
                                     ),
-                                  );
-                                },
-                                transitionBuilder:
-                                    (context, anim1, anim2, child) {
-                                  return SlideTransition(
-                                    position: Tween(
-                                            begin: Offset(0, 1),
-                                            end: Offset(0, 0))
-                                        .animate(anim1),
-                                    child: child,
-                                  );
-                                });
-                          }),
+                                    margin: EdgeInsets.only(
+                                        top: 50,
+                                        left: 10,
+                                        right: 10,
+                                        bottom: 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(40),
+                                    ),
+                                  ),
+                                );
+                              },
+                              transitionBuilder:
+                                  (context, anim1, anim2, child) {
+                                return SlideTransition(
+                                  position: Tween(
+                                          begin: Offset(0, 1),
+                                          end: Offset(0, 0))
+                                      .animate(anim1),
+                                  child: child,
+                                );
+                              }).then((value) async {
+                            SharedPreferences pref =
+                                await SharedPreferences.getInstance();
+                            pref.setString(
+                                'birthDate', value.toString().substring(0, 10));
+                            _selectedDateLabel =
+                                value.toString().substring(0, 10);
+                            print(_selectedDateLabel);
+                          });
+                        },
+                      ),
                       SizedBox(
                         height: 10,
                       ),
@@ -160,7 +179,7 @@ class _Registration3PageState extends State<Registration3Page> {
                                 height: 5,
                               ),
                               Text(
-                                "Select gender",
+                                _selectedGender,
                                 style: TextStyle(
                                     fontSize: 18,
                                     color:
@@ -184,42 +203,50 @@ class _Registration3PageState extends State<Registration3Page> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          'Keine Angabe',
-                                          style: selectionLabel,
-                                        ),
+                                        TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                _selectedGender = 'Unbekannt';
+                                                _selectedSex = 'unknown';
+                                                Navigator.of(context).pop();
+                                              });
+                                            },
+                                            child: Text(
+                                              'Unbekannt',
+                                              style: selectionLabel,
+                                            )),
                                         Divider(
                                           color: const Color.fromARGB(
                                               255, 170, 170, 169),
                                         ),
-                                        Text(
-                                          'Mannlich',
-                                          style: selectionLabel,
-                                        ),
+                                        TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                _selectedGender = 'Weiblich';
+                                                _selectedSex = 'female';
+                                                Navigator.of(context).pop();
+                                              });
+                                            },
+                                            child: Text(
+                                              'Weiblich',
+                                              style: selectionLabel,
+                                            )),
                                         Divider(
                                           color: const Color.fromARGB(
                                               255, 170, 170, 169),
                                         ),
-                                        Text(
-                                          'Weiblich',
-                                          style: selectionLabel,
-                                        ),
-                                        Divider(
-                                          color: const Color.fromARGB(
-                                              255, 170, 170, 169),
-                                        ),
-                                        Text(
-                                          'Divers',
-                                          style: selectionLabel,
-                                        ),
-                                        Divider(
-                                          color: const Color.fromARGB(
-                                              255, 170, 170, 169),
-                                        ),
-                                        Text(
-                                          'Unbekannt',
-                                          style: selectionLabel,
-                                        ),
+                                        TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                _selectedGender = 'Männlich';
+                                                _selectedSex = 'male';
+                                                Navigator.of(context).pop();
+                                              });
+                                            },
+                                            child: Text(
+                                              'Männlich',
+                                              style: selectionLabel,
+                                            )),
                                       ],
                                     )),
                                     margin: EdgeInsets.only(
@@ -266,7 +293,7 @@ class _Registration3PageState extends State<Registration3Page> {
                                 height: 5,
                               ),
                               Text(
-                                "Select gender",
+                                _selectedHeight,
                                 style: TextStyle(
                                     fontSize: 18,
                                     color:
@@ -274,50 +301,65 @@ class _Registration3PageState extends State<Registration3Page> {
                               ),
                             ]),
                         onTap: () {
-                          showGeneralDialog(
-                              barrierLabel: "Label",
+                          showModalBottomSheet<int>(
                               context: context,
-                              barrierDismissible: true,
-                              pageBuilder: (context, anim1, anim2) {
-                                return Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Container(
-                                    height: 300,
-                                    child: Scaffold(
-                                      body: NumberPicker(
-                                        value: _currentIntValue,
-                                        minValue: 0,
-                                        maxValue: 100,
-                                        step: 1,
-                                        haptics: true,
-                                        onChanged: (value) => setState(() {
-                                          _currentIntValue = value;
-                                          print(value);
-                                        }),
-                                      ),
-                                    ),
-                                    margin: EdgeInsets.only(
+                              builder: (BuildContext context) {
+                                return StatefulBuilder(builder:
+                                    (BuildContext context,
+                                        StateSetter setModalState) {
+                                  return Container(
+                                    height: 200,
+                                    margin: const EdgeInsets.only(
                                         top: 50,
                                         left: 10,
                                         right: 10,
                                         bottom: 10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(40),
+                                    decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20.0),
+                                            topRight: Radius.circular(20.0))),
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              NumberPicker(
+                                                value: _currentIntValue,
+                                                minValue: 20,
+                                                maxValue: 230,
+                                                onChanged: (value) {
+                                                  setModalState(() {
+                                                    _currentIntValue = value;
+                                                  });
+                                                  setState(() {
+                                                    _selectedHeight =
+                                                        value.toString() +
+                                                            " cm";
+                                                  });
+                                                },
+                                              ),
+                                              Text("cm"),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                              transitionBuilder:
-                                  (context, anim1, anim2, child) {
-                                return SlideTransition(
-                                  position: Tween(
-                                          begin: Offset(0, 1),
-                                          end: Offset(0, 0))
-                                      .animate(anim1),
-                                  child: child,
-                                );
-                              });
+                                  );
+                                });
+                              }).then(
+                            (value) {
+                              if (value != null) {
+                                setState(() => _currentIntValue = value);
+                              }
+                            },
+                          );
                         },
                       ),
                       SizedBox(
@@ -340,14 +382,74 @@ class _Registration3PageState extends State<Registration3Page> {
                                 height: 5,
                               ),
                               Text(
-                                "Select Normalgewicht",
+                                _selectedWeight,
                                 style: TextStyle(
                                     fontSize: 18,
                                     color:
                                         const Color.fromARGB(255, 85, 85, 85)),
                               ),
                             ]),
-                        onTap: () {},
+                        onTap: () {
+                          showModalBottomSheet<double>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return StatefulBuilder(builder:
+                                    (BuildContext context,
+                                        StateSetter setModalState) {
+                                  return Container(
+                                    height: 200,
+                                    margin: const EdgeInsets.only(
+                                        top: 50,
+                                        left: 10,
+                                        right: 10,
+                                        bottom: 10),
+                                    decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20.0),
+                                            topRight: Radius.circular(20.0))),
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              DecimalNumberPicker(
+                                                value: _currentDoubleValue,
+                                                minValue: 20,
+                                                maxValue: 230,
+                                                decimalPlaces: 2,
+                                                onChanged: (value) {
+                                                  setModalState(() {
+                                                    _currentDoubleValue = value;
+                                                  });
+                                                  setState(() {
+                                                    _selectedWeight =
+                                                        value.toString() +
+                                                            " kg";
+                                                  });
+                                                },
+                                              ),
+                                              Text("KG"),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                });
+                              }).then(
+                            (value) {
+                              if (value != null) {
+                                setState(() => _currentDoubleValue = value);
+                              }
+                            },
+                          );
+                        },
                       ),
                       SizedBox(
                         height: 10,
@@ -362,9 +464,24 @@ class _Registration3PageState extends State<Registration3Page> {
                           primary: mainButtonColor,
                         ),
                         onPressed: () async {
+                          if (_selectedDate == 'Geburtsdatum auswählen' ||
+                              _selectedGender == "Wähle Geschlecht") return;
+                          SharedPreferences pref =
+                              await SharedPreferences.getInstance();
+                          pref.setString("birthDate", _selectedDate.toString());
+                          pref.setString("sex", _selectedSex.toString());
+                          pref.setString(
+                              "height",
+                              _selectedHeight
+                                  .toString()
+                                  .substring(0, _selectedHeight.indexOf(" ")));
+                          pref.setString(
+                              "weight",
+                              _selectedWeight
+                                  .toString()
+                                  .substring(0, _selectedWeight.indexOf(" ")));
                           // final isValid = _formKey.currentState?.validate();
-                          //if (!isValid! || isSendEP) return;
-                          Navigator.of(context).pushNamed('/registration-3');
+                          Navigator.of(context).pushNamed('/registration-4');
                         },
                         child: Text("Weiter"),
                       )

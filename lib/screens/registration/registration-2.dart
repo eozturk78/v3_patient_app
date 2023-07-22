@@ -57,7 +57,8 @@ class _Registration2PageState extends State<Registration2Page> {
                         height: 10,
                       ),
                       Text(
-                          'Lassen Sie uns iMedCom individuell an Sie anpassen.'),
+                          'Lassen Sie uns iMedCom individuell an Sie anpassen.',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                       SizedBox(
                         height: 60,
                       ),
@@ -95,7 +96,11 @@ class _Registration2PageState extends State<Registration2Page> {
                         validator: (text) => sh.textValidator(text),
                       ),
                       SizedBox(
-                        height: 40,
+                        height: 10,
+                      ),
+                      Divider(color: const Color.fromARGB(255, 134, 134, 134)),
+                      SizedBox(
+                        height: 10,
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -103,8 +108,12 @@ class _Registration2PageState extends State<Registration2Page> {
                           primary: mainButtonColor,
                         ),
                         onPressed: () async {
-                          // final isValid = _formKey.currentState?.validate();
-                          // if (!isValid! || isSendEP) return;
+                          final isValid = _formKey.currentState?.validate();
+                          if (!isValid! || isSendEP) return;
+                          SharedPreferences pref =
+                              await SharedPreferences.getInstance();
+                          pref.setString('firstName', firstNameController.text);
+                          pref.setString('lastName', lastNameController.text);
                           Navigator.of(context).pushNamed('/registration-3');
                         },
                         child: Text("Weiter"),

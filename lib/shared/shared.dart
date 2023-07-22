@@ -18,6 +18,16 @@ class Shared {
     return null;
   }
 
+  textRepeatPassword(pass1, pass2) {
+    if (pass2 == null || pass2?.isEmpty) {
+      return 'This field is required';
+    }
+    if (pass1 != pass2) {
+      return 'Passwords dont match';
+    }
+    return null;
+  }
+
   numberFormatter(double? number) {
     if (number == null) return "0,0000";
     var formatter = NumberFormat('#,###.0000');
@@ -48,7 +58,6 @@ class Shared {
 
   formatDateTime(String date) {
     var d = DateTime.parse(date).toLocal();
-    print(d);
     var listData = d.toString().split(" ");
     var dateList = listData[0].split("-");
     var time = listData[1].substring(0, 5);
@@ -66,5 +75,39 @@ class Shared {
     var outputFormat = DateFormat('dd.MM.yyyy');
     var outputDate = outputFormat.format(inputDate);
     return outputDate;
+  }
+
+  bool hasUpperCase(String string) {
+    if (string == null) {
+      return false;
+    }
+    if (string.isEmpty) {
+      return false;
+    }
+
+    for (var i = 0; i < string.length; i++) {
+      if (!hasSpecialChars(string[i]) && string[i].toUpperCase() == string[i])
+        return true;
+    }
+    return false;
+  }
+
+  bool hasLowerCase(String string) {
+    if (string == null) {
+      return false;
+    }
+    if (string.isEmpty) {
+      return false;
+    }
+
+    for (var i = 0; i < string.length; i++) {
+      if (!hasSpecialChars(string[i]) && string[i].toLowerCase() == string[i])
+        return true;
+    }
+    return false;
+  }
+
+  bool hasSpecialChars(String string) {
+    return string.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>_-]'));
   }
 }

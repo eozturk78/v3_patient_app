@@ -44,7 +44,21 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingWithoutProfile('Amnelden', context),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pushNamed('/redirection'),
+        ),
+        title: Text(
+          'Amnelden',
+          style: TextStyle(color: Colors.black),
+        ),
+        shadowColor: null,
+        elevation: 0.0,
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+      ),
       body: Padding(
         padding: EdgeInsets.all(30),
         child: SingleChildScrollView(

@@ -38,7 +38,7 @@ class _Registration1PageState extends State<Registration1Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leading('Registration 1!', context),
+      appBar: leadingWithoutProfile('Registration 1!', context),
       body: Padding(
         padding: EdgeInsets.all(30),
         child: Center(
