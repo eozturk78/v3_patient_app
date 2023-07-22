@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
@@ -140,8 +142,12 @@ class _LoginPageState extends State<LoginPage> {
                           });
                           var p = sh.getBaseName(value['links']['self']);
                           pref.setString('patientId', '${p}');
+                          var patientGroups = value['patientGroups'];
                           pref.setString('patientTitle',
                               '${value["firstName"]} ${value["lastName"]}');
+                          print(patientGroups);
+                          pref.setString(
+                              "patientGroups", jsonEncode(patientGroups));
                           Navigator.of(context).pushReplacementNamed("/home");
                         }, onError: (err) {
                           setState(() {

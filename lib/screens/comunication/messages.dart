@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:patient_app/model/patient-group.dart';
 import 'package:patient_app/screens/shared/message-list-container.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,13 +27,18 @@ class _MessagesPageState extends State<MessagesPage> {
   List<MessageNotification> threadList = [];
   Shared sh = Shared();
   bool isStarted = true;
-
+  List<PatientGroup> patientGroups = [];
   @override
   void initState() {
     super.initState();
     setState(() {
       isStarted = true;
     });
+    getNotificationList();
+  }
+
+  getNotificationList() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     apis.getPatientNotificationList().then(
         (resp) => {
               setState(() {
@@ -45,6 +52,10 @@ class _MessagesPageState extends State<MessagesPage> {
                 threadList = notificationList
                     .where((element) => element.notificationtype != 10)
                     .toList();
+                patientGroups =
+                    (jsonDecode(pref.getString('patientGroups')!) as List)
+                        .map((e) => PatientGroup.fromJson(e))
+                        .toList();
               }),
             }, onError: (err) {
       setState(() {
@@ -138,15 +149,25 @@ class _MessagesPageState extends State<MessagesPage> {
           debugPrint('afterClose');
         },
         children: [
-          for (var item in threadList)
+          for (var item in patientGroups)
             FloatingActionButton.extended(
               onPressed: () async {
                 SharedPreferences pref = await SharedPreferences.getInstance();
-                pref.setString("thread", item.thread ?? "");
+                pref.remove('thread');
+                print(item.links.organization);
+                var thread = threadList
+                    .where((element) =>
+                        element.organization ==
+                        sh.getBaseName(item.links.organization))
+                    .firstOrNull;
+                print(thread);
+                if (thread != null)
+                  pref.setString('thread', thread.thread.toString());
+
                 Navigator.pushNamed(context, '/chat');
               },
               icon: new Icon(Icons.medical_information),
-              label: Text(item.notificationTitle),
+              label: Text(item.name),
             ),
         ],
       ),
