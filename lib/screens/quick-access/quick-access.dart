@@ -38,22 +38,10 @@ class _QuickAccessPageState extends State<QuickAccessPage> {
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
         key: key,
-        // duration: const Duration(seconds: 1),
         distance: 60.0,
         type: ExpandableFabType.up,
-        // fanAngle: 70,
         child: const Icon(Icons.add),
-        // foregroundColor: Colors.amber,
-        // backgroundColor: Colors.green,
-        // closeButtonStyle: const ExpandableFabCloseButtonStyle(
-        //   child: Icon(Icons.abc),
-        //   foregroundColor: Colors.deepOrangeAccent,
-        //   backgroundColor: Colors.lightGreen,
-        // ),
-        // expandedFabShape: const CircleBorder(),
-        // collapsedFabShape: const CircleBorder(),
         overlayStyle: ExpandableFabOverlayStyle(
-          // color: Colors.black.withOpacity(0.5),
           blur: 3,
         ),
         onOpen: () {

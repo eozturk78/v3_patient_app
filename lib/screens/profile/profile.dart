@@ -63,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
               CustomProfileMenu(Icons.summarize_outlined, "Datenschutz"),
               CustomProfileMenu(Icons.summarize_outlined, "Impressum "),
               GestureDetector(
-                child: CustomProfileMenu(Icons.summarize_outlined, "Abmelden "),
+                child: CustomProfileMenu(Icons.summarize_outlined, "Abmelden"),
                 onTap: () async {
                   SharedPreferences pref =
                       await SharedPreferences.getInstance();

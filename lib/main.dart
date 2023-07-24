@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:patient_app/screens/agreements/agreements.dart';
 import 'package:patient_app/screens/comunication/calendar.dart';
 import 'package:patient_app/screens/comunication/chat.dart';
 import 'package:patient_app/screens/comunication/comunication.dart';
@@ -44,6 +45,7 @@ import 'package:patient_app/screens/registration/registration-1.dart';
 import 'package:patient_app/screens/registration/registration-2.dart';
 import 'package:patient_app/screens/registration/registration-3.dart';
 import 'package:patient_app/screens/registration/registration-4.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -116,6 +118,7 @@ class MyApp extends StatelessWidget {
         "/registration-4": (context) => const Registration4Page(),
         "/created-account-successfully": (context) =>
             const RegistrationCompletedPage(),
+        "/agreements": (context) => const AgreementsPage(),
         "/redirection": (context) => const RedirectionPage(),
       },
     );
@@ -135,10 +138,19 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    Timer(
+
+    checkRedirection();
+  }
+
+  checkRedirection() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var isAgreementRead = Timer(
       Duration(seconds: 3),
       (() {
-        Navigator.of(context).pushReplacementNamed("/redirection");
+        if (pref.getString('isAgreementRed') == 'true')
+          Navigator.of(context).pushReplacementNamed("/login");
+        else
+          Navigator.of(context).pushReplacementNamed("/agreements");
       }),
     );
   }

@@ -24,7 +24,6 @@ class Apis {
       'username': email.toString(),
       'password': password.toString()
     };
-    print(finalUrl);
     var result = await http.post(Uri.parse(finalUrl),
         body: jsonEncode(params),
         headers: {'Content-Type': 'application/text', 'lang': lang});
@@ -50,6 +49,17 @@ class Apis {
         '$othBaseUrl/clinician/api/patients/$patientId/measurements?type=$type&from=$dateString&max=10000';
     var result = await http.get(Uri.parse(finalUrl), headers: {
       'Authorization': 'Bearer ${pref.getString('token').toString()}'
+    });
+    return getResponseFromApi(result);
+  }
+
+  Future getPatientMeasurement() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/getpatientallmeasurement';
+    var result = await http.get(Uri.parse(finalUrl), headers: {
+      'Content-Type': 'application/text',
+      'lang': lang,
+      'token': pref.getString('token').toString()
     });
     return getResponseFromApi(result);
   }
@@ -99,6 +109,22 @@ class Apis {
       Uint8List _bytesImage = Base64Decoder().convert(base64data);
       return _bytesImage;
     } catch (err) {
+      throw Exception("can't decode");
+    }
+  }
+
+  Future getPatientFolders() async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/getpatientfolders';
+      var result = await http.get(Uri.parse(finalUrl), headers: {
+        'Content-Type': 'application/text',
+        'lang': lang,
+        'token': pref.getString('token').toString()
+      });
+      return getResponseFromApi(result);
+    } catch (err) {
+      print(err);
       throw Exception("can't decode");
     }
   }
@@ -160,7 +186,6 @@ class Apis {
   }
 
   getResponseFromApi(Response result) {
-    print(result.statusCode);
     var body = jsonDecode(result.body);
     if (result.statusCode == 200 || result.statusCode == 201) {
       try {

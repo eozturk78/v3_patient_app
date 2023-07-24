@@ -5,7 +5,9 @@ import 'package:patient_app/colors/colors.dart';
 class CustomDocumentBox extends StatelessWidget {
   final IconData? iconData;
   final String headText;
-  const CustomDocumentBox(this.iconData, this.headText, {super.key});
+  final int fileCount;
+  const CustomDocumentBox(this.iconData, this.headText, this.fileCount,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class CustomDocumentBox extends StatelessWidget {
           ),
           Spacer(),
           Text(
-            "0",
+            fileCount.toString(),
             style: TextStyle(fontSize: 18),
           )
         ],

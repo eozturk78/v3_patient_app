@@ -47,10 +47,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pushNamed('/redirection'),
-        ),
         title: Text(
           'Amnelden',
           style: TextStyle(color: Colors.black),

@@ -158,7 +158,6 @@ class _ChatPageState extends State<ChatPage> {
                       builder: (context) => onChoosePhotoOption(context),
                     ).then((resp) {
                       selectedFile = null;
-                      print(resp);
                       listMessages.add(Message(
                           image: resp['links'] != null &&
                                   resp['links']['attachments']?.length > 0
