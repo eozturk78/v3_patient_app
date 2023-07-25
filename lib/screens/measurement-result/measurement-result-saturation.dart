@@ -185,7 +185,7 @@ class _MeasurementResultSaturationPageState
                 onPressed: () {
                   Navigator.of(context).pushNamed("/questionnaire-5");
                 },
-                child: const Row(
+                child:  Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -194,7 +194,7 @@ class _MeasurementResultSaturationPageState
                   ],
                 ),
               ),
-              const Row(
+               Row(
                 children: [
                   CustomSubTotal(null, "Gestern", "96 %", null, null),
                   Spacer(),

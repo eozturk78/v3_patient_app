@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:patient_app/model/patient-group.dart';
@@ -159,7 +159,7 @@ class _MessagesPageState extends State<MessagesPage> {
                     .where((element) =>
                         element.organization ==
                         sh.getBaseName(item.links.organization))
-                    .firstOrNull;
+                    ?.first;
                 print(thread);
                 if (thread != null)
                   pref.setString('thread', thread.thread.toString());

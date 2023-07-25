@@ -286,7 +286,7 @@ class _ChatPageState extends State<ChatPage> {
                         decoration: const BoxDecoration(
                           color: Color.fromARGB(183, 255, 255, 255),
                         ),
-                        child: const Column(
+                        child:  Column(
                           children: [
                             Icon(Icons.image),
                             Text("Take From Galery")

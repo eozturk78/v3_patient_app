@@ -1,11 +1,14 @@
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:local_auth/local_auth.dart';
 
 import '../../apis/apis.dart';
 import '../../shared/shared.dart';
@@ -26,11 +29,24 @@ class _LoginPageState extends State<LoginPage> {
   bool check1 = false;
   bool check2 = false;
   bool isSendEP = false;
+
+  final LocalAuthentication auth = LocalAuthentication();
+  _SupportState _supportState = _SupportState.unknown;
+  bool? _canCheckBiometrics;
+  List<BiometricType>? _availableBiometrics;
+  String _authorized = 'Not Authorized';
+  bool _isAuthenticating = false;
+
   @override
   void initState() {
     // TODO: implement initState
     checkRemeberMe();
     super.initState();
+    auth.isDeviceSupported().then(
+          (bool isSupported) => setState(() => _supportState = isSupported
+          ? _SupportState.supported
+          : _SupportState.unsupported),
+    );
   }
 
   checkRemeberMe() async {
@@ -43,12 +59,157 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {});
   }
 
+  Future<bool> authenticateIsAvailable() async {
+    try{
+    final isAvailable = await auth.canCheckBiometrics;
+    final isDeviceSupported = await auth.isDeviceSupported();
+    return isAvailable && isDeviceSupported;
+    } on PlatformException catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<void> _checkBiometrics() async {
+    late bool canCheckBiometrics;
+    try {
+      canCheckBiometrics = await auth.canCheckBiometrics;
+    } on PlatformException catch (e) {
+      canCheckBiometrics = false;
+      print(e);
+    }
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _canCheckBiometrics = canCheckBiometrics;
+    });
+  }
+
+  Future<void> _getAvailableBiometrics() async {
+    late List<BiometricType> availableBiometrics;
+    try {
+      availableBiometrics = await auth.getAvailableBiometrics();
+    } on PlatformException catch (e) {
+      availableBiometrics = <BiometricType>[];
+      print(e);
+    }
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _availableBiometrics = availableBiometrics;
+    });
+  }
+
+  Future<void> _authenticate() async {
+    bool authenticated = false;
+    try {
+      setState(() {
+        _isAuthenticating = true;
+        _authorized = 'Authenticating';
+      });
+      authenticated = await auth.authenticate(
+        localizedReason: 'Let OS determine authentication method',
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+        ),
+      );
+      setState(() {
+        _isAuthenticating = false;
+      });
+    } on PlatformException catch (e) {
+      print(e);
+      setState(() {
+        _isAuthenticating = false;
+        _authorized = 'Error - ${e.message}';
+      });
+      return;
+    }
+    if (!mounted) {
+      return;
+    }
+
+    setState(
+            () => _authorized = authenticated ? 'Authorized' : 'Not Authorized');
+
+    setState(() async{
+      if(authenticated){
+        SharedPreferences pref =
+            await SharedPreferences.getInstance();
+        userNameController.text =  pref.getString("userName")!;
+        passwordController.text = pref.getString("password")!;
+      }
+    });
+
+  }
+
+  Future<void> _authenticateWithBiometrics() async {
+    bool authenticated = false;
+    if (await authenticateIsAvailable()) {
+      try {
+        setState(() {
+          _isAuthenticating = true;
+          _authorized = 'Authenticating';
+        });
+        authenticated = await auth.authenticate(
+          localizedReason:
+          'Scan your fingerprint (or face or whatever) to authenticate',
+          options: const AuthenticationOptions(
+            stickyAuth: true,
+            biometricOnly: true,
+          ),
+        );
+        setState(() {
+          _isAuthenticating = false;
+          _authorized = 'Authenticating';
+        });
+      } on PlatformException catch (e) {
+        print(e);
+        setState(() {
+          _isAuthenticating = false;
+          _authorized = 'Error - ${e.message}';
+        });
+        return;
+      }
+      if (!mounted) {
+        return;
+      }
+
+      final String message = authenticated ? 'Authorized' : 'Not Authorized';
+      setState (() async{
+        _authorized = message;
+        if(authenticated){
+          SharedPreferences pref =
+              await SharedPreferences.getInstance();
+          userNameController.text =  pref.getString("userName")!;
+          passwordController.text = pref.getString("password")!;
+        }
+      });
+    }
+    else
+      {
+        setState(() {
+          _authorized = "Biometrics authentication is not available!";
+        });
+      }
+  }
+
+  Future<void> _cancelAuthentication() async {
+    await auth.stopAuthentication();
+    setState(() => _isAuthenticating = false);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       appBar: AppBar(
         title: Text(
-          'Amnelden',
+          'Anmelden',
           style: TextStyle(color: Colors.black),
         ),
         shadowColor: null,
@@ -57,15 +218,17 @@ class _LoginPageState extends State<LoginPage> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
       ),
-      body: Padding(
-        padding: EdgeInsets.all(30),
+      body:
+      Column(children: [
+      Padding(
+        padding: EdgeInsets.all(20),
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
             child: Column(
               children: [
                 const SizedBox(
-                  height: 70,
+                  height: 5,
                 ),
                 Image.asset(
                   "assets/images/logo-imedcom.png",
@@ -73,7 +236,7 @@ class _LoginPageState extends State<LoginPage> {
                   height: 100,
                 ),
                 const SizedBox(
-                  height: 70,
+                  height: 5,
                 ),
                 TextFormField(
                   controller: userNameController,
@@ -103,11 +266,11 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 5,
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(40),
+                    minimumSize: const Size.fromHeight(30),
                     primary: mainButtonColor,
                   ),
                   onPressed: () async {
@@ -172,6 +335,89 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
+    //SharedPreferences glopref =  SharedPreferences.getInstance()
+    ListView(
+        padding: const EdgeInsets.only(top: 10),
+        shrinkWrap: true,
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              if (_supportState == _SupportState.unknown)
+                const CircularProgressIndicator()
+              else if (_supportState == _SupportState.supported)
+                const Text('This device is supported')
+              else
+                const Text('This device is not supported'),
+              /*const Divider(height: 5),
+              Text('Can check biometrics: $_canCheckBiometrics\n'),
+              ElevatedButton(
+                onPressed: _checkBiometrics,
+                child: const Text('Check biometrics'),
+              ),
+              const Divider(height: 5),
+
+               */
+              Text('Available biometrics: $_availableBiometrics\n'),
+              ElevatedButton(
+                onPressed: _getAvailableBiometrics,
+                child: const Text('Get available biometrics'),
+              ),
+              const Divider(height: 5),
+              Text('Current State: $_authorized\n'),
+              if (_isAuthenticating)
+                ElevatedButton(
+                  onPressed: _cancelAuthentication,
+                  // TODO(goderbauer): Make this const when this package requires Flutter 3.8 or later.
+                  // ignore: prefer_const_constructors
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const <Widget>[
+                      Text('Cancel Authentication'),
+                      Icon(Icons.cancel),
+                    ],
+                  ),
+                )
+              else
+                Column(
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: _authenticate,
+                      // TODO(goderbauer): Make this const when this package requires Flutter 3.8 or later.
+                      // ignore: prefer_const_constructors
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const <Widget>[
+                          Text('Authenticate'),
+                          Icon(Icons.perm_device_information),
+                        ],
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: _authenticateWithBiometrics,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text(_isAuthenticating
+                              ? 'Cancel'
+                              : 'Authenticate: biometrics only'),
+                          const Icon(Icons.fingerprint),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
+        ],
+      ),
+      ]),
     );
   }
+}
+
+enum _SupportState {
+  unknown,
+  supported,
+  unsupported,
 }

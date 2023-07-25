@@ -205,7 +205,7 @@ class _MeasurementResultTemperaturePageState
                 onPressed: () {
                   Navigator.of(context).pushNamed("/questionnaire-4");
                 },
-                child: const Row(
+                child:  Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -214,7 +214,7 @@ class _MeasurementResultTemperaturePageState
                   ],
                 ),
               ),
-              const Row(
+               Row(
                 children: [
                   CustomSubTotal(null, "Gestern", "36,6 C°", null, null),
                   Spacer(),

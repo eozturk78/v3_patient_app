@@ -206,7 +206,7 @@ class _MeasurementResultWeightPageState
                 onPressed: () {
                   Navigator.of(context).pushNamed("/questionnaire-1");
                 },
-                child: const Row(
+                child:  Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -215,7 +215,7 @@ class _MeasurementResultWeightPageState
                   ],
                 ),
               ),
-              const Row(
+               Row(
                 children: [
                   CustomSubTotal(null, "Gestern", "103.2 KG", null, null),
                   Spacer(),
