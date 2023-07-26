@@ -4,7 +4,7 @@ class MedicalPlan {
   final String createdAt;
   DateTime? sendDate;
   final int rowCount;
-  final String updatedBy;
+  String? updatedBy;
 
   MedicalPlan(
       {required this.treatmentId,

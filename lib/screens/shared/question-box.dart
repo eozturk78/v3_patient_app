@@ -2,11 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
 
-class CustomDocumentBox extends StatelessWidget {
-  final IconData? iconData;
+class QuestionBox extends StatelessWidget {
   final String headText;
   int? fileCount;
-  CustomDocumentBox(this.iconData, this.headText, this.fileCount, {super.key});
+  QuestionBox(this.headText, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +23,6 @@ class CustomDocumentBox extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          if (this.iconData != null)
-            Icon(
-              iconData,
-              size: 40,
-              color: iconColor,
-            ),
           SizedBox(
             width: 10,
           ),

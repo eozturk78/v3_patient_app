@@ -75,7 +75,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                     element.createdAt != null
                                         ? sh.formatDateImc(element.createdAt)
                                         : "",
-                                    element.updatedBy))
+                                    element.updatedBy ?? ""))
                         ],
                       ),
           ),
