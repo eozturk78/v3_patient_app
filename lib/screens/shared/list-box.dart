@@ -48,11 +48,12 @@ class CustomListComponent extends StatelessWidget {
               SizedBox(
                 height: 5,
               ),
-              Text(
-                subText!,
-                style: TextStyle(
-                    color: menuTextColor, fontWeight: FontWeight.bold),
-              ),
+              if (subText != null)
+                Text(
+                  subText!,
+                  style: TextStyle(
+                      color: menuTextColor, fontWeight: FontWeight.bold),
+                ),
               SizedBox(
                 height: 5,
               ),

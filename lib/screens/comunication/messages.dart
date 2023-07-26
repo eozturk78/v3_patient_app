@@ -39,6 +39,9 @@ class _MessagesPageState extends State<MessagesPage> {
 
   getNotificationList() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+    patientGroups = (jsonDecode(pref.getString('patientGroups')!) as List)
+        .map((e) => PatientGroup.fromJson(e))
+        .toList();
     apis.getPatientNotificationList().then(
         (resp) => {
               setState(() {
@@ -52,10 +55,6 @@ class _MessagesPageState extends State<MessagesPage> {
                 threadList = notificationList
                     .where((element) => element.notificationtype != 10)
                     .toList();
-                patientGroups =
-                    (jsonDecode(pref.getString('patientGroups')!) as List)
-                        .map((e) => PatientGroup.fromJson(e))
-                        .toList();
               }),
             }, onError: (err) {
       setState(() {
@@ -154,12 +153,19 @@ class _MessagesPageState extends State<MessagesPage> {
               onPressed: () async {
                 SharedPreferences pref = await SharedPreferences.getInstance();
                 pref.remove('thread');
-                print(item.links.organization);
                 var thread = threadList
-                    .where((element) =>
-                        element.organization ==
-                        sh.getBaseName(item.links.organization))
-                    ?.first;
+                            .where((element) =>
+                                element.organization ==
+                                sh.getBaseName(item.links.organization))
+                            .length >
+                        0
+                    ? threadList
+                        .where((element) =>
+                            element.organization ==
+                            sh.getBaseName(item.links.organization))
+                        .first
+                    : null;
+
                 print(thread);
                 if (thread != null)
                   pref.setString('thread', thread.thread.toString());

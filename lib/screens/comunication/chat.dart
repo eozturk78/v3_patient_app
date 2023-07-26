@@ -185,9 +185,14 @@ class _ChatPageState extends State<ChatPage> {
                     apis
                         .sendMessage(txtMessageController.text, organization)
                         .then((resp) {
+                      print(resp);
                       txtMessageController.text = "";
                       setState(
                         () {
+                          var index = 0;
+                          if (listMessages.isNotEmpty)
+                            index =
+                                listMessages[listMessages.length - 1].index - 1;
                           listMessages.add(Message(
                               image: resp['links'] != null &&
                                       resp['links']['attachments']?.length > 0
@@ -197,14 +202,9 @@ class _ChatPageState extends State<ChatPage> {
                               senderType: 20,
                               senderTitle: resp['sender']['name'],
                               dateTime: sh.formatDateTime(resp['timestamp']),
-                              index:
-                                  listMessages[listMessages.length - 1].index -
-                                      1));
+                              index: index));
                           listMessages
                               .sort((a, b) => b.index.compareTo(a.index));
-                          listMessages.forEach((element) {
-                            print(element.index);
-                          });
 
                           loaderSendMessage = false;
                           FocusScope.of(context).unfocus();
@@ -286,7 +286,7 @@ class _ChatPageState extends State<ChatPage> {
                         decoration: const BoxDecoration(
                           color: Color.fromARGB(183, 255, 255, 255),
                         ),
-                        child:  Column(
+                        child: Column(
                           children: [
                             Icon(Icons.image),
                             Text("Take From Galery")

@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -129,6 +131,22 @@ class Apis {
     }
   }
 
+  Future getPatientFiles(int folderId) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/getpatientfiles?folderid=$folderId';
+      var result = await http.get(Uri.parse(finalUrl), headers: {
+        'Content-Type': 'application/text',
+        'lang': lang,
+        'token': pref.getString('token').toString()
+      });
+      return getResponseFromApi(result);
+    } catch (err) {
+      print(err);
+      throw Exception("can't decode");
+    }
+  }
+
   Future sendMessage(String message, String organization) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/sendmessage';
@@ -151,6 +169,24 @@ class Apis {
     var result = await http.post(Uri.parse(finalUrl),
         body: params,
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
+    return getResponseFromApi(result);
+  }
+
+  Future setPatientFile(File file, String fileName, int folderId) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/setpatientfile';
+    print(finalUrl);
+    var request = http.MultipartRequest("POST", Uri.parse(finalUrl));
+    request.fields['fileName'] = fileName;
+    request.fields['folderId'] = folderId.toString();
+    request.files.add(http.MultipartFile.fromBytes(
+        'file', await file.readAsBytes(),
+        filename: '$fileName.pdf'));
+
+    request.headers
+        .addAll({'lang': lang, 'token': pref.getString('token').toString()});
+    var response = await request.send();
+    var result = await http.Response.fromStream(response);
     return getResponseFromApi(result);
   }
 
@@ -185,7 +221,38 @@ class Apis {
     return getResponseFromApi(result);
   }
 
-  getResponseFromApi(Response result) {
+  Future getQuestionnaireGroups() async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/getquestionnairegroups';
+      var result = await http.get(Uri.parse(finalUrl), headers: {
+        'Content-Type': 'application/text',
+        'lang': lang,
+        'token': pref.getString('token').toString()
+      });
+      return getResponseFromApi(result);
+    } catch (err) {
+      throw Exception("can't decode");
+    }
+  }
+
+  getQuestionnaireResults(String questionnaireGroupId) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl =
+          '$baseUrl/getquestionnairegroupdetails?questionnaireGroupId=$questionnaireGroupId';
+      var result = await http.get(Uri.parse(finalUrl), headers: {
+        'Content-Type': 'application/text',
+        'lang': lang,
+        'token': pref.getString('token').toString()
+      });
+      return getResponseFromApi(result);
+    } catch (err) {
+      throw Exception("can't decode");
+    }
+  }
+
+  getResponseFromApi(http.Response result) {
     var body = jsonDecode(result.body);
     if (result.statusCode == 200 || result.statusCode == 201) {
       try {
