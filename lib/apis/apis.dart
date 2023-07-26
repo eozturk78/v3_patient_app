@@ -129,6 +129,46 @@ class Apis {
     }
   }
 
+  /*
+  Future getPatientOnlineMeetings() async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/getpatientonlinemeetings';
+      var result = await http.get(Uri.parse(finalUrl), headers: {
+        'Content-Type': 'application/text',
+        'lang': lang,
+        'token': pref.getString('token').toString()
+      });
+      return getResponseFromApi(result);
+    } catch (err) {
+      print(err);
+      throw Exception("can't decode");
+    }
+  }
+
+   */
+
+  Future<List<Map<String, dynamic>>> fetchEvents() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    final response = await http.get(Uri.parse('$baseUrl/getpatientonlinemeetings'), headers: {
+      'Content-Type': 'application/text',
+      'lang': lang,
+      'token': pref.getString('token').toString()
+    });
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = json.decode(response.body);
+      return jsonData.map((event) => {
+        'id': event['id'],
+        'title': event['meeting_title'],
+        'date': event['meeting_date'],
+        'link': event['meeting_link'],
+      }).toList();
+    } else {
+      throw Exception('Failed to load events');
+    }
+  }
+
   Future sendMessage(String message, String organization) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/sendmessage';
