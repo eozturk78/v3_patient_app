@@ -24,7 +24,15 @@ class CustomSubTotal extends StatelessWidget {
           color: Color.fromARGB(255, 233, 232, 232),
           width: 1,
         ),
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

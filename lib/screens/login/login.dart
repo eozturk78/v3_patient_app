@@ -29,18 +29,18 @@ class _LoginPageState extends State<LoginPage> {
   bool check1 = false;
   bool check2 = false;
   bool isSendEP = false;
-
   final LocalAuthentication auth = LocalAuthentication();
   _SupportState _supportState = _SupportState.unknown;
   bool? _canCheckBiometrics;
   List<BiometricType>? _availableBiometrics;
   String _authorized = 'Not Authorized';
   bool _isAuthenticating = false;
-
+  bool proceedLoginWithTouchId = false;
   @override
   void initState() {
     // TODO: implement initState
     checkRemeberMe();
+    _getAvailableBiometrics();
     super.initState();
     auth.isDeviceSupported().then(
           (bool isSupported) => setState(() => _supportState = isSupported
@@ -87,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  Future<void> _getAvailableBiometrics() async {
+  _getAvailableBiometrics() async {
     late List<BiometricType> availableBiometrics;
     try {
       availableBiometrics = await auth.getAvailableBiometrics();
@@ -140,6 +140,7 @@ class _LoginPageState extends State<LoginPage> {
         SharedPreferences pref = await SharedPreferences.getInstance();
         userNameController.text = pref.getString("userName")!;
         passwordController.text = pref.getString("password")!;
+        onLogin();
       }
     });
   }
@@ -181,9 +182,14 @@ class _LoginPageState extends State<LoginPage> {
         _authorized = message;
         if (authenticated) {
           SharedPreferences pref = await SharedPreferences.getInstance();
-          userNameController.text = pref.getString("userName")!;
-          passwordController.text = pref.getString("password")!;
-          onLogin();
+          if (pref.getString("userName") == null ||
+              pref.getString("password") == null) {
+            proceedLoginWithTouchId = true;
+          } else {
+            userNameController.text = pref.getString("userName")!;
+            passwordController.text = pref.getString("password")!;
+            onLogin();
+          }
         }
       });
     } else {
@@ -199,8 +205,11 @@ class _LoginPageState extends State<LoginPage> {
       pref.setString("rememberMe", true.toString());
       pref.setString("userName", userNameController.text);
       pref.setString("password", passwordController.text);
+    } else if (proceedLoginWithTouchId) {
+      pref.setString("userName", userNameController.text);
+      pref.setString("password", passwordController.text);
     } else {
-      pref.clear();
+      pref.remove("rememberMe");
     }
     setState(() {
       isSendEP = true;
@@ -256,147 +265,117 @@ class _LoginPageState extends State<LoginPage> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
       ),
-      body: Column(children: [
-        Padding(
-          padding: EdgeInsets.all(20),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Image.asset(
-                    "assets/images/logo-imedcom.png",
-                    width: 200,
-                    height: 100,
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  TextFormField(
-                    controller: userNameController,
-                    obscureText: false,
-                    decoration: const InputDecoration(
-                      labelText: 'User name',
-                    ),
-                    validator: (text) => sh.textValidator(text),
-                  ),
-                  TextFormField(
-                    controller: passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
-                    ),
-                    validator: (text) => sh.textValidator(text),
-                  ),
-                  Row(
+      body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Checkbox(
-                        value: remeberMeState,
-                        onChanged: ((value) => setState(() {
-                              remeberMeState = !remeberMeState;
-                            })),
+                      const SizedBox(
+                        height: 5,
                       ),
-                      Text("Remember me"),
+                      Image.asset(
+                        "assets/images/logo-imedcom.png",
+                        width: 200,
+                        height: 100,
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      TextFormField(
+                        controller: userNameController,
+                        obscureText: false,
+                        decoration: const InputDecoration(
+                          labelText: 'User name',
+                        ),
+                        validator: (text) => sh.textValidator(text),
+                      ),
+                      TextFormField(
+                        controller: passwordController,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          labelText: 'Password',
+                        ),
+                        validator: (text) => sh.textValidator(text),
+                      ),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: remeberMeState,
+                            onChanged: ((value) => setState(() {
+                                  remeberMeState = !remeberMeState;
+                                })),
+                          ),
+                          Text("Remember me"),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(30),
+                          primary: mainButtonColor,
+                        ),
+                        onPressed: () async {
+                          final isValid = _formKey.currentState?.validate();
+                          if (!isValid! || isSendEP) return;
+                          onLogin();
+                        },
+                        child: !isSendEP
+                            ? const Text("Send")
+                            : Transform.scale(
+                                scale: 0.5,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                )),
+                      ),
+                      if (_availableBiometrics != null &&
+                          _availableBiometrics!.isNotEmpty)
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: StadiumBorder(),
+                            backgroundColor: Colors.white,
+                            minimumSize: const Size.fromHeight(30),
+                            primary: mainButtonColor,
+                          ),
+                          onPressed: _authenticateWithBiometrics,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text(
+                                "Login mit touch ID",
+                                style: TextStyle(color: mainButtonColor),
+                              ),
+                              const Icon(
+                                Icons.fingerprint,
+                                color: mainButtonColor,
+                              ),
+                            ],
+                          ),
+                        ),
+                      if (proceedLoginWithTouchId)
+                        Column(
+                          children: [
+                            Text(
+                                "Bitte melden Sie sich zum ersten Mal an, um die Touch-ID-Anmeldung zu aktivieren")
+                          ],
+                        )
                     ],
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(30),
-                      primary: mainButtonColor,
-                    ),
-                    onPressed: () async {
-                      final isValid = _formKey.currentState?.validate();
-                      if (!isValid! || isSendEP) return;
-                      onLogin();
-                    },
-                    child: !isSendEP
-                        ? const Text("Send")
-                        : Transform.scale(
-                            scale: 0.5,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            )),
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-        //SharedPreferences glopref =  SharedPreferences.getInstance()
-        ListView(
-          padding: const EdgeInsets.only(top: 10),
-          shrinkWrap: true,
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                if (_supportState == _SupportState.unknown)
-                  const CircularProgressIndicator()
-                else if (_supportState == _SupportState.supported)
-                  const Text('This device is supported')
-                else
-                  const Text('This device is not supported'),
-                Text('Available biometrics: $_availableBiometrics\n'),
-                ElevatedButton(
-                  onPressed: _getAvailableBiometrics,
-                  child: const Text('Get available biometrics'),
-                ),
-                const Divider(height: 5),
-                Text('Current State: $_authorized\n'),
-                if (_isAuthenticating)
-                  ElevatedButton(
-                    onPressed: _cancelAuthentication,
-                    // TODO(goderbauer): Make this const when this package requires Flutter 3.8 or later.
-                    // ignore: prefer_const_constructors
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const <Widget>[
-                        Text('Cancel Authentication'),
-                        Icon(Icons.cancel),
-                      ],
-                    ),
-                  )
-                else
-                  Column(
-                    children: <Widget>[
-                      ElevatedButton(
-                        onPressed: _authenticate,
-                        // TODO(goderbauer): Make this const when this package requires Flutter 3.8 or later.
-                        // ignore: prefer_const_constructors
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: const <Widget>[
-                            Text('Authenticate'),
-                            Icon(Icons.perm_device_information),
-                          ],
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: _authenticateWithBiometrics,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(_isAuthenticating
-                                ? 'Cancel'
-                                : 'Authenticate: biometrics only'),
-                            const Icon(Icons.fingerprint),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-              ],
-            ),
-          ],
-        ),
-      ]),
+            //SharedPreferences glopref =  SharedPreferences.getInstance()
+          ]),
     );
   }
 }

@@ -23,7 +23,15 @@ class CustomListComponent extends StatelessWidget {
           color: Color.fromARGB(255, 233, 232, 232),
           width: 1,
         ),
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
       ),
       child: Row(
         children: [
@@ -43,7 +51,7 @@ class CustomListComponent extends StatelessWidget {
               Text(
                 headText,
                 style: TextStyle(
-                    color: menuTextColor, fontWeight: FontWeight.bold),
+                    color: mainButtonColor, fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: 5,
@@ -64,7 +72,7 @@ class CustomListComponent extends StatelessWidget {
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                     color: colorState == 10
-                        ? const Color.fromARGB(255, 194, 13, 0)
+                        ? mainButtonColor
                         : Color.fromARGB(255, 1, 68, 59),
                   ),
                 ),
