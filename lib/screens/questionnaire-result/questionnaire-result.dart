@@ -6,6 +6,7 @@ import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/shared/question-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:patient_app/shared/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../apis/apis.dart';
@@ -37,6 +38,14 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   dynamic _groupValue = "";
   String deviceNode = "";
   String? info;
+  String? endNode;
+  List<dynamic> elements = [];
+  List<dynamic> buttons = [];
+  List<dynamic> outPuts = [];
+  bool isLast = false;
+
+  int inputType = 0; // 10 input list, 20 multiple, 30 yes/no
+
   @override
   void initState() {
     super.initState();
@@ -46,7 +55,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   getQuestionnaireResults() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var qid = pref.getString('questionnaireId');
-    print(qid);
+
     setState(() {
       title = pref.getString('questionnaireName')!;
     });
@@ -57,14 +66,10 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
           (value) => {
             setState(() {
               isStarted = false;
-
               questions = value['nodes'];
-
               var startNode = value['startNode'];
-
-              question =
-                  questions.where((x) => x['nodeName'] == startNode).first;
-
+              endNode = value['endNode'];
+              findQuestionaire(startNode);
               getResult();
             })
           },
@@ -76,67 +81,159 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
         );
   }
 
+  clearAll() {
+    try {
+      _controllers.clear();
+      inputList.clear();
+      buttons.clear();
+      elements.clear();
+      choices.clear();
+      info = "";
+      questionText = "";
+      isMultiChoice = false;
+      _groupValue = null;
+    } catch (err) {}
+  }
+
   getResult() async {
-    _controllers.clear();
-    inputList.clear();
+    clearAll();
     info = "";
     setState(() {
       questionText = question['text'] ?? question['question'];
       deviceNode = question['deviceNode'];
       if (question['elements'] != null && question['elements'].length > 0) {
         try {
-          questionText = question['elements'][0]['TextViewElement']['text'];
-
-          _controllers.add(TextEditingController());
-          if (question['elements'][1]['EditTextElement'] != null) {
-            inputList.add(
-                question['elements'][1]['EditTextElement']['outputVariable']);
-            inputList[inputList.length - 1]['title'] = "";
-          } else {
-            info = question['elements'][1]['TextViewElement']['text'];
-          }
-        } catch (err) {}
-      }
-      /*find input count*/
-      isMultiChoice =
-          (question['existsKeys'] as List<dynamic>).indexOf('answer') > -1
-              ? true
-              : false;
-      if (isMultiChoice) {
-        choices = question['answer']['choices'];
-      } else {
-        var originIndex =
-            (question['existsKeys'] as List<dynamic>).indexOf('origin');
-        if (originIndex > -1) {
-          var existKeyCount = (question['existsKeys'] as List<dynamic>).length;
-          for (var i = originIndex + 1; i < existKeyCount; i++) {
-            var key = question['existsKeys'][i];
-            var enumObj = enumCls.enumDeviceNodeParserTypes
-                        .where((element) => element['typeName'] == key)
-                        .length >
-                    0
-                ? enumCls.enumDeviceNodeParserTypes
-                    .where((element) => element['typeName'] == key)
-                    .first
-                : null;
-            if (enumObj != null) {
-              isMultiChoice = true;
-              choices = enumObj['values'] as List<dynamic>;
-            } else {
-              try {
+          var elems = question['elements'];
+          for (var element in elems) {
+            if (element['TextViewElement'] != null) {
+              elements.add(element['TextViewElement']);
+            } else if (element['ButtonElement'] != null) {
+              var p = {
+                "next": element['ButtonElement']['next'],
+                "text": element['ButtonElement']['text'],
+              };
+              buttons.add(p);
+            } else if (element['TwoButtonElement'] != null) {
+              var p = {
+                "next": element['TwoButtonElement']['leftNext'],
+                "text": element['TwoButtonElement']['leftText'],
+              };
+              buttons.add(p);
+              p = {
+                "next": element['TwoButtonElement']['rightNext'],
+                "text": element['TwoButtonElement']['rightText'],
+              };
+              buttons.add(p);
+            } else if (element['EditTextElement'] != null) {
+              var outputVar = element['EditTextElement']['outputVariable'];
+              setState(() {
                 _controllers.add(TextEditingController());
-                inputList.add(question[key]);
-
-                inputList[inputList.length - 1]['title'] =
-                    question['existsKeys'][i];
-              } catch (err) {
-                inputList.removeAt(inputList.length - 1);
-              }
+              });
+              var params = {
+                'name': outputVar['name'],
+                'type': outputVar['type'],
+                "title": ""
+              };
+              inputList.add(params);
+              print(inputList);
             }
           }
+        } catch (err) {}
+      } else {
+        isMultiChoice =
+            (question['existsKeys'] as List<dynamic>).indexOf('answer') > -1
+                ? true
+                : false;
+        if (isMultiChoice) {
+          choices = question['answer']['choices'];
+        } else {
+          var originIndex =
+              (question['existsKeys'] as List<dynamic>).indexOf('origin');
+          if (originIndex > -1) {
+            var existKeyCount =
+                (question['existsKeys'] as List<dynamic>).length;
+            for (var i = originIndex + 1; i < existKeyCount; i++) {
+              var key = question['existsKeys'][i];
+              var enumObj = enumCls.enumDeviceNodeParserTypes
+                          .where((element) => element['typeName'] == key)
+                          .length >
+                      0
+                  ? enumCls.enumDeviceNodeParserTypes
+                      .where((element) => element['typeName'] == key)
+                      .first
+                  : null;
+
+              if (enumObj != null) {
+                isMultiChoice = true;
+                choices = enumObj['values'] as List<dynamic>;
+              } else {
+                try {
+                  if (question[key]['type'] == 'Integer' ||
+                      question[key]['type'] == 'String' ||
+                      question[key]['type'] == 'Float' ||
+                      question[key]['type'] == 'Object[]') {
+                    _controllers.add(TextEditingController());
+                    inputList.add(question[key]);
+                    inputList[inputList.length - 1]['title'] =
+                        question['existsKeys'][i];
+                  }
+                } catch (err) {
+                  inputList.removeAt(inputList.length - 1);
+                }
+              }
+            }
+          } else {
+            if (question['displayTextString'] != null)
+              questionText = question['displayTextString'];
+          }
         }
+        var p = {'next': question['next'], 'text': 'SENDEN'};
+        buttons.add(p);
       }
     });
+  }
+
+  findQuestionaire(String next) {
+    question = questions.where((x) => x['nodeName'] == next).first;
+    if (question['deviceNode'] == 'EndNode') {
+      setState(() {
+        isLast = true;
+      });
+      clearAll();
+    } else {
+      if (question['variable'] == null) getResult();
+      if (question['variable'] != null) {
+        var p = {
+          'name': question['variable']['name'],
+          'type': question['variable']['type'],
+          'value': question['expression']['value']
+        };
+        outPuts.add(p);
+        findQuestionaire(question['next']);
+      }
+    }
+  }
+
+  prepareOutputs() {
+    print(question);
+
+    if (inputList.isNotEmpty) {
+      for (var i = 0; i < inputList.length; i++) {
+        var p = {
+          'name': inputList[i]['name'],
+          'type': inputList[i]['type'],
+          'value': _controllers[i].text
+        };
+        outPuts.add(p);
+      }
+    } else if (isMultiChoice && question['origin'] != null) {
+      var p = {
+        'name': question['origin']['name'],
+        'type': question['origin']['type'],
+        'value': _groupValue
+      };
+      outPuts.add(p);
+    }
   }
 
   @override
@@ -160,16 +257,63 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                           SizedBox(
                             height: 15,
                           ),
+                          if (isLast) Text("Möchten Sie Ergebnisse senden?"),
                           Text(
                             questionText ?? "",
                             style: labelText,
                           ),
-                          if (info != null) Text(info!),
+                          if (elements != null)
+                            for (int i = 0; i < elements!.length; i++)
+                              Column(
+                                children: [
+                                  Text(
+                                    elements[i]['text'],
+                                    style: i == 0 ? labelText : null,
+                                  )
+                                ],
+                              ),
                           SizedBox(
                             height: 15,
                           ),
                           if (deviceNode == 'EcgDeviceNode')
                             Text("Please connect to device")
+                          else if (deviceNode == 'BloodSugarManualDeviceNode')
+                            Column(
+                              children: [
+                                TextFormField(
+                                  obscureText: false,
+                                  keyboardType: TextInputType.number,
+                                ),
+                                RadioListTile(
+                                  value: 1,
+                                  groupValue: _groupValue,
+                                  onChanged: (newValue) =>
+                                      setState(() => _groupValue = newValue!),
+                                  title: Text("Vor dem Essen"),
+                                ),
+                                RadioListTile(
+                                  value: 2,
+                                  groupValue: _groupValue,
+                                  onChanged: (newValue) =>
+                                      setState(() => _groupValue = newValue!),
+                                  title: Text("Nach dem Essen"),
+                                ),
+                                RadioListTile(
+                                  value: 3,
+                                  groupValue: _groupValue,
+                                  onChanged: (newValue) =>
+                                      setState(() => _groupValue = newValue!),
+                                  title: Text("Fasten"),
+                                ),
+                                RadioListTile(
+                                  value: 4,
+                                  groupValue: _groupValue,
+                                  onChanged: (newValue) =>
+                                      setState(() => _groupValue = newValue!),
+                                  title: Text("Keine der oben genannten"),
+                                )
+                              ],
+                            )
                           else if (isMultiChoice == true)
                             Column(
                               children: [
@@ -185,59 +329,38 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                             )
                           else
                             for (var i = 0; i < inputList.length; i++)
-                              if (inputList[i] != null &&
-                                  inputList[i]['type'] != null &&
-                                  (inputList[i]['type'] == 'Integer' ||
-                                      inputList[i]['type'] == 'String' ||
-                                      inputList[i]['type'] == 'Float'))
-                                Container(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        inputList[i]['title'],
-                                        style: labelText,
-                                      ),
-                                      TextFormField(
-                                        controller: _controllers[i],
-                                        obscureText: false,
-                                        decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Divider(
-                                          color: const Color.fromARGB(
-                                              255, 134, 134, 134)),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              else if (inputList[i]['type'] == 'Boolean')
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                              Container(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    ElevatedButton(
-                                        onPressed: () {}, child: Text("Yes")),
-                                    SizedBox(
-                                      width: 12,
+                                    Text(
+                                      inputList[i]['title'],
+                                      style: labelText,
                                     ),
-                                    ElevatedButton(
-                                      onPressed: () {},
-                                      child: Text("No"),
-                                      style: ElevatedButton.styleFrom(
-                                          primary: const Color.fromARGB(
-                                              255, 158, 158, 158)),
-                                    )
+                                    TextFormField(
+                                      controller: _controllers[i],
+                                      obscureText: false,
+                                      keyboardType:
+                                          inputList[i]['title'] != "String"
+                                              ? TextInputType.number
+                                              : null,
+                                      decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Divider(
+                                        color: const Color.fromARGB(
+                                            255, 134, 134, 134)),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
                                   ],
                                 ),
+                              )
                         ],
                       ),
                     ),
@@ -248,52 +371,36 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
         height: 50,
         margin: const EdgeInsets.all(10),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: buttons.length > 1
+              ? MainAxisAlignment.spaceBetween
+              : MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (wizardIndex > 0)
+            for (var item in buttons)
               SizedBox(
-                width: 150,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.grey,
-                  ),
-                  onPressed: () async {
-                    setState(() {
-                      wizardIndex--;
-                    });
-                    getResult();
-                  },
-                  child: Text("Back"),
-                ),
-              ),
-            SizedBox(width: 8),
-            if (wizardIndex < questions?.length - 1)
-              SizedBox(
-                width: 150,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: mainButtonColor,
-                  ),
-                  onPressed: () async {
-                    setState(() {
-                      var nextNode = question['next'];
-
-                      if (nextNode == null && question['elements'] != null) {
-                        nextNode = question['elements']
-                            [question['elements'].length - 1]['next'];
-                      }
-
-                      question = questions
-                          .where((x) => x['nodeName'] == nextNode)
-                          .first;
-                      getResult();
-                    });
-                    getResult();
-                  },
-                  child: Text("Next"),
-                ),
-              ),
+                  width: 150,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: mainButtonColor,
+                      ),
+                      onPressed: () async {
+                        prepareOutputs();
+                        if (item['next'] == endNode) {
+                          print(outPuts);
+                          setState(() {
+                            isLast = true;
+                          });
+                          clearAll();
+                        } else {
+                          if (item['next'] != null)
+                            findQuestionaire(item['next']);
+                        }
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [Icon(Icons.check), Text(item['text'])],
+                      ))),
           ],
         ),
       ),

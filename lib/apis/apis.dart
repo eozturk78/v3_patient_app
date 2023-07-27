@@ -20,6 +20,7 @@ class Apis {
   String? baseUrl = 'https://v2test-api.imc-app.de/api';
   String? apiPublic = 'https://v2test-api.imc-app.de';
   String? othBaseUrl = 'https://praxiskamalmeo-test.oth.io';
+
   Future login(String email, String password) async {
     String finalUrl = '$baseUrl/patientlogin';
     var params = {
