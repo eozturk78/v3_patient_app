@@ -191,24 +191,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                           const DataLabelSettings(isVisible: false))
                 ],
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(40),
-                  primary: mainButtonColor,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pushNamed("/questionnaire-2");
-                },
-                child:  Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.thermostat_outlined),
-                    Text("Messung durchführen")
-                  ],
-                ),
-              ),
-               Row(
+              Row(
                 children: [
                   CustomSubTotal(null, "Gestern", "122/84 mmHg", null, null),
                   Spacer(),
@@ -218,7 +201,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
               SizedBox(
                 height: 20,
               ),
-               Text(
+              Text(
                   "Der Blutdruck ist der messbare Druck des Blutes in den Arterien, während es vom Herzen durch den Körper gepumpt wird. Ein gesunder Blutdruck ist ein wichtiger Teil der Gesundheitsvorsorge. Denn Bluthochdruck (Hypertonie) erhöht nachweislich das Risiko für ernsthafte Erkrankungen wie Herzinfarkt, Herzversagen, Schlaganfall und Nierenschäden."),
               SizedBox(
                 height: 20,

@@ -211,3 +211,20 @@ TextStyle labelText =
     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
 
 TextStyle selectionLabel = const TextStyle(color: Colors.black, fontSize: 20);
+
+BoxDecoration menuBoxDecoration = BoxDecoration(
+  color: mainItemColor,
+  border: Border.all(
+    color: Color.fromARGB(255, 233, 232, 232),
+    width: 1,
+  ),
+  borderRadius: BorderRadius.circular(15),
+  boxShadow: [
+    BoxShadow(
+      color: Color.fromARGB(255, 189, 187, 187).withOpacity(0.5),
+      spreadRadius: 2,
+      blurRadius: 2,
+      offset: Offset(1, 1), // changes position of shadow
+    ),
+  ],
+);

@@ -200,24 +200,7 @@ class _MeasurementResultPulsePageState
                           const DataLabelSettings(isVisible: false)),
                 ],
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(40),
-                  primary: mainButtonColor,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pushNamed("/questionnaire-2");
-                },
-                child:  Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.thermostat_outlined),
-                    Text("Messung durchführen")
-                  ],
-                ),
-              ),
-               Row(
+              Row(
                 children: [
                   CustomSubTotal(null, "Gestern", "66.2 %", null, null),
                   Spacer(),

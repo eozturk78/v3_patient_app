@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
+import 'package:patient_app/screens/shared/shared.dart';
 
 class CustomListComponent extends StatelessWidget {
   final IconData? iconData;
@@ -17,22 +18,7 @@ class CustomListComponent extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 10),
       padding: EdgeInsets.only(top: 10, bottom: 10, left: 2),
-      decoration: BoxDecoration(
-        color: mainItemColor,
-        border: Border.all(
-          color: Color.fromARGB(255, 233, 232, 232),
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, 3), // changes position of shadow
-          ),
-        ],
-      ),
+      decoration: menuBoxDecoration,
       child: Row(
         children: [
           if (iconData != null)

@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
       appBar: leading('Hallo ${title}!', context),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: EdgeInsets.all(15),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
