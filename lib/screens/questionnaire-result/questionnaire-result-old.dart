@@ -57,13 +57,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
           (value) => {
             setState(() {
               isStarted = false;
-
-              questions = value['nodes'];
-
-              var startNode = value['startNode'];
-
-              question =
-                  questions.where((x) => x['nodeName'] == startNode).first;
+              questions = value;
+              (questions as List)
+                  .sort((a, b) => a['nodeName'].compareTo(b['nodeName']));
 
               getResult();
             })
@@ -79,6 +75,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   getResult() async {
     _controllers.clear();
     inputList.clear();
+    question = questions[wizardIndex];
     info = "";
     setState(() {
       questionText = question['text'] ?? question['question'];
@@ -277,17 +274,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                   ),
                   onPressed: () async {
                     setState(() {
-                      var nextNode = question['next'];
-
-                      if (nextNode == null && question['elements'] != null) {
-                        nextNode = question['elements']
-                            [question['elements'].length - 1]['next'];
-                      }
-
-                      question = questions
-                          .where((x) => x['nodeName'] == nextNode)
-                          .first;
-                      getResult();
+                      wizardIndex++;
                     });
                     getResult();
                   },

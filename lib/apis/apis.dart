@@ -169,19 +169,22 @@ class Apis {
   Future<List<Map<String, dynamic>>> fetchEvents() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
 
-    final response = await http.get(Uri.parse('$baseUrl/getpatientonlinemeetings'), headers: {
+    final response = await http
+        .get(Uri.parse('$baseUrl/getpatientonlinemeetings'), headers: {
       'Content-Type': 'application/text',
       'lang': lang,
       'token': pref.getString('token').toString()
     });
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body);
-      return jsonData.map((event) => {
-        'id': event['id'],
-        'title': event['meeting_title'],
-        'date': event['meeting_date'],
-        'link': event['meeting_link'],
-      }).toList();
+      return jsonData
+          .map((event) => {
+                'id': event['id'],
+                'title': event['meeting_title'],
+                'date': event['meeting_date'],
+                'link': event['meeting_link'],
+              })
+          .toList();
     } else {
       throw Exception('Failed to load events');
     }
@@ -215,14 +218,12 @@ class Apis {
   Future setPatientFile(File file, String fileName, int folderId) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/setpatientfile';
-    print(finalUrl);
     var request = http.MultipartRequest("POST", Uri.parse(finalUrl));
     request.fields['fileName'] = fileName;
     request.fields['folderId'] = folderId.toString();
     request.files.add(http.MultipartFile.fromBytes(
         'file', await file.readAsBytes(),
         filename: '$fileName.pdf'));
-
     request.headers
         .addAll({'lang': lang, 'token': pref.getString('token').toString()});
     var response = await request.send();
@@ -243,7 +244,6 @@ class Apis {
       String sex) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/registerPatient';
-
     var params = {
       'userName': userName,
       'email': userName,
@@ -255,7 +255,6 @@ class Apis {
       'height': height,
       'sex': sex
     };
-    print(params);
     var result = await http
         .post(Uri.parse(finalUrl), body: params, headers: {'lang': lang}); /**/
     return getResponseFromApi(result);
@@ -290,6 +289,16 @@ class Apis {
     } catch (err) {
       throw Exception("can't decode");
     }
+  }
+
+  sendQuestionnaireResult(List<dynamic> outputs, String questionnaireId) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl =
+        '$baseUrl/sendquestionnaireresult?questionnaireId=$questionnaireId';
+    var result = await http.post(Uri.parse(finalUrl),
+        body: outputs,
+        headers: {'lang': lang, 'token': pref.getString('token').toString()});
+    return getResponseFromApi(result);
   }
 
   getResponseFromApi(http.Response result) {

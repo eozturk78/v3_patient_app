@@ -31,17 +31,41 @@ class _SendResultPageState extends State<SendResultPage> {
   List<dynamic> inputList = [];
   List<dynamic> choices = [];
   bool isMultiChoice = false;
-  var _controllers = [];
-
+  final _controllers = [];
+  String? qid;
   @override
   void initState() {
     super.initState();
+    getInitilize();
     getResult();
+  }
+
+  getInitilize() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    qid = pref.getString('questionnaireId');
+    pref.remove("questionnaireId");
+  }
+
+  sendData() async {
+    var outputs = [];
+    if (!isMultiChoice) {
+      for (var i = 0; i < inputList.length; i++) {
+        var output = question[inputList[i]['title']];
+        var p = {
+          'name': output['name'],
+          'type': output['type'],
+          'value': _controllers[i].text
+        };
+        outputs.add(p);
+      }
+    } else {
+      print(question['answer']['name']);
+    }
+    apis.sendQuestionnaireResult(outputs, qid!).then((resp) => {});
   }
 
   getResult() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    print(pref.getString('objectResponse'));
     question = jsonDecode(pref.getString('objectResponse')!);
     setState(() {
       title = question['text'] ?? question['question'];
@@ -83,18 +107,6 @@ class _SendResultPageState extends State<SendResultPage> {
     });
   }
 
-  sendData() {
-    for (var i = 0; i < inputList.length; i++) {
-      var output = question[inputList[i]['title']];
-      var p = {
-        'name': output['name'],
-        'type': output['type'],
-        'value': _controllers[i].text
-      };
-      print(p);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,86 +114,89 @@ class _SendResultPageState extends State<SendResultPage> {
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(15),
-          child: Column(
-            children: [
-              Text(
-                title,
-                style: labelText,
-              ),
-              if (isMultiChoice == true)
-                Column(
-                  children: [
-                    for (var item in choices)
-                      RadioListTile(
-                        value: item['value'],
-                        groupValue: _groupValue,
-                        onChanged: (newValue) =>
-                            setState(() => _groupValue = newValue!),
-                        title: Text(item['text']),
-                      )
-                  ],
-                )
-              else
-                for (var i = 0; i < inputList.length; i++)
-                  if (inputList[i]['type'] == 'Integer' ||
-                      inputList[i]['type'] == 'Float' ||
-                      inputList[i]['type'] == 'Object[]')
-                    Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            inputList[i]['title'],
-                            style: labelText,
-                          ),
-                          TextFormField(
-                            controller: _controllers[i],
-                            obscureText: false,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text(
+                  title,
+                  style: labelText,
+                ),
+                if (isMultiChoice == true)
+                  Column(
+                    children: [
+                      for (var item in choices)
+                        RadioListTile(
+                          value: item['value'],
+                          groupValue: _groupValue,
+                          onChanged: (newValue) =>
+                              setState(() => _groupValue = newValue!),
+                          title: Text(item['text']),
+                        )
+                    ],
+                  )
+                else
+                  for (var i = 0; i < inputList.length; i++)
+                    if (inputList[i]['type'] == 'Integer' ||
+                        inputList[i]['type'] == 'Float' ||
+                        inputList[i]['type'] == 'Object[]')
+                      Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              inputList[i]['title'],
+                              style: labelText,
                             ),
-                          ),
+                            TextFormField(
+                              controller: _controllers[i],
+                              obscureText: false,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Divider(
+                                color:
+                                    const Color.fromARGB(255, 134, 134, 134)),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
+                      )
+                    else if (inputList[i]['type'] == 'Boolean')
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(onPressed: () {}, child: Text("Yes")),
                           SizedBox(
-                            height: 10,
+                            width: 12,
                           ),
-                          Divider(
-                              color: const Color.fromARGB(255, 134, 134, 134)),
-                          SizedBox(
-                            height: 10,
-                          ),
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: Text("No"),
+                            style: ElevatedButton.styleFrom(
+                                primary:
+                                    const Color.fromARGB(255, 158, 158, 158)),
+                          )
                         ],
                       ),
-                    )
-                  else if (inputList[i]['type'] == 'Boolean')
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(onPressed: () {}, child: Text("Yes")),
-                        SizedBox(
-                          width: 12,
-                        ),
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: Text("No"),
-                          style: ElevatedButton.styleFrom(
-                              primary:
-                                  const Color.fromARGB(255, 158, 158, 158)),
-                        )
-                      ],
-                    ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(40),
-                  primary: mainButtonColor,
-                ),
-                onPressed: () async {
-                  sendData();
-                },
-                child: Text("SENDEN"),
-              )
-            ],
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(40),
+                    primary: mainButtonColor,
+                  ),
+                  onPressed: () async {
+                    sendData();
+                  },
+                  child: Text("SENDEN"),
+                )
+              ],
+            ),
           ),
         ),
       ),

@@ -44,9 +44,9 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     auth.isDeviceSupported().then(
           (bool isSupported) => setState(() => _supportState = isSupported
-          ? _SupportState.supported
-          : _SupportState.unsupported),
-    );
+              ? _SupportState.supported
+              : _SupportState.unsupported),
+        );
   }
 
   checkRemeberMe() async {
@@ -60,10 +60,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<bool> authenticateIsAvailable() async {
-    try{
-    final isAvailable = await auth.canCheckBiometrics;
-    final isDeviceSupported = await auth.isDeviceSupported();
-    return isAvailable && isDeviceSupported;
+    try {
+      final isAvailable = await auth.canCheckBiometrics;
+      final isDeviceSupported = await auth.isDeviceSupported();
+      return isAvailable && isDeviceSupported;
     } on PlatformException catch (e) {
       print(e);
       return false;
@@ -133,17 +133,15 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     setState(
-            () => _authorized = authenticated ? 'Authorized' : 'Not Authorized');
+        () => _authorized = authenticated ? 'Authorized' : 'Not Authorized');
 
-    setState(() async{
-      if(authenticated){
-        SharedPreferences pref =
-            await SharedPreferences.getInstance();
-        userNameController.text =  pref.getString("userName")!;
+    setState(() async {
+      if (authenticated) {
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        userNameController.text = pref.getString("userName")!;
         passwordController.text = pref.getString("password")!;
       }
     });
-
   }
 
   Future<void> _authenticateWithBiometrics() async {
@@ -156,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
         });
         authenticated = await auth.authenticate(
           localizedReason:
-          'Scan your fingerprint (or face or whatever) to authenticate',
+              'Scan your fingerprint (or face or whatever) to authenticate',
           options: const AuthenticationOptions(
             stickyAuth: true,
             biometricOnly: true,
@@ -179,22 +177,63 @@ class _LoginPageState extends State<LoginPage> {
       }
 
       final String message = authenticated ? 'Authorized' : 'Not Authorized';
-      setState (() async{
+      setState(() async {
         _authorized = message;
-        if(authenticated){
-          SharedPreferences pref =
-              await SharedPreferences.getInstance();
-          userNameController.text =  pref.getString("userName")!;
+        if (authenticated) {
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          userNameController.text = pref.getString("userName")!;
           passwordController.text = pref.getString("password")!;
+          onLogin();
         }
       });
+    } else {
+      setState(() {
+        _authorized = "Biometrics authentication is not available!";
+      });
     }
-    else
-      {
-        setState(() {
-          _authorized = "Biometrics authentication is not available!";
+  }
+
+  onLogin() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    if (remeberMeState) {
+      pref.setString("rememberMe", true.toString());
+      pref.setString("userName", userNameController.text);
+      pref.setString("password", passwordController.text);
+    } else {
+      pref.clear();
+    }
+    setState(() {
+      isSendEP = true;
+    });
+    await apis.login(userNameController.text, passwordController.text).then(
+        (value) async {
+      if (value != null) {
+        pref.setString('token', value['token']);
+
+        await apis.patientInfo().then((value) {
+          setState(() {
+            isSendEP = false;
+          });
+          var p = sh.getBaseName(value['links']['self']);
+          pref.setString('patientId', '${p}');
+          var patientGroups = value['patientGroups'];
+          pref.setString(
+              'patientTitle', '${value["firstName"]} ${value["lastName"]}');
+          print(patientGroups);
+          pref.setString("patientGroups", jsonEncode(patientGroups));
+          Navigator.of(context).pushReplacementNamed("/home");
+        }, onError: (err) {
+          setState(() {
+            isSendEP = false;
+          });
         });
       }
+    }, onError: (err) {
+      print(err);
+      setState(() {
+        isSendEP = false;
+      });
+    });
   }
 
   Future<void> _cancelAuthentication() async {
@@ -202,11 +241,10 @@ class _LoginPageState extends State<LoginPage> {
     setState(() => _isAuthenticating = false);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset : false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           'Anmelden',
@@ -218,199 +256,146 @@ class _LoginPageState extends State<LoginPage> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
       ),
-      body:
-      Column(children: [
-      Padding(
-        padding: EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 5,
-                ),
-                Image.asset(
-                  "assets/images/logo-imedcom.png",
-                  width: 200,
-                  height: 100,
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                TextFormField(
-                  controller: userNameController,
-                  obscureText: false,
-                  decoration: const InputDecoration(
-                    labelText: 'User name',
+      body: Column(children: [
+        Padding(
+          padding: EdgeInsets.all(20),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 5,
                   ),
-                  validator: (text) => sh.textValidator(text),
-                ),
-                TextFormField(
-                  controller: passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
+                  Image.asset(
+                    "assets/images/logo-imedcom.png",
+                    width: 200,
+                    height: 100,
                   ),
-                  validator: (text) => sh.textValidator(text),
-                ),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: remeberMeState,
-                      onChanged: ((value) => setState(() {
-                            remeberMeState = !remeberMeState;
-                          })),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  TextFormField(
+                    controller: userNameController,
+                    obscureText: false,
+                    decoration: const InputDecoration(
+                      labelText: 'User name',
                     ),
-                    Text("Remember me"),
-                  ],
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(30),
-                    primary: mainButtonColor,
+                    validator: (text) => sh.textValidator(text),
                   ),
-                  onPressed: () async {
-                    final isValid = _formKey.currentState?.validate();
-                    if (!isValid! || isSendEP) return;
-
-                    SharedPreferences pref =
-                        await SharedPreferences.getInstance();
-                    if (remeberMeState) {
-                      pref.setString("rememberMe", true.toString());
-                      pref.setString("userName", userNameController.text);
-                      pref.setString("password", passwordController.text);
-                    } else {
-                      pref.clear();
-                    }
-                    setState(() {
-                      isSendEP = true;
-                    });
-                    await apis
-                        .login(userNameController.text, passwordController.text)
-                        .then((value) async {
-                      if (value != null) {
-                        pref.setString('token', value['token']);
-
-                        await apis.patientInfo().then((value) {
-                          setState(() {
-                            isSendEP = false;
-                          });
-                          var p = sh.getBaseName(value['links']['self']);
-                          pref.setString('patientId', '${p}');
-                          var patientGroups = value['patientGroups'];
-                          pref.setString('patientTitle',
-                              '${value["firstName"]} ${value["lastName"]}');
-                          print(patientGroups);
-                          pref.setString(
-                              "patientGroups", jsonEncode(patientGroups));
-                          Navigator.of(context).pushReplacementNamed("/home");
-                        }, onError: (err) {
-                          setState(() {
-                            isSendEP = false;
-                          });
-                        });
-                      }
-                    }, onError: (err) {
-                      print(err);
-                      setState(() {
-                        isSendEP = false;
-                      });
-                    });
-                  },
-                  child: !isSendEP
-                      ? const Text("Send")
-                      : Transform.scale(
-                          scale: 0.5,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          )),
-                ),
-              ],
+                  TextFormField(
+                    controller: passwordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: 'Password',
+                    ),
+                    validator: (text) => sh.textValidator(text),
+                  ),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: remeberMeState,
+                        onChanged: ((value) => setState(() {
+                              remeberMeState = !remeberMeState;
+                            })),
+                      ),
+                      Text("Remember me"),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(30),
+                      primary: mainButtonColor,
+                    ),
+                    onPressed: () async {
+                      final isValid = _formKey.currentState?.validate();
+                      if (!isValid! || isSendEP) return;
+                      onLogin();
+                    },
+                    child: !isSendEP
+                        ? const Text("Send")
+                        : Transform.scale(
+                            scale: 0.5,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            )),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    //SharedPreferences glopref =  SharedPreferences.getInstance()
-    ListView(
-        padding: const EdgeInsets.only(top: 10),
-        shrinkWrap: true,
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              if (_supportState == _SupportState.unknown)
-                const CircularProgressIndicator()
-              else if (_supportState == _SupportState.supported)
-                const Text('This device is supported')
-              else
-                const Text('This device is not supported'),
-              /*const Divider(height: 5),
-              Text('Can check biometrics: $_canCheckBiometrics\n'),
-              ElevatedButton(
-                onPressed: _checkBiometrics,
-                child: const Text('Check biometrics'),
-              ),
-              const Divider(height: 5),
-
-               */
-              Text('Available biometrics: $_availableBiometrics\n'),
-              ElevatedButton(
-                onPressed: _getAvailableBiometrics,
-                child: const Text('Get available biometrics'),
-              ),
-              const Divider(height: 5),
-              Text('Current State: $_authorized\n'),
-              if (_isAuthenticating)
+        //SharedPreferences glopref =  SharedPreferences.getInstance()
+        ListView(
+          padding: const EdgeInsets.only(top: 10),
+          shrinkWrap: true,
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                if (_supportState == _SupportState.unknown)
+                  const CircularProgressIndicator()
+                else if (_supportState == _SupportState.supported)
+                  const Text('This device is supported')
+                else
+                  const Text('This device is not supported'),
+                Text('Available biometrics: $_availableBiometrics\n'),
                 ElevatedButton(
-                  onPressed: _cancelAuthentication,
-                  // TODO(goderbauer): Make this const when this package requires Flutter 3.8 or later.
-                  // ignore: prefer_const_constructors
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const <Widget>[
-                      Text('Cancel Authentication'),
-                      Icon(Icons.cancel),
+                  onPressed: _getAvailableBiometrics,
+                  child: const Text('Get available biometrics'),
+                ),
+                const Divider(height: 5),
+                Text('Current State: $_authorized\n'),
+                if (_isAuthenticating)
+                  ElevatedButton(
+                    onPressed: _cancelAuthentication,
+                    // TODO(goderbauer): Make this const when this package requires Flutter 3.8 or later.
+                    // ignore: prefer_const_constructors
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const <Widget>[
+                        Text('Cancel Authentication'),
+                        Icon(Icons.cancel),
+                      ],
+                    ),
+                  )
+                else
+                  Column(
+                    children: <Widget>[
+                      ElevatedButton(
+                        onPressed: _authenticate,
+                        // TODO(goderbauer): Make this const when this package requires Flutter 3.8 or later.
+                        // ignore: prefer_const_constructors
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const <Widget>[
+                            Text('Authenticate'),
+                            Icon(Icons.perm_device_information),
+                          ],
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: _authenticateWithBiometrics,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text(_isAuthenticating
+                                ? 'Cancel'
+                                : 'Authenticate: biometrics only'),
+                            const Icon(Icons.fingerprint),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
-                )
-              else
-                Column(
-                  children: <Widget>[
-                    ElevatedButton(
-                      onPressed: _authenticate,
-                      // TODO(goderbauer): Make this const when this package requires Flutter 3.8 or later.
-                      // ignore: prefer_const_constructors
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const <Widget>[
-                          Text('Authenticate'),
-                          Icon(Icons.perm_device_information),
-                        ],
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: _authenticateWithBiometrics,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text(_isAuthenticating
-                              ? 'Cancel'
-                              : 'Authenticate: biometrics only'),
-                          const Icon(Icons.fingerprint),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-            ],
-          ),
-        ],
-      ),
+              ],
+            ),
+          ],
+        ),
       ]),
     );
   }
