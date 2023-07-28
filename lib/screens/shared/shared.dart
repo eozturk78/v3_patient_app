@@ -228,3 +228,9 @@ BoxDecoration menuBoxDecoration = BoxDecoration(
     ),
   ],
 );
+
+TextStyle agreementHeader = TextStyle(
+    fontSize: 20, fontWeight: FontWeight.bold, color: mainButtonColor);
+
+TextStyle agreementSubHeader = TextStyle(
+    fontSize: 18, fontWeight: FontWeight.bold, color: mainButtonColor);

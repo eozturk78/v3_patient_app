@@ -140,6 +140,17 @@ class _AgreementsPageState extends State<AgreementsPage> {
                 SizedBox(
                   height: 20,
                 ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/privacy-policy');
+                    },
+                    child: Text(
+                      "Weitere Hinweise zur Datenverarbeitung finden Sie in unserer Datenschutzinformation.",
+                      style: TextStyle(fontSize: 16),
+                    )),
+                SizedBox(
+                  height: 20,
+                ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size.fromHeight(40),
