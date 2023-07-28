@@ -24,6 +24,7 @@ class _MeasurementResultSaturationPageState
   Apis apis = Apis();
   Shared sh = Shared();
   DateTime today = DateTime.now();
+  String todayValue = "~", yesterdayValue = "~";
   @override
   void initState() {
     super.initState();
@@ -43,6 +44,15 @@ class _MeasurementResultSaturationPageState
             (measurementDate.compareTo(DateTime.now()) < 0)) {
           var timestamp = sh.formatDate(result['timestamp']);
           var value = result['measurement']['value'];
+          if (sh.formatDate(DateTime.now().toString()) ==
+              sh.formatDate(result['timestamp'])) {
+            todayValue = "$value";
+          }
+          if (sh.formatDate(
+                  DateTime.now().add(Duration(days: -1)).toString()) ==
+              sh.formatDate(result['timestamp'])) {
+            yesterdayValue = "$value";
+          }
           dataFrom.add(_SalesData(timestamp, value));
         }
       }
@@ -179,9 +189,10 @@ class _MeasurementResultSaturationPageState
               ),
               Row(
                 children: [
-                  CustomSubTotal(null, "Gestern", "96 %", null, null),
+                  CustomSubTotal(
+                      null, "Gestern", "$yesterdayValue %", null, null),
                   Spacer(),
-                  CustomSubTotal(null, "Heute", "97 %", null, null),
+                  CustomSubTotal(null, "Heute", "$todayValue %", null, null),
                 ],
               ),
               SizedBox(

@@ -24,6 +24,7 @@ class _MeasurementResultWeightPageState
   Apis apis = Apis();
   Shared sh = Shared();
   DateTime today = DateTime.now();
+  String todayValue = "~", yesterdayValue = "~";
   @override
   void initState() {
     super.initState();
@@ -44,6 +45,15 @@ class _MeasurementResultWeightPageState
           var timestamp = sh.formatDate(result['timestamp']);
           var value = result['measurement']['value'];
           dataFrom.add(_SalesData(timestamp, value));
+          if (sh.formatDate(DateTime.now().toString()) ==
+              sh.formatDate(result['timestamp'])) {
+            todayValue = "$value";
+          }
+          if (sh.formatDate(
+                  DateTime.now().add(Duration(days: -1)).toString()) ==
+              sh.formatDate(result['timestamp'])) {
+            yesterdayValue = "$value";
+          }
         }
       }
       setState(() {
@@ -200,9 +210,10 @@ class _MeasurementResultWeightPageState
               ),
               Row(
                 children: [
-                  CustomSubTotal(null, "Gestern", "103.2 KG", null, null),
+                  CustomSubTotal(
+                      null, "Gestern", "$yesterdayValue KG", null, null),
                   Spacer(),
-                  CustomSubTotal(null, "Heute", "103 KG", null, null),
+                  CustomSubTotal(null, "Heute", "$todayValue KG", null, null),
                 ],
               ),
               SizedBox(

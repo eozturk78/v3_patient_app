@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:patient_app/screens/agreements/agreements.dart';
 import 'package:patient_app/screens/agreements/privacy-policy.dart';
+import 'package:patient_app/screens/agreements/terms-and-conditions.dart';
 import 'package:patient_app/screens/comunication/calendar.dart';
 import 'package:patient_app/screens/comunication/chat.dart';
 import 'package:patient_app/screens/comunication/comunication.dart';
@@ -127,6 +128,7 @@ class MyApp extends StatelessWidget {
         "/questionnaire-result": (context) => const QuestionnaireResultPage(),
         "/send-result": (context) => const SendResultPage(),
         "/privacy-policy": (context) => const PrivacyPolicyPage(),
+        "/terms-and-conditions": (context) => const TermsAndConditionsPage(),
       },
     );
   }

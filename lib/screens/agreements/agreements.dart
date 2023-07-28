@@ -80,10 +80,15 @@ class _AgreementsPageState extends State<AgreementsPage> {
                       value: check1,
                     ),
                     Flexible(
-                      child: Text(
-                        "Ich stimme den Nutzungsbedingungen zu.",
-                        style: TextStyle(fontSize: 16),
-                      ),
+                      child: TextButton(
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed('/terms-and-conditions');
+                          },
+                          child: Text(
+                            "Ich stimme den Nutzungsbedingungen zu.",
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          )),
                     )
                   ],
                 ),
@@ -146,7 +151,7 @@ class _AgreementsPageState extends State<AgreementsPage> {
                     },
                     child: Text(
                       "Weitere Hinweise zur Datenverarbeitung finden Sie in unserer Datenschutzinformation.",
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 16, color: Colors.black),
                     )),
                 SizedBox(
                   height: 20,

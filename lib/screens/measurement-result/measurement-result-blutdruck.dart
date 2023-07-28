@@ -22,7 +22,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
   Apis apis = Apis();
   Shared sh = Shared();
   DateTime today = DateTime.now();
-
+  String todayValue = "~", yesterdayValue = "~";
   @override
   void initState() {
     super.initState();
@@ -46,9 +46,17 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
             data1.add(_SalesData(timestamp, systolic));
             var diastolic = result['measurement']['diastolic'];
             data2.add(_SalesData(timestamp, diastolic));
+            if (sh.formatDate(DateTime.now().toString()) ==
+                sh.formatDate(result['timestamp'])) {
+              todayValue = "$systolic/$diastolic";
+            }
+            if (sh.formatDate(
+                    DateTime.now().add(Duration(days: -1)).toString()) ==
+                sh.formatDate(result['timestamp'])) {
+              yesterdayValue = "$systolic/$diastolic";
+            }
           } else {
             var pulse = result['measurement']['value'];
-
             data3.add(_SalesData(timestamp, pulse));
           }
         }
@@ -193,9 +201,10 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
               ),
               Row(
                 children: [
-                  CustomSubTotal(null, "Gestern", "122/84 mmHg", null, null),
+                  CustomSubTotal(
+                      null, "Gestern", "$yesterdayValue mmHg", null, null),
                   Spacer(),
-                  CustomSubTotal(null, "Heute", "112/82 mmHg", null, null),
+                  CustomSubTotal(null, "Heute", "$todayValue mmHg", null, null),
                 ],
               ),
               SizedBox(

@@ -6,6 +6,7 @@ import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../apis/apis.dart';
 import '../shared/bottom-menu.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,17 +17,38 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Apis apis = Apis();
   String title = "";
+  String? bloodPressureValue,
+      pulseValue,
+      saturationValue,
+      temperatureValue,
+      weightValue;
   @override
   initState() {
-    getPatientInfo();
     super.initState();
+    getPatientInfo();
+    getMainData();
   }
 
   getPatientInfo() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
       title = pref.getString("patientTitle") ?? "";
+    });
+  }
+
+  getMainData() {
+    apis.getpatientmaindata().then((resp) {
+      if (resp != null) {
+        setState(() {
+          bloodPressureValue = resp['bloodPressureValue'];
+          pulseValue = resp['pulseValue'].toString();
+          saturationValue = resp['saturationValue'].toString();
+          temperatureValue = resp['temperatureValue'].toString();
+          weightValue = resp['weightValue'].toString();
+        });
+      }
     });
   }
 
@@ -44,59 +66,69 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  child: const CustomListComponent(
+                  child: CustomListComponent(
                       Icons.area_chart,
                       "Blutdruck",
-                      "Heute: 122/84 mmHg",
-                      "Bitte tägliche Messung durchführen",
-                      10),
+                      "Heute: $bloodPressureValue mmHg",
+                      bloodPressureValue == null
+                          ? "Bitte tägliche Messung durchführen"
+                          : "Tägliche Messung  erfolgreich übermittelt",
+                      bloodPressureValue == null ? 10 : 20),
                   onTap: () {
                     Navigator.of(context).pushNamed('/measurement-result');
                   },
                 ),
                 GestureDetector(
-                  child: const CustomListComponent(
+                  child: CustomListComponent(
                       Icons.monitor_weight_outlined,
                       "Gewicht",
-                      "Heute: 103 kg",
-                      "Tägliche Messung  erfolgreich übermittelt",
-                      20),
+                      "Heute: $weightValue kg",
+                      weightValue == null
+                          ? "Bitte tägliche Messung durchführen"
+                          : "Tägliche Messung  erfolgreich übermittelt",
+                      weightValue == null ? 10 : 20),
                   onTap: () {
                     Navigator.of(context)
                         .pushNamed('/measurement-result-weight');
                   },
                 ),
                 GestureDetector(
-                  child: const CustomListComponent(
+                  child: CustomListComponent(
                       Icons.monitor_heart_outlined,
                       "Herzfrequenz",
-                      "Heute: 66.2 bpm",
-                      "Bitte tägliche Messung durchführen",
-                      10),
+                      "Heute: $pulseValue bpm",
+                      pulseValue == null
+                          ? "Bitte tägliche Messung durchführen"
+                          : "Tägliche Messung  erfolgreich übermittelt",
+                      pulseValue == null ? 10 : 20),
                   onTap: () {
                     Navigator.of(context)
                         .pushNamed('/measurement-result-pulse');
                   },
                 ),
                 GestureDetector(
-                  child: const CustomListComponent(
+                  child: CustomListComponent(
                       Icons.thermostat,
                       "Temperatur",
-                      "Heute: 36 C°",
-                      "Tägliche Messung  erfolgreich übermittelt",
-                      20),
+                      "Heute: $temperatureValue C°",
+                      temperatureValue == null
+                          ? "Bitte tägliche Messung durchführen"
+                          : "Tägliche Messung  erfolgreich übermittelt",
+                      temperatureValue == null ? 10 : 20),
                   onTap: () {
                     Navigator.of(context)
                         .pushNamed('/measurement-result-temperature');
                   },
                 ),
                 GestureDetector(
-                  child: const CustomListComponent(
+                  child: CustomListComponent(
                       Icons.air,
                       "Sauerstoffsättigung",
-                      "Heute: - %",
-                      "Bitte tägliche Messung durchführen",
-                      10),
+                      "Heute: $saturationValue %",
+                      saturationValue == null
+                          ? "Bitte tägliche Messung durchführen"
+                          : "Tägliche Messung  erfolgreich übermittelt",
+                      saturationValue == null ? 10 : 20),
                   onTap: () {
                     Navigator.of(context)
                         .pushNamed('/measurement-result-saturation');

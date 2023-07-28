@@ -106,6 +106,9 @@ class Shared {
 
   formatDate(String date) {
     DateTime parseDate;
+    if (!date.toString().contains("T")) {
+      date = date.toString().replaceAll(" ", "T");
+    }
     parseDate = new DateFormat("yyyy-MM-ddTHH:mm:ss.SSS").parse(date);
     var inputDate = DateTime.parse(parseDate.toString());
     var outputFormat = DateFormat('dd.MM.yy');

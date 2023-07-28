@@ -46,12 +46,13 @@ class Apis {
 
   Future getMeasurementList(DateTime date, String type) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    var patientId = pref.getString('patientId');
     var dateString = date.toString().replaceAll(" ", "T").toString();
     String finalUrl =
-        '$othBaseUrl/clinician/api/patients/$patientId/measurements?type=$type&from=$dateString&max=10000';
+        '$baseUrl/getpatientmeasuremensresults?type=$type&from=$dateString';
     var result = await http.get(Uri.parse(finalUrl), headers: {
-      'Authorization': 'Bearer ${pref.getString('token').toString()}'
+      'Content-Type': 'application/text',
+      'lang': lang,
+      'token': pref.getString('token').toString()
     });
     return getResponseFromApi(result);
   }
@@ -279,7 +280,6 @@ class Apis {
   Future setMeasurementValues(dynamic outPuts, String qid) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/setmeasurementvalues?qid=$qid';
-    print(outPuts);
     var result = await http.post(Uri.parse(finalUrl),
         body: jsonEncode(outPuts),
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -291,6 +291,21 @@ class Apis {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl =
           '$baseUrl/getquestionnairegroupdetails?questionnaireGroupId=$questionnaireGroupId';
+      var result = await http.get(Uri.parse(finalUrl), headers: {
+        'Content-Type': 'application/text',
+        'lang': lang,
+        'token': pref.getString('token').toString()
+      });
+      return getResponseFromApi(result);
+    } catch (err) {
+      throw Exception("can't decode");
+    }
+  }
+
+  Future getpatientmaindata() async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/getpatientmaindata';
       var result = await http.get(Uri.parse(finalUrl), headers: {
         'Content-Type': 'application/text',
         'lang': lang,
