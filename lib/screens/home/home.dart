@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 GestureDetector(
                   child: const CustomListComponent(
-                      Icons.thermostat_outlined,
+                      Icons.area_chart,
                       "Blutdruck",
                       "Heute: 122/84 mmHg",
                       "Bitte tägliche Messung durchführen",
@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                       "Bitte Fragebögen beantworten",
                       10),
                   onTap: () {
-                    Navigator.of(context).pushNamed('/questionnaire-1');
+                    Navigator.of(context).pushNamed('/questionnaire-group');
                   },
                 ),
               ],

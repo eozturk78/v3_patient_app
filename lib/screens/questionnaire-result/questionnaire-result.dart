@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/shared/question-box.dart';
@@ -11,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../apis/apis.dart';
 import '../../shared/enums.dart';
+import '../../shared/shared.dart';
 import '../shared/document-box.dart';
 
 class QuestionnaireResultPage extends StatefulWidget {
@@ -22,7 +24,9 @@ class QuestionnaireResultPage extends StatefulWidget {
 }
 
 class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
+  TextEditingController controllerBloodSugar = TextEditingController();
   Apis apis = Apis();
+  Shared sh = Shared();
   bool isStarted = true;
   PDFDocument? document;
   String? title;
@@ -43,9 +47,10 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   List<dynamic> buttons = [];
   List<dynamic> outPuts = [];
   bool isLast = false;
-
+  bool isSendEP = false;
   int inputType = 0; // 10 input list, 20 multiple, 30 yes/no
-
+  late String _qid;
+  bool isValueValid = false;
   @override
   void initState() {
     super.initState();
@@ -55,7 +60,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   getQuestionnaireResults() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var qid = pref.getString('questionnaireId');
-
+    _qid = qid!;
+    print(DateTime.now().toUtc());
+    print(_qid);
     setState(() {
       title = pref.getString('questionnaireName')!;
     });
@@ -111,17 +118,20 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
               var p = {
                 "next": element['ButtonElement']['next'],
                 "text": element['ButtonElement']['text'],
+                "isNo": false
               };
               buttons.add(p);
             } else if (element['TwoButtonElement'] != null) {
               var p = {
                 "next": element['TwoButtonElement']['leftNext'],
                 "text": element['TwoButtonElement']['leftText'],
+                "isNo": true
               };
               buttons.add(p);
               p = {
                 "next": element['TwoButtonElement']['rightNext'],
                 "text": element['TwoButtonElement']['rightText'],
+                "isNo": false
               };
               buttons.add(p);
             } else if (element['EditTextElement'] != null) {
@@ -170,8 +180,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                 try {
                   if (question[key]['type'] == 'Integer' ||
                       question[key]['type'] == 'String' ||
-                      question[key]['type'] == 'Float' ||
-                      question[key]['type'] == 'Object[]') {
+                      question[key]['type'] == 'Float') {
                     _controllers.add(TextEditingController());
                     inputList.add(question[key]);
                     inputList[inputList.length - 1]['title'] =
@@ -187,7 +196,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
               questionText = question['displayTextString'];
           }
         }
-        var p = {'next': question['next'], 'text': 'SENDEN'};
+        var p = {'next': question['next'], 'text': 'SENDEN', 'isNo': false};
         buttons.add(p);
       }
     });
@@ -215,14 +224,62 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   }
 
   prepareOutputs() {
-    print(question);
+    print(question['Object[]']);
 
-    if (inputList.isNotEmpty) {
+    if (question['deviceNode'] == 'BloodSugarManualDeviceNode') {
+      print("bsmd --------" + controllerBloodSugar.text);
+      var measurements = null;
+      var dt = DateTime.now().toUtc().toString().replaceAll(" ", "T");
+      /**/ if (_groupValue == 0) {
+        measurements = [
+          {
+            'result': double.parse(controllerBloodSugar.text),
+            'isBeforeMeal': true,
+            "timeOfMeasurement": dt
+          }
+        ];
+      } else if (_groupValue == 1) {
+        measurements = [
+          {
+            'result': double.parse(controllerBloodSugar.text),
+            'isAfterMeal': true,
+            "timeOfMeasurement": dt
+          }
+        ];
+      } else if (_groupValue == 2) {
+        measurements = [
+          {
+            'result': double.parse(controllerBloodSugar.text),
+            'isFasting': true,
+            "timeOfMeasurement": dt
+          }
+        ];
+      } else {
+        measurements = [
+          {
+            'result': double.parse(controllerBloodSugar.text),
+            "timeOfMeasurement": dt
+          }
+        ];
+      }
+      var p = {
+        'name': question['bloodSugarMeasurements']['name'],
+        'type': 'Object',
+        'value': {
+          'measurements': measurements,
+          "transferTime": "2016-01-24T11:27:09.584Z"
+        }
+      };
+      outPuts.add(p);
+    } else if (inputList.isNotEmpty) {
       for (var i = 0; i < inputList.length; i++) {
+        var value = _controllers[i].text;
+        if (inputList[i]['type'] == "Integer") value = int.parse(value);
+        if (inputList[i]['type'] == "Float") value = double.parse(value);
         var p = {
           'name': inputList[i]['name'],
           'type': inputList[i]['type'],
-          'value': _controllers[i].text
+          'value': value
         };
         outPuts.add(p);
       }
@@ -234,6 +291,23 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
       };
       outPuts.add(p);
     }
+  }
+
+  sendValues() {
+    setState(() {
+      isSendEP = true;
+    });
+    apis.setMeasurementValues(outPuts, _qid).then((resp) {
+      setState(() {
+        isSendEP = false;
+      });
+      Navigator.of(context).pushNamed('/home');
+    }, onError: (err) {
+      print(err);
+      setState(() {
+        isSendEP = false;
+      });
+    });
   }
 
   @override
@@ -251,13 +325,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                   ? Center(child: Text("no data found"))
                   : SingleChildScrollView(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        verticalDirection: VerticalDirection.down,
                         children: [
-                          SizedBox(
-                            height: 15,
-                          ),
-                          if (isLast) Text("Möchten Sie Ergebnisse senden?"),
                           Text(
                             questionText ?? "",
                             style: labelText,
@@ -272,95 +340,178 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                   )
                                 ],
                               ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          if (deviceNode == 'EcgDeviceNode')
-                            Text("Please connect to device")
-                          else if (deviceNode == 'BloodSugarManualDeviceNode')
-                            Column(
+                          Container(
+                            decoration: menuBoxDecoration,
+                            margin: EdgeInsets.only(top: 20),
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                TextFormField(
-                                  obscureText: false,
-                                  keyboardType: TextInputType.number,
+                                SizedBox(
+                                  height: 15,
                                 ),
-                                RadioListTile(
-                                  value: 1,
-                                  groupValue: _groupValue,
-                                  onChanged: (newValue) =>
-                                      setState(() => _groupValue = newValue!),
-                                  title: Text("Vor dem Essen"),
+                                if (isLast)
+                                  Column(
+                                    children: [
+                                      Text("Möchten Sie Ergebnisse senden?"),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          minimumSize:
+                                              const Size.fromHeight(30),
+                                          primary: mainButtonColor,
+                                        ),
+                                        onPressed: () async {
+                                          sendValues();
+                                        },
+                                        child: !isSendEP
+                                            ? const Text("Send")
+                                            : Transform.scale(
+                                                scale: 0.5,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  strokeWidth: 2,
+                                                  color: Colors.white,
+                                                )),
+                                      )
+                                    ],
+                                  ),
+                                SizedBox(
+                                  height: 15,
                                 ),
-                                RadioListTile(
-                                  value: 2,
-                                  groupValue: _groupValue,
-                                  onChanged: (newValue) =>
-                                      setState(() => _groupValue = newValue!),
-                                  title: Text("Nach dem Essen"),
-                                ),
-                                RadioListTile(
-                                  value: 3,
-                                  groupValue: _groupValue,
-                                  onChanged: (newValue) =>
-                                      setState(() => _groupValue = newValue!),
-                                  title: Text("Fasten"),
-                                ),
-                                RadioListTile(
-                                  value: 4,
-                                  groupValue: _groupValue,
-                                  onChanged: (newValue) =>
-                                      setState(() => _groupValue = newValue!),
-                                  title: Text("Keine der oben genannten"),
-                                )
-                              ],
-                            )
-                          else if (isMultiChoice == true)
-                            Column(
-                              children: [
-                                for (var item in choices)
-                                  RadioListTile(
-                                    value: item['value'],
-                                    groupValue: _groupValue,
-                                    onChanged: (newValue) =>
-                                        setState(() => _groupValue = newValue!),
-                                    title: Text(item['text']),
+                                if (deviceNode == 'EcgDeviceNode')
+                                  Text("Please connect to device")
+                                else if (deviceNode ==
+                                    'BloodSugarManualDeviceNode')
+                                  Column(
+                                    children: [
+                                      TextFormField(
+                                        controller: controllerBloodSugar,
+                                        obscureText: false,
+                                        inputFormatters: <TextInputFormatter>[
+                                          FilteringTextInputFormatter.allow(
+                                              RegExp('[0-9.]')),
+                                        ],
+                                        keyboardType: TextInputType.number,
+                                      ),
+                                      RadioListTile(
+                                        value: 0,
+                                        groupValue: _groupValue,
+                                        onChanged: (newValue) => setState(
+                                            () => _groupValue = newValue!),
+                                        title: Text("Vor dem Essen"),
+                                      ),
+                                      RadioListTile(
+                                        value: 1,
+                                        groupValue: _groupValue,
+                                        onChanged: (newValue) => setState(
+                                            () => _groupValue = newValue!),
+                                        title: Text("Nach dem Essen"),
+                                      ),
+                                      RadioListTile(
+                                        value: 2,
+                                        groupValue: _groupValue,
+                                        onChanged: (newValue) => setState(
+                                            () => _groupValue = newValue!),
+                                        title: Text("Fasten"),
+                                      ),
+                                      RadioListTile(
+                                        value: 3,
+                                        groupValue: _groupValue,
+                                        onChanged: (newValue) => setState(
+                                            () => _groupValue = newValue!),
+                                        title: Text("Keine der oben genannten"),
+                                      )
+                                    ],
                                   )
-                              ],
-                            )
-                          else
-                            for (var i = 0; i < inputList.length; i++)
-                              Container(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      inputList[i]['title'],
-                                      style: labelText,
-                                    ),
-                                    TextFormField(
-                                      controller: _controllers[i],
-                                      obscureText: false,
-                                      keyboardType:
-                                          inputList[i]['title'] != "String"
-                                              ? TextInputType.number
-                                              : null,
-                                      decoration: const InputDecoration(
-                                        border: InputBorder.none,
+                                else if (isMultiChoice == true)
+                                  Column(
+                                    children: [
+                                      for (var item in choices)
+                                        RadioListTile(
+                                          value: item['value'],
+                                          groupValue: _groupValue,
+                                          onChanged: (newValue) => setState(
+                                              () => _groupValue = newValue!),
+                                          title: Text(
+                                              sh.getTranslateion(item['text'])),
+                                        )
+                                    ],
+                                  )
+                                else
+                                  for (var i = 0; i < inputList.length; i++)
+                                    Container(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            sh.getTranslateion(
+                                                inputList[i]['title']),
+                                            style: labelText,
+                                          ),
+                                          TextFormField(
+                                            controller: _controllers[i],
+                                            obscureText: false,
+                                            onChanged: (value) {
+                                              var checkValue = sh.checkValues(
+                                                  inputList[i]['title'], value);
+                                              setState(() {
+                                                if (checkValue['state'] ==
+                                                    -10) {
+                                                  inputList[i]['isValueValid'] =
+                                                      false;
+                                                  inputList[i]['errorParams'] =
+                                                      checkValue;
+                                                } else {
+                                                  inputList[i]['isValueValid'] =
+                                                      true;
+                                                  inputList[i]['errorParams'] =
+                                                      checkValue;
+                                                }
+                                              });
+                                            },
+                                            keyboardType:
+                                                inputList[i]['type'] != "String"
+                                                    ? TextInputType.number
+                                                    : TextInputType.text,
+                                            decoration: const InputDecoration(
+                                              border: InputBorder.none,
+                                            ),
+                                            inputFormatters: inputList[i]
+                                                        ['type'] !=
+                                                    "String"
+                                                ? <TextInputFormatter>[
+                                                    FilteringTextInputFormatter
+                                                        .allow(
+                                                            RegExp('[0-9.]')),
+                                                  ]
+                                                : null,
+                                          ),
+                                          if (inputList[i]['isValueValid'] !=
+                                                  null &&
+                                              !inputList[i]['isValueValid'])
+                                            Text(
+                                              "Für die Eingabe sind Werte von ${inputList[i]['errorParams']['min']} ${inputList[i]['errorParams']['unit']} bis ${inputList[i]['errorParams']['max']} ${inputList[i]['errorParams']['unit']} möglich. Bitte überprüfen Sie die von Ihnen eingegeben Daten.",
+                                              style: TextStyle(
+                                                  color: mainButtonColor),
+                                            ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Divider(
+                                              color: const Color.fromARGB(
+                                                  255, 134, 134, 134)),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Divider(
-                                        color: const Color.fromARGB(
-                                            255, 134, 134, 134)),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                  ],
-                                ),
-                              )
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -381,7 +532,8 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                   width: 150,
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: mainButtonColor,
+                        primary:
+                            (item['isNo']) ? mainButtonColor : confirmButton,
                       ),
                       onPressed: () async {
                         prepareOutputs();
@@ -398,8 +550,13 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                       },
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [Icon(Icons.check), Text(item['text'])],
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          (item['isNo'])
+                              ? Icon(Icons.close)
+                              : Icon(Icons.check),
+                          Text(item['text'])
+                        ],
                       ))),
           ],
         ),

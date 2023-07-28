@@ -55,6 +55,8 @@ dependencies:
       url: https://github.com/lohanidamodar/pdf_viewer.git
       ref: 4e5d96be29de515f1081c0b6897741b8dca84722
   dio: ^5.3.0
+  flutter_html: ^2.1.2
+  flutter_widget_from_html: ^0.9.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

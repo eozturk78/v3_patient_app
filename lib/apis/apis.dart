@@ -276,6 +276,16 @@ class Apis {
     }
   }
 
+  Future setMeasurementValues(dynamic outPuts, String qid) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/setmeasurementvalues?qid=$qid';
+    print(outPuts);
+    var result = await http.post(Uri.parse(finalUrl),
+        body: jsonEncode(outPuts),
+        headers: {'lang': lang, 'token': pref.getString('token').toString()});
+    return getResponseFromApi(result);
+  }
+
   getQuestionnaireResults(String questionnaireGroupId) async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
@@ -303,6 +313,7 @@ class Apis {
   }
 
   getResponseFromApi(http.Response result) {
+    print(result.body);
     var body = jsonDecode(result.body);
     if (result.statusCode == 200 || result.statusCode == 201) {
       try {
