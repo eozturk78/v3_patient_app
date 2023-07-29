@@ -51,6 +51,31 @@ leading(String title, BuildContext context) {
   );
 }
 
+leadingWithoutBack(String title, BuildContext context) {
+  return AppBar(
+    title: Text(
+      title,
+      style: TextStyle(color: Colors.black),
+    ),
+    shadowColor: null,
+    elevation: 0.0,
+    centerTitle: true,
+    automaticallyImplyLeading: false,
+    backgroundColor: Colors.white,
+    actions: <Widget>[
+      IconButton(
+        icon: const Icon(
+          Icons.person_outline,
+          color: Colors.black,
+        ),
+        onPressed: () {
+          Navigator.of(context).pushNamed("/profile");
+        },
+      )
+    ],
+  );
+}
+
 leadingWithoutIcon(String title, BuildContext context) {
   return AppBar(
     title: Text(

@@ -151,7 +151,14 @@ class _MessagesPageState extends State<MessagesPage> {
           for (var item in patientGroups)
             FloatingActionButton.extended(
               onPressed: () async {
+                print(item.links.organization);
                 SharedPreferences pref = await SharedPreferences.getInstance();
+
+                if (item.links != null && item.links.organization != null) {
+                  var org = sh.getBaseName(item.links.organization);
+                  pref.setString("organization", org);
+                }
+
                 pref.remove('thread');
                 var thread = threadList
                             .where((element) =>
@@ -166,7 +173,6 @@ class _MessagesPageState extends State<MessagesPage> {
                         .first
                     : null;
 
-                print(thread);
                 if (thread != null)
                   pref.setString('thread', thread.thread.toString());
 

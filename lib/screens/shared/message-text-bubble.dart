@@ -79,7 +79,7 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
               ? MediaQuery.of(context).size.width * 0.7
               : MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            color: widget.senderType == 20 ? mainItemColor : Colors.grey,
+            color: widget.senderType == 20 ? fromMessage : toMessage,
             border: Border.all(
               color: Color.fromARGB(255, 233, 232, 232),
               width: 1,
@@ -94,7 +94,9 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
                 widget.text,
                 softWrap: true,
                 style: const TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.white),
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               if (imageText != null && !widget.startedLoadImage)
                 GestureDetector(

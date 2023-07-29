@@ -230,7 +230,7 @@ class _LoginPageState extends State<LoginPage> {
               'patientTitle', '${value["firstName"]} ${value["lastName"]}');
           print(patientGroups);
           pref.setString("patientGroups", jsonEncode(patientGroups));
-          Navigator.of(context).pushReplacementNamed("/home");
+          Navigator.of(context).pushReplacementNamed("/main-menu");
         }, onError: (err) {
           setState(() {
             isSendEP = false;

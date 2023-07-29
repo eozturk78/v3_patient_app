@@ -42,11 +42,15 @@ class _HomePageState extends State<HomePage> {
     apis.getpatientmaindata().then((resp) {
       if (resp != null) {
         setState(() {
-          bloodPressureValue = resp['bloodPressureValue'];
-          pulseValue = resp['pulseValue'].toString();
-          saturationValue = resp['saturationValue'].toString();
-          temperatureValue = resp['temperatureValue'].toString();
-          weightValue = resp['weightValue'].toString();
+          bloodPressureValue = resp['bloodPressureValue'] != null
+              ? resp['bloodPressureValue']
+              : "~";
+          pulseValue = resp['pulseValue'] != null ? resp['pulseValue'] : "~";
+          saturationValue =
+              resp['saturationValue'] != null ? resp['saturationValue'] : "~";
+          temperatureValue =
+              resp['temperatureValue'] != null ? resp['temperatureValue'] : "~";
+          weightValue = resp['weightValue'] != null ? resp['weightValue'] : "~";
         });
       }
     });
@@ -69,11 +73,15 @@ class _HomePageState extends State<HomePage> {
                   child: CustomListComponent(
                       Icons.area_chart,
                       "Blutdruck",
-                      "Heute: $bloodPressureValue mmHg",
-                      bloodPressureValue == null
-                          ? "Bitte tägliche Messung durchführen"
-                          : "Tägliche Messung  erfolgreich übermittelt",
-                      bloodPressureValue == null ? 10 : 20),
+                      bloodPressureValue != null
+                          ? "Heute: $bloodPressureValue mmHg"
+                          : "~",
+                      bloodPressureValue != null
+                          ? bloodPressureValue == "~"
+                              ? "Bitte tägliche Messung durchführen"
+                              : "Tägliche Messung  erfolgreich übermittelt"
+                          : "Warten Sie mal",
+                      bloodPressureValue == "~" ? 10 : 20),
                   onTap: () {
                     Navigator.of(context).pushNamed('/measurement-result');
                   },
@@ -82,11 +90,13 @@ class _HomePageState extends State<HomePage> {
                   child: CustomListComponent(
                       Icons.monitor_weight_outlined,
                       "Gewicht",
-                      "Heute: $weightValue kg",
-                      weightValue == null
-                          ? "Bitte tägliche Messung durchführen"
-                          : "Tägliche Messung  erfolgreich übermittelt",
-                      weightValue == null ? 10 : 20),
+                      weightValue != null ? "Heute: $weightValue kg" : "~",
+                      weightValue != null
+                          ? weightValue == "~"
+                              ? "Bitte tägliche Messung durchführen"
+                              : "Tägliche Messung  erfolgreich übermittelt"
+                          : "Warten Sie mal",
+                      weightValue == "~" ? 10 : 20),
                   onTap: () {
                     Navigator.of(context)
                         .pushNamed('/measurement-result-weight');
@@ -96,11 +106,13 @@ class _HomePageState extends State<HomePage> {
                   child: CustomListComponent(
                       Icons.monitor_heart_outlined,
                       "Herzfrequenz",
-                      "Heute: $pulseValue bpm",
-                      pulseValue == null
-                          ? "Bitte tägliche Messung durchführen"
-                          : "Tägliche Messung  erfolgreich übermittelt",
-                      pulseValue == null ? 10 : 20),
+                      pulseValue != null ? "Heute: $pulseValue bpm" : "~",
+                      pulseValue != null
+                          ? pulseValue == "~"
+                              ? "Bitte tägliche Messung durchführen"
+                              : "Tägliche Messung  erfolgreich übermittelt"
+                          : "Warten Sie mal",
+                      pulseValue == "~" ? 10 : 20),
                   onTap: () {
                     Navigator.of(context)
                         .pushNamed('/measurement-result-pulse');
@@ -110,11 +122,13 @@ class _HomePageState extends State<HomePage> {
                   child: CustomListComponent(
                       Icons.thermostat,
                       "Temperatur",
-                      "Heute: $temperatureValue C°",
-                      temperatureValue == null
-                          ? "Bitte tägliche Messung durchführen"
-                          : "Tägliche Messung  erfolgreich übermittelt",
-                      temperatureValue == null ? 10 : 20),
+                      temperatureValue != null ? "Heute: $pulseValue  C°" : "~",
+                      temperatureValue != null
+                          ? temperatureValue == "~"
+                              ? "Bitte tägliche Messung durchführen"
+                              : "Tägliche Messung  erfolgreich übermittelt"
+                          : "Warten Sie mal",
+                      temperatureValue == "~" ? 10 : 20),
                   onTap: () {
                     Navigator.of(context)
                         .pushNamed('/measurement-result-temperature');
@@ -124,11 +138,15 @@ class _HomePageState extends State<HomePage> {
                   child: CustomListComponent(
                       Icons.air,
                       "Sauerstoffsättigung",
-                      "Heute: $saturationValue %",
-                      saturationValue == null
-                          ? "Bitte tägliche Messung durchführen"
-                          : "Tägliche Messung  erfolgreich übermittelt",
-                      saturationValue == null ? 10 : 20),
+                      saturationValue != null
+                          ? "Heute: $saturationValue  %"
+                          : "~",
+                      saturationValue != null
+                          ? saturationValue == "~"
+                              ? "Bitte tägliche Messung durchführen"
+                              : "Tägliche Messung  erfolgreich übermittelt"
+                          : "Warten Sie mal",
+                      saturationValue == "~" ? 10 : 20),
                   onTap: () {
                     Navigator.of(context)
                         .pushNamed('/measurement-result-saturation');

@@ -68,6 +68,7 @@ class _ChatPageState extends State<ChatPage> {
         var i = 0;
         for (var element in value) {
           if (element['body'] != null) {
+            print(element['sender']['type']);
             listMessages.add(Message(
                 image: element['links'] != null &&
                         element['links']['attachments']?.length > 0

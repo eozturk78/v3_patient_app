@@ -20,6 +20,8 @@ import 'package:patient_app/screens/info/enlightenment.dart';
 import 'package:patient_app/screens/info/info.dart';
 import 'package:patient_app/screens/info/libraries.dart';
 import 'package:patient_app/screens/login/login.dart';
+import 'package:patient_app/screens/main-menu/main-menu.dart';
+import 'package:patient_app/screens/main-menu/main-sub-menu.dart';
 import 'package:patient_app/screens/measurement-result/measurement-result-blutdruck.dart';
 import 'package:patient_app/screens/measurement-result/measurement-result-pulse.dart';
 import 'package:patient_app/screens/measurement-result/measurement-result-saturation.dart';
@@ -73,6 +75,8 @@ class MyApp extends StatelessWidget {
       initialRoute: "/splash-screen",
       routes: {
         "/splash-screen": (context) => const MyHomePage(title: ''),
+        "/main-menu": (context) => const MainMenuPage(),
+        "/main-sub-menu": (context) => const MainSubMenuPage(),
         "/home": (context) => const HomePage(),
         "/login": (context) => const LoginPage(),
         "/profile": (context) => const ProfilePage(),
