@@ -1,12 +1,11 @@
-import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:patient_app/apis/apis.dart';
 import '../../model/meeting.dart';
+import '../../shared/toast.dart';
 import '../shared/bottom-menu.dart';
-import '../shared/message-text-bubble.dart';
+//import '../shared/message-text-bubble.dart';
 
 class Event {
   final String id;
@@ -46,8 +45,8 @@ class _CalendarPageState extends State<CalendarPage> {
   Meeting? selectedMeeting;
   late final ValueNotifier<List<Event>> _selectedEvents;
 
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
-      .toggledOff; // Can be toggled on/off by longpressing a date
+  final RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
+      .toggledOff; // Can be toggled on/off by long pressing a date
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
@@ -57,12 +56,12 @@ class _CalendarPageState extends State<CalendarPage> {
 // Fetch events and update the _events map
     apis.fetchEvents().then((events) {
       setState(() {
-        _events = Map.fromIterable(events,
-            key: (event) => DateTime.parse(event['date']),
-            value: (event) => [event]);
+        _events = { for (var event in events) DateTime.parse(event['date']) : [event] };
       });
     }).catchError((error) {
-      print('Error fetching events: $error');
+      //print('Error fetching events: $error');
+      //showToast(error);
+      throw Exception(error);
     });
 
     _selectedDay = _focusedDay;
@@ -110,7 +109,7 @@ class _CalendarPageState extends State<CalendarPage> {
             calendarFormat: _calendarFormat,
             rangeSelectionMode: _rangeSelectionMode,
             startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: CalendarStyle(
+            calendarStyle: const CalendarStyle(
               // Use `CalendarStyle` to customize the UI
               outsideDaysVisible: false,
             ),
@@ -142,13 +141,13 @@ class _CalendarPageState extends State<CalendarPage> {
         )
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(1),
+      bottomNavigationBar: const BottomNavigatorBar(1),
     );
   }
   Widget _buildEventMarker() {
     // You can customize how the event indicator looks here
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.blue,
       ),
