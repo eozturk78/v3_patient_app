@@ -53,6 +53,8 @@ import 'package:patient_app/screens/registration/registration-3.dart';
 import 'package:patient_app/screens/registration/registration-4.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() {
   runApp(const MyApp());
 }
@@ -71,6 +73,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Poppins',
         primarySwatch: Colors.blue,
       ),
+      navigatorKey: navigatorKey,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
       initialRoute: "/splash-screen",
       routes: {

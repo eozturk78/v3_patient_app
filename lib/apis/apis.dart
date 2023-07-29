@@ -5,8 +5,10 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:patient_app/screens/agreements/agreements.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../shared/shared.dart';
@@ -328,7 +330,6 @@ class Apis {
   }
 
   getResponseFromApi(http.Response result) {
-    print(result.body);
     var body = jsonDecode(result.body);
     if (result.statusCode == 200 || result.statusCode == 201) {
       try {
@@ -340,6 +341,9 @@ class Apis {
     } else {
       body = jsonDecode(body);
       showToast(body['message']);
+      if (body['errors'] != null) {
+        var firstError = (body['errors'] as List).first;
+      }
       throw Exception(body['message']);
     }
   }
