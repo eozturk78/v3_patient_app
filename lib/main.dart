@@ -19,6 +19,7 @@ import 'package:patient_app/screens/info/documents.dart';
 import 'package:patient_app/screens/info/enlightenment.dart';
 import 'package:patient_app/screens/info/info.dart';
 import 'package:patient_app/screens/info/libraries.dart';
+import 'package:patient_app/screens/login/change-password.dart';
 import 'package:patient_app/screens/login/login.dart';
 import 'package:patient_app/screens/main-menu/main-menu.dart';
 import 'package:patient_app/screens/main-menu/main-sub-menu.dart';
@@ -82,6 +83,7 @@ class MyApp extends StatelessWidget {
         "/main-sub-menu": (context) => const MainSubMenuPage(),
         "/home": (context) => const HomePage(),
         "/login": (context) => const LoginPage(),
+        "/change-password": (context) => const ChangePasswordPage(),
         "/profile": (context) => const ProfilePage(),
         "/measurement-result": (context) => const MeasurementResultPage(),
         "/measurement-result-weight": (context) =>

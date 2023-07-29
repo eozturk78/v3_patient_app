@@ -5,7 +5,6 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:patient_app/screens/agreements/agreements.dart';
@@ -343,6 +342,8 @@ class Apis {
       showToast(body['message']);
       if (body['errors'] != null) {
         var firstError = (body['errors'] as List).first;
+        print(firstError['error']);
+        throw (firstError);
       }
       throw Exception(body['message']);
     }

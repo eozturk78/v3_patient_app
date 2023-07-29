@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Shared {
@@ -277,5 +278,16 @@ class Shared {
 
   bool hasSpecialChars(String string) {
     return string.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>_-]'));
+  }
+
+  redirectPatient(error, context) {
+    print(error);
+    var errorStatus = error['error'];
+    if (errorStatus == "expired") {
+      // change password redirection
+      Navigator.of(context).pushNamed('/change-password');
+    } else if (errorStatus == 'tokenexpired') {
+      Navigator.of(context).pushNamed('/login');
+    }
   }
 }

@@ -232,7 +232,6 @@ class _LoginPageState extends State<LoginPage> {
           pref.setString("patientGroups", jsonEncode(patientGroups));
           Navigator.of(context).pushReplacementNamed("/main-menu");
         }, onError: (err) {
-          print("object");
           setState(() {
             isSendEP = false;
           });
@@ -242,6 +241,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         isSendEP = false;
       });
+      sh.redirectPatient(err, context);
     });
   }
 
