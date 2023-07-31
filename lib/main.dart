@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/screens/agreements/agreements.dart';
 import 'package:patient_app/screens/agreements/privacy-policy.dart';
@@ -54,9 +55,16 @@ import 'package:patient_app/screens/registration/registration-3.dart';
 import 'package:patient_app/screens/registration/registration-4.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'firebase_options.dart';
+
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void main() {
+main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

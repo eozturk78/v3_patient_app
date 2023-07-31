@@ -22,11 +22,12 @@ class Apis {
   String? apiPublic = 'https://v2test-api.imc-app.de';
   String? othBaseUrl = 'https://praxiskamalmeo-test.oth.io';
 
-  Future login(String email, String password) async {
+  Future login(String email, String password, String? deviceToken) async {
     String finalUrl = '$baseUrl/patientlogin';
     var params = {
       'username': email.toString(),
-      'password': password.toString()
+      'password': password.toString(),
+      'deviceToken': deviceToken
     };
     var result = await http.post(Uri.parse(finalUrl),
         body: jsonEncode(params),
@@ -328,7 +329,37 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future changePassword(String userName, String newPassword, String oldPassword,
+      String? deviceToken) async {
+    String finalUrl = '$baseUrl/changepassword';
+    var params = {
+      'userName': userName,
+      'newPassword': newPassword,
+      'password': oldPassword,
+      'deviceToken': deviceToken
+    };
+    var result = await http
+        .post(Uri.parse(finalUrl), body: params, headers: {'lang': lang}); /**/
+    return getResponseFromApi(result);
+  }
+
+  Future getOnlineMeeting() async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/getonlinemeeting';
+      var result = await http.get(Uri.parse(finalUrl), headers: {
+        'Content-Type': 'application/text',
+        'lang': lang,
+        'token': pref.getString('token').toString()
+      });
+      return getResponseFromApi(result);
+    } catch (err) {
+      throw Exception("can't decode");
+    }
+  }
+
   getResponseFromApi(http.Response result) {
+    print(result.body);
     var body = jsonDecode(result.body);
     if (result.statusCode == 200 || result.statusCode == 201) {
       try {

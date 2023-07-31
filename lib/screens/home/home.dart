@@ -41,16 +41,22 @@ class _HomePageState extends State<HomePage> {
   getMainData() {
     apis.getpatientmaindata().then((resp) {
       if (resp != null) {
+        print(resp);
         setState(() {
           bloodPressureValue = resp['bloodPressureValue'] != null
               ? resp['bloodPressureValue']
               : "~";
-          pulseValue = resp['pulseValue'] != null ? resp['pulseValue'] : "~";
-          saturationValue =
-              resp['saturationValue'] != null ? resp['saturationValue'] : "~";
-          temperatureValue =
-              resp['temperatureValue'] != null ? resp['temperatureValue'] : "~";
-          weightValue = resp['weightValue'] != null ? resp['weightValue'] : "~";
+          pulseValue =
+              resp['pulseValue'] != null ? resp['pulseValue'].toString() : "~";
+          saturationValue = resp['saturationValue'] != null
+              ? resp['saturationValue'].toString()
+              : "~";
+          temperatureValue = resp['temperatureValue'] != null
+              ? resp['temperatureValue'].toString()
+              : "~";
+          weightValue = resp['weightValue'] != null
+              ? resp['weightValue'].toString()
+              : "~";
         });
       }
     });
@@ -122,7 +128,9 @@ class _HomePageState extends State<HomePage> {
                   child: CustomListComponent(
                       Icons.thermostat,
                       "Temperatur",
-                      temperatureValue != null ? "Heute: $pulseValue  C°" : "~",
+                      temperatureValue != null
+                          ? "Heute: $temperatureValue  C°"
+                          : "~",
                       temperatureValue != null
                           ? temperatureValue == "~"
                               ? "Bitte tägliche Messung durchführen"
@@ -167,39 +175,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-      ),
-      floatingActionButtonLocation: ExpandableFab.location,
-      floatingActionButton: ExpandableFab(
-        key: key,
-        // duration: const Duration(seconds: 1),
-        distance: 60.0,
-        type: ExpandableFabType.up,
-        // fanAngle: 70,
-        child: const Icon(Icons.add),
-        overlayStyle: ExpandableFabOverlayStyle(
-          blur: 3,
-        ),
-        onOpen: () {
-          debugPrint('onOpen');
-        },
-        afterOpen: () {
-          debugPrint('afterOpen');
-        },
-        onClose: () {
-          debugPrint('onClose');
-        },
-        afterClose: () {
-          debugPrint('afterClose');
-        },
-        children: [
-          FloatingActionButton.extended(
-            onPressed: () async {
-              Navigator.of(context).pushNamed('/questionnaire-group');
-            },
-            icon: new Icon(Icons.medication_outlined),
-            label: Text("Grafische Darstellungen"),
-          )
-        ],
       ),
       bottomNavigationBar: BottomNavigatorBar(0),
     );

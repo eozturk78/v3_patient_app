@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,9 +37,16 @@ class _LoginPageState extends State<LoginPage> {
   String _authorized = 'Not Authorized';
   bool _isAuthenticating = false;
   bool proceedLoginWithTouchId = false;
+  String? deviceToken;
   @override
   void initState() {
     // TODO: implement initState
+    FirebaseMessaging _firebaseMessaging =
+        FirebaseMessaging.instance; // Change here
+    _firebaseMessaging.getToken().then((token) {
+      if (token != null) deviceToken = token;
+      print(deviceToken);
+    });
     checkRemeberMe();
     _getAvailableBiometrics();
     super.initState();
@@ -201,9 +209,9 @@ class _LoginPageState extends State<LoginPage> {
 
   onLogin() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString("userName", userNameController.text);
     if (remeberMeState) {
       pref.setString("rememberMe", true.toString());
-      pref.setString("userName", userNameController.text);
       pref.setString("password", passwordController.text);
     } else if (proceedLoginWithTouchId) {
       pref.setString("userName", userNameController.text);
@@ -214,33 +222,26 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       isSendEP = true;
     });
-    await apis.login(userNameController.text, passwordController.text).then(
-        (value) async {
+
+    await apis
+        .login(userNameController.text, passwordController.text, deviceToken)
+        .then((value) async {
+      print(value);
       if (value != null) {
+        setState(() {
+          isSendEP = false;
+        });
+        print(value['firstName']);
+        pref.setString("patientTitle", value['firstName']);
         pref.setString('token', value['token']);
 
-        await apis.patientInfo().then((value) {
-          setState(() {
-            isSendEP = false;
-          });
-          var p = sh.getBaseName(value['links']['self']);
-          pref.setString('patientId', '${p}');
-          var patientGroups = value['patientGroups'];
-          pref.setString(
-              'patientTitle', '${value["firstName"]} ${value["lastName"]}');
-          print(patientGroups);
-          pref.setString("patientGroups", jsonEncode(patientGroups));
-          Navigator.of(context).pushReplacementNamed("/main-menu");
-        }, onError: (err) {
-          setState(() {
-            isSendEP = false;
-          });
-        });
+        Navigator.of(context).pushReplacementNamed("/main-menu");
       }
     }, onError: (err) {
       setState(() {
         isSendEP = false;
       });
+      print(err);
       sh.redirectPatient(err, context);
     });
   }

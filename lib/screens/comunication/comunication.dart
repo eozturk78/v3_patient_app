@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../apis/apis.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/sub-total.dart';
 
@@ -15,9 +17,22 @@ class ComunicationPage extends StatefulWidget {
 }
 
 class _ComunicationPageState extends State<ComunicationPage> {
+  Apis apis = Apis();
+  DateTime today = DateTime.now();
+  String? videoUrl;
   @override
   void initState() {
     super.initState();
+    today = today.add(const Duration(hours: -1));
+    apis.getOnlineMeeting().then((resp) {
+      for (var element in resp) {
+        var meetingDate = DateTime.parse(element['meeting_date']);
+        // ignore: unrelated_type_equality_checks
+        if (today.compareTo(meetingDate) < 0) {
+          videoUrl = element['meeting_link'];
+        }
+      }
+    });
   }
 
   @override
@@ -45,7 +60,9 @@ class _ComunicationPageState extends State<ComunicationPage> {
                 GestureDetector(
                   child: const CustomSubTotal(
                       Icons.video_call, "Videosprechstunde", null, null, 20),
-                  onTap: () {},
+                  onTap: () async {
+                    if (videoUrl != null) await launch(videoUrl!);
+                  },
                 ),
               ],
             ),

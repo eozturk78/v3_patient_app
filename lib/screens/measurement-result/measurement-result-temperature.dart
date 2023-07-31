@@ -36,12 +36,7 @@ class _MeasurementResultTemperaturePageState
     List<_SalesData> dataFrom = [];
     apis.getMeasurementList(date, bp).then((value) {
       var results = value['results'] as List;
-      results.sort((a, b) => a['timestamp'].compareTo(b['timestamp']));
       for (var result in results) {
-        var measurementDate = DateTime.parse(result['timestamp']);
-        // ignore: unrelated_type_equality_checks
-        if ((date.compareTo(measurementDate) < 0) &&
-            (measurementDate.compareTo(DateTime.now()) < 0)) {
           var timestamp = sh.formatDate(result['timestamp']);
           var value = result['measurement']['value'];
           dataFrom.add(_SalesData(timestamp, value));
@@ -54,7 +49,6 @@ class _MeasurementResultTemperaturePageState
               sh.formatDate(result['timestamp'])) {
             yesterdayValue = "$value";
           }
-        }
       }
       setState(() {
         data = dataFrom;

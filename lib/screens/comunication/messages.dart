@@ -131,7 +131,7 @@ class _MessagesPageState extends State<MessagesPage> {
         distance: 60.0,
         type: ExpandableFabType.up,
         // fanAngle: 70,
-        child: const Icon(Icons.add),
+        child: Icon(Icons.add),
         overlayStyle: ExpandableFabOverlayStyle(
           blur: 3,
         ),

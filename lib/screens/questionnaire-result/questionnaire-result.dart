@@ -37,6 +37,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   List<dynamic> choices = [];
   bool isMultiChoice = false;
   final _controllers = [];
+  FocusNode focusNotToFirst = FocusNode();
   Enums enumCls = Enums();
   int wizardIndex = 0;
   dynamic _groupValue = "";
@@ -145,7 +146,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                 "title": ""
               };
               inputList.add(params);
-              print(inputList);
             }
           }
         } catch (err) {}
@@ -182,6 +182,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                       question[key]['type'] == 'String' ||
                       question[key]['type'] == 'Float') {
                     _controllers.add(TextEditingController());
+
                     inputList.add(question[key]);
                     inputList[inputList.length - 1]['title'] =
                         question['existsKeys'][i];
@@ -227,7 +228,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
     print(question['Object[]']);
 
     if (question['deviceNode'] == 'BloodSugarManualDeviceNode') {
-      print("bsmd --------" + controllerBloodSugar.text);
       var measurements = null;
       var dt = DateTime.now().toUtc().toString().replaceAll(" ", "T");
       /**/ if (_groupValue == 0) {
@@ -265,10 +265,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
       var p = {
         'name': question['bloodSugarMeasurements']['name'],
         'type': 'Object',
-        'value': {
-          'measurements': measurements,
-          "transferTime": "2016-01-24T11:27:09.584Z"
-        }
+        'value': {'measurements': measurements, "transferTime": dt}
       };
       outPuts.add(p);
     } else if (inputList.isNotEmpty) {
@@ -454,6 +451,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                           TextFormField(
                                             controller: _controllers[i],
                                             obscureText: false,
+                                            focusNode:
+                                                i == 0 ? focusNotToFirst : null,
+                                            autofocus: i == 0 ? true : false,
                                             onChanged: (value) {
                                               var checkValue = sh.checkValues(
                                                   inputList[i]['title'], value);
@@ -536,6 +536,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                             (item['isNo']) ? mainButtonColor : confirmButton,
                       ),
                       onPressed: () async {
+                        setState(() {
+                          focusNotToFirst.unfocus();
+                        });
                         prepareOutputs();
                         if (item['next'] == endNode) {
                           print(outPuts);
@@ -544,8 +547,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                           });
                           clearAll();
                         } else {
-                          if (item['next'] != null)
+                          if (item['next'] != null) {
                             findQuestionaire(item['next']);
+                          }
                         }
                       },
                       child: Row(

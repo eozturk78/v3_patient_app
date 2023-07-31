@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "870497548445",
+    "project_id": "imedcom-patient-app",
+    "storage_bucket": "imedcom-patient-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870497548445:android:95e9cd4109504c71107c74",
+        "android_client_info": {
+          "package_name": "com.example.patient_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870497548445-bbc44l7bmhjrajj41u2cufs1fehslg43.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH8Tq4NrYFLvfENQAlDElkeNwju7IWFWM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "870497548445-bbc44l7bmhjrajj41u2cufs1fehslg43.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

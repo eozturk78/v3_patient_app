@@ -52,7 +52,8 @@ class Shared {
     "fev1": "FEV1",
     "fev6": "FEV6",
     "fev1Fev6Ratio": "FEV1/FEV6",
-    "fef2575": "FEF25% -75%"
+    "fef2575": "FEF25% -75%",
+    "meanArterialPressure": "Mittlerer arterieller Blutdruck"
   };
 
   getTranslateion(String field) {

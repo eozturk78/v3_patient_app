@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../apis/apis.dart';
+import '../../shared/shared.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/sub-total.dart';
 
@@ -15,6 +18,9 @@ class MainMenuPage extends StatefulWidget {
 }
 
 class _MainMenuPageState extends State<MainMenuPage> {
+  Apis apis = Apis();
+  Shared sh = Shared();
+
   String title = "";
   @override
   void initState() {
@@ -25,7 +31,8 @@ class _MainMenuPageState extends State<MainMenuPage> {
   getPatientInfo() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
-      title = pref.getString("patientTitle") ?? "";
+      title = pref.getString('patientTitle')!;
+      pref.setString("patientTitle", title);
     });
   }
 

@@ -41,6 +41,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
         isStarted = false;
       });
     }, onError: (err) {
+      sh.redirectPatient(err, context);
       setState(() {
         print(err);
         isStarted = false;

@@ -34,31 +34,28 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
     List<_SalesData> data1 = [], data2 = [], data3 = [];
     apis.getMeasurementList(date, bp).then((value) {
       var results = value['results'] as List;
-      results.sort((a, b) => a['timestamp'].compareTo(b['timestamp']));
       for (var result in results) {
-        var measurementDate = DateTime.parse(result['timestamp']);
-        // ignore: unrelated_type_equality_checks
-        if ((date.compareTo(measurementDate) < 0) &&
-            (measurementDate.compareTo(DateTime.now()) < 0)) {
-          var timestamp = sh.formatDate(result['timestamp']);
-          if (bp == 'blood_pressure') {
-            var systolic = result['measurement']['systolic'];
-            data1.add(_SalesData(timestamp, systolic));
-            var diastolic = result['measurement']['diastolic'];
-            data2.add(_SalesData(timestamp, diastolic));
-            if (sh.formatDate(DateTime.now().toString()) ==
-                sh.formatDate(result['timestamp'])) {
-              todayValue = "$systolic/$diastolic";
-            }
-            if (sh.formatDate(
-                    DateTime.now().add(Duration(days: -1)).toString()) ==
-                sh.formatDate(result['timestamp'])) {
-              yesterdayValue = "$systolic/$diastolic";
-            }
-          } else {
-            var pulse = result['measurement']['value'];
-            data3.add(_SalesData(timestamp, pulse));
+        var timestamp = sh.formatDate(result['timestamp']);
+        if (bp == 'blood_pressure') {
+          var systolic = result['measurement']['systolic'];
+          data1.add(_SalesData(timestamp, systolic));
+          var diastolic = result['measurement']['diastolic'];
+          data2.add(_SalesData(timestamp, diastolic));
+          print(sh.formatDate(DateTime.now().toString())  +
+              "==" +
+              sh.formatDate(result['timestamp']));
+          if (sh.formatDate(DateTime.now().toString()) ==
+              sh.formatDate(result['timestamp'])) {
+            todayValue = "$systolic/$diastolic";
           }
+          if (sh.formatDate(
+                  DateTime.now().add(Duration(days: -1)).toString()) ==
+              sh.formatDate(result['timestamp'])) {
+            yesterdayValue = "$systolic/$diastolic";
+          }
+        } else {
+          var pulse = result['measurement']['value'];
+          data3.add(_SalesData(timestamp, pulse));
         }
       }
       setState(() {
