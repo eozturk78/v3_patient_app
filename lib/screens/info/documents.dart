@@ -122,7 +122,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
   Widget build(BuildContext context) {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
-      appBar: leadingSubpage('Meine Dokumente!', context),
+      appBar: leadingSubpage('Meine Dokumente', context),
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(15),

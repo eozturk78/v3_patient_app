@@ -227,13 +227,15 @@ class _LoginPageState extends State<LoginPage> {
         .login(userNameController.text, passwordController.text, deviceToken)
         .then((value) async {
       print(value);
-      if (value != null) {
+      if (value != null) { // TODO: add else block to this if block
         setState(() {
           isSendEP = false;
         });
         print(value['firstName']);
         pref.setString("patientTitle", value['firstName']);
         pref.setString('token', value['token']);
+
+        isLoggedIn = true;
 
         Navigator.of(context).pushReplacementNamed("/main-menu");
       }

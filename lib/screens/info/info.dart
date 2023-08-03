@@ -23,7 +23,7 @@ class _InfoPageState extends State<InfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leading('Infothek!', context),
+      appBar: leading('Infothek', context),
       body: Center(
           child: Padding(
         padding: const EdgeInsets.all(15),

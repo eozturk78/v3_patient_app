@@ -54,6 +54,7 @@ import 'package:patient_app/screens/registration/registration-2.dart';
 import 'package:patient_app/screens/registration/registration-3.dart';
 import 'package:patient_app/screens/registration/registration-4.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../shared/shared.dart';
 
 import 'firebase_options.dart';
 
@@ -83,7 +84,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       navigatorKey: navigatorKey,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      //home: const MyHomePage(title: 'iMedCom App Demo Home Page'),
       initialRoute: "/splash-screen",
       routes: {
         "/splash-screen": (context) => const MyHomePage(title: ''),
@@ -162,10 +163,19 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if(isLoggedIn) // prevent going to this screen with back button of android devices, if the user already logged in
+        {
+      Navigator.of(context).pushReplacementNamed("/main-menu");
+    }
+  }
+
   void initState() {
     super.initState();
 
-    checkRedirection();
+      checkRedirection();
   }
 
   checkRedirection() async {
@@ -185,12 +195,16 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Image.asset(
+        child:
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+        Image.asset(
           "assets/images/logo-imedcom.png",
           width: 200,
           height: 100,
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        ),])),
     );
   }
 }

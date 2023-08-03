@@ -67,7 +67,7 @@ class _MessagesPageState extends State<MessagesPage> {
   Widget build(BuildContext context) {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
-      appBar: leadingSubpage('Mitteilungen!', context),
+      appBar: leadingSubpage('Mitteilungen', context),
       body: SingleChildScrollView(
         child: Center(
           child: Padding(

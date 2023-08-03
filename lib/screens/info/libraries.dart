@@ -25,7 +25,7 @@ class _LibraryListPageState extends State<LibraryListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Bibliothek!', context),
+      appBar: leadingSubpage('Bibliothek', context),
       body: Center(
           child: Padding(
         padding: EdgeInsets.all(15),

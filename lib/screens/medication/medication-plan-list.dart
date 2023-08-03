@@ -52,7 +52,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Medikamentenplan!', context),
+      appBar: leadingSubpage('Medikamentenplan', context),
       body: SingleChildScrollView(
         child: Center(
           child: Padding(

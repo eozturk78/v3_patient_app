@@ -21,7 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Mein Benutzerprofil!', context),
+      appBar: leadingSubpage('Mein Benutzerprofil', context),
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(15),

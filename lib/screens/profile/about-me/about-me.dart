@@ -46,7 +46,7 @@ class _AboutMeState extends State<AboutMe> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Über mich!', context),
+      appBar: leadingSubpage('Über mich', context),
       body: Padding(
         padding: EdgeInsets.all(15),
         child: SingleChildScrollView(

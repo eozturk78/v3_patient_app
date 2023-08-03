@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+bool isLoggedIn = false;
+
 class Shared {
   var outputFormat = DateFormat('dd/MM/yyyy HH:mm');
   List<dynamic> measurementType = [
@@ -56,7 +58,7 @@ class Shared {
     "meanArterialPressure": "Mittlerer arterieller Blutdruck"
   };
 
-  getTranslateion(String field) {
+  getTranslation(String field) {
     print(field);
     return translations[field] != null ? translations[field] : field;
   }

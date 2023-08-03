@@ -29,6 +29,7 @@ class Apis {
       'password': password.toString(),
       'deviceToken': deviceToken
     };
+    //TODO: try-catch
     var result = await http.post(Uri.parse(finalUrl),
         body: jsonEncode(params),
         headers: {'Content-Type': 'application/text', 'lang': lang});

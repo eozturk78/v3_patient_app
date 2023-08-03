@@ -40,7 +40,7 @@ class _MedicalPlan1PageState extends State<MedicalPlan1Page> {
         ModalRoute.of(context)!.settings.arguments as MessageNotification;
     getNotification(notification);
     return Scaffold(
-      appBar: leadingSubpage('Nachrichten!', context),
+      appBar: leadingSubpage('Nachrichten', context),
       body: SingleChildScrollView(
         child: Center(
           child: isStarted

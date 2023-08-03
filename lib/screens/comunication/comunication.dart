@@ -38,7 +38,7 @@ class _ComunicationPageState extends State<ComunicationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leading('Kommunikation!', context),
+      appBar: leading('Kommunikation', context),
       body: Center(
           child: Padding(
         padding: const EdgeInsets.all(15),

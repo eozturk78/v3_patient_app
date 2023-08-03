@@ -430,7 +430,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                           onChanged: (newValue) => setState(
                                               () => _groupValue = newValue!),
                                           title: Text(
-                                              sh.getTranslateion(item['text'])),
+                                              sh.getTranslation(item['text'])),
                                         )
                                     ],
                                   )
@@ -444,7 +444,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            sh.getTranslateion(
+                                            sh.getTranslation(
                                                 inputList[i]['title']),
                                             style: labelText,
                                           ),

@@ -32,7 +32,7 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leading('Datenmanagement!', context),
+      appBar: leading('Datenmanagement', context),
       body: Center(
           child: Padding(
         padding: const EdgeInsets.all(15),

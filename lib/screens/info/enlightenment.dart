@@ -26,7 +26,7 @@ class _EnlightenmentPageState extends State<EnlightenmentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Aufklärung!', context),
+      appBar: leadingSubpage('Aufklärung', context),
       body: Center(
           child: Padding(
         padding: EdgeInsets.all(15),

@@ -107,7 +107,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToEnd());
     return Scaffold(
-      appBar: leadingSubpage('Nachrichten!', context),
+      appBar: leadingSubpage('Nachrichten', context),
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: isStarted

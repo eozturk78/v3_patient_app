@@ -23,7 +23,7 @@ class _Questionnaire2PageState extends State<Questionnaire2Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('HaNeu Fragebögen!', context),
+      appBar: leadingSubpage('HaNeu Fragebögen', context),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(15),

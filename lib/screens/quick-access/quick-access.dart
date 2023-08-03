@@ -24,7 +24,7 @@ class _QuickAccessPageState extends State<QuickAccessPage> {
   Widget build(BuildContext context) {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
-      appBar: leading('Schnellzugriff!', context),
+      appBar: leading('Schnellzugriff', context),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(15),
