@@ -37,7 +37,7 @@ leading(String title, BuildContext context) {
     centerTitle: true,
     automaticallyImplyLeading: false,
     backgroundColor: Colors.white,
-    actions: <Widget>[
+    /*actions: <Widget>[
       IconButton(
         icon: const Icon(
           Icons.person_outline,
@@ -47,7 +47,7 @@ leading(String title, BuildContext context) {
           Navigator.of(context).pushNamed("/profile");
         },
       )
-    ],
+    ],*/
   );
 }
 
@@ -114,7 +114,7 @@ leadingSubpage(String title, BuildContext context) {
     centerTitle: true,
     automaticallyImplyLeading: false,
     backgroundColor: Colors.white,
-    actions: <Widget>[
+    /*actions: <Widget>[
       IconButton(
         icon: const Icon(
           Icons.person_outline,
@@ -124,7 +124,7 @@ leadingSubpage(String title, BuildContext context) {
           Navigator.of(context).pushNamed("/profile");
         },
       )
-    ],
+    ],*/
   );
 }
 
