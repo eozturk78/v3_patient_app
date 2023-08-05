@@ -53,20 +53,107 @@ import 'package:patient_app/screens/registration/registration-1.dart';
 import 'package:patient_app/screens/registration/registration-2.dart';
 import 'package:patient_app/screens/registration/registration-3.dart';
 import 'package:patient_app/screens/registration/registration-4.dart';
+import 'package:patient_app/screens/settings/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../shared/shared.dart';
 
 import 'firebase_options.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'high_importance_channel', // id
+  'High Importance Notifications', // title
+  description: 'This channel is used for important notifications.', // description
+  importance: Importance.max,
+);
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Initialize the plugin
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+
+  // For Android, create an Android Initialization Settings object
+  AndroidInitializationSettings androidInitializationSettings =
+  AndroidInitializationSettings('@drawable/ic_launcher');
+
+  // For iOS, create an IOS Initialization Settings object
+  IOSInitializationSettings iosInitializationSettings =
+  IOSInitializationSettings();
+
+  // Initialize the settings for each platform
+  InitializationSettings initializationSettings = InitializationSettings(
+    android: androidInitializationSettings,
+    iOS: iosInitializationSettings,
+  );
+
+  // Initialize the plugin with the settings
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  // Request permission to receive notifications (optional)
+  NotificationSettings settings = await messaging.requestPermission();
+
+  // If permission is granted, get the FCM token
+  String? token = await messaging.getToken();
+  print('FCM Token: $token');
+
+
+  // Set up background message handler
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // Set up foreground message handler
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true, // Required to display a heads up notification
+    badge: true,
+    sound: true,
+  );
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    RemoteNotification? notification = message.notification;
+    AndroidNotification? android = message.notification?.android;
+
+    // If `onMessage` is triggered with a notification, construct our own
+    // local notification to show to users using the created channel.
+    if (notification != null && android != null) {
+      flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              channelDescription: channel.description,
+              //icon: android?.smallIcon,
+              //icon: "ic_notification",
+                icon: '@drawable/ic_launcher',
+              // other properties...
+            ),
+          ));
+    }
+  });
   runApp(const MyApp());
+}
+
+// Background message handler
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print('Received background message: ${message.notification?.title}');
+  //AwesomeNotificationsFCM().createNotificationFromJsonData(message.data);
 }
 
 class MyApp extends StatelessWidget {
@@ -89,6 +176,7 @@ class MyApp extends StatelessWidget {
       routes: {
         "/splash-screen": (context) => const MyHomePage(title: ''),
         "/main-menu": (context) => const MainMenuPage(),
+        "/settings": (context) => const SettingsPage(),
         "/main-sub-menu": (context) => const MainSubMenuPage(),
         "/home": (context) => const HomePage(),
         "/login": (context) => const LoginPage(),

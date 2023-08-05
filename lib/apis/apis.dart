@@ -47,6 +47,32 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future getPatientMedicationReminderPreference() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/getPatientMedicationReminderPreference';
+    var result = await http.get(Uri.parse(finalUrl), headers: {
+      'Content-Type': 'application/text',
+      'lang': lang,
+      'token': pref.getString('token').toString()
+    });
+
+    var tmpval = getResponseFromApi(result);
+    pref.setBool('medication_notifications_enabled', tmpval==1?true:false);
+
+    return tmpval;
+  }
+
+  Future setPatientMedicationReminderPreference() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var medicationReminderPreference = pref.getBool('medication_notifications_enabled') ?? true;
+    String finalUrl = '$baseUrl/setPatientMedicationReminderPreference';
+    var params = {'medication_reminder_preference': medicationReminderPreference.toString()};
+    var result = await http.post(Uri.parse(finalUrl),
+        body: params,
+        headers: {'lang': lang, 'token': pref.getString('token').toString()});
+    return getResponseFromApi(result);
+  }
+
   Future getMeasurementList(DateTime date, String type) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var dateString = date.toString().replaceAll(" ", "T").toString();

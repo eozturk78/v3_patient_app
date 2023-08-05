@@ -71,6 +71,15 @@ leadingWithoutBack(String title, BuildContext context) {
         onPressed: () {
           Navigator.of(context).pushNamed("/profile");
         },
+      ),
+      IconButton(
+        icon: const Icon(
+          Icons.settings_outlined,
+          color: Colors.black,
+        ),
+        onPressed: () {
+          Navigator.of(context).pushNamed("/settings");
+        },
       )
     ],
   );
