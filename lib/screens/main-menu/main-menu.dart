@@ -34,6 +34,14 @@ class _MainMenuPageState extends State<MainMenuPage> {
       title = pref.getString('patientTitle')!;
       pref.setString("patientTitle", title);
     });
+    await apis.patientInfo().then((value) {
+      print(value);
+      setState(() {
+        pref.setString("patientGroups", jsonEncode(value['patientGroups']));
+      });
+    }, onError: (err) {
+      setState(() {});
+    });
   }
 
   @override
