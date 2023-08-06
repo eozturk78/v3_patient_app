@@ -81,8 +81,40 @@ class Apis {
       'lang': lang,
       'token': pref.getString('token').toString()
     });
-    print(result.body);
+    //print(result.body);
     return result;
+  }
+
+  Future getPatientOnlineMeetingEvents() async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/getPatientOnlineMeetingEvents';
+      var result = await http.get(Uri.parse(finalUrl), headers: {
+        'Content-Type': 'application/text',
+        'lang': lang,
+        'token': pref.getString('token').toString()
+      });
+      print(result.body);
+      return result;
+    } catch (err) {
+      throw Exception("can't decode");
+    }
+  }
+
+  Future getPatientFileEvents() async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/getPatientFileEvents';
+      var result = await http.get(Uri.parse(finalUrl), headers: {
+        'Content-Type': 'application/text',
+        'lang': lang,
+        'token': pref.getString('token').toString()
+      });
+      print(result.body);
+      return result;
+    } catch (err) {
+      throw Exception("can't decode");
+    }
   }
 
   Future getMeasurementList(DateTime date, String type) async {
@@ -382,20 +414,6 @@ class Apis {
     return getResponseFromApi(result);
   }
 
-  Future getOnlineMeeting() async {
-    try {
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      String finalUrl = '$baseUrl/getonlinemeeting';
-      var result = await http.get(Uri.parse(finalUrl), headers: {
-        'Content-Type': 'application/text',
-        'lang': lang,
-        'token': pref.getString('token').toString()
-      });
-      return getResponseFromApi(result);
-    } catch (err) {
-      throw Exception("can't decode");
-    }
-  }
 
   getResponseFromApi(http.Response result) {
     print(result.body);

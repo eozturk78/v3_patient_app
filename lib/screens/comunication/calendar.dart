@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
@@ -55,10 +56,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchEventsFromBackend();
+    _fetchPatientCalendarEventsFromBackend();
+    _fetchPatientOnlineMeetingEventsFromBackend();
+    _fetchPatientFileEventsFromBackend();
   }
 
-  Future<void> _fetchEventsFromBackend() async {
+  Future<void> _fetchPatientCalendarEventsFromBackend() async {
 
     //final apiUrl = '$apis.baseUrl/getPatientCalendarEvents';
     final response = await apis.getPatientCalendarEvents();
@@ -68,6 +71,42 @@ class _CalendarScreenState extends State<CalendarScreen> {
       final events = List<Map<String, dynamic>>.from(eventsData);
       setState(() {
         _events = _convertToCalendarEvents(events);
+        //print(_events);
+      });
+    } else {
+      // Handle error if fetching events fails
+      print('Failed to fetch events from the backend');
+    }
+  }
+
+  Future<void> _fetchPatientOnlineMeetingEventsFromBackend() async {
+
+    //final apiUrl = '$apis.baseUrl/getPatientCalendarEvents';
+    final response = await apis.getPatientOnlineMeetingEvents();
+
+    if (response.statusCode == 200) {
+      final eventsData = json.decode(response.body);
+      final events = List<Map<String, dynamic>>.from(eventsData);
+      setState(() {
+        _events.addAll(_convertToCalendarEvents(events));
+        print(_events);
+      });
+    } else {
+      // Handle error if fetching events fails
+      print('Failed to fetch events from the backend');
+    }
+  }
+
+  Future<void> _fetchPatientFileEventsFromBackend() async {
+
+    //final apiUrl = '$apis.baseUrl/getPatientCalendarEvents';
+    final response = await apis.getPatientFileEvents();
+
+    if (response.statusCode == 200) {
+      final eventsData = json.decode(response.body);
+      final events = List<Map<String, dynamic>>.from(eventsData);
+      setState(() {
+        _events.addAll(_convertToCalendarEvents(events));
         print(_events);
       });
     } else {
@@ -89,7 +128,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   List<CalendarEvent> _getEventsForSelectedDay(DateTime selectedDay, Map<DateTime, List<CalendarEvent>> events) {
     final eventsForSelectedDay = events[DateTime(selectedDay.year,selectedDay.month,selectedDay.day)] ?? [];
-    print(eventsForSelectedDay);
+    //print(eventsForSelectedDay);
     return eventsForSelectedDay;
 
   }
@@ -97,11 +136,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Map<DateTime, List<EventType>> _getEventMarkers(Map<DateTime, List<CalendarEvent>> events) {
     final eventMarkers = <DateTime, List<EventType>>{};
     events.forEach((day, events) {
-      final eventTypes = events.map((event) => event.eventType).toList();
-      eventMarkers[day] = eventTypes;
+      final eventTypeList = events.map((event) => event.eventType).toList();
+      final uniqueEventTypes = eventTypeList.toSet().toList();
+      eventMarkers[day] = uniqueEventTypes;
     });
     return eventMarkers;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -145,15 +186,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Widget _buildMarkers(BuildContext context, DateTime date, List<dynamic> events) {
-    final eventTypes = _getEventMarkers(_events)[DateTime(date.year, date.month, date.day)];
-    if (eventTypes != null && eventTypes.isNotEmpty) {
+    final eventMarkers = _getEventMarkers(_events)[DateTime(date.year, date.month, date.day)];
+    if (eventMarkers != null && eventMarkers.isNotEmpty) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: eventTypes.map((eventType) => _buildMarkerIndicator(eventType)).toList(),
+        children: eventMarkers.map((eventType) => _buildMarkerIndicator(eventType)).toList(),
       );
     }
     return SizedBox.shrink();
   }
+
 
   Widget _buildMarkerIndicator(EventType eventType) {
     return Container(
@@ -212,8 +254,8 @@ class EventList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Events for selected day: ${events.length}');
-    print('EventList widget rebuilt for selected day: ${selectedDay.day}/${selectedDay.month}/${selectedDay.year}');
+    //print('Events for selected day: ${events.length}');
+    //print('EventList widget rebuilt for selected day: ${selectedDay.day}/${selectedDay.month}/${selectedDay.year}');
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -244,6 +286,14 @@ class EventListItem extends StatefulWidget {
 class _EventListItemState extends State<EventListItem> {
   bool _isExpanded = false;
 
+  void _copyDescriptionToClipboard() {
+    Clipboard.setData(ClipboardData(text: widget.event.description))
+        .then((value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Description copied to clipboard!'),
+      duration: Duration(seconds: 2),
+    )));
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -253,6 +303,7 @@ class _EventListItemState extends State<EventListItem> {
         });
       },
       child: Container(
+        margin: EdgeInsets.only(bottom: 2.0),
         padding: EdgeInsets.all(8),
         color: widget.event.eventType.color.withOpacity(0.99),
         child: Column(
@@ -262,7 +313,7 @@ class _EventListItemState extends State<EventListItem> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${widget.event.dateTime.hour}:${widget.event.dateTime.minute}',
+                  '${widget.event.dateTime.hour.toString().padLeft(2,"0")}:${widget.event.dateTime.minute.toString().padLeft(2,"0")}',
                   style: TextStyle(color: Colors.white),
                 ),
                 Expanded(
@@ -275,11 +326,13 @@ class _EventListItemState extends State<EventListItem> {
               ],
             ),
             if (_isExpanded)
-              Container(
-                margin: EdgeInsets.only(top:5.0),
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-                color: Colors.white,
-                child: Text(widget.event.description),
+              GestureDetector(
+                onTap: _copyDescriptionToClipboard,
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  color: Colors.white,
+                  child: Text(widget.event.description),
+                ),
               ),
           ],
         ),

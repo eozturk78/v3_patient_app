@@ -24,7 +24,7 @@ class _ComunicationPageState extends State<ComunicationPage> {
   void initState() {
     super.initState();
     today = today.add(const Duration(hours: -1));
-    apis.getOnlineMeeting().then((resp) {
+    apis.getPatientOnlineMeetingEvents().then((resp) {
       for (var element in resp) {
         var meetingDate = DateTime.parse(element['meeting_date']);
         // ignore: unrelated_type_equality_checks
