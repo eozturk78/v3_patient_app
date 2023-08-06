@@ -329,7 +329,8 @@ class _EventListItemState extends State<EventListItem> {
               GestureDetector(
                 onTap: _copyDescriptionToClipboard,
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 8),
+                  margin: EdgeInsets.only(top: 5.0),
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                   color: Colors.white,
                   child: Text(widget.event.description),
                 ),
