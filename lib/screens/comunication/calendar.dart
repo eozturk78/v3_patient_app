@@ -70,7 +70,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       final eventsData = json.decode(response.body);
       final events = List<Map<String, dynamic>>.from(eventsData);
       setState(() {
-        _events = _convertToCalendarEvents(events);
+        _events.addAll(_convertToCalendarEvents(events));
         //print(_events);
       });
     } else {
