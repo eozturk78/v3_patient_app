@@ -39,9 +39,11 @@ class _MessagesPageState extends State<MessagesPage> {
 
   getNotificationList() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    patientGroups = (jsonDecode(pref.getString('patientGroups')!) as List)
-        .map((e) => PatientGroup.fromJson(e))
-        .toList();
+    if (pref.getString('patientGroups') != null) {
+      patientGroups = (jsonDecode(pref.getString('patientGroups')!) as List)
+          .map((e) => PatientGroup.fromJson(e))
+          .toList();
+    }
     apis.getPatientNotificationList().then(
         (resp) => {
               setState(() {

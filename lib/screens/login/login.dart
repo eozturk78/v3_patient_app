@@ -226,8 +226,8 @@ class _LoginPageState extends State<LoginPage> {
     await apis
         .login(userNameController.text, passwordController.text, deviceToken)
         .then((value) async {
-      print(value);
-      if (value != null) { // TODO: add else block to this if block
+      if (value != null) {
+        // TODO: add else block to this if block
         setState(() {
           isSendEP = false;
         });
