@@ -1,174 +1,240 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:patient_app/screens/shared/shared.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:patient_app/apis/apis.dart';
-import '../../model/meeting.dart';
-import '../../shared/toast.dart';
-import '../shared/bottom-menu.dart';
-//import '../shared/message-text-bubble.dart';
 
-class Event {
-  final String id;
+class EventType {
   final String title;
-  final DateTime date;
-  final String link;
+  final Color color;
 
-  Event({
-    required this.id,
-    required this.title,
-    required this.date,
-    required this.link,
-  });
+  EventType(this.title, this.color);
 }
 
-final kToday = DateTime.now();
-final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
-final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
+class CalendarEvent {
+  final String title;
+  final String description;
+  final DateTime dateTime;
+  final EventType eventType;
 
-class CalendarPage extends StatefulWidget {
-  const CalendarPage({super.key});
+  CalendarEvent(this.title, this.description, this.dateTime, this.eventType);
+}
 
+class CalendarScreen extends StatefulWidget {
   @override
-  State<CalendarPage> createState() => _CalendarPageState();
+  _CalendarScreenState createState() => _CalendarScreenState();
 }
 
-class _CalendarPageState extends State<CalendarPage> {
-  Apis apis = Apis();
+class _CalendarScreenState extends State<CalendarScreen> {
+  Map<DateTime, List<CalendarEvent>> _events = {};
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _selectedDay = DateTime.now();
-  DateTime _focusedDay = DateTime.now();
-
-  Map<DateTime, List<Map<String, dynamic>>> _events = {};
-
-  List<Meeting> meetingList = [];
-  bool isStarted = true;
-  Meeting? selectedMeeting;
-  late final ValueNotifier<List<Event>> _selectedEvents;
-
-  final RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
-      .toggledOff; // Can be toggled on/off by long pressing a date
-  DateTime? _rangeStart;
-  DateTime? _rangeEnd;
 
   @override
   void initState() {
     super.initState();
-// Fetch events and update the _events map
-    apis.fetchEvents().then((events) {
-      setState(() {
-        _events = { for (var event in events) DateTime.parse(event['date']) : [event] };
-      });
-    }).catchError((error) {
-      //print('Error fetching events: $error');
-      //showToast(error);
-      throw Exception(error);
-    });
-
-    _selectedDay = _focusedDay;
+    _events = _generateMockEvents();
   }
 
-  /*
-  getPatientMeetings() async {
-    setState(() {
-      isStarted = true;
-    });
-    apis.getPatientOnlineMeetings().then((value) {
-      setState(() {
-        isStarted = false;
-        print(value);
-        meetingList = (value as List).map((e) => Meeting.fromJson(e)).toList();
-      });
-    },
-        onError: (err) => setState(() {
-          print(err);
-          isStarted = false;
-        }));
-  }
-  */
+  Map<DateTime, List<CalendarEvent>> _generateMockEvents() {
+    final eventType1 = EventType('Doctor Appointment', Colors.blue);
+    final eventType2 = EventType('Online Meeting', Colors.green);
+    final eventType3 = EventType('File Upload Logs', Colors.orange);
 
-  @override
-  void dispose() {
-    _selectedEvents.dispose();
-    super.dispose();
+    final events = <DateTime, List<CalendarEvent>>{};
+    final now = DateTime.now();
+    final random = Random();
+
+    for (int i = 0; i < 30; i++) {
+      final date = DateTime(now.year, now.month, now.day + i); // Truncate time part
+      events[date] = [
+        CalendarEvent(
+          'Event ${i + 1} - Type 1',
+          'Description for Event ${i + 1}',
+          date.add(Duration(hours: 8)),
+          eventType1,
+        ),
+        CalendarEvent(
+          'Event ${i + 1} - Type 2',
+          'Description for Event ${i + 1}',
+          date.add(Duration(hours: 12)),
+          eventType2,
+        ),
+        CalendarEvent(
+          'Event ${i + 1} - Type 3',
+          'Description for Event ${i + 1}',
+          date.add(Duration(hours: 16)),
+          eventType3,
+        ),
+      ];
+    }
+
+    return events;
   }
 
+  List<CalendarEvent> _getEventsForSelectedDay(DateTime selectedDay, Map<DateTime, List<CalendarEvent>> events) {
+    final eventsForSelectedDay = events.entries
+        .where((entry) => isSameDay(entry.key, selectedDay))
+        .expand((entry) => entry.value)
+        .toList();
+    return eventsForSelectedDay;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Kalendar!', context),
+      appBar: AppBar(
+        title: Text('Event Calendar'),
+      ),
       body: Column(
         children: [
           TableCalendar(
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            rangeStartDay: _rangeStart,
-            rangeEndDay: _rangeEnd,
-            calendarFormat: _calendarFormat,
-            rangeSelectionMode: _rangeSelectionMode,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: const CalendarStyle(
-              // Use `CalendarStyle` to customize the UI
-              outsideDaysVisible: false,
-            ),
+            firstDay: DateTime.now().subtract(Duration(days: 365)),
+            lastDay: DateTime.now().add(Duration(days: 365)),
+            focusedDay: _selectedDay,
+            selectedDayPredicate: (day) {
+              return isSameDay(_selectedDay, day);
+            },
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 _selectedDay = selectedDay;
-                _focusedDay = focusedDay; // update `_focusedDay` here as well
               });
             },
-
+            eventLoader: (day) {
+              return _events[day] ?? [];
+            },
             onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
+              setState(() {
+                _calendarFormat = format;
+              });
             },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-        eventLoader: (date) {
-          return _events[date] ?? [];
-        },
-        calendarBuilders: CalendarBuilders(
-          singleMarkerBuilder: (context, date, events) {
-            return _buildEventMarker();
-          },
+            calendarFormat: _calendarFormat,
           ),
-        )
+          Legend(_getEventTypes()),
+          Expanded(
+            child: EventList(
+              selectedDay: _selectedDay,
+              events: _getEventsForSelectedDay(_selectedDay, _events),
+            ),
+          ),
         ],
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: const BottomNavigatorBar(1),
-    );
-  }
-  Widget _buildEventMarker() {
-    // You can customize how the event indicator looks here
-    return Container(
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.blue,
       ),
-      width: 8,
-      height: 8,
-      // Add any other customization here, such as a number to indicate the number of events on that day
     );
   }
 
-  // Function to group events by date
-  Map<DateTime, List<Event>> groupEventsByDate(List<Event> events) {
-    final Map<DateTime, List<Event>> groupedEvents = {};
-    for (final event in events) {
-      final eventDate = event.date;
-      final key = DateTime(eventDate.year, eventDate.month, eventDate.day);
-      if (groupedEvents.containsKey(key)) {
-        groupedEvents[key]!.add(event);
-      } else {
-        groupedEvents[key] = [event];
-      }
-    }
-    return groupedEvents;
+  List<EventType> _getEventTypes() {
+    return [
+      EventType('Doctor Appointment', Colors.blue),
+      EventType('Online Meeting', Colors.green),
+      EventType('File Logs', Colors.orange),
+    ];
+  }
+}
+
+class Legend extends StatelessWidget {
+  final List<EventType> eventTypes;
+
+  Legend(this.eventTypes);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: eventTypes
+            .map((eventType) => Row(
+          children: [
+            Container(
+              width: 12,
+              height: 12,
+              color: eventType.color,
+            ),
+            SizedBox(width: 5),
+            Text(eventType.title),
+          ],
+        ))
+            .toList(),
+      ),
+    );
+  }
+}
+
+class EventList extends StatelessWidget {
+  final DateTime selectedDay;
+  final List<CalendarEvent> events;
+
+  EventList({required this.selectedDay, required this.events});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Events on ${selectedDay.day}/${selectedDay.month}/${selectedDay.year}',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          if (events.isNotEmpty) ...events.map((event) => EventListItem(event)).toList(),
+        ],
+      ),
+    );
+  }
+}
+
+class EventListItem extends StatefulWidget {
+  final CalendarEvent event;
+
+  EventListItem(this.event);
+
+  @override
+  _EventListItemState createState() => _EventListItemState();
+}
+
+class _EventListItemState extends State<EventListItem> {
+  bool _isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _isExpanded = !_isExpanded;
+        });
+      },
+      child: Container(
+        padding: EdgeInsets.all(8),
+        color: widget.event.eventType.color.withOpacity(0.2),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${widget.event.dateTime.hour}:${widget.event.dateTime.minute}',
+                  style: TextStyle(color: Colors.white),
+                ),
+                Expanded(
+                  child: Text(
+                    widget.event.title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            if (_isExpanded)
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                color: Colors.white,
+                child: Text(widget.event.description),
+              ),
+          ],
+        ),
+      ),
+    );
   }
 }

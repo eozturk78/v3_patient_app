@@ -127,6 +127,7 @@ main() async {
     RemoteNotification? notification = message.notification;
     AndroidNotification? android = message.notification?.android;
 
+
     // If `onMessage` is triggered with a notification, construct our own
     // local notification to show to users using the created channel.
     if (notification != null && android != null) {
@@ -198,7 +199,7 @@ class MyApp extends StatelessWidget {
         "/messages": (context) => const MessagesPage(),
         "/chat": (context) => const ChatPage(),
         "/medical-plan-1": (context) => const MedicalPlan1Page(),
-        "/calendar": (context) => const CalendarPage(),
+        "/calendar": (context) => CalendarScreen(),
         "/medication-plan-list": (context) => const MedicationPlanListPage(),
         "/recipes": (context) => const RecipesPage(),
         "/libraries": (context) => const LibraryListPage(),
