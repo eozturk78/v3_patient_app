@@ -1,6 +1,13 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import '../../apis/apis.dart';
+import '../shared/shared.dart';
+
+Apis apis = Apis();
 
 class EventType {
   final String title;
@@ -16,7 +23,24 @@ class CalendarEvent {
   final EventType eventType;
 
   CalendarEvent(this.title, this.description, this.dateTime, this.eventType);
+
+  factory CalendarEvent.fromJson(Map<String, dynamic> json) {
+    return CalendarEvent(
+      json['event_title'] as String,
+      json['event_description'] as String,
+      DateTime.parse(json['event_date'] as String),
+      eventTypeMap[json['event_type']] ?? EventType('Default', Colors.grey),
+    );
+  }
 }
+
+// Map event titles to their corresponding EventType
+final Map<String, EventType> eventTypeMap = {
+  'Doctor Appointment': EventType('Doctor Appointment', Colors.red),
+  'Online Meeting': EventType('Online Meeting', Colors.blue),
+  'File Logs': EventType('File Logs', Colors.orange),
+  // Add more mappings as needed for other event titles
+};
 
 class CalendarScreen extends StatefulWidget {
   @override
@@ -31,59 +55,59 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   void initState() {
     super.initState();
-    _events = _generateMockEvents();
+    _fetchEventsFromBackend();
   }
 
-  Map<DateTime, List<CalendarEvent>> _generateMockEvents() {
-    final eventType1 = EventType('Doctor Appointment', Colors.blue);
-    final eventType2 = EventType('Online Meeting', Colors.green);
-    final eventType3 = EventType('File Upload Logs', Colors.orange);
+  Future<void> _fetchEventsFromBackend() async {
 
-    final events = <DateTime, List<CalendarEvent>>{};
-    final now = DateTime.now();
-    final random = Random();
+    //final apiUrl = '$apis.baseUrl/getPatientCalendarEvents';
+    final response = await apis.getPatientCalendarEvents();
 
-    for (int i = 0; i < 30; i++) {
-      final date = DateTime(now.year, now.month, now.day + i); // Truncate time part
-      events[date] = [
-        CalendarEvent(
-          'Event ${i + 1} - Type 1',
-          'Description for Event ${i + 1}',
-          date.add(Duration(hours: 8)),
-          eventType1,
-        ),
-        CalendarEvent(
-          'Event ${i + 1} - Type 2',
-          'Description for Event ${i + 1}',
-          date.add(Duration(hours: 12)),
-          eventType2,
-        ),
-        CalendarEvent(
-          'Event ${i + 1} - Type 3',
-          'Description for Event ${i + 1}',
-          date.add(Duration(hours: 16)),
-          eventType3,
-        ),
-      ];
+    if (response.statusCode == 200) {
+      final eventsData = json.decode(response.body);
+      final events = List<Map<String, dynamic>>.from(eventsData);
+      setState(() {
+        _events = _convertToCalendarEvents(events);
+        print(_events);
+      });
+    } else {
+      // Handle error if fetching events fails
+      print('Failed to fetch events from the backend');
     }
+  }
 
-    return events;
+  Map<DateTime, List<CalendarEvent>> _convertToCalendarEvents(List<Map<String, dynamic>> events) {
+    final calendarEvents = <DateTime, List<CalendarEvent>>{};
+    for (var event in events) {
+      final calendarEvent = CalendarEvent.fromJson(event);
+      final date = DateTime(calendarEvent.dateTime.year, calendarEvent.dateTime.month, calendarEvent.dateTime.day);
+      calendarEvents[date] = calendarEvents[date] ?? [];
+      calendarEvents[date]!.add(calendarEvent);
+    }
+    return calendarEvents;
   }
 
   List<CalendarEvent> _getEventsForSelectedDay(DateTime selectedDay, Map<DateTime, List<CalendarEvent>> events) {
-    final eventsForSelectedDay = events.entries
-        .where((entry) => isSameDay(entry.key, selectedDay))
-        .expand((entry) => entry.value)
-        .toList();
+    final eventsForSelectedDay = events[DateTime(selectedDay.year,selectedDay.month,selectedDay.day)] ?? [];
+    print(eventsForSelectedDay);
     return eventsForSelectedDay;
+
+  }
+
+  Map<DateTime, List<EventType>> _getEventMarkers(Map<DateTime, List<CalendarEvent>> events) {
+    final eventMarkers = <DateTime, List<EventType>>{};
+    events.forEach((day, events) {
+      final eventTypes = events.map((event) => event.eventType).toList();
+      eventMarkers[day] = eventTypes;
+    });
+    return eventMarkers;
   }
 
   @override
   Widget build(BuildContext context) {
+    final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Event Calendar'),
-      ),
+      appBar: leadingSubpage('Kalender', context),
       body: Column(
         children: [
           TableCalendar(
@@ -98,15 +122,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 _selectedDay = selectedDay;
               });
             },
-            eventLoader: (day) {
-              return _events[day] ?? [];
-            },
+            calendarFormat: _calendarFormat,
             onFormatChanged: (format) {
               setState(() {
                 _calendarFormat = format;
               });
             },
-            calendarFormat: _calendarFormat,
+            calendarBuilders: CalendarBuilders(
+              markerBuilder: _buildMarkers,
+            ),
           ),
           Legend(_getEventTypes()),
           Expanded(
@@ -120,10 +144,32 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
+  Widget _buildMarkers(BuildContext context, DateTime date, List<dynamic> events) {
+    final eventTypes = _getEventMarkers(_events)[DateTime(date.year, date.month, date.day)];
+    if (eventTypes != null && eventTypes.isNotEmpty) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: eventTypes.map((eventType) => _buildMarkerIndicator(eventType)).toList(),
+      );
+    }
+    return SizedBox.shrink();
+  }
+
+  Widget _buildMarkerIndicator(EventType eventType) {
+    return Container(
+      width: 8,
+      height: 8,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: eventType.color,
+      ),
+    );
+  }
+
   List<EventType> _getEventTypes() {
     return [
-      EventType('Doctor Appointment', Colors.blue),
-      EventType('Online Meeting', Colors.green),
+      EventType('Doctor Appointment', Colors.red),
+      EventType('Online Meeting', Colors.blue),
       EventType('File Logs', Colors.orange),
     ];
   }
@@ -166,6 +212,8 @@ class EventList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Events for selected day: ${events.length}');
+    print('EventList widget rebuilt for selected day: ${selectedDay.day}/${selectedDay.month}/${selectedDay.year}');
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -206,7 +254,7 @@ class _EventListItemState extends State<EventListItem> {
       },
       child: Container(
         padding: EdgeInsets.all(8),
-        color: widget.event.eventType.color.withOpacity(0.2),
+        color: widget.event.eventType.color.withOpacity(0.99),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -228,7 +276,8 @@ class _EventListItemState extends State<EventListItem> {
             ),
             if (_isExpanded)
               Container(
-                padding: EdgeInsets.symmetric(vertical: 8),
+                margin: EdgeInsets.only(top:5.0),
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                 color: Colors.white,
                 child: Text(widget.event.description),
               ),

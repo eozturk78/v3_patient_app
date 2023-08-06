@@ -73,6 +73,18 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future getPatientCalendarEvents() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/getPatientCalendarEvents';
+    var result = await http.get(Uri.parse(finalUrl), headers: {
+      'Content-Type': 'application/text',
+      'lang': lang,
+      'token': pref.getString('token').toString()
+    });
+    print(result.body);
+    return result;
+  }
+
   Future getMeasurementList(DateTime date, String type) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var dateString = date.toString().replaceAll(" ", "T").toString();
