@@ -60,9 +60,19 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(
                   height: 20,
                 ),
-                CustomProfileMenu(
-                    Icons.summarize_outlined, "Nutzungsbedingungen"),
-                CustomProfileMenu(Icons.summarize_outlined, "Datenschutz"),
+                GestureDetector(
+                  child: CustomProfileMenu(
+                      Icons.summarize_outlined, "Nutzungsbedingungen"),
+                  onTap: () {
+                    Navigator.of(context).pushNamed("/terms-and-conditions");
+                  },
+                ),
+                GestureDetector(
+                  child: CustomProfileMenu(Icons.summarize_outlined, "Datenschutzinformation"),
+                  onTap: () {
+                    Navigator.of(context).pushNamed("/privacy-policy");
+                  },
+                ),
                 CustomProfileMenu(Icons.summarize_outlined, "Impressum "),
                 GestureDetector(
                   child:
