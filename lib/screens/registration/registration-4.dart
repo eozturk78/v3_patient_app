@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/shared/toast.dart';
@@ -19,18 +18,18 @@ class _Registration4PageState extends State<Registration4Page> {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   TextEditingController repeatPasswordController = new TextEditingController();
-  Shared sh = new Shared();
+  Shared sh = Shared();
   late Widget passwordCheck;
   bool isSendEP = false;
   @override
   void initState() {
     // TODO: implement initState
     passwordCheck = checkPassword(passwordController.text);
-    checkRemeberMe();
+    checkRememberMe();
     super.initState();
   }
 
-  checkRemeberMe() async {
+  checkRememberMe() async {
     setState(() {});
   }
 
@@ -39,7 +38,7 @@ class _Registration4PageState extends State<Registration4Page> {
     return Scaffold(
       appBar: leadingWithoutProfile('Registration 4!', context),
       body: Padding(
-        padding: EdgeInsets.all(30),
+        padding: const EdgeInsets.all(30),
         child: SingleChildScrollView(
           child: SizedBox(
               width: double.infinity,
@@ -49,19 +48,19 @@ class _Registration4PageState extends State<Registration4Page> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Erstellen Sie jetzt Ihr Benutzerkonto",
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: mainButtonColor),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Text(
+                    const Text(
                         'Bitte geben Sie Ihre E-Mail-Adresse an. Wir senden Ihnen im Anschluss eine Bestätigungsmail.'),
-                    SizedBox(
+                    const SizedBox(
                       height: 40,
                     ),
                     Text(
@@ -77,11 +76,11 @@ class _Registration4PageState extends State<Registration4Page> {
                       ),
                       validator: (text) => sh.emailValidator(text),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Divider(color: const Color.fromARGB(255, 134, 134, 134)),
-                    SizedBox(
+                    const Divider(color: Color.fromARGB(255, 134, 134, 134)),
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
@@ -99,19 +98,19 @@ class _Registration4PageState extends State<Registration4Page> {
                       ),
                       validator: (text) => sh.textValidator(text),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Divider(color: const Color.fromARGB(255, 134, 134, 134)),
-                    SizedBox(
+                    const Divider(color: Color.fromARGB(255, 134, 134, 134)),
+                    const SizedBox(
                       height: 10,
                     ),
                     passwordCheck,
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Divider(color: const Color.fromARGB(255, 134, 134, 134)),
-                    SizedBox(
+                    const Divider(color: Color.fromARGB(255, 134, 134, 134)),
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
@@ -127,11 +126,11 @@ class _Registration4PageState extends State<Registration4Page> {
                       validator: (text) =>
                           sh.textRepeatPassword(text, passwordController.text),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Divider(color: const Color.fromARGB(255, 134, 134, 134)),
-                    SizedBox(
+                    const Divider(color: Color.fromARGB(255, 134, 134, 134)),
+                    const SizedBox(
                       height: 10,
                     ),
                     ElevatedButton(
@@ -183,7 +182,7 @@ class _Registration4PageState extends State<Registration4Page> {
                           ? const Text("REGISTRIEN")
                           : Transform.scale(
                               scale: 0.5,
-                              child: CircularProgressIndicator(
+                              child: const CircularProgressIndicator(
                                 strokeWidth: 2,
                                 color: Colors.white,
                               )),

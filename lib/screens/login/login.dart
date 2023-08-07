@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:patient_app/colors/colors.dart';
@@ -47,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
       if (token != null) deviceToken = token;
       print(deviceToken);
     });
-    checkRemeberMe();
+    checkRememberMe();
     _getAvailableBiometrics();
     super.initState();
     auth.isDeviceSupported().then(
@@ -57,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
         );
   }
 
-  checkRemeberMe() async {
+  checkRememberMe() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     if (pref.getString("rememberMe") == true.toString()) {
       remeberMeState = true;
@@ -235,9 +234,9 @@ class _LoginPageState extends State<LoginPage> {
         pref.setString("patientTitle", value['firstName']);
         pref.setString('token', value['token']);
 
-        isLoggedIn = true;
-
-        Navigator.of(context).pushReplacementNamed("/main-menu");
+        //isLoggedIn = true;
+        //Navigator.of(context).pushReplacementNamed("/main-menu");
+        checkRedirection();
       }
     }, onError: (err) {
       setState(() {
@@ -253,12 +252,25 @@ class _LoginPageState extends State<LoginPage> {
     setState(() => _isAuthenticating = false);
   }
 
+  checkRedirection() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    if (pref.getBool('isAgreementRed') == true) {
+      isLoggedIn = true;
+      Navigator.of(context).pushReplacementNamed("/main-menu");
+    }
+    else {
+      Navigator.of(context).pushNamed("/agreements");
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Anmelden',
           style: TextStyle(color: Colors.black),
         ),
@@ -336,7 +348,7 @@ class _LoginPageState extends State<LoginPage> {
                             ? const Text("Send")
                             : Transform.scale(
                                 scale: 0.5,
-                                child: CircularProgressIndicator(
+                                child: const CircularProgressIndicator(
                                   strokeWidth: 2,
                                   color: Colors.white,
                                 )),
@@ -345,7 +357,7 @@ class _LoginPageState extends State<LoginPage> {
                           _availableBiometrics!.isNotEmpty)
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            shape: StadiumBorder(),
+                            shape: const StadiumBorder(),
                             backgroundColor: Colors.white,
                             minimumSize: const Size.fromHeight(30),
                             primary: mainButtonColor,
@@ -353,12 +365,12 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: _authenticateWithBiometrics,
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
+                            children: const <Widget>[
                               Text(
                                 "Login mit touch ID",
                                 style: TextStyle(color: mainButtonColor),
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.fingerprint,
                                 color: mainButtonColor,
                               ),
@@ -367,7 +379,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       if (proceedLoginWithTouchId)
                         Column(
-                          children: [
+                          children: const [
                             Text(
                                 "Bitte melden Sie sich zum ersten Mal an, um die Touch-ID-Anmeldung zu aktivieren")
                           ],

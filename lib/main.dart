@@ -2,13 +2,14 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/screens/agreements/agreements.dart';
+import 'package:patient_app/screens/agreements/edit-agreements.dart';
 import 'package:patient_app/screens/agreements/privacy-policy.dart';
 import 'package:patient_app/screens/agreements/terms-and-conditions.dart';
-import 'package:patient_app/screens/comunication/calendar.dart';
-import 'package:patient_app/screens/comunication/chat.dart';
-import 'package:patient_app/screens/comunication/comunication.dart';
-import 'package:patient_app/screens/comunication/medical-plan-1.dart';
-import 'package:patient_app/screens/comunication/messages.dart';
+import 'package:patient_app/screens/communication/calendar.dart';
+import 'package:patient_app/screens/communication/chat.dart';
+import 'package:patient_app/screens/communication/communication.dart';
+import 'package:patient_app/screens/communication/medical-plan-1.dart';
+import 'package:patient_app/screens/communication/messages.dart';
 import 'package:patient_app/screens/description/blutdruck-description.dart';
 import 'package:patient_app/screens/description/pulse-description.dart';
 import 'package:patient_app/screens/description/saturation-description.dart';
@@ -48,7 +49,7 @@ import 'package:patient_app/screens/questionnaire/questionnaire-8.dart';
 import 'package:patient_app/screens/questionnaire/questionnaire-9.dart';
 import 'package:patient_app/screens/quick-access/quick-access.dart';
 import 'package:patient_app/screens/redirection/redirection.dart';
-import 'package:patient_app/screens/registration/regiartion-completed.dart';
+import 'package:patient_app/screens/registration/registration-completed.dart';
 import 'package:patient_app/screens/registration/registration-1.dart';
 import 'package:patient_app/screens/registration/registration-2.dart';
 import 'package:patient_app/screens/registration/registration-3.dart';
@@ -192,7 +193,7 @@ class MyApp extends StatelessWidget {
             const MeasurementResultTemperaturePage(),
         "/measurement-result-saturation": (context) =>
             const MeasurementResultSaturationPage(),
-        "/comunication": (context) => const ComunicationPage(),
+        "/communication": (context) => const CommunicationPage(),
         "/info": (context) => const InfoPage(),
         "/medication": (context) => const MedicationPage(),
         "/quick-access": (context) => const QuickAccessPage(),
@@ -230,6 +231,7 @@ class MyApp extends StatelessWidget {
         "/created-account-successfully": (context) =>
             const RegistrationCompletedPage(),
         "/agreements": (context) => const AgreementsPage(),
+        "/edit-agreements": (context) => const EditAgreementsPage(),
         "/redirection": (context) => const RedirectionPage(),
         "/questionnaire-group": (context) => const QuestionnaireGroupPage(),
         "/questionnaire-result": (context) => const QuestionnaireResultPage(),
@@ -267,17 +269,29 @@ class _MyHomePageState extends State<MyHomePage> {
       checkRedirection();
   }
 
-  checkRedirection() async {
+/*
+checkRedirection() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var isAgreementRead = Timer(
       Duration(seconds: 3),
       (() {
-        if (pref.getString('isAgreementRed') == 'true')
+        if (pref.getBool('isAgreementRed') == true)
           Navigator.of(context).pushReplacementNamed("/login");
         else
           Navigator.of(context).pushReplacementNamed("/agreements");
       }),
     );
+  }
+*/
+
+  checkRedirection() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+        if (pref.getBool('isAgreementRed') == true)
+          Navigator.of(context).pushReplacementNamed("/login");
+        else
+          Navigator.of(context).pushReplacementNamed("/agreements");
+
   }
 
   @override

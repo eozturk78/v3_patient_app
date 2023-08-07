@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../shared/bottom-menu.dart';
 import '../shared/profile-menu.dart';
@@ -24,59 +25,64 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: leadingSubpage('Mein Benutzerprofil', context),
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(15),
+          padding: const EdgeInsets.all(15),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  child: CustomProfileMenu(Icons.heat_pump_sharp, "Über mich"),
+                  child: const CustomProfileMenu(FontAwesomeIcons.addressCard, "Über mich"),
                   onTap: () {
                     Navigator.of(context).pushNamed("/about-me");
                   },
                 ),
-                CustomProfileMenu(Icons.add_box_outlined, "Meine Diagnosen"),
-                CustomProfileMenu(
-                    Icons.medical_information, "Meine medizinischen Kontakte"),
-                SizedBox(
+                const CustomProfileMenu(FontAwesomeIcons.hospitalUser, "Meine Diagnosen"),
+                const CustomProfileMenu(
+                    FontAwesomeIcons.bookMedical, "Meine medizinischen Kontakte"),
+                const SizedBox(
                   height: 10,
                 ),
-                Text("Mein Benutzerkonto",
+                const Text("Mein Benutzerkonto",
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                SizedBox(
-                  height: 20,
-                ),
-                CustomProfileMenu(Icons.folder_copy_outlined, "Einwilligungen"),
-                CustomProfileMenu(
-                    Icons.folder_copy_outlined, "Auszug meiner Daten"),
-                CustomProfileMenu(
-                    Icons.folder_copy_outlined, "Benutzerkonto bearbeiten"),
-                SizedBox(
-                  height: 10,
-                ),
-                Text("Rechtliches",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 GestureDetector(
-                  child: CustomProfileMenu(
-                      Icons.summarize_outlined, "Nutzungsbedingungen"),
+                  child: const CustomProfileMenu(FontAwesomeIcons.listCheck, "Einwilligungen"),
+                  onTap: () {
+                    Navigator.of(context).pushNamed("/edit-agreements");
+                  },
+                ),
+                const CustomProfileMenu(
+                    Icons.folder_copy_outlined, "Auszug meiner Daten"),
+                const CustomProfileMenu(
+                    FontAwesomeIcons.userPen, "Benutzerkonto bearbeiten"),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text("Rechtliches",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(
+                  height: 20,
+                ),
+                GestureDetector(
+                  child: const CustomProfileMenu(
+                      FontAwesomeIcons.fileContract, "Nutzungsbedingungen"),
                   onTap: () {
                     Navigator.of(context).pushNamed("/terms-and-conditions");
                   },
                 ),
                 GestureDetector(
-                  child: CustomProfileMenu(Icons.summarize_outlined, "Datenschutzinformation"),
+                  child: const CustomProfileMenu(FontAwesomeIcons.fileShield, "Datenschutzinformation"),
                   onTap: () {
                     Navigator.of(context).pushNamed("/privacy-policy");
                   },
                 ),
-                CustomProfileMenu(Icons.summarize_outlined, "Impressum "),
+                const CustomProfileMenu(FontAwesomeIcons.circleInfo, "Impressum "),
                 GestureDetector(
                   child:
-                      CustomProfileMenu(Icons.summarize_outlined, "Abmelden"),
+                      const CustomProfileMenu(FontAwesomeIcons.arrowRightFromBracket, "Abmelden"),
                   onTap: () async {
                     SharedPreferences pref =
                         await SharedPreferences.getInstance();
@@ -84,13 +90,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     Navigator.of(context).pushNamed("/login");
                   },
                 ),
-                Text("Version 1.2.1"),
+                const Text("Version 1.2.4"),
               ],
             ),
           ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(0),
+      bottomNavigationBar: const BottomNavigatorBar(0),
     );
   }
 }

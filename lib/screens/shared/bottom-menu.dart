@@ -19,7 +19,7 @@ class _CustomMenuButtom extends State<BottomNavigatorBar> {
           Navigator.of(context).pushNamedAndRemoveUntil("/home", ModalRoute.withName('/main-menu'));
           break;
         case 1:
-          Navigator.of(context).pushNamedAndRemoveUntil("/comunication", ModalRoute.withName('/main-menu'));
+          Navigator.of(context).pushNamedAndRemoveUntil("/communication", ModalRoute.withName('/main-menu'));
           break;
         case 2:
           Navigator.of(context).pushNamedAndRemoveUntil("/medication", ModalRoute.withName('/main-menu'));

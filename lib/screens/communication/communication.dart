@@ -9,14 +9,14 @@ import '../../apis/apis.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/sub-total.dart';
 
-class ComunicationPage extends StatefulWidget {
-  const ComunicationPage({super.key});
+class CommunicationPage extends StatefulWidget {
+  const CommunicationPage({super.key});
 
   @override
-  State<ComunicationPage> createState() => _ComunicationPageState();
+  State<CommunicationPage> createState() => _CommunicationPageState();
 }
 
-class _ComunicationPageState extends State<ComunicationPage> {
+class _CommunicationPageState extends State<CommunicationPage> {
   Apis apis = Apis();
   DateTime today = DateTime.now();
   String? videoUrl;
@@ -56,7 +56,7 @@ class _ComunicationPageState extends State<ComunicationPage> {
                     Navigator.of(context).pushNamed('/messages');
                   },
                 ),
-                Spacer(),
+                const Spacer(),
                 GestureDetector(
                   child: const CustomSubTotal(
                       Icons.video_call, "Videosprechstunde", null, null, 20),
@@ -82,7 +82,7 @@ class _ComunicationPageState extends State<ComunicationPage> {
           ],
         ),
       )), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(1),
+      bottomNavigationBar: const BottomNavigatorBar(1),
     );
   }
 }

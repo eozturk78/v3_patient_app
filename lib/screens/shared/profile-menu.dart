@@ -12,20 +12,20 @@ class CustomProfileMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 75.0,
-      margin: EdgeInsets.only(bottom: 10),
-      padding: EdgeInsets.only(right: 3),
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(right: 5,left: 15),
       decoration: menuBoxDecoration,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          if (this.iconData != null)
+          if (iconData != null)
             Icon(
               iconData,
-              size: 40,
+              size: 35,
               color: iconColor,
             ),
-          SizedBox(
-            width: 10,
+          const SizedBox(
+            width: 20,
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -33,7 +33,7 @@ class CustomProfileMenu extends StatelessWidget {
             children: [
               Text(
                 headText,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.normal),
               ),
             ],
           ),

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../apis/apis.dart';
 import '../../shared/shared.dart';
@@ -59,16 +60,16 @@ class _MainMenuPageState extends State<MainMenuPage> {
             Row(
               children: [
                 GestureDetector(
-                  child: const CustomSubTotal(Icons.person_outlined,
-                      "Mein Benutzerprofil", null, null, 10),
+                  child: const CustomSubTotal(FontAwesomeIcons.user,
+                      "Mein \nBenutzerprofil", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/profile');
                   },
                 ),
                 Spacer(),
                 GestureDetector(
-                  child: const CustomSubTotal(Icons.person_add_alt_1_outlined,
-                      "Datenmanagement", null, null, 20),
+                  child: const CustomSubTotal(FontAwesomeIcons.fileMedical,
+                      "Datenmanagement\n", null, null, 20),
                   onTap: () {
                     Navigator.of(context).pushNamed('/main-sub-menu');
                   },
@@ -79,8 +80,8 @@ class _MainMenuPageState extends State<MainMenuPage> {
               children: [
                 GestureDetector(
                   child: const CustomSubTotal(
-                      Icons.medical_information_outlined,
-                      "Medikation & Rezepte",
+                      FontAwesomeIcons.kitMedical,
+                      "Medikation & \nRezepte",
                       null,
                       null,
                       10),
@@ -88,12 +89,12 @@ class _MainMenuPageState extends State<MainMenuPage> {
                     Navigator.of(context).pushNamed('/medication');
                   },
                 ),
-                Spacer(),
+                const Spacer(),
                 GestureDetector(
-                  child: const CustomSubTotal(Icons.chat_bubble_outline_rounded,
-                      "Kommunikation", null, null, 20),
+                  child: const CustomSubTotal(FontAwesomeIcons.message,
+                      "Kommunikation\n", null, null, 20),
                   onTap: () {
-                    Navigator.of(context).pushNamed('/comunication');
+                    Navigator.of(context).pushNamed('/communication');
                   },
                 ),
               ],
@@ -104,7 +105,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
               children: [
                 GestureDetector(
                   child: const CustomSubTotal(Icons.info_outline,
-                      "Dokumente & Informationen", null, null, 10),
+                      "Dokumente & \nInformationen", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/info');
                   },
@@ -112,7 +113,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                 Spacer(),
                 GestureDetector(
                   child: const CustomSubTotal(Icons.view_cozy_outlined,
-                      "Schnellzugriff festlegen", null, null, 10),
+                      "Schnellzugriff \nfestlegen", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/quick-access');
                   },

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/shared/toast.dart';
@@ -19,11 +18,11 @@ class _RegistrationCompletedPageState extends State<RegistrationCompletedPage> {
   final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
-    checkRemeberMe();
+    checkRememberMe();
     super.initState();
   }
 
-  checkRemeberMe() async {
+  checkRememberMe() async {
     setState(() {});
   }
 
@@ -32,22 +31,22 @@ class _RegistrationCompletedPageState extends State<RegistrationCompletedPage> {
     return Scaffold(
       appBar: leadingWithoutIcon('Registrierung vervollständigt', context),
       body: Padding(
-        padding: EdgeInsets.all(30),
+        padding: const EdgeInsets.all(30),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.check_circle,
                 size: 120,
-                color: const Color.fromARGB(255, 0, 73, 3),
+                color: Color.fromARGB(255, 0, 73, 3),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Text("Das Patientenkonto wurde erfolgreich erstellt",
+              const Text("Das Patientenkonto wurde erfolgreich erstellt",
                   style: TextStyle(fontWeight: FontWeight.bold)),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               SizedBox(
@@ -56,9 +55,9 @@ class _RegistrationCompletedPageState extends State<RegistrationCompletedPage> {
                   onPressed: () {
                     Navigator.of(context).pushNamed('/login');
                   },
-                  child: Text("ANMELDEN"),
                   style: ElevatedButton.styleFrom(
-                      shape: StadiumBorder(), backgroundColor: mainButtonColor),
+                      shape: const StadiumBorder(), backgroundColor: mainButtonColor),
+                  child: const Text("ANMELDEN"),
                 ),
               ),
             ]),

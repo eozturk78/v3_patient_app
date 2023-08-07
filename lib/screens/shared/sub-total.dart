@@ -36,7 +36,8 @@ class CustomSubTotal extends StatelessWidget {
           Text(
             headText,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontWeight: FontWeight.bold, color: menuTextColor),
+            style: TextStyle(fontWeight: FontWeight.normal, color: menuTextColor,),
+            textAlign: TextAlign.center,
           ),
           SizedBox(
             height: 5,

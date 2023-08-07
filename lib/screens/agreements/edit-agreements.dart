@@ -8,28 +8,27 @@ import '../../apis/apis.dart';
 import '../../shared/shared.dart';
 import '../shared/shared.dart';
 
-class AgreementsPage extends StatefulWidget {
-  const AgreementsPage({super.key});
+class EditAgreementsPage extends StatefulWidget {
+  const EditAgreementsPage({super.key});
   @override
-  State<AgreementsPage> createState() => _AgreementsPageState();
+  State<EditAgreementsPage> createState() => _EditAgreementsPageState();
 }
 
-class _AgreementsPageState extends State<AgreementsPage> {
+class _EditAgreementsPageState extends State<EditAgreementsPage> {
   Shared sh = Shared();
   Apis apis = Apis();
   bool rememberMeState = false;
-  bool check1 = false;
-  bool check2 = false;
-  bool check3 = false;
+  bool check1 = true;
+  bool check2 = true;
+  bool check3 = true;
   bool isSendEP = false;
   @override
   void initState() {
-    // TODO: implement initState
-    checkRemeberMe();
+    checkRememberMe();
     super.initState();
   }
 
-  checkRemeberMe() async {
+  checkRememberMe() async {
     setState(() {});
   }
 
@@ -53,7 +52,7 @@ class _AgreementsPageState extends State<AgreementsPage> {
                   height: 70,
                 ),
                 const Text(
-                  "Willkomen bei iMedCom",
+                  "Willkommen bei iMedCom",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 const SizedBox(
@@ -166,12 +165,17 @@ class _AgreementsPageState extends State<AgreementsPage> {
                       SharedPreferences pref =
                           await SharedPreferences.getInstance();
                       pref.setBool("isAgreementRed", true);
-
-                      //Navigator.of(context).pop();
+                      Navigator.of(context).pop();
                     }
-                    Navigator.of(context).pushNamed('/login');
+                    else
+                    {
+                        SharedPreferences pref =
+                        await SharedPreferences.getInstance();
+                        pref.setBool("isAgreementRed", false);
+                        Navigator.of(context).pushNamedAndRemoveUntil('/login',ModalRoute.withName("/"));
+                    }
                   },
-                  child: Text("Weiter"),
+                  child: const Text("Weiter"),
                 )
               ],
             ),
