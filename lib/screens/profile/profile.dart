@@ -96,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: const BottomNavigatorBar(0),
+      //bottomNavigationBar:  BottomNavigatorBar(0),
     );
   }
 }

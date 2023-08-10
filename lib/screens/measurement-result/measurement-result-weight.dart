@@ -242,7 +242,7 @@ class _MeasurementResultWeightPageState
           ),
         ),
       ),
-      bottomNavigationBar: const BottomNavigatorBar(0),
+      bottomNavigationBar:  BottomNavigatorBar(0),
     );
   }
 }

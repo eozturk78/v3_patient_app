@@ -3,32 +3,37 @@ import 'package:flutter/material.dart';
 import '../../colors/colors.dart';
 
 class BottomNavigatorBar extends StatefulWidget {
-  final int selectedIndex;
-  const BottomNavigatorBar(this.selectedIndex, {super.key});
+  int selectedIndex;
+  BottomNavigatorBar(this.selectedIndex, {super.key});
   @override
-  State<BottomNavigatorBar> createState() => _CustomMenuButtom();
+  State<BottomNavigatorBar> createState() => _CustomMenuButton();
 }
 
-class _CustomMenuButtom extends State<BottomNavigatorBar> {
+class _CustomMenuButton extends State<BottomNavigatorBar> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {
       switch (index) {
         case 0:
-          Navigator.of(context).pushNamedAndRemoveUntil("/home", ModalRoute.withName('/main-menu'));
+          Navigator.of(context).pushNamedAndRemoveUntil("/main-menu", ModalRoute.withName('/main-menu'));
+          //widget.selectedIndex=0;
           break;
         case 1:
           Navigator.of(context).pushNamedAndRemoveUntil("/communication", ModalRoute.withName('/main-menu'));
+          //widget.selectedIndex=1;
           break;
         case 2:
           Navigator.of(context).pushNamedAndRemoveUntil("/medication", ModalRoute.withName('/main-menu'));
+          //widget.selectedIndex=2;
           break;
         case 3:
           Navigator.of(context).pushNamedAndRemoveUntil("/info", ModalRoute.withName('/main-menu'));
+          //widget.selectedIndex=3;
           break;
         case 4:
           Navigator.of(context).pushNamedAndRemoveUntil("/quick-access", ModalRoute.withName('/main-menu'));
+          //widget.selectedIndex=4;
           break;
       }
     });

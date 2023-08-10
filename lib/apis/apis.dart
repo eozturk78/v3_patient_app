@@ -101,6 +101,21 @@ class Apis {
     }
   }
 
+  Future getPatientOnlineMeetings() async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/getPatientOnlineMeetingEvents';
+      var result = await http.get(Uri.parse(finalUrl), headers: {
+        'Content-Type': 'application/text',
+        'lang': lang,
+        'token': pref.getString('token').toString()
+      });
+      return getResponseFromApi(result);
+    } catch (err) {
+      throw Exception("can't decode");
+    }
+  }
+
   Future getPatientFileEvents() async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();

@@ -55,8 +55,10 @@ import 'package:patient_app/screens/registration/registration-2.dart';
 import 'package:patient_app/screens/registration/registration-3.dart';
 import 'package:patient_app/screens/registration/registration-4.dart';
 import 'package:patient_app/screens/settings/settings.dart';
+import 'package:patient_app/screens/shared/customized_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../shared/shared.dart';
+import '../screens/main-menu/route_util.dart';
 
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -158,6 +160,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   //AwesomeNotificationsFCM().createNotificationFromJsonData(message.data);
 }
 
+
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -196,7 +200,7 @@ class MyApp extends StatelessWidget {
         "/communication": (context) => const CommunicationPage(),
         "/info": (context) => const InfoPage(),
         "/medication": (context) => const MedicationPage(),
-        "/quick-access": (context) => const QuickAccessPage(),
+        "/quick-access": (context) => CustomizedMenuPage(),
         "/messages": (context) => const MessagesPage(),
         "/chat": (context) => const ChatPage(),
         "/medical-plan-1": (context) => const MedicalPlan1Page(),
@@ -262,6 +266,7 @@ class _MyHomePageState extends State<MyHomePage> {
       Navigator.of(context).pushReplacementNamed("/main-menu");
     }
   }
+
 
   void initState() {
     super.initState();

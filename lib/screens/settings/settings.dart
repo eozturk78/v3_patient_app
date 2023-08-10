@@ -20,6 +20,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   void initState() {
+    super.initState();
     // Load user preference for notification enable/disable on app startup
     _loadNotificationPreference();
   }
@@ -46,18 +47,18 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: leadingSubpage('Einstellungen', context),
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(15),
+          padding: const EdgeInsets.all(15),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Medikamentenerinnerungen',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 SwitchListTile(
-                  title: Text('Aktivieren Medikamentenerinnerungen'),
+                  title: const Text('Aktivieren Medikamentenerinnerungen'),
                   value: _notificationsEnabled,
                   onChanged: (value) {
                     setState(() {
@@ -66,13 +67,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     _saveMedicationNotificationPreference(value);
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
               ],
             ),
           ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(0),
+      //bottomNavigationBar: BottomNavigatorBar(0),
     );
   }
 }

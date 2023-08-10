@@ -246,7 +246,7 @@ class _MeasurementResultPulsePageState
           ),
         ),
       ),
-      bottomNavigationBar: const BottomNavigatorBar(0),
+      bottomNavigationBar:  BottomNavigatorBar(0),
     );
   }
 }

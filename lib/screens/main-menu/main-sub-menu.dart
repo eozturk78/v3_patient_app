@@ -50,7 +50,7 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
                     Navigator.of(context).pushNamed('/questionnaire-group');
                   },
                 ),
-                Spacer(),
+                const Spacer(),
                 GestureDetector(
                   child: const CustomSubTotal(
                       Icons.medical_information_outlined,
