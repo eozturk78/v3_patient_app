@@ -40,7 +40,7 @@ final Map<String, String> routeDisplayNames = {
   "/medication": "Medication",
   "/messages": "Messages",
   "/chat": "Chat",
-  "/medical-plan-1": "Medical Plan 1",
+  "/medical-plan-1": "Medical Plan",
   "/calendar": "Kalender",
   "/medication-plan-list": "Medication Plan List",
   "/recipes": "Recipes",

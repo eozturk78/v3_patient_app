@@ -30,6 +30,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
   void initState() {
     super.initState();
     getPatientInfo();
+
     _loadMenuItems(); // Load menu items from shared preferences
   }
 
@@ -53,16 +54,12 @@ class _MainMenuPageState extends State<MainMenuPage> {
     }
   }
 
-  void _saveSelectedMenuItems() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> selectedRouteNames =
-    _menuItems.where((item) => item.isSelected).map((item) => item.routeName).toList();
-    prefs.setStringList('selectedMenuItems', selectedRouteNames);
-  }
 
   getPatientInfo() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+
     setState(() {
+      //pref.setString('selectedMenuItems', ''); // To reset quick menu items
       title = pref.getString('patientTitle')!;
       pref.setString("patientTitle", title);
     });

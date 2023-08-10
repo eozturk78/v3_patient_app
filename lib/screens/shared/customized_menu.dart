@@ -20,25 +20,6 @@ class _CustomizedMenuPageState extends State<CustomizedMenuPage> {
     super.initState();
     _loadCustomizedMenuItems();
   }
-  void _loadMenuItems() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? selectedRouteNamesJson = prefs.getString('selectedMenuItems');
-
-    if (selectedRouteNamesJson != null || selectedRouteNamesJson!='') {
-      List<dynamic> selectedRouteNames = jsonDecode(selectedRouteNamesJson!);
-
-      setState(() {
-        _menuItems = allRoutes.entries.map((entry) {
-          return CustomMenuItem(
-            entry.key,
-            entry.key,
-            selectedRouteNames.contains(entry.key), // Check if item is selected
-            0, // Add a default order value
-          );
-        }).toList();
-      });
-    }
-  }
 
   Future<void> _loadCustomizedMenuItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -56,7 +37,6 @@ class _CustomizedMenuPageState extends State<CustomizedMenuPage> {
   }
 
   void _navigateToPage(String routeName) {
-    // Implement the navigation logic based on the route name
     Navigator.of(context).pushNamed(routeName);
   }
 
@@ -84,7 +64,7 @@ class _CustomizedMenuPageState extends State<CustomizedMenuPage> {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 16.0),
             child: ElevatedButton(
-              style: ButtonStyle(backgroundColor: MaterialStateColor.resolveWith((states) => Theme.of(context).errorColor),foregroundColor: MaterialStateColor.resolveWith((states) => Colors.white)),
+              style: ButtonStyle(backgroundColor: MaterialStateColor.resolveWith((states) => Colors.white60), foregroundColor: MaterialStateColor.resolveWith((states) => Theme.of(context).errorColor)),
               onPressed: () => _navigateToPage(routeName),
               child: Text(displayName),
             ),
