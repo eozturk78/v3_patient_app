@@ -68,27 +68,27 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_importance_channel', // id
   'High Importance Notifications', // title
-  description: 'This channel is used for important notifications.', // description
+  description:
+      'This channel is used for important notifications.', // description
   importance: Importance.max,
 );
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
-
+    FlutterLocalNotificationsPlugin();
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize the plugin
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
   // For Android, create an Android Initialization Settings object
   AndroidInitializationSettings androidInitializationSettings =
-  AndroidInitializationSettings('@drawable/ic_launcher');
+      AndroidInitializationSettings('@drawable/ic_launcher');
 
   // For iOS, create an IOS Initialization Settings object
   IOSInitializationSettings iosInitializationSettings =
-  IOSInitializationSettings();
+      IOSInitializationSettings();
 
   // Initialize the settings for each platform
   InitializationSettings initializationSettings = InitializationSettings(
@@ -100,7 +100,8 @@ main() async {
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
   await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 
   await Firebase.initializeApp(
@@ -116,7 +117,6 @@ main() async {
   String? token = await messaging.getToken();
   print('FCM Token: $token');
 
-
   // Set up background message handler
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -129,7 +129,6 @@ main() async {
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     RemoteNotification? notification = message.notification;
     AndroidNotification? android = message.notification?.android;
-
 
     // If `onMessage` is triggered with a notification, construct our own
     // local notification to show to users using the created channel.
@@ -145,7 +144,7 @@ main() async {
               channelDescription: channel.description,
               //icon: android?.smallIcon,
               //icon: "ic_notification",
-                icon: '@drawable/ic_launcher',
+              icon: '@drawable/ic_launcher',
               // other properties...
             ),
           ));
@@ -159,8 +158,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Received background message: ${message.notification?.title}');
   //AwesomeNotificationsFCM().createNotificationFromJsonData(message.data);
 }
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -261,17 +258,16 @@ class _MyHomePageState extends State<MyHomePage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if(isLoggedIn) // prevent going to this screen with back button of android devices, if the user already logged in
-        {
+    if (isLoggedIn) // prevent going to this screen with back button of android devices, if the user already logged in
+    {
       Navigator.of(context).pushReplacementNamed("/main-menu");
     }
   }
 
-
   void initState() {
     super.initState();
 
-      checkRedirection();
+    checkRedirection();
   }
 
 /*
@@ -292,27 +288,26 @@ checkRedirection() async {
   checkRedirection() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
 
-        if (pref.getBool('isAgreementRed') == true)
-          Navigator.of(context).pushReplacementNamed("/login");
-        else
-          Navigator.of(context).pushReplacementNamed("/agreements");
-
+    if (pref.getString('isAgreementRed') == 'true')
+      Navigator.of(context).pushReplacementNamed("/login");
+    else
+      Navigator.of(context).pushReplacementNamed("/agreements");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child:
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-        Image.asset(
-          "assets/images/logo-imedcom.png",
-          width: 200,
-          height: 100,
-        ),])),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+            Image.asset(
+              "assets/images/logo-imedcom.png",
+              width: 200,
+              height: 100,
+            ),
+          ])),
     );
   }
 }
