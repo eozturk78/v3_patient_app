@@ -165,7 +165,7 @@ class _AgreementsPageState extends State<AgreementsPage> {
                     if (check1 && check2 && check3) {
                       SharedPreferences pref =
                           await SharedPreferences.getInstance();
-                      pref.setBool("isAgreementRed", true);
+                      pref.setBool("isAgreementRead", true);
 
                       //Navigator.of(context).pop();
                     }

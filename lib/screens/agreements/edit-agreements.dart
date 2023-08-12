@@ -164,15 +164,14 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                     if (check1 && check2 && check3) {
                       SharedPreferences pref =
                           await SharedPreferences.getInstance();
-                      pref.setBool("isAgreementRed", true);
+                      pref.setBool("isAgreementRead", true);
                       Navigator.of(context).pop();
-                    }
-                    else
-                    {
-                        SharedPreferences pref =
-                        await SharedPreferences.getInstance();
-                        pref.setBool("isAgreementRed", false);
-                        Navigator.of(context).pushNamedAndRemoveUntil('/login',ModalRoute.withName("/"));
+                    } else {
+                      SharedPreferences pref =
+                          await SharedPreferences.getInstance();
+                      pref.setBool("isAgreementRead", false);
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/login', ModalRoute.withName("/"));
                     }
                   },
                   child: const Text("Weiter"),

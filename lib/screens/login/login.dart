@@ -255,7 +255,7 @@ class _LoginPageState extends State<LoginPage> {
   checkRedirection() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
 
-    if (pref.getString('isAgreementRed') == "true") {
+    if (pref.getBool('isAgreementRead') == true) {
       isLoggedIn = true;
       Navigator.of(context).pushReplacementNamed("/main-menu");
     } else {

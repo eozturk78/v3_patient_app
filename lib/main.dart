@@ -270,29 +270,26 @@ class _MyHomePageState extends State<MyHomePage> {
     checkRedirection();
   }
 
-/*
-checkRedirection() async {
+  checkRedirection() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var isAgreementRead = Timer(
       Duration(seconds: 3),
       (() {
-        if (pref.getBool('isAgreementRed') == true)
+        if (pref.getBool('isAgreementRead') == true)
           Navigator.of(context).pushReplacementNamed("/login");
         else
           Navigator.of(context).pushReplacementNamed("/agreements");
       }),
     );
   }
-*/
 
-  checkRedirection() async {
+  /*checkRedirection() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-
-    if (pref.getString('isAgreementRed') == 'true')
+    if (pref.getBool('isAgreementRead') == true)
       Navigator.of(context).pushReplacementNamed("/login");
     else
       Navigator.of(context).pushReplacementNamed("/agreements");
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
