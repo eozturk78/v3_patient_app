@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:patient_app/shared/shared.dart';
 
+import '../../apis/apis.dart';
+import '../../model/recipe.dart';
 import '../shared/bottom-menu.dart';
 
 class RecipesPage extends StatefulWidget {
@@ -15,89 +18,82 @@ class RecipesPage extends StatefulWidget {
 }
 
 class _RecipesPageState extends State<RecipesPage> {
+  Apis apis = Apis();
+  Shared sh = Shared();
+  List<Recipe>? recipeList;
+  bool isStarted = true;
   @override
   void initState() {
     super.initState();
+    onGetRecipes();
+  }
+
+  onGetRecipes() {
+    apis.getPatientRecipes().then((value) {
+      setState(() {
+        isStarted = false;
+        print(value);
+        recipeList = (value as List).map((e) => Recipe.fromJson(e)).toList();
+        if (recipeList != null && recipeList?.length != 0)
+          recipeList![0].isExpanded = true;
+      });
+    }, onError: (err) {
+      setState(() {
+        isStarted = false;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leading('Rezept!', context),
+      appBar: leading('Rezept', context),
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Krankenkasse bzw, Kostentrager",
-              style: TextStyle(fontWeight: FontWeight.bold, color: iconColor),
-            ),
-            Text(
-              "Musterkasse",
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Name, Vername dess Versicherten",
-              style: TextStyle(fontWeight: FontWeight.bold, color: iconColor),
-            ),
-            Text(
-              "Max Mustermann,  Mustergasse 1 12345 Musterstadt",
-              textAlign: TextAlign.left,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              "geb. am",
-              style: TextStyle(fontWeight: FontWeight.bold, color: iconColor),
-            ),
-            Text(
-              "10.10.2000",
-              textAlign: TextAlign.left,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Kassen-Nr",
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: iconColor),
-                ),
-                Text(
-                  "Versicherten-Nr",
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: iconColor),
-                ),
-                Text(
-                  "Status",
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, color: iconColor),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "123456",
-                ),
-                Text(
-                  "1928376",
-                ),
-                Text(
-                  "1001 1",
-                ),
-              ],
-            )
-          ],
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        child: Center(
+            child: SingleChildScrollView(
+                child: isStarted
+                    ? CircularProgressIndicator(
+                        color: mainButtonColor,
+                      )
+                    : recipeList != null
+                        ? ExpansionPanelList(
+                            expansionCallback: (int index, bool isExpanded) {
+                              setState(() {
+                                recipeList![index].isExpanded = !isExpanded;
+                              });
+                            },
+                            children: [
+                                for (var item in recipeList!)
+                                  ExpansionPanel(
+                                    headerBuilder: (BuildContext context,
+                                        bool isExpanded) {
+                                      return ListTile(
+                                        title: Text(item.recipeName),
+                                        subtitle: Text(sh.formatDateTime(
+                                            item.createdAt.toString())),
+                                      );
+                                    },
+                                    body: Column(
+                                      children: [
+                                        Image.network(
+                                            '${apis.apiPublic}/patient_files/${item.qrCodeImage}'),
+                                        ListTile(
+                                          subtitle: Column(
+                                            children: [
+                                              Text(
+                                                item.recipeDescription,
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    isExpanded: item.isExpanded,
+                                  )
+                              ])
+                        : null)),
+      ),
       bottomNavigationBar: BottomNavigatorBar(2),
     );
   }

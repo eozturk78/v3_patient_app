@@ -49,7 +49,9 @@ class _MedicationPageState extends State<MedicationPage> {
                       null,
                       null,
                       20),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/recipes');
+                  },
                 ),
               ],
             ),

@@ -238,7 +238,7 @@ class MyApp extends StatelessWidget {
         "/questionnaire-result": (context) => const QuestionnaireResultPage(),
         "/send-result": (context) => const SendResultPage(),
         "/privacy-policy": (context) => const PrivacyPolicyPage(),
-        "/terms-and-conditions": (context) => const TermsAndConditionsPage(),
+        "/terms-and-conditions": (context) => const TermsAndConditionsPage()
       },
     );
   }

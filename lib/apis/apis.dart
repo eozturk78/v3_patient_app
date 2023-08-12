@@ -57,16 +57,20 @@ class Apis {
     });
 
     var tmpval = getResponseFromApi(result);
-    pref.setBool('medication_notifications_enabled', tmpval==1?true:false);
+    pref.setBool(
+        'medication_notifications_enabled', tmpval == 1 ? true : false);
 
     return tmpval;
   }
 
   Future setPatientMedicationReminderPreference() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    var medicationReminderPreference = pref.getBool('medication_notifications_enabled') ?? true;
+    var medicationReminderPreference =
+        pref.getBool('medication_notifications_enabled') ?? true;
     String finalUrl = '$baseUrl/setPatientMedicationReminderPreference';
-    var params = {'medication_reminder_preference': medicationReminderPreference.toString()};
+    var params = {
+      'medication_reminder_preference': medicationReminderPreference.toString()
+    };
     var result = await http.post(Uri.parse(finalUrl),
         body: params,
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -429,6 +433,21 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future getPatientRecipes() async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/getpatientrecipes';
+      var result = await http.get(Uri.parse(finalUrl), headers: {
+        'Content-Type': 'application/text',
+        'lang': lang,
+        'token': pref.getString('token').toString()
+      });
+      return getResponseFromApi(result);
+    } catch (err) {
+      print(err);
+      throw Exception("can't decode");
+    }
+  }
 
   getResponseFromApi(http.Response result) {
     print(result.body);
