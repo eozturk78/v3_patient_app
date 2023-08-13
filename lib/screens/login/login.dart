@@ -257,9 +257,9 @@ class _LoginPageState extends State<LoginPage> {
 
     if (pref.getBool('isAgreementRead') == true) {
       isLoggedIn = true;
-      Navigator.of(context).pushReplacementNamed("/main-menu");
+      Navigator.of(context).pushNamedAndRemoveUntil("/main-menu",ModalRoute.withName('/main-menu'));
     } else {
-      Navigator.of(context).pushNamed("/agreements");
+      Navigator.of(context).pushReplacementNamed("/agreements");
     }
   }
 
@@ -267,17 +267,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Text(
-          'Anmelden',
-          style: TextStyle(color: Colors.black),
-        ),
-        shadowColor: null,
-        elevation: 0.0,
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-      ),
       body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
