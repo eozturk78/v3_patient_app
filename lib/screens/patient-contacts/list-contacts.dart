@@ -216,6 +216,7 @@ class _ContactsListingPageState extends State<ContactsListingPage>
       itemBuilder: (context, index) {
         var contact = _contacts[index];
         return ExpansionTile(
+          leading: Icon(Icons.phone),
           title: Text(contact['first_name']),
           subtitle: Text(contact['last_name']),
           children: [
