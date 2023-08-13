@@ -449,6 +449,22 @@ class Apis {
     }
   }
 
+  Future getPatientDiagnoses() async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/getpatientdiagnoselist';
+      var result = await http.get(Uri.parse(finalUrl), headers: {
+        'Content-Type': 'application/text',
+        'lang': lang,
+        'token': pref.getString('token').toString()
+      });
+      return getResponseFromApi(result);
+    } catch (err) {
+      print(err);
+      throw Exception("can't decode");
+    }
+  }
+
   getResponseFromApi(http.Response result) {
     print(result.body);
     var body = jsonDecode(result.body);

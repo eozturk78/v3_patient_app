@@ -15,6 +15,7 @@ import 'package:patient_app/screens/description/pulse-description.dart';
 import 'package:patient_app/screens/description/saturation-description.dart';
 import 'package:patient_app/screens/description/temperature-description.dart';
 import 'package:patient_app/screens/description/weight-description.dart';
+import 'package:patient_app/screens/diagnoses/diagnoses.dart';
 import 'package:patient_app/screens/home/home.dart';
 import 'package:patient_app/screens/info/documents-details.dart';
 import 'package:patient_app/screens/info/documents.dart';
@@ -231,6 +232,7 @@ class MyApp extends StatelessWidget {
         "/registration-4": (context) => const Registration4Page(),
         "/created-account-successfully": (context) =>
             const RegistrationCompletedPage(),
+        "/diagnoses": (context) => const DiagnosesPage(),
         "/agreements": (context) => const AgreementsPage(),
         "/edit-agreements": (context) => const EditAgreementsPage(),
         "/redirection": (context) => const RedirectionPage(),

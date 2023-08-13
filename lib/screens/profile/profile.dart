@@ -32,14 +32,21 @@ class _ProfilePageState extends State<ProfilePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
-                  child: const CustomProfileMenu(FontAwesomeIcons.addressCard, "Über mich"),
+                  child: const CustomProfileMenu(
+                      FontAwesomeIcons.addressCard, "Über mich"),
                   onTap: () {
                     Navigator.of(context).pushNamed("/about-me");
                   },
                 ),
-                const CustomProfileMenu(FontAwesomeIcons.hospitalUser, "Meine Diagnosen"),
-                const CustomProfileMenu(
-                    FontAwesomeIcons.bookMedical, "Meine medizinischen Kontakte"),
+                GestureDetector(
+                  child: const CustomProfileMenu(
+                      FontAwesomeIcons.addressCard, "Meine Diagnosen"),
+                  onTap: () {
+                    Navigator.of(context).pushNamed("/diagnoses");
+                  },
+                ),
+                const CustomProfileMenu(FontAwesomeIcons.bookMedical,
+                    "Meine medizinischen Kontakte"),
                 const SizedBox(
                   height: 10,
                 ),
@@ -49,7 +56,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 20,
                 ),
                 GestureDetector(
-                  child: const CustomProfileMenu(FontAwesomeIcons.listCheck, "Einwilligungen"),
+                  child: const CustomProfileMenu(
+                      FontAwesomeIcons.listCheck, "Einwilligungen"),
                   onTap: () {
                     Navigator.of(context).pushNamed("/edit-agreements");
                   },
@@ -74,15 +82,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                 ),
                 GestureDetector(
-                  child: const CustomProfileMenu(FontAwesomeIcons.fileShield, "Datenschutzinformation"),
+                  child: const CustomProfileMenu(
+                      FontAwesomeIcons.fileShield, "Datenschutzinformation"),
                   onTap: () {
                     Navigator.of(context).pushNamed("/privacy-policy");
                   },
                 ),
-                const CustomProfileMenu(FontAwesomeIcons.circleInfo, "Impressum "),
+                const CustomProfileMenu(
+                    FontAwesomeIcons.circleInfo, "Impressum "),
                 GestureDetector(
-                  child:
-                      const CustomProfileMenu(FontAwesomeIcons.arrowRightFromBracket, "Abmelden"),
+                  child: const CustomProfileMenu(
+                      FontAwesomeIcons.arrowRightFromBracket, "Abmelden"),
                   onTap: () async {
                     SharedPreferences pref =
                         await SharedPreferences.getInstance();
