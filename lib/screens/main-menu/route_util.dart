@@ -49,6 +49,8 @@ final Map<String, String> routeDisplayNames = {
   "/documents": "Documents",
   "/document-details": "Document Details",
   "/about-me": "About Me",
+  "/patient-contacts-list": "Meine medizinischen Kontakte"
+
   // ... Add other route display names here
 };
 

@@ -47,6 +47,24 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future getPatientContactsByCategory(String category) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/getPatientContactsByCategory';
+      var params = {
+        'category': category
+      };
+      var result = await http.post(Uri.parse(finalUrl),
+          body: params,
+          headers: {'lang': lang, 'token': pref.getString('token').toString()});
+      //print(result.body);
+      return getResponseFromApi(result);
+
+    } catch (err) {
+      throw Exception("can't decode");
+    }
+  }
+
   Future getPatientMedicationReminderPreference() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/getPatientMedicationReminderPreference';

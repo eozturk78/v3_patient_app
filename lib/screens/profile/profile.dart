@@ -45,8 +45,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     Navigator.of(context).pushNamed("/diagnoses");
                   },
                 ),
-                const CustomProfileMenu(FontAwesomeIcons.bookMedical,
-                    "Meine medizinischen Kontakte"),
+                GestureDetector(
+                  child:
+                  const CustomProfileMenu(FontAwesomeIcons.bookMedical,
+                          "Meine medizinischen Kontakte"), onTap: () {
+                  Navigator.of(context).pushNamed("/patient-contacts-list");
+                },
+                ),
                 const SizedBox(
                   height: 10,
                 ),
