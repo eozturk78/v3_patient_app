@@ -462,8 +462,8 @@ class _ContactsListingPageState extends State<ContactsListingPage>
 
   void _launchPhoneDialer(String phoneNumber) async {
     final url = 'tel:$phoneNumber';
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrl(Uri(scheme: 'tel', path: phoneNumber))) {
+      await launchUrl(Uri(scheme: 'tel', path: phoneNumber));
     } else {
       // TODO: Handle errors, e.g., show a toast or alert
     }
@@ -471,8 +471,8 @@ class _ContactsListingPageState extends State<ContactsListingPage>
 
   void _sendEmail(String email) async {
     final url = 'mailto:$email';
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrl(Uri(scheme: 'mailto', path: email))) {
+      await launchUrl(Uri(scheme: 'mailto', path: email));
     } else {
       throw 'Could not launch $url';
     }
