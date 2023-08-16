@@ -1,5 +1,5 @@
 name: patient_app
-description: A new Flutter project.
+description: A new iMedCom project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.2 <3.0.0'
+  sdk: '>=2.18.2 <=3.13.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -31,7 +31,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  flutter_localizations:
+    sdk: flutter
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -64,12 +65,15 @@ dependencies:
   flutter_local_notifications: ^9.3.2
   firebase_analytics: any
   font_awesome_flutter: ^10.4.0
-  intl: any
+  intl: ^0.18.1
   intl_phone_number_input: any
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  intl_utils: ^2.8.1
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -99,6 +103,7 @@ flutter:
      - assets/images/weight-text-img.png
      - assets/images/saturation-text-img.png
      - assets/images/pulse-text-img.png
+     - lib/l10n/
 
   fonts:
     - family: righteous
@@ -129,3 +134,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_intl:
+  main_locale: de_DE
+  enabled: true

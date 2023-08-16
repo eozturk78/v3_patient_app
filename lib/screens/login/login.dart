@@ -295,7 +295,7 @@ class _LoginPageState extends State<LoginPage> {
                         controller: userNameController,
                         obscureText: false,
                         decoration: const InputDecoration(
-                          labelText: 'User name',
+                          labelText: 'Benutzername',
                         ),
                         validator: (text) => sh.textValidator(text),
                       ),
@@ -303,7 +303,7 @@ class _LoginPageState extends State<LoginPage> {
                         controller: passwordController,
                         obscureText: true,
                         decoration: const InputDecoration(
-                          labelText: 'Password',
+                          labelText: 'Passwort',
                         ),
                         validator: (text) => sh.textValidator(text),
                       ),
@@ -315,7 +315,7 @@ class _LoginPageState extends State<LoginPage> {
                                   remeberMeState = !remeberMeState;
                                 })),
                           ),
-                          Text("Remember me"),
+                          Text("Angemeldet bleiben"),
                         ],
                       ),
                       const SizedBox(
@@ -332,7 +332,7 @@ class _LoginPageState extends State<LoginPage> {
                           onLogin();
                         },
                         child: !isSendEP
-                            ? const Text("Send")
+                            ? const Text("Anmelden")
                             : Transform.scale(
                                 scale: 0.5,
                                 child: const CircularProgressIndicator(
@@ -354,7 +354,7 @@ class _LoginPageState extends State<LoginPage> {
                             mainAxisSize: MainAxisSize.min,
                             children: const <Widget>[
                               Text(
-                                "Login mit touch ID",
+                                "Anmelden mit Touch ID / Face ID",
                                 style: TextStyle(color: mainButtonColor),
                               ),
                               Icon(
@@ -368,7 +368,7 @@ class _LoginPageState extends State<LoginPage> {
                         Column(
                           children: const [
                             Text(
-                                "Bitte melden Sie sich zum ersten Mal an, um die Touch-ID-Anmeldung zu aktivieren")
+                                "Bitte melden Sie sich zum ersten Mal an, um die Touch-ID/Face-ID-Anmeldung zu aktivieren")
                           ],
                         )
                     ],

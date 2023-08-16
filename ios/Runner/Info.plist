@@ -59,5 +59,10 @@
 	<false/>
 	<key>NSFaceIDUsageDescription</key>
 	<string>$(PRODUCT_NAME) Authentication with TouchId or FaceID</string>
+	<key>CFBundleLocalizations</key>
+    <array>
+        <string>de_DE</string>
+        <string>en_US</string>
+    </array>
 </dict>
 </plist>

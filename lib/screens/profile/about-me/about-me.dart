@@ -97,7 +97,7 @@ class _AboutMeState extends State<AboutMe> {
                                     SizedBox(
                                       width: 15,
                                     ),
-                                    Text(aboutPatient['sex'])
+                                    Text(getLocalizedGender(aboutPatient['sex'], context)??aboutPatient['sex']),
                                   ],
                                 ),
                                 SizedBox(
@@ -112,7 +112,7 @@ class _AboutMeState extends State<AboutMe> {
                                     SizedBox(
                                       width: 15,
                                     ),
-                                    Text(aboutPatient['dateOfBirth'])
+                                    Text(formatDate(aboutPatient['dateOfBirth']))
                                   ],
                                 ),
                                 SizedBox(
@@ -157,7 +157,7 @@ class _AboutMeState extends State<AboutMe> {
                                 Row(
                                   children: [
                                     Icon(
-                                      Icons.phone,
+                                      Icons.phone_iphone,
                                       color: iconColor,
                                     ),
                                     SizedBox(
@@ -194,7 +194,16 @@ class _AboutMeState extends State<AboutMe> {
                                       width: 15,
                                     ),
                                     Text(
-                                        "${aboutPatient['address']} / ${aboutPatient['city']}  / ${aboutPatient['postalCode']}")
+                                        "${aboutPatient['address']}"),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 38,
+                                    ),
+                                    Text(
+                                        "${aboutPatient['postalCode']} / ${aboutPatient['city']}")
                                   ],
                                 ),
                               ],

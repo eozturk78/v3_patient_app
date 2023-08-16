@@ -59,42 +59,6 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                   height: 20,
                 ),
                 const Text(
-                  "Damit Sie iMedCom verwenden dürfen , müssen folgende Voraussetzungen erfüllt sein:",
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: mainButtonColor),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  children: [
-                    Checkbox(
-                      onChanged: (value) {
-                        setState(() {
-                          check1 = !check1;
-                        });
-                      },
-                      value: check1,
-                    ),
-                    Flexible(
-                      child: TextButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed('/terms-and-conditions');
-                          },
-                          child: const Text(
-                            "Ich stimme den Nutzungsbedingungen zu.",
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          )),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
                   "Im Rahmen der iMedCom-App-Nutzung werden personenbezogene Daten  verarbeitet:",
                   style: TextStyle(
                       fontSize: 20,
@@ -144,6 +108,42 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                 const SizedBox(
                   height: 20,
                 ),
+                const Text(
+                  "Damit Sie iMedCom verwenden dürfen , müssen folgende Voraussetzungen erfüllt sein:",
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: mainButtonColor),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Checkbox(
+                      onChanged: (value) {
+                        setState(() {
+                          check1 = !check1;
+                        });
+                      },
+                      value: check1,
+                    ),
+                    Flexible(
+                      child: TextButton(
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed('/terms-and-conditions');
+                          },
+                          child: const Text(
+                            "Ich stimme den Nutzungsbedingungen zu.",
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          )),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 TextButton(
                     onPressed: () {
                       Navigator.of(context).pushNamed('/privacy-policy');
@@ -167,11 +167,33 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                       pref.setBool("isAgreementRead", true);
                       Navigator.of(context).pop();
                     } else {
-                      SharedPreferences pref =
-                          await SharedPreferences.getInstance();
-                      pref.setBool("isAgreementRead", false);
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          '/login', ModalRoute.withName("/"));
+                      await showDialog(
+                        context: context,
+                        builder: (BuildContext dialogContext) {
+                          return AlertDialog(
+                            title: Text("Konfirmation"),
+                            content: Text("Sind Sie sicher, dass Sie gehen wollen, ohne allen Bedingungen zuzustimmen?"),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () async {
+                                  SharedPreferences pref =
+                                      await SharedPreferences.getInstance();
+                                  pref.setBool("isAgreementRead", false);
+                                  Navigator.of(context).pushNamedAndRemoveUntil(
+                                      '/login', ModalRoute.withName("/"));
+                                  },
+                                child: Text("Ja"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(dialogContext).pop(); // Return false to not pop
+                                },
+                                child: Text("Nein"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     }
                   },
                   child: const Text("Weiter"),

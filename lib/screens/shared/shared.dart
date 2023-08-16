@@ -1,8 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../../colors/colors.dart';
 import '../../shared/shared.dart';
+import 'package:flutter/foundation.dart' show SynchronousFuture;
+import 'dart:convert';
+
+String formatDate(String inputDate) {
+  DateTime date = DateTime.parse(inputDate); // Convert the input string to a DateTime object
+  DateFormat formatter = DateFormat('dd.MM.yyyy'); // Create a formatter with the desired output format
+  return formatter.format(date); // Format the date and return the formatted string
+}
+
+String? getLocalizedGender(String gender, BuildContext context) {
+  switch (gender) {
+    case 'male':
+      return AppLocalizations.of(context)?.translate('male');
+    case 'female':
+      return AppLocalizations.of(context)?.translate('female');
+    case 'other':
+      return AppLocalizations.of(context)?.translate('other');
+    default:
+      return gender; // Return as is if no translation is available
+  }
+}
+
+
+class AppLocalizations {
+  final Locale locale;
+  Map<String, dynamic>? _localizedStrings;
+
+  AppLocalizations(this.locale);
+
+  static AppLocalizations? of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations);
+  }
+
+  Future<void> load() async {
+    String jsonString = await rootBundle.loadString('lib/l10n/intl_${locale.languageCode}.arb');
+    _localizedStrings = json.decode(jsonString) as Map<String, dynamic>;
+  }
+
+  String? translate(String key) {
+    return _localizedStrings?[key] as String?;
+  }
+
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+  _AppLocalizationsDelegate();
+}
+
+
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
+  const _AppLocalizationsDelegate();
+
+  @override
+  bool isSupported(Locale locale) => ['en', 'de'].contains(locale.languageCode);
+
+  @override
+  Future<AppLocalizations> load(Locale locale) async {
+    final appLocalization = AppLocalizations(locale);
+    await appLocalization.load();
+    return appLocalization;
+  }
+
+  @override
+  bool shouldReload(_AppLocalizationsDelegate old) => false;
+}
 
 leadingWithoutProfile(String title, BuildContext context) {
   return AppBar(
@@ -132,7 +198,7 @@ leadingDescSubpage(String title, BuildContext context) {
   return AppBar(
     leading: IconButton(
       icon: Icon(Icons.arrow_back, color: Colors.black),
-      onPressed: () => Navigator.of(context).pushNamed("/home"),
+      onPressed: () => Navigator.of(context).pop(), //Navigator.of(context).pushNamed("/home"),
     ),
     title: Text(
       title,

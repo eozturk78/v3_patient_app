@@ -37,9 +37,9 @@ class CalendarEvent {
 
 // Map event titles to their corresponding EventType
 final Map<String, EventType> eventTypeMap = {
-  'Doctor Appointment': EventType('Doctor Appointment', Colors.red),
-  'Online Meeting': EventType('Online Meeting', Colors.blue),
-  'File Logs': EventType('File Logs', Colors.orange),
+  'Sprechstunde vor Ort': EventType('Sprechstunde vor Ort', Colors.red),
+  'Videosprechstunde': EventType('Videosprechstunde', Colors.blue),
+  'Dokumente': EventType('Dokumente', Colors.orange),
   // Add more mappings as needed for other event titles
 };
 
@@ -154,6 +154,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
           TableCalendar(
             firstDay: DateTime.now().subtract(Duration(days: 365)),
             lastDay: DateTime.now().add(Duration(days: 365)),
+            locale: 'DE',
+            availableCalendarFormats: const {CalendarFormat.month : 'Monat',},
+            pageJumpingEnabled: true,
+            startingDayOfWeek: StartingDayOfWeek.monday,
             focusedDay: _selectedDay,
             selectedDayPredicate: (day) {
               return isSameDay(_selectedDay, day);
@@ -210,9 +214,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   List<EventType> _getEventTypes() {
     return [
-      EventType('Doctor Appointment', Colors.red),
-      EventType('Online Meeting', Colors.blue),
-      EventType('File Logs', Colors.orange),
+      EventType('Sprechstunde vor Ort', Colors.red),
+      EventType('Videosprechstunde', Colors.blue),
+      EventType('Dokumente', Colors.orange),
     ];
   }
 }
@@ -225,7 +229,7 @@ class Legend extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: eventTypes
@@ -236,8 +240,8 @@ class Legend extends StatelessWidget {
               height: 12,
               color: eventType.color,
             ),
-            SizedBox(width: 5),
-            Text(eventType.title),
+            SizedBox(width: 2),
+            Text(eventType.title),SizedBox(width: 2),
           ],
         ))
             .toList(),
@@ -263,7 +267,7 @@ class EventList extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'Events on ${selectedDay.day}/${selectedDay.month}/${selectedDay.year}',
+              'Veranstaltungen am ${selectedDay.day.toString().padLeft(2,"0")}.${selectedDay.month.toString().padLeft(2,"0")}.${selectedDay.year}',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),

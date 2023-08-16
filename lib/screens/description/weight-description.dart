@@ -24,7 +24,7 @@ class _WeightDescriptionPageState extends State<WeightDescriptionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingDescSubpage('Vitalwerte!', context),
+      appBar: leadingDescSubpage('Vitalwerte', context),
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(

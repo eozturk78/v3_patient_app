@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                           ? bloodPressureValue == "~"
                               ? "Bitte tägliche Messung durchführen"
                               : "Tägliche Messung  erfolgreich übermittelt"
-                          : "Warten Sie mal",
+                          : "Lädt...",
                       bloodPressureValue == "~" ? 10 : 20),
                   onTap: () {
                     Navigator.of(context).pushNamed('/measurement-result');
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
                           ? weightValue == "~"
                               ? "Bitte tägliche Messung durchführen"
                               : "Tägliche Messung  erfolgreich übermittelt"
-                          : "Warten Sie mal",
+                          : "Lädt...",
                       weightValue == "~" ? 10 : 20),
                   onTap: () {
                     Navigator.of(context)
@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                           ? pulseValue == "~"
                               ? "Bitte tägliche Messung durchführen"
                               : "Tägliche Messung  erfolgreich übermittelt"
-                          : "Warten Sie mal",
+                          : "Lädt...",
                       pulseValue == "~" ? 10 : 20),
                   onTap: () {
                     Navigator.of(context)
@@ -135,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                           ? temperatureValue == "~"
                               ? "Bitte tägliche Messung durchführen"
                               : "Tägliche Messung  erfolgreich übermittelt"
-                          : "Warten Sie mal",
+                          : "Lädt...",
                       temperatureValue == "~" ? 10 : 20),
                   onTap: () {
                     Navigator.of(context)
@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                           ? saturationValue == "~"
                               ? "Bitte tägliche Messung durchführen"
                               : "Tägliche Messung  erfolgreich übermittelt"
-                          : "Warten Sie mal",
+                          : "Lädt...",
                       saturationValue == "~" ? 10 : 20),
                   onTap: () {
                     Navigator.of(context)

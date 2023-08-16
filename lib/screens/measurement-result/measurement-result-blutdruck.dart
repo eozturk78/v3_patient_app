@@ -226,7 +226,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                       "Mehr Informationen über die Einstufung Ihrer Messwerte",
                       style: TextStyle(
                           overflow: TextOverflow.ellipsis,
-                          fontSize: 14,
+                          fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: Colors.blue),
                     ),

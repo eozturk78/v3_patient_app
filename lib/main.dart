@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_file.dart';
 import 'package:patient_app/screens/agreements/agreements.dart';
 import 'package:patient_app/screens/agreements/edit-agreements.dart';
 import 'package:patient_app/screens/agreements/privacy-policy.dart';
@@ -58,9 +59,13 @@ import 'package:patient_app/screens/registration/registration-3.dart';
 import 'package:patient_app/screens/registration/registration-4.dart';
 import 'package:patient_app/screens/settings/settings.dart';
 import 'package:patient_app/screens/shared/customized_menu.dart';
+import 'package:patient_app/screens/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../shared/shared.dart';
 import '../screens/main-menu/route_util.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart';
+import '/generated/l10n.dart';
 
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -168,6 +173,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('de', ''), // German
+      ],
       color: Colors.transparent,
       debugShowCheckedModeBanner: false,
       title: 'iMedCom Patient App',
