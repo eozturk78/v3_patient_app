@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/toast.dart';
@@ -162,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
         });
         authenticated = await auth.authenticate(
           localizedReason:
-              'Scan your fingerprint (or face or whatever) to authenticate',
+              'Scan your fingerprint (or face) to authenticate',
           options: const AuthenticationOptions(
             stickyAuth: true,
             biometricOnly: true,
@@ -207,6 +209,11 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   onLogin() async {
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      print('Has internet connection!');
+
+
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString("userName", userNameController.text);
     if (remeberMeState) {
@@ -243,8 +250,38 @@ class _LoginPageState extends State<LoginPage> {
         isSendEP = false;
       });
       print(err);
-      sh.redirectPatient(err, context);
+      try {
+        sh.redirectPatient(err, context);
+      }
+      catch(e){
+          showToast(e.toString());
+      }
     });
+
+    } else {
+      //showToast("No internet connection!");
+      //return AlertDialog(title: Text("Error"), content: Text("No internet connection!"),);
+      if(context.mounted) {
+        showDialog(context: context, builder: (BuildContext context) {
+          return AlertDialog(title: const Text("Fehler"),
+            content: const Text("Keine Internetverbindung!"),
+            actions: <Widget>[
+              TextButton(
+                style: TextButton.styleFrom(
+                  textStyle: Theme
+                      .of(context)
+                      .textTheme
+                      .labelLarge,
+                ),
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],);
+        });
+      }
+    }
   }
 
   Future<void> _cancelAuthentication() async {
@@ -350,9 +387,9 @@ class _LoginPageState extends State<LoginPage> {
                             primary: mainButtonColor,
                           ),
                           onPressed: _authenticateWithBiometrics,
-                          child: Row(
+                          child: const Row(
                             mainAxisSize: MainAxisSize.min,
-                            children: const <Widget>[
+                            children: <Widget>[
                               Text(
                                 "Anmelden mit Touch ID / Face ID",
                                 style: TextStyle(color: mainButtonColor),
@@ -365,8 +402,8 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       if (proceedLoginWithTouchId)
-                        Column(
-                          children: const [
+                        const Column(
+                          children: [
                             Text(
                                 "Bitte melden Sie sich zum ersten Mal an, um die Touch-ID/Face-ID-Anmeldung zu aktivieren")
                           ],
