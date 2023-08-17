@@ -60,6 +60,8 @@ class _DocumentListPageState extends State<DocumentListPage> {
         setState(() {
           isStarted = false;
           folderList = (value as List).map((e) => Folder.fromJson(e)).toList();
+          print(folderList);
+          folderId = folderList[0].id;
         });
       },
       onError: (err) => setState(
@@ -80,7 +82,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
   }
 
   String fileName = "";
-  int folderId = 1;
+  late int folderId;
   setPatientFile() {
     File? file;
     if (selectedPhotoImage == null && selectedFile != null) {
@@ -115,6 +117,8 @@ class _DocumentListPageState extends State<DocumentListPage> {
       setState(() {
         isSendEP = false;
       });
+    }).then((value) {
+      getPatientFolders();
     });
   }
 
@@ -144,13 +148,15 @@ class _DocumentListPageState extends State<DocumentListPage> {
                           ),
                           for (var item in folderList)
                             GestureDetector(
-                                onTap: () {
-                                  onGotoFileScreen(item.id, item.folderName);
-                                },
-                                child: CustomDocumentBox(
-                                    Icons.medication_outlined,
-                                    item.folderName,
-                                    item.fileCount)),
+                              onTap: () {
+                                onGotoFileScreen(item.id, item.folderName);
+                              },
+                              child: CustomDocumentBox(
+                                Icons.medication_outlined,
+                                item.folderName,
+                                item.fileCount,
+                              ),
+                            ),
                         ],
                       ),
                     ),
@@ -185,6 +191,20 @@ class _DocumentListPageState extends State<DocumentListPage> {
         children: [
           FloatingActionButton.extended(
             onPressed: () async {
+              setState(() {
+                showDialog(
+                  context: context,
+                  builder: (context) => onOpenFolderInfo(context),
+                ).then((resp) {
+                  getPatientFolders();
+                });
+              });
+            },
+            icon: new Icon(Icons.file_present_outlined),
+            label: Text("neuer Ordner"),
+          ),
+          FloatingActionButton.extended(
+            onPressed: () async {
               XFile? pickedFile = await ImagePicker().pickImage(
                 source: ImageSource.camera,
               );
@@ -195,7 +215,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                     context: context,
                     builder: (context) => onOpenImage(context),
                   ).then((resp) {
-                    Navigator.pop(context, resp);
+                    if (resp != null) Navigator.pop(context, resp);
                   });
                 });
               }
@@ -273,7 +293,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                                 context,
                               ),
                             ).then((resp) {
-                              Navigator.pop(context, resp);
+                              if (resp != null) Navigator.pop(context, resp);
                             });
                           },
                           child: Icon(Icons.check))
@@ -344,7 +364,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
         builder: (BuildContext context, setState) {
           return SizedBox(
             width: MediaQuery.of(context).size.width * 0.6,
-            height: 400,
+            height: 300,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -356,7 +376,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "KATEGORIE",
+                        "Speicherort",
                         style: labelText,
                       ),
                       if (folderList.isNotEmpty)
@@ -387,7 +407,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                         height: 20,
                       ),
                       Text(
-                        "BESCHREIBUNG",
+                        "Name des Dokuments",
                         style: labelText,
                       ),
                       TextFormField(
@@ -408,6 +428,86 @@ class _DocumentListPageState extends State<DocumentListPage> {
                             isSendEP = true;
                           });
                           setPatientFile();
+                        },
+                        child: !isSendEP
+                            ? const Text("Senden")
+                            : Transform.scale(
+                                scale: 0.5,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                )),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+
+
+  Widget onOpenFolderInfo(BuildContext context) {
+    TextEditingController folderNameController = new TextEditingController();
+    Shared sh = Shared();
+    bool isSendEP = false;
+    return AlertDialog(
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 10,
+      ),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 0,
+        vertical: 0,
+      ),
+      content: StatefulBuilder(
+        builder: (BuildContext context, setState) {
+          return SizedBox(
+            width: MediaQuery.of(context).size.width * 0.6,
+            height: 200,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10, top: 50),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Folder Name"),
+                      TextFormField(
+                        controller: folderNameController,
+                        obscureText: false,
+                        validator: (text) => sh.textValidator(text),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(40),
+                          primary: mainButtonColor,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isSendEP = true;
+                          });
+                          apis
+                              .setPatientFolderName(
+                                  null, folderNameController.text)
+                              .then((resp) {
+                            setState(() {
+                              isSendEP = false;
+                            });
+                            Navigator.of(context)
+                                .pop(folderNameController.text);
+                          }, onError: (err) {
+                            setState(() {
+                              isSendEP = false;
+                            });
+                          });
                         },
                         child: !isSendEP
                             ? const Text("Senden")

@@ -51,15 +51,12 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/getPatientContactsByCategory';
-      var params = {
-        'category': category
-      };
+      var params = {'category': category};
       var result = await http.post(Uri.parse(finalUrl),
           body: params,
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
       //print(result.body);
       return getResponseFromApi(result);
-
     } catch (err) {
       throw Exception("can't decode");
     }
@@ -243,15 +240,55 @@ class Apis {
     }
   }
 
+  Future setPatientFolderName(String? folderId, String folderName) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/setpatientfoldername';
+      var body = {"foldername": folderName};
+      if (folderId != null) body['folderid'] = folderId;
+      print(body);
+      var result = await http.post(Uri.parse(finalUrl),
+          body: body,
+          headers: {'lang': lang, 'token': pref.getString('token').toString()});
+      return getResponseFromApi(result);
+    } catch (err) {
+      print(err);
+      throw Exception("can't decode");
+    }
+  }
+
+  Future deletePatientFolder(int folderId) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/deletepatientfolder?folderid=$folderId';
+      print(finalUrl);
+      var result = await http.delete(Uri.parse(finalUrl),
+          headers: {'lang': lang, 'token': pref.getString('token').toString()});
+      print(result);
+      return getResponseFromApi(result);
+    } catch (err) {
+      throw Exception("can't decode");
+    }
+  }
+
+  Future deletePatientFile(int fileId) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/deletepatientfile?fileid=$fileId';
+      var result = await http.delete(Uri.parse(finalUrl),
+          headers: {'lang': lang, 'token': pref.getString('token').toString()});
+      return getResponseFromApi(result);
+    } catch (err) {
+      throw Exception("can't decode");
+    }
+  }
+
   Future getPatientFiles(int folderId) async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/getpatientfiles?folderid=$folderId';
-      var result = await http.get(Uri.parse(finalUrl), headers: {
-        'Content-Type': 'application/text',
-        'lang': lang,
-        'token': pref.getString('token').toString()
-      });
+      var result = await http.get(Uri.parse(finalUrl),
+          headers: {'lang': lang, 'token': pref.getString('token').toString()});
       return getResponseFromApi(result);
     } catch (err) {
       print(err);
@@ -340,6 +377,20 @@ class Apis {
         .addAll({'lang': lang, 'token': pref.getString('token').toString()});
     var response = await request.send();
     var result = await http.Response.fromStream(response);
+    return getResponseFromApi(result);
+  }
+
+  Future movePatientFile(int? fileId, String fileName, int folderId) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/movepatientfile';
+    var params = {
+      'fileId': fileId.toString(),
+      'fileName': fileName,
+      'folderId': folderId.toString()
+    };
+    var result = await http.post(Uri.parse(finalUrl),
+        body: params,
+        headers: {'lang': lang, 'token': pref.getString('token').toString()});
     return getResponseFromApi(result);
   }
 
