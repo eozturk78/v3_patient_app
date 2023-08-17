@@ -3,5 +3,11 @@
   "male": "Männlich",
   "female": "Weiblich",
   "other": "Divers",
-  "diverse": "Divers"
+  "diverse": "Divers",
+  "First Name": "Vorname",
+  "Last Name": "Nachname",
+  "Phone": "Telefon",
+  "Institution Name": "Institutionsname",
+  "Institution Address": "Adresse der Institution",
+  "Edit Contact": "Kontakt aktualisieren"
 }

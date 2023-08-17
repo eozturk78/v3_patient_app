@@ -364,7 +364,7 @@ class _ContactsListingPageState extends State<ContactsListingPage>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Edit Contact'),
+          title: Text(AppLocalizations.of(context)?.translate('Edit Contact')??'Edit Contact'),
           content: Form(
             key: _formKey,
             child: SingleChildScrollView(
@@ -394,16 +394,16 @@ class _ContactsListingPageState extends State<ContactsListingPage>
                   ),
                   TextFormField(
                     controller: firstNameController,
-                    decoration: InputDecoration(labelText: 'First Name'),
+                    decoration: InputDecoration(labelText: AppLocalizations.of(context)?.translate('First Name')??'First Name'),
                   ),
                   TextFormField(
                     controller: lastNameController,
-                    decoration: InputDecoration(labelText: 'Last Name'),
+                    decoration: InputDecoration(labelText: AppLocalizations.of(context)?.translate('Last Name')??'Last Name'),
                   ),
                   TextFormField(
                     keyboardType: TextInputType.phone,
                     controller: phoneController,
-                    decoration: InputDecoration(labelText: 'Phone'),
+                    decoration: InputDecoration(labelText: AppLocalizations.of(context)?.translate('Phone')??'Phone'),
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
                         return 'Required';
@@ -417,12 +417,12 @@ class _ContactsListingPageState extends State<ContactsListingPage>
                   ),
                   TextFormField(
                     controller: institutionNameController,
-                    decoration: InputDecoration(labelText: 'Institution Name'),
+                    decoration: InputDecoration(labelText: AppLocalizations.of(context)?.translate('Institution Name')??'Institution Name'),
                   ),
                   TextFormField(
                     controller: institutionAddressController,
                     decoration:
-                    InputDecoration(labelText: 'Institution Address'),
+                    InputDecoration(labelText: AppLocalizations.of(context)?.translate('Institution Address')??'Institution Address'),
                   ),
                 ],
               ),

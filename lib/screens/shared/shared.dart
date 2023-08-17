@@ -14,6 +14,7 @@ String formatDate(String inputDate) {
   return formatter.format(date); // Format the date and return the formatted string
 }
 
+
 String? getLocalizedGender(String gender, BuildContext context) {
   switch (gender) {
     case 'male':

@@ -70,15 +70,43 @@ class S {
     );
   }
 
-  /// `Andere`
+  /// `Divers`
   String get other {
     return Intl.message(
-      'Andere',
+      'Divers',
       name: 'other',
       desc: '',
       args: [],
     );
   }
+
+  /// `Divers`
+  String get diverse {
+    return Intl.message(
+      'Divers',
+      name: 'diverse',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // skipped getter for the 'First Name' key
+
+  // skipped getter for the 'Last Name' key
+
+  /// `Telefon`
+  String get Phone {
+    return Intl.message(
+      'Telefon',
+      name: 'Phone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // skipped getter for the 'Institution Name' key
+
+  // skipped getter for the 'Institution Address' key
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -2,5 +2,11 @@
   "@@locale": "de_DE",
   "male": "Männlich",
   "female": "Weiblich",
-  "other": "Andere"
+  "other": "Divers",
+  "diverse": "Divers",
+  "First Name": "Vorname",
+  "Last Name": "Nachname",
+  "Phone": "Telefon",
+  "Institution Name": "Institutionsname",
+  "Institution Address": "Adresse der Institution"
 }
