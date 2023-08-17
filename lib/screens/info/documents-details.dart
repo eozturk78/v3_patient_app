@@ -184,10 +184,16 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                           ),
                           for (var item in fileList)
                             GestureDetector(
-                                onTap: () {
-                                  var fileUrl =
+                                onTap: () async {
+                                  var fileUrl = "";
+
+                                  fileUrl =
                                       '${apis.apiPublic}/patient_files/${item.fileUrl}';
-                                  if (fileUrl.contains('pdf')) {
+
+                                  if (item.fileUrl.contains('treatmentid')) {
+                                    await launch(
+                                        '${apis.apiPublic}/${item.fileUrl}');
+                                  } else if (fileUrl.contains('pdf')) {
                                     PDFDocument.fromURL(fileUrl).then((value) {
                                       setState(() {
                                         isPdf = true;
