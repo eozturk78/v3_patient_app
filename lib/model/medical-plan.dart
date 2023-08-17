@@ -1,5 +1,6 @@
 class MedicalPlan {
   final String treatmentId;
+  String? mpName;
   DateTime? updatedAt;
   final String createdAt;
   DateTime? sendDate;
@@ -8,6 +9,7 @@ class MedicalPlan {
 
   MedicalPlan(
       {required this.treatmentId,
+      this.mpName,
       this.updatedAt,
       required this.createdAt,
       required this.sendDate,
@@ -17,6 +19,7 @@ class MedicalPlan {
   factory MedicalPlan.fromJson(Map<String, dynamic> json) {
     return MedicalPlan(
       treatmentId: json['treatmentid'],
+      mpName: json['mpname'],
       updatedAt:
           json['updatedat'] != null ? DateTime.parse(json['updatedat']) : null,
       createdAt: json['createdat'],

@@ -46,11 +46,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                 ),
                 GestureDetector(
-                  child:
-                  const CustomProfileMenu(FontAwesomeIcons.bookMedical,
-                          "Meine medizinischen Kontakte"), onTap: () {
-                  Navigator.of(context).pushNamed("/patient-contacts-list");
-                },
+                  child: const CustomProfileMenu(FontAwesomeIcons.bookMedical,
+                      "Meine medizinischen Kontakte"),
+                  onTap: () {
+                    Navigator.of(context).pushNamed("/patient-contacts-list");
+                  },
                 ),
                 const SizedBox(
                   height: 10,
@@ -69,8 +69,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const CustomProfileMenu(
                     Icons.folder_copy_outlined, "Auszug meiner Daten"),
-                const CustomProfileMenu(
-                    FontAwesomeIcons.userPen, "Benutzerkonto bearbeiten"),
                 const SizedBox(
                   height: 10,
                 ),
@@ -93,8 +91,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     Navigator.of(context).pushNamed("/privacy-policy");
                   },
                 ),
-                const CustomProfileMenu(
-                    FontAwesomeIcons.circleInfo, "Impressum "),
+                GestureDetector(
+                  child: const CustomProfileMenu(
+                      FontAwesomeIcons.fileShield, "Impressum"),
+                  onTap: () {
+                    Navigator.of(context).pushNamed("/impresum");
+                  },
+                ),
                 GestureDetector(
                   child: const CustomProfileMenu(
                       FontAwesomeIcons.arrowRightFromBracket, "Abmelden"),

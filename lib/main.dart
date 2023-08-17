@@ -18,6 +18,7 @@ import 'package:patient_app/screens/description/temperature-description.dart';
 import 'package:patient_app/screens/description/weight-description.dart';
 import 'package:patient_app/screens/diagnoses/diagnoses.dart';
 import 'package:patient_app/screens/home/home.dart';
+import 'package:patient_app/screens/impresum/impresum.dart';
 import 'package:patient_app/screens/info/documents-details.dart';
 import 'package:patient_app/screens/info/documents.dart';
 import 'package:patient_app/screens/info/enlightenment.dart';
@@ -256,8 +257,8 @@ class MyApp extends StatelessWidget {
         "/send-result": (context) => const SendResultPage(),
         "/privacy-policy": (context) => const PrivacyPolicyPage(),
         "/terms-and-conditions": (context) => const TermsAndConditionsPage(),
-        "/patient-contacts-list": (context) => ContactsListingPage()
-
+        "/patient-contacts-list": (context) => ContactsListingPage(),
+        "/impresum": (context) => ImpresumPage()
       },
     );
   }

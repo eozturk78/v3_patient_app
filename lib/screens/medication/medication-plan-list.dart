@@ -72,7 +72,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                       '${apis.apiPublic}/medicalplan-pdf?treatmentid=${element.treatmentId}');
                                 },
                                 child: CustomMedicationPlanBox(
-                                    "Medikamentenplan_02_${sh.formatDateImc(element.createdAt)}",
+                                    element.mpName ?? "noname",
                                     element.createdAt != null
                                         ? sh.formatDateImc(element.createdAt)
                                         : "",

@@ -55,17 +55,6 @@ class _MedicationPageState extends State<MedicationPage> {
                 ),
               ],
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  child: const CustomSubTotal(Icons.medication_liquid_outlined,
-                      "Polymed. Check", null, null, 10),
-                  onTap: () {},
-                ),
-              ],
-            ),
           ],
         ),
       )), // This trailing comma makes auto-formatting nicer for build methods.

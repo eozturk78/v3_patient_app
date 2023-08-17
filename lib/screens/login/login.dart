@@ -240,6 +240,7 @@ class _LoginPageState extends State<LoginPage> {
         print(value['firstName']);
         pref.setString("patientTitle", value['firstName']);
         pref.setString('token', value['token']);
+        pref.setString('patientGroups', jsonEncode(value['token']));
 
         //isLoggedIn = true;
         //Navigator.of(context).pushReplacementNamed("/main-menu");
@@ -294,7 +295,8 @@ class _LoginPageState extends State<LoginPage> {
 
     if (pref.getBool('isAgreementRead') == true) {
       isLoggedIn = true;
-      Navigator.of(context).pushNamedAndRemoveUntil("/main-menu",ModalRoute.withName('/main-menu'));
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          "/main-menu", ModalRoute.withName('/main-menu'));
     } else {
       Navigator.of(context).pushReplacementNamed("/agreements");
     }
