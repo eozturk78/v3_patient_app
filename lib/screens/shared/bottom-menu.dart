@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../colors/colors.dart';
 
@@ -20,11 +21,11 @@ class _CustomMenuButton extends State<BottomNavigatorBar> {
           //widget.selectedIndex=0;
           break;
         case 1:
-          Navigator.of(context).pushNamedAndRemoveUntil("/communication", ModalRoute.withName('/main-menu'));
+          Navigator.of(context).pushNamedAndRemoveUntil("/medication", ModalRoute.withName('/main-menu'));
           //widget.selectedIndex=1;
           break;
         case 2:
-          Navigator.of(context).pushNamedAndRemoveUntil("/medication", ModalRoute.withName('/main-menu'));
+          Navigator.of(context).pushNamedAndRemoveUntil("/communication", ModalRoute.withName('/main-menu'));
           //widget.selectedIndex=2;
           break;
         case 3:
@@ -48,28 +49,28 @@ class _CustomMenuButton extends State<BottomNavigatorBar> {
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.summarize_outlined,
+            FontAwesomeIcons.fileMedical,
             size: 30,
           ),
           label: '',
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.group,
+            FontAwesomeIcons.kitMedical,
             size: 30,
           ),
           label: '',
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.add_box_outlined,
+            FontAwesomeIcons.message,
             size: 30,
           ),
           label: '',
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.description_outlined,
+            Icons.info_outline,
             size: 30,
           ),
           label: '',

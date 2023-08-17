@@ -62,6 +62,59 @@ class Apis {
     }
   }
 
+  Future createPatientContact(dynamic contactdata) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/createPatientContact';
+      contactdata['category']=contactdata['category'].toString();
+      print(contactdata);
+      var result = await http.post(Uri.parse(finalUrl),
+          body: contactdata,
+          headers: {'lang': lang, 'token': pref.getString('token').toString()});
+      return getResponseFromApi(result);
+    } catch (err) {
+      print(err);
+      throw Exception("Can't create new contact!");
+    }
+  }
+
+
+  Future updatePatientContact(Map<String, dynamic> contactdata) async{
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/updatePatientContact';
+      contactdata['category']=contactdata['category'].toString();
+      contactdata['id']=contactdata['id'].toString();
+
+      print(contactdata);
+      var result = await http.post(Uri.parse(finalUrl),
+          body: contactdata,
+          headers: {'lang': lang, 'token': pref.getString('token').toString()});
+      return getResponseFromApi(result);
+    } catch (err) {
+      print(err);
+      throw Exception("Can't update the contact!");
+    }
+  }
+
+  Future deletePatientContact(Map<String, dynamic> contactdata) async{
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/deletePatientContact';
+
+      contactdata['id']=contactdata['id'].toString();
+
+      print(contactdata);
+      var result = await http.post(Uri.parse(finalUrl),
+          body: contactdata,
+          headers: {'lang': lang, 'token': pref.getString('token').toString()});
+      return getResponseFromApi(result);
+    } catch (err) {
+      print(err);
+      throw Exception("Can't delete the contact!");
+    }
+  }
+
   Future getPatientMedicationReminderPreference() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/getPatientMedicationReminderPreference';
@@ -570,4 +623,6 @@ class Apis {
       throw Exception(body['message']);
     }
   }
+
+
 }

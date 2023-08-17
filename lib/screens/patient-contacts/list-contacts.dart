@@ -110,7 +110,7 @@ class _ContactsListingPageState extends State<ContactsListingPage>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add New Contact'),
+          title: Text('Neuen Kontakt hinzufügen'),
           content: Form(
             key: _formKey,
             child: SingleChildScrollView(
@@ -140,19 +140,19 @@ class _ContactsListingPageState extends State<ContactsListingPage>
                   ),
                   TextFormField(
                     controller: firstNameController,
-                    decoration: InputDecoration(labelText: 'First Name'),
+                    decoration: InputDecoration(labelText: AppLocalizations.of(context)?.translate('First Name')??'First Name'),
                   ),
                   TextFormField(
                     controller: lastNameController,
-                    decoration: InputDecoration(labelText: 'Last Name'),
+                    decoration: InputDecoration(labelText: AppLocalizations.of(context)?.translate('Last Name')??'Last Name'),
                   ),
                   TextFormField(
                     keyboardType: TextInputType.phone,
                     controller: phoneController,
-                    decoration: InputDecoration(labelText: 'Phone'),
+                    decoration: InputDecoration(labelText: AppLocalizations.of(context)?.translate('Phone')??'Phone'),
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
-                        return 'Required';
+                        return 'Notwendig';
                       }
                       return null;
                     },
@@ -163,12 +163,12 @@ class _ContactsListingPageState extends State<ContactsListingPage>
                   ),
                   TextFormField(
                     controller: institutionNameController,
-                    decoration: InputDecoration(labelText: 'Institution Name'),
+                    decoration: InputDecoration(labelText: AppLocalizations.of(context)?.translate('Institution Name')??'Institution Name'),
                   ),
                   TextFormField(
                     controller: institutionAddressController,
                     decoration:
-                    InputDecoration(labelText: 'Institution Address'),
+                    InputDecoration(labelText: AppLocalizations.of(context)?.translate('Institution Address')??'Institution Address'),
                   ),
                 ],
               ),
@@ -176,7 +176,7 @@ class _ContactsListingPageState extends State<ContactsListingPage>
           ),
           actions: [
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   // Save the new contact and close the dialog
                   Map<String, dynamic> newContact = {
@@ -190,17 +190,19 @@ class _ContactsListingPageState extends State<ContactsListingPage>
                   };
                   // Add logic to save the new contact using _apis class or other methods
                   _contacts.add(newContact);
-                  Navigator.pop(context);
+                  await _apis.createPatientContact(newContact).then((value) => Navigator.pop(context));
+
+
                 }
               },
-              child: Text('Save'),
+              child: Text('Speichern'),
             ),
             TextButton(
               onPressed: () {
                 // Close the dialog without saving
                 Navigator.pop(context);
               },
-              child: Text('Cancel'),
+              child: Text('Abbrechen'),
             ),
           ],
         );
@@ -210,7 +212,7 @@ class _ContactsListingPageState extends State<ContactsListingPage>
 
   Widget _buildContactList(int category) {
     return _contacts.isEmpty
-        ? const Center(child: Text('No contacts available.'))
+        ? const Center(child: Text('Keine Kontakte verfügbar.'))
         : ListView.builder(
       itemCount: _contacts.length,
       itemBuilder: (context, index) {
@@ -225,12 +227,12 @@ class _ContactsListingPageState extends State<ContactsListingPage>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildContactDetailRow("Phone", contact['phone_number']),
+                  _buildContactDetailRow(AppLocalizations.of(context)?.translate('Phone')??'Phone', contact['phone_number']),
                   _buildContactDetailRow("Email", contact['email']),
                   _buildContactDetailRow(
-                      "Institution Name", contact['institution_name']),
+                      AppLocalizations.of(context)?.translate('Institution Name')??'Institution Name', contact['institution_name']),
                   _buildContactDetailRow(
-                      "Institution Address", contact['institution_address']),
+                      AppLocalizations.of(context)?.translate('Institution Address')??'Institution Address', contact['institution_address']),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -317,21 +319,22 @@ class _ContactsListingPageState extends State<ContactsListingPage>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Contact'),
-          content: Text('Are you sure you want to delete this contact?'),
+          title: Text('Kontakt löschen'),
+          content: Text('Sind Sie sicher, dass Sie diesen Kontakt löschen möchten?'),
           actions: [
             TextButton(
-              onPressed: () {
+              onPressed: () async {
+                var contact = _contacts[index];
                 _deleteContact(index);
-                Navigator.pop(context);
+                 await _apis.deletePatientContact(contact).then((value) => Navigator.pop(context));
               },
-              child: Text('Yes'),
+              child: Text('Ja'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('No'),
+              child: Text('Nein'),
             ),
           ],
         );
@@ -406,7 +409,7 @@ class _ContactsListingPageState extends State<ContactsListingPage>
                     decoration: InputDecoration(labelText: AppLocalizations.of(context)?.translate('Phone')??'Phone'),
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
-                        return 'Required';
+                        return 'Notwendig';
                       }
                       return null;
                     },
@@ -430,7 +433,7 @@ class _ContactsListingPageState extends State<ContactsListingPage>
           ),
           actions: [
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   // Update the contact details and close the dialog
                   contact['category'] = selectedCategory;
@@ -441,18 +444,18 @@ class _ContactsListingPageState extends State<ContactsListingPage>
                   contact['institution_name'] = institutionNameController.text;
                   contact['institution_address'] =
                       institutionAddressController.text;
+                  await _apis.updatePatientContact(contact).then((value) => Navigator.pop(context));
 
-                  Navigator.pop(context);
                 }
               },
-              child: Text('Save'),
+              child: Text('Speichern'),
             ),
             TextButton(
               onPressed: () {
                 // Close the dialog without saving
                 Navigator.pop(context);
               },
-              child: Text('Cancel'),
+              child: Text('Abbrechen'),
             ),
           ],
         );
