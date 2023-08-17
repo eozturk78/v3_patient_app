@@ -534,6 +534,21 @@ class Apis {
     }
   }
 
+  Future getPatientLibraryList(List<dynamic> params) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/getpatientlibrarylist';
+      var body = {"patientGroups": jsonEncode(params)};
+      var result = await http.post(Uri.parse(finalUrl),
+          body: body,
+          headers: {'lang': lang, 'token': pref.getString('token').toString()});
+      return getResponseFromApi(result);
+    } catch (err) {
+      print(err);
+      throw Exception("can't decode");
+    }
+  }
+
   getResponseFromApi(http.Response result) {
     print(result.body);
     var body = jsonDecode(result.body);

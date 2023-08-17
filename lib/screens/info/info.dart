@@ -44,15 +44,6 @@ class _InfoPageState extends State<InfoPage> {
                 Spacer(),
                 GestureDetector(
                   child: const CustomSubTotal(
-                      Icons.question_answer_outlined, "FAQ", null, null, 20),
-                  onTap: () {},
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                GestureDetector(
-                  child: const CustomSubTotal(
                       Icons.medical_information_outlined,
                       "Aufklärung",
                       null,
@@ -62,7 +53,12 @@ class _InfoPageState extends State<InfoPage> {
                     Navigator.of(context).pushNamed('/enlightenment');
                   },
                 ),
-                Spacer(),
+              ],
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
                 GestureDetector(
                   child: const CustomSubTotal(Icons.text_snippet_outlined,
                       "Meine Dokumente", null, null, 10),
