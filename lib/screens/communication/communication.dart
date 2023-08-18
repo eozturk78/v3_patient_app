@@ -72,7 +72,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
                     }
                     else
                       {
-                        showToast("There is no meeting available now. Please try again on the meeting time!");
+                        showToast("Derzeit ist kein Treffen verfügbar. Bitte versuchen Sie es noch einmal mit der Besprechungszeit!");
                       }
                   },
                 ),
