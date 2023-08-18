@@ -74,7 +74,7 @@ class _LibraryListPageState extends State<LibraryListPage> {
                             SharedPreferences pref =
                                 await SharedPreferences.getInstance();
                             await launch(
-                                '${item.url}?token=${pref.getString('token')}');
+                                '${item.url}/${pref.getString('token')}');
                           },
                           child: CustomLibraryBox(item.title),
                         ),

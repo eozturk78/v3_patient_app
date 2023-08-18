@@ -66,7 +66,7 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/createPatientContact';
-      contactdata['category']=contactdata['category'].toString();
+      contactdata['category'] = contactdata['category'].toString();
       print(contactdata);
       var result = await http.post(Uri.parse(finalUrl),
           body: contactdata,
@@ -78,13 +78,12 @@ class Apis {
     }
   }
 
-
-  Future updatePatientContact(Map<String, dynamic> contactdata) async{
+  Future updatePatientContact(Map<String, dynamic> contactdata) async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/updatePatientContact';
-      contactdata['category']=contactdata['category'].toString();
-      contactdata['id']=contactdata['id'].toString();
+      contactdata['category'] = contactdata['category'].toString();
+      contactdata['id'] = contactdata['id'].toString();
 
       print(contactdata);
       var result = await http.post(Uri.parse(finalUrl),
@@ -97,12 +96,12 @@ class Apis {
     }
   }
 
-  Future deletePatientContact(Map<String, dynamic> contactdata) async{
+  Future deletePatientContact(Map<String, dynamic> contactdata) async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/deletePatientContact';
 
-      contactdata['id']=contactdata['id'].toString();
+      contactdata['id'] = contactdata['id'].toString();
 
       print(contactdata);
       var result = await http.post(Uri.parse(finalUrl),
@@ -602,6 +601,21 @@ class Apis {
     }
   }
 
+  Future extractdata() async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl =
+          '$apiPublic/extractdata?token=${pref.getString('token')}';
+      print(finalUrl);
+      var result = await http.get(Uri.parse(finalUrl),
+          headers: {'lang': lang, 'token': pref.getString('token').toString()});
+      return getResponseFromApi(result);
+    } catch (err) {
+      print(err);
+      throw Exception("can't decode");
+    }
+  }
+
   getResponseFromApi(http.Response result) {
     print(result.body);
     var body = jsonDecode(result.body);
@@ -623,6 +637,4 @@ class Apis {
       throw Exception(body['message']);
     }
   }
-
-
 }

@@ -67,8 +67,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     Navigator.of(context).pushNamed("/edit-agreements");
                   },
                 ),
-                const CustomProfileMenu(
-                    Icons.folder_copy_outlined, "Auszug meiner Daten"),
+                GestureDetector(
+                  child: const CustomProfileMenu(
+                      Icons.folder_copy_outlined, "Auszug meiner Daten"),
+                  onTap: () {
+                    Navigator.of(context).pushNamed("/extract-data");
+                  },
+                ),
                 const SizedBox(
                   height: 10,
                 ),
