@@ -8,5 +8,11 @@
   "Last Name": "Nachname",
   "Phone": "Telefon",
   "Institution Name": "Institutionsname",
-  "Institution Address": "Adresse der Institution"
+  "Institution Address": "Adresse der Institution",
+  "Edit Contact": "Kontakt aktualisieren",
+  "Contact updated.": "Kontakt aktualisiert.",
+  "Can't delete the contact!": "Der Kontakt kann nicht gelöscht werden!",
+  "Invalid credentials": "Ungültige Anmeldedaten, bitte versuchen Sie es erneut.",
+  "Something went wrong": "Etwas ist schief gelaufen",
+  "Confirmation": "Bestätigung"
 }

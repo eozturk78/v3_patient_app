@@ -107,6 +107,26 @@ class S {
   // skipped getter for the 'Institution Name' key
 
   // skipped getter for the 'Institution Address' key
+
+  // skipped getter for the 'Edit Contact' key
+
+  // skipped getter for the 'Contact updated.' key
+
+  // skipped getter for the 'Can\'t delete the contact!' key
+
+  // skipped getter for the 'Invalid credentials' key
+
+  // skipped getter for the 'Something went wrong' key
+
+  /// `Bestätigung`
+  String get Confirmation {
+    return Intl.message(
+      'Bestätigung',
+      name: 'Confirmation',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

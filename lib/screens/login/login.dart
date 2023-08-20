@@ -211,8 +211,7 @@ class _LoginPageState extends State<LoginPage> {
   onLogin() async {
     bool result = await InternetConnectionChecker().hasConnection;
     if(result == true) {
-      print('Has internet connection!');
-
+      //print('Has internet connection!');
 
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString("userName", userNameController.text);

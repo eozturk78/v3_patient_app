@@ -18,17 +18,71 @@ String formatDate(String inputDate) {
 String? getLocalizedGender(String gender, BuildContext context) {
   switch (gender) {
     case 'male':
-      return AppLocalizations.of(context)?.translate('male');
+      return AppLocalizations.tr('male');
     case 'female':
-      return AppLocalizations.of(context)?.translate('female');
+      return AppLocalizations.tr('female');
     case 'other':
-      return AppLocalizations.of(context)?.translate('other');
+      return AppLocalizations.tr('other');
     default:
       return gender; // Return as is if no translation is available
   }
 }
 
+class AppLocalizations {
+  final Locale locale;
+  Map<String, dynamic>? _localizedStrings;
 
+  AppLocalizations._(this.locale);
+
+  static AppLocalizations? _instance;
+
+  static Future<void> load(Locale locale) async {
+    String jsonString = await rootBundle.loadString('lib/l10n/intl_${locale.languageCode}.arb');
+    _instance = AppLocalizations._(locale);
+    _instance?._localizedStrings = json.decode(jsonString) as Map<String, dynamic>;
+  }
+
+  static AppLocalizations get instance {
+    if (_instance == null) {
+      throw Exception("Localization has not been initialized. Call load() first.");
+    }
+    return _instance!;
+  }
+
+  String? translate(String key) {
+    return _localizedStrings?[key] as String?;
+  }
+
+  static String tr(String key) {
+    return instance.translate(key)??key;
+  }
+
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+  _AppLocalizationsDelegate();
+}
+
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+  const _AppLocalizationsDelegate();
+
+  @override
+  bool isSupported(Locale locale) {
+    // Return true if your app supports the given locale
+    return ['en', 'de', /* Add other supported locales here */].contains(locale.languageCode);
+  }
+
+  @override
+  Future<AppLocalizations> load(Locale locale) async {
+    // Load the appropriate localization data and create an instance of AppLocalizations
+    AppLocalizations.load(locale);
+    return AppLocalizations.instance;
+  }
+
+  @override
+  bool shouldReload(_AppLocalizationsDelegate old) => false;
+}
+
+
+/*
 class AppLocalizations {
   final Locale locale;
   Map<String, dynamic>? _localizedStrings;
@@ -70,6 +124,9 @@ class _AppLocalizationsDelegate
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
+
+
+ */
 
 leadingWithoutProfile(String title, BuildContext context) {
   return AppBar(

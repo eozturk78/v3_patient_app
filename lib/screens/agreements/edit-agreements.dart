@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/shared/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -171,8 +172,9 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                         context: context,
                         builder: (BuildContext dialogContext) {
                           return AlertDialog(
-                            title: Text("Konfirmation"),
-                            content: Text("Sind Sie sicher, dass Sie gehen wollen, ohne allen Bedingungen zuzustimmen?"),
+                            title: Text("Hinweis"),
+                            content: Text("Ihre Einwilligung ist eine Voraussetzung für die nutzung der App.\nWenn Sie diese Einwilligung widerrufen, wird die Löschung Ihres\nBenutzerkontos veranlasst.",
+                            style: TextStyle(fontWeight: FontWeight.bold),),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () async {
@@ -188,6 +190,7 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                                 onPressed: () {
                                   Navigator.of(dialogContext).pop(); // Return false to not pop
                                 },
+                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green), foregroundColor: MaterialStateProperty.all(Colors.white)),
                                 child: Text("Nein"),
                               ),
                             ],

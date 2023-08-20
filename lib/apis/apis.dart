@@ -10,6 +10,7 @@ import 'package:http/http.dart';
 import 'package:patient_app/screens/agreements/agreements.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../screens/shared/shared.dart';
 import '../shared/shared.dart';
 import '../shared/toast.dart';
 import 'package:intl/intl.dart';
@@ -78,16 +79,28 @@ class Apis {
     }
   }
 
+  Map<String, dynamic> convertNullValues(Map<String, dynamic> data) {
+    Map<String, dynamic> result = {};
+    data.forEach((key, value) {
+      if (value is Map<String, dynamic>) {
+        result[key] = convertNullValues(value); // Recursively convert nested maps
+      } else {
+        result[key] = value ?? ''; // Replace null values with empty string
+      }
+    });
+    return result;
+  }
+
   Future updatePatientContact(Map<String, dynamic> contactdata) async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/updatePatientContact';
       contactdata['category'] = contactdata['category'].toString();
       contactdata['id'] = contactdata['id'].toString();
-
-      print(contactdata);
+      Map<String, dynamic> convertedData = convertNullValues(contactdata);
+      //print(convertedData);
       var result = await http.post(Uri.parse(finalUrl),
-          body: contactdata,
+          body: convertedData,
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
       return getResponseFromApi(result);
     } catch (err) {
@@ -103,14 +116,16 @@ class Apis {
 
       contactdata['id'] = contactdata['id'].toString();
 
-      print(contactdata);
+      Map<String, dynamic> convertedData = convertNullValues(contactdata);
+      print(convertedData);
+
       var result = await http.post(Uri.parse(finalUrl),
-          body: contactdata,
+          body: convertedData,
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
       return getResponseFromApi(result);
     } catch (err) {
       print(err);
-      throw Exception("Can't delete the contact!");
+      throw Exception(AppLocalizations.tr("Can't delete the contact!") ?? "Can't delete the contact!");
     }
   }
 
@@ -623,12 +638,12 @@ class Apis {
       try {
         return body;
       } on Exception catch (err) {
-        showToast("something went wrong");
-        throw Exception("Something went wrong");
+        showToast(AppLocalizations.tr("Something went wrong"));
+        throw Exception(AppLocalizations.tr("Something went wrong"));
       }
     } else {
       body = jsonDecode(body);
-      showToast(body['message']);
+      showToast(AppLocalizations.tr(body['message']));
       if (body['errors'] != null) {
         var firstError = (body['errors'] as List).first;
         print(firstError['error']);

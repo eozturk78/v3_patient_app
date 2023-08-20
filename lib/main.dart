@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_file.dart';
 import 'package:patient_app/screens/agreements/agreements.dart';
 import 'package:patient_app/screens/agreements/edit-agreements.dart';
@@ -159,7 +161,11 @@ main() async {
           ));
     }
   });
+
+  Locale initialLocale = Locale("de","DE");
+  AppLocalizations.load(initialLocale);
   runApp(const MyApp());
+
 }
 
 // Background message handler
@@ -182,7 +188,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: [
-        const Locale('de', ''), // German
+        const Locale('de', 'DE'), // German
       ],
       color: Colors.transparent,
       debugShowCheckedModeBanner: false,
