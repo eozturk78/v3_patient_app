@@ -16,6 +16,7 @@ class _ContactsListingPageState extends State<ContactsListingPage>
   final Apis _apis = Apis();
   List<dynamic> _contacts = []; // To store fetched contacts
   int _selectedCategory = 0; // Default category index
+  int _tmpSelectedCategory = 0;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>(); // Add this line
 
   late TabController _tabController;
@@ -104,7 +105,10 @@ class _ContactsListingPageState extends State<ContactsListingPage>
     TextEditingController emailController = TextEditingController();
     TextEditingController institutionNameController = TextEditingController();
     TextEditingController institutionAddressController = TextEditingController();
-    int selectedCategory = 1; // Default category index
+
+    setState(() {
+      _tmpSelectedCategory = 1;
+    });
 
     showDialog(
       context: context,
@@ -117,10 +121,10 @@ class _ContactsListingPageState extends State<ContactsListingPage>
               child: Column(
                 children: [
                   DropdownButton<int>(
-                    value: selectedCategory,
+                    value: _tmpSelectedCategory,
                     onChanged: (newValue) {
                       setState(() {
-                        selectedCategory = newValue!;
+                        _tmpSelectedCategory = newValue!;
                       });
                     },
                     items: const [
@@ -180,7 +184,7 @@ class _ContactsListingPageState extends State<ContactsListingPage>
                 if (_formKey.currentState!.validate()) {
                   // Save the new contact and close the dialog
                   Map<String, dynamic> newContact = {
-                    'category': selectedCategory,
+                    'category': _tmpSelectedCategory,
                     'first_name': firstNameController.text,
                     'last_name': lastNameController.text,
                     'phone_number': phoneController.text,
@@ -238,8 +242,8 @@ class _ContactsListingPageState extends State<ContactsListingPage>
                     children: [
                       IconButton(
                         icon: Icon(Icons.edit),
-                        onPressed: () {
-                          _showEditContactModal(contact);
+                        onPressed: ()  {
+                           _showEditContactModal(contact);
                         },
                       ),
                       IconButton(
@@ -348,120 +352,26 @@ class _ContactsListingPageState extends State<ContactsListingPage>
     });
   }
 
-  void _showEditContactModal(Map<String, dynamic> contact) {
-    TextEditingController firstNameController =
-    TextEditingController(text: contact['first_name']);
-    TextEditingController lastNameController =
-    TextEditingController(text: contact['last_name']);
-    TextEditingController phoneController =
-    TextEditingController(text: contact['phone_number']);
-    TextEditingController emailController =
-    TextEditingController(text: contact['email']);
-    TextEditingController institutionNameController =
-    TextEditingController(text: contact['institution_name']);
-    TextEditingController institutionAddressController =
-    TextEditingController(text: contact['institution_address']);
-    int selectedCategory = int.parse(contact['category']);
-
+  dynamic _showEditContactModal(Map<String, dynamic> contact) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)?.translate('Edit Contact')??'Edit Contact'),
-          content: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  DropdownButton<int>(
-                    value: selectedCategory,
-                    onChanged: (newValue) {
-                      setState(() {
-                        selectedCategory = newValue!;
-                      });
-                    },
-                    items: const [
-                      DropdownMenuItem<int>(
-                        value: 1,
-                        child: Text('Ansprechpartner'),
-                      ),
-                      DropdownMenuItem<int>(
-                        value: 2,
-                        child: Text('Ärzte'),
-                      ),
-                      DropdownMenuItem<int>(
-                        value: 3,
-                        child: Text('Medizinische Einrichtungen'),
-                      ),
-                    ],
-                  ),
-                  TextFormField(
-                    controller: firstNameController,
-                    decoration: InputDecoration(labelText: AppLocalizations.of(context)?.translate('First Name')??'First Name'),
-                  ),
-                  TextFormField(
-                    controller: lastNameController,
-                    decoration: InputDecoration(labelText: AppLocalizations.of(context)?.translate('Last Name')??'Last Name'),
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.phone,
-                    controller: phoneController,
-                    decoration: InputDecoration(labelText: AppLocalizations.of(context)?.translate('Phone')??'Phone'),
-                    validator: (value) {
-                      if (value?.isEmpty ?? true) {
-                        return 'Notwendig';
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: emailController,
-                    decoration: InputDecoration(labelText: 'Email'),
-                  ),
-                  TextFormField(
-                    controller: institutionNameController,
-                    decoration: InputDecoration(labelText: AppLocalizations.of(context)?.translate('Institution Name')??'Institution Name'),
-                  ),
-                  TextFormField(
-                    controller: institutionAddressController,
-                    decoration:
-                    InputDecoration(labelText: AppLocalizations.of(context)?.translate('Institution Address')??'Institution Address'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  // Update the contact details and close the dialog
-                  contact['category'] = selectedCategory;
-                  contact['first_name'] = firstNameController.text;
-                  contact['last_name'] = lastNameController.text;
-                  contact['phone_number'] = phoneController.text;
-                  contact['email'] = emailController.text;
-                  contact['institution_name'] = institutionNameController.text;
-                  contact['institution_address'] =
-                      institutionAddressController.text;
-                  await _apis.updatePatientContact(contact).then((value) => Navigator.pop(context));
+        return EditContactDialog(
+          contact: contact,
+          onUpdate: () {
+            // Find the index of the updated contact in _contacts list
+            //final index = _contacts.indexWhere((c) => c['id'] == updatedContact['id']);
 
-                }
-              },
-              child: Text('Speichern'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Close the dialog without saving
-                Navigator.pop(context);
-              },
-              child: Text('Abbrechen'),
-            ),
-          ],
+              setState(() {
+                _fetchContactsByCategory(_selectedCategory + 1);
+              });
+
+          },
         );
       },
     );
   }
+
 
   void _launchPhoneDialer(String phoneNumber) async {
     final url = 'tel:$phoneNumber';
@@ -479,5 +389,149 @@ class _ContactsListingPageState extends State<ContactsListingPage>
     } else {
       throw 'Could not launch $url';
     }
+  }
+}
+
+class EditContactDialog extends StatefulWidget {
+  final Map<String, dynamic> contact;
+  //final Function(Map<String, dynamic> updatedContact) onUpdate;
+  final void Function() onUpdate; // Change the type here
+
+  EditContactDialog({required this.contact, required this.onUpdate});
+
+  @override
+  _EditContactDialogState createState() => _EditContactDialogState();
+}
+
+class _EditContactDialogState extends State<EditContactDialog> {
+  final Apis _apis = Apis();
+
+  final TextEditingController firstNameController =
+  TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController institutionNameController =
+  TextEditingController();
+  final TextEditingController institutionAddressController =
+  TextEditingController();
+  late int selectedCategory;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(); // Add this line
+
+  @override
+  void initState() {
+    super.initState();
+    selectedCategory = int.parse(widget.contact['category']);
+    firstNameController.text = widget.contact['first_name'];
+    lastNameController.text = widget.contact['last_name'];
+    phoneController.text = widget.contact['phone_number'];
+    emailController.text = widget.contact['email'];
+    institutionNameController.text = widget.contact['institution_name'];
+    institutionAddressController.text = widget.contact['institution_address'];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(AppLocalizations.of(context)?.translate('Edit Contact') ?? 'Edit Contact'),
+      content: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              DropdownButton<int>(
+                value: selectedCategory,
+                onChanged: (newValue) {
+                  setState(() {
+                    selectedCategory = newValue!;
+                  });
+                },
+                items: const [
+                  DropdownMenuItem<int>(
+                    value: 1,
+                    child: Text('Ansprechpartner'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 2,
+                    child: Text('Ärzte'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 3,
+                    child: Text('Medizinische Einrichtungen'),
+                  ),
+                ],
+              ),
+              TextFormField(
+                controller: firstNameController,
+                decoration:
+                InputDecoration(labelText: AppLocalizations.of(context)?.translate('First Name') ?? 'First Name'),
+              ),
+              TextFormField(
+                controller: lastNameController,
+                decoration:
+                InputDecoration(labelText: AppLocalizations.of(context)?.translate('Last Name') ?? 'Last Name'),
+              ),
+              TextFormField(
+                keyboardType: TextInputType.phone,
+                controller: phoneController,
+                decoration:
+                InputDecoration(labelText: AppLocalizations.of(context)?.translate('Phone') ?? 'Phone'),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Notwendig';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: emailController,
+                decoration: InputDecoration(labelText: 'Email'),
+              ),
+              TextFormField(
+                controller: institutionNameController,
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)?.translate('Institution Name') ?? 'Institution Name'),
+              ),
+              TextFormField(
+                controller: institutionAddressController,
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)?.translate('Institution Address') ??
+                        'Institution Address'),
+              ),
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () async {
+            if (_formKey.currentState!.validate()) {
+              // Update the contact details and close the dialog
+              widget.contact['category'] = selectedCategory.toString();
+              widget.contact['first_name'] = firstNameController.text;
+              widget.contact['last_name'] = lastNameController.text;
+              widget.contact['phone_number'] = phoneController.text;
+              widget.contact['email'] = emailController.text;
+              widget.contact['institution_name'] = institutionNameController.text;
+              widget.contact['institution_address'] =
+                  institutionAddressController.text;
+
+              await _apis.updatePatientContact(widget.contact);
+              //widget.onUpdate(widget.contact);
+              widget.onUpdate();
+              Navigator.pop(context);
+            }
+          },
+          child: Text('Speichern'),
+        ),
+        TextButton(
+          onPressed: () {
+            // Close the dialog without saving
+            Navigator.pop(context);
+          },
+          child: Text('Abbrechen'),
+        ),
+      ],
+    );
   }
 }

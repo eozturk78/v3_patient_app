@@ -19,6 +19,7 @@ import '../measurement-result/measurement-result-weight.dart';
 import '../medication/medication-plan-list.dart';
 import '../medication/medication.dart';
 import '../medication/recipes.dart';
+import '../patient-contacts/contacts.dart';
 import '../profile/about-me/about-me.dart';
 import '../profile/profile.dart';
 import '../quick-access/quick-access.dart';
@@ -84,4 +85,5 @@ Map<String, WidgetBuilder> allRoutes = {
   "/documents": (context) => const DocumentListPage(),
   "/document-details": (context) => const DocumentDetailsPage(),
   "/about-me": (context) => const AboutMe(),
+  "/patient-contacts-list": (context) => ContactsListingPage(),
 };

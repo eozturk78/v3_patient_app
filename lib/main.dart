@@ -37,7 +37,7 @@ import 'package:patient_app/screens/measurement-result/measurement-result-weight
 import 'package:patient_app/screens/medication/medication-plan-list.dart';
 import 'package:patient_app/screens/medication/medication.dart';
 import 'package:patient_app/screens/medication/recipes.dart';
-import 'package:patient_app/screens/patient-contacts/list-contacts.dart';
+import 'package:patient_app/screens/patient-contacts/contacts.dart';
 import 'package:patient_app/screens/profile/about-me/about-me.dart';
 import 'package:patient_app/screens/profile/profile.dart';
 import 'package:patient_app/screens/questionnaire-group/questionnaire-group.dart';
