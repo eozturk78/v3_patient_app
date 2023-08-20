@@ -361,7 +361,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(30),
+                          minimumSize: const Size.fromHeight(40),
                           primary: mainButtonColor,
                         ),
                         onPressed: () async {

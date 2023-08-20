@@ -45,7 +45,8 @@ class _CommunicationPageState extends State<CommunicationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leading('Kommunikation', context),
-      body: Center(
+      body: SafeArea( // Wrap your body with SafeArea
+      child: Center(
           child: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
@@ -76,12 +77,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
                       }
                   },
                 ),
-              ],
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+                const Spacer(),
                 GestureDetector(
                   child: const CustomSubTotal(Icons.calendar_month_outlined,
                       "Kalender", null, null, 10),
@@ -91,10 +87,17 @@ class _CommunicationPageState extends State<CommunicationPage> {
                 ),
               ],
             ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+
+              ],
+            ),
           ],
         ),
-      )), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar:  BottomNavigatorBar(2),
+      ))), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar:  BottomNavigatorBar(selectedIndex: 2),
     );
   }
 }

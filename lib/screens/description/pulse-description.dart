@@ -25,7 +25,8 @@ class _PulseDescriptionPageState extends State<PulseDescriptionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingDescSubpage('Vitalwerte', context),
-      body: Padding(
+      body: SafeArea( // Wrap your body with SafeArea
+      child: Padding(
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(
           child: Column(
@@ -168,8 +169,8 @@ class _PulseDescriptionPageState extends State<PulseDescriptionPage> {
             ],
           ),
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(0),
+      )), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
     );
   }
 }

@@ -237,7 +237,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
           ),
         ),
       ),
-      bottomNavigationBar:  BottomNavigatorBar(0),
+      bottomNavigationBar:  BottomNavigatorBar(selectedIndex: 0),
     );
   }
 }

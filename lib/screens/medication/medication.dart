@@ -24,7 +24,8 @@ class _MedicationPageState extends State<MedicationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leading('Meine Medication', context),
-      body: Center(
+      body: SafeArea( // Wrap your body with SafeArea
+      child: Center(
           child: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
@@ -34,6 +35,7 @@ class _MedicationPageState extends State<MedicationPage> {
           children: [
             Row(
               children: [
+                const Spacer(),
                 GestureDetector(
                   child: const CustomSubTotal(Icons.text_snippet_outlined,
                       "Medikamentenplan", null, null, 10),
@@ -53,12 +55,13 @@ class _MedicationPageState extends State<MedicationPage> {
                     Navigator.of(context).pushNamed('/recipes');
                   },
                 ),
+                const Spacer(),
               ],
             ),
           ],
         ),
-      )), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(1),
+      ))), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 1),
     );
   }
 }

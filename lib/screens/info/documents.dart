@@ -127,7 +127,8 @@ class _DocumentListPageState extends State<DocumentListPage> {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
       appBar: leadingSubpage('Meine Dokumente', context),
-      body: Center(
+      body: SafeArea( // Wrap your body with SafeArea
+      child: Center(
         child: Padding(
           padding: EdgeInsets.all(15),
           child: isStarted
@@ -161,7 +162,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                       ),
                     ),
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      )), // This trailing comma makes auto-formatting nicer for build methods.
 
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
@@ -253,8 +254,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
           ),
         ],
       ),
-
-      bottomNavigationBar: BottomNavigatorBar(3),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
     );
   }
 

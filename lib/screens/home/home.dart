@@ -66,8 +66,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
-      appBar: leading('Hallo ${title}!', context),
-      body: Center(
+      appBar: leading('Grafische Darstellungen', context),
+      body: SafeArea( // Wrap your body with SafeArea
+      child: Center(
         child: Padding(
           padding: EdgeInsets.all(15),
           child: SingleChildScrollView(
@@ -175,8 +176,8 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigatorBar(0),
+      )),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
     );
   }
 }

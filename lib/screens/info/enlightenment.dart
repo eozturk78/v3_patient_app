@@ -27,7 +27,8 @@ class _EnlightenmentPageState extends State<EnlightenmentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingSubpage('Aufklärung', context),
-      body: Center(
+      body: SafeArea( // Wrap your body with SafeArea
+      child: Center(
           child: Padding(
         padding: EdgeInsets.all(15),
         child: Column(
@@ -63,8 +64,8 @@ class _EnlightenmentPageState extends State<EnlightenmentPage> {
             )
           ],
         ),
-      )), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(3),
+      ))), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
     );
   }
 

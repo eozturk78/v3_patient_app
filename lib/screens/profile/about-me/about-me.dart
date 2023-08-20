@@ -47,7 +47,8 @@ class _AboutMeState extends State<AboutMe> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingSubpage('Über mich', context),
-      body: Padding(
+      body: SafeArea( // Wrap your body with SafeArea
+      child:Padding(
         padding: EdgeInsets.all(15),
         child: SingleChildScrollView(
           child: Center(
@@ -248,8 +249,9 @@ class _AboutMeState extends State<AboutMe> {
                       ),
           ),
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(0),
+      ),
+      ),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
     );
   }
 }

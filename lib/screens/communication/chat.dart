@@ -229,7 +229,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigatorBar(1),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 2),
     );
   }
 

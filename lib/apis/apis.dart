@@ -644,6 +644,11 @@ class Apis {
     } else {
       body = jsonDecode(body);
       showToast(AppLocalizations.tr(body['message']));
+
+        if(body['message']=="Need to login again"){
+          navigatorKey.currentState?.pushReplacementNamed("/login");
+        }
+
       if (body['errors'] != null) {
         var firstError = (body['errors'] as List).first;
         print(firstError['error']);

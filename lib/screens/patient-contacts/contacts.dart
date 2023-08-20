@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:patient_app/shared/toast.dart';
 import '../../apis/apis.dart';
+import '../shared/bottom-menu.dart';
 import '../shared/shared.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
@@ -55,7 +56,8 @@ class _ContactsListingPageState extends State<ContactsListingPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingSubpage('Meine medizinischen Kontakte', context),
-      body: Column(
+      body: SafeArea( // Wrap your body with SafeArea
+      child: Column(
         children: [
           TabBar(
             labelColor: Colors.red[800],
@@ -90,12 +92,14 @@ class _ContactsListingPageState extends State<ContactsListingPage>
           ),
         ],
       ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _showAddContactModal();
         },
         child: Icon(Icons.add),
       ),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: -1),
     );
   }
 

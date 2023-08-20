@@ -48,7 +48,8 @@ class _RecipesPageState extends State<RecipesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leading('Rezept', context),
-      body: Padding(
+      body: SafeArea( // Wrap your body with SafeArea
+      child: Padding(
         padding: const EdgeInsets.all(15),
         child: Center(
             child: SingleChildScrollView(
@@ -93,8 +94,8 @@ class _RecipesPageState extends State<RecipesPage> {
                                   )
                               ])
                         : Text("no data found"))),
-      ),
-      bottomNavigationBar: BottomNavigatorBar(2),
+      )),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 1),
     );
   }
 }

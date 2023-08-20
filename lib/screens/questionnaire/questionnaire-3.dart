@@ -26,7 +26,8 @@ class _Questionnaire3PageState extends State<Questionnaire3Page> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingSubpage('HaNeu Fragebögen', context),
-      body: Center(
+      body: SafeArea( // Wrap your body with SafeArea
+      child:Center(
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
@@ -113,8 +114,8 @@ class _Questionnaire3PageState extends State<Questionnaire3Page> {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigatorBar(0),
+      )),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
     );
   }
 }

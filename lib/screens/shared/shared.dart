@@ -44,7 +44,11 @@ class AppLocalizations {
 
   static AppLocalizations get instance {
     if (_instance == null) {
-      throw Exception("Localization has not been initialized. Call load() first.");
+      try{
+        AppLocalizations.load(Locale("de","DE"));
+      }catch(e){
+        throw Exception("Localization has not been initialized. Call load() first.");
+      }
     }
     return _instance!;
   }
@@ -373,15 +377,15 @@ TextStyle selectionLabel = const TextStyle(color: Colors.black, fontSize: 20);
 BoxDecoration menuBoxDecoration = BoxDecoration(
   color: mainItemColor,
   border: Border.all(
-    color: Color.fromARGB(255, 233, 232, 232),
+    color: Color.fromARGB(50, 0, 0, 0),
     width: 1,
   ),
   borderRadius: BorderRadius.circular(15),
   boxShadow: [
     BoxShadow(
-      color: Color.fromARGB(255, 189, 187, 187).withOpacity(0.5),
+      color: Color.fromARGB(255, 189, 187, 187).withOpacity(0.3),
       spreadRadius: 2,
-      blurRadius: 2,
+      blurRadius: 0,
       offset: Offset(1, 1), // changes position of shadow
     ),
   ],

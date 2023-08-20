@@ -163,7 +163,9 @@ main() async {
   });
 
   Locale initialLocale = Locale("de","DE");
-  AppLocalizations.load(initialLocale);
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await AppLocalizations.load(initialLocale);
   runApp(const MyApp());
 
 }
@@ -174,6 +176,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   //AwesomeNotificationsFCM().createNotificationFromJsonData(message.data);
 }
 
+final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
+
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -181,6 +186,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorObservers: [routeObserver],
       localizationsDelegates: [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

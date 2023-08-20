@@ -53,7 +53,8 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingSubpage('Medikamentenplan', context),
-      body: SingleChildScrollView(
+      body: SafeArea( // Wrap your body with SafeArea
+      child: SingleChildScrollView(
         child: Center(
           child: Padding(
             padding: EdgeInsets.all(15),
@@ -81,8 +82,8 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                       ),
           ),
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(2),
+      )), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 1),
     );
   }
 }

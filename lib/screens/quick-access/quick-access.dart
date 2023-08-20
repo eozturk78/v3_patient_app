@@ -25,7 +25,8 @@ class _QuickAccessPageState extends State<QuickAccessPage> {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
       appBar: leading('Schnellzugriff', context),
-      body: Center(
+      body: SafeArea( // Wrap your body with SafeArea
+      child:Center(
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
@@ -34,7 +35,7 @@ class _QuickAccessPageState extends State<QuickAccessPage> {
             children: [],
           ),
         ),
-      ),
+      )),
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
         key: key,
@@ -75,7 +76,7 @@ class _QuickAccessPageState extends State<QuickAccessPage> {
         ],
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(4),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 4),
     );
   }
 }

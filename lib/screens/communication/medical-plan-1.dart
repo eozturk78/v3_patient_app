@@ -62,7 +62,7 @@ class _MedicalPlan1PageState extends State<MedicalPlan1Page> {
                 ), // This trailing comma makes auto-formatting nicer for build methods.
         ),
       ),
-      bottomNavigationBar: BottomNavigatorBar(1),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 1),
     );
   }
 }

@@ -243,7 +243,7 @@ class _MeasurementResultTemperaturePageState
           ),
         ),
       ),
-      bottomNavigationBar:  BottomNavigatorBar(0),
+      bottomNavigationBar:  BottomNavigatorBar(selectedIndex: 0),
     );
   }
 }

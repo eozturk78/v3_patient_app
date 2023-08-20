@@ -49,7 +49,8 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leading('Meine Diagnosen', context),
-      body: SingleChildScrollView(
+      body: SafeArea( // Wrap your body with SafeArea
+      child: SingleChildScrollView(
           child: Center(
               child: Padding(
         padding: const EdgeInsets.all(15),
@@ -76,8 +77,8 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
                             element.doctor ?? "")
                     ],
                   ),
-      ))), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(3),
+      )))), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
     );
   }
 }

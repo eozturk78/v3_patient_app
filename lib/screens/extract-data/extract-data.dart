@@ -51,7 +51,8 @@ class _ExtractDataPageState extends State<ExtractDataPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leading('Auszug meiner Daten', context),
-      body: SingleChildScrollView(
+      body: SafeArea( // Wrap your body with SafeArea
+      child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(10),
           child: Column(
@@ -65,7 +66,7 @@ class _ExtractDataPageState extends State<ExtractDataPage> {
             ],
           ),
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      )), // This trailing comma makes auto-formatting nicer for build methods.
       floatingActionButton: ElevatedButton(
           onPressed: () async {
             SharedPreferences pref = await SharedPreferences.getInstance();
@@ -73,7 +74,7 @@ class _ExtractDataPageState extends State<ExtractDataPage> {
                 '${apis.apiPublic}/extractdata?token=${pref.getString('token')}');
           },
           child: Text("Daten extrahieren")),
-      bottomNavigationBar: BottomNavigatorBar(3),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
     );
   }
 }

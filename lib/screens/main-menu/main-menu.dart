@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../main.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/custom_menu.dart';
 import '../../apis/apis.dart';
@@ -19,7 +20,36 @@ class MainMenuPage extends StatefulWidget {
   _MainMenuPageState createState() => _MainMenuPageState();
 }
 
-class _MainMenuPageState extends State<MainMenuPage> {
+class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
+  int _selectedIndex = -1;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final currentModalRoute = ModalRoute.of(context);
+    if (currentModalRoute != null) { // Check if currentModalRoute is not null
+      routeObserver.subscribe(this, currentModalRoute);
+    }
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  // Implement the RouteAware methods
+  @override
+  void didPopNext() {
+    // This method is called when a route is popped (subpage is closed)
+    // You can execute logic here when the user returns to this page
+    setState(() {
+      _selectedIndex = -1;
+
+    });
+    print('User returned to MainMenuPage');
+  }
+
   Apis apis = Apis();
   Shared sh = Shared();
 
@@ -77,7 +107,8 @@ class _MainMenuPageState extends State<MainMenuPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingWithoutBack('Hallo $title!', context),
-      body: Center(
+      body: SafeArea( // Wrap your body with SafeArea
+      child: Center(
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
@@ -85,6 +116,18 @@ class _MainMenuPageState extends State<MainMenuPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             verticalDirection: VerticalDirection.down,
             children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "assets/images/logo-imedcom.png",
+                    width: 200,
+                    height: 100,
+                  ),
+                ],
+              ),
+              const Spacer(),
               Row(
                 children: [
                   GestureDetector(
@@ -97,15 +140,12 @@ class _MainMenuPageState extends State<MainMenuPage> {
                   const Spacer(),
                   GestureDetector(
                     child: const CustomSubTotal(FontAwesomeIcons.fileMedical,
-                        "Datenmanagement\n", null, null, 20),
+                        "Datenmanagement", null, null, 20),
                     onTap: () {
                       Navigator.of(context).pushNamed('/main-sub-menu');
                     },
                   ),
-                ],
-              ),
-              Row(
-                children: [
+                  const Spacer(),
                   GestureDetector(
                     child: const CustomSubTotal(
                         FontAwesomeIcons.kitMedical,
@@ -117,20 +157,18 @@ class _MainMenuPageState extends State<MainMenuPage> {
                       Navigator.of(context).pushNamed('/medication');
                     },
                   ),
-                  const Spacer(),
+                ],
+              ),
+              Row(
+                children: [
                   GestureDetector(
                     child: const CustomSubTotal(FontAwesomeIcons.message,
-                        "Kommunikation\n", null, null, 20),
+                        "Kommunikation", null, null, 20),
                     onTap: () {
                       Navigator.of(context).pushNamed('/communication');
                     },
                   ),
-                ],
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                  const Spacer(),
                   GestureDetector(
                     child: const CustomSubTotal(Icons.info_outline,
                         "Dokumente & \nInformationen", null, null, 10),
@@ -142,7 +180,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                   GestureDetector(
                     child: const CustomSubTotal(
                       Icons.view_cozy_outlined,
-                      "Schnellzugriffsmenü\n",
+                      "Schnellzugriffsmenü",
                       null,
                       null,
                       10,
@@ -155,14 +193,15 @@ class _MainMenuPageState extends State<MainMenuPage> {
                   ),
                 ],
               ),
+              const Spacer(),
+
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigatorBar(0),
+      )),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: _selectedIndex),
     );
 
   }
-
 
 }

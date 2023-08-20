@@ -24,7 +24,8 @@ class _InfoPageState extends State<InfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leading('Infothek', context),
-      body: Center(
+      body: SafeArea( // Wrap your body with SafeArea
+          child: Center(
           child: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
@@ -39,6 +40,14 @@ class _InfoPageState extends State<InfoPage> {
                       Icons.book_online_outlined, "Bibliothek", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/libraries');
+                  },
+                ),
+                Spacer(),
+                GestureDetector(
+                  child: const CustomSubTotal(Icons.text_snippet_outlined,
+                      "Meine Dokumente", null, null, 10),
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/documents');
                   },
                 ),
                 Spacer(),
@@ -59,19 +68,13 @@ class _InfoPageState extends State<InfoPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                GestureDetector(
-                  child: const CustomSubTotal(Icons.text_snippet_outlined,
-                      "Meine Dokumente", null, null, 10),
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/documents');
-                  },
-                ),
+
               ],
             ),
           ],
         ),
-      )), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(3),
+      ))), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
     );
   }
 }

@@ -33,7 +33,8 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leading('Datenmanagement', context),
-      body: Center(
+      body: SafeArea( // Wrap your body with SafeArea
+      child: Center(
           child: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
@@ -43,6 +44,7 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
           children: [
             Row(
               children: [
+                const Spacer(),
                 GestureDetector(
                   child: const CustomSubTotal(Icons.addchart_outlined,
                       "Tägliche Messungen", null, null, 10),
@@ -62,12 +64,13 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
                     Navigator.of(context).pushNamed('/home');
                   },
                 ),
+                const Spacer(),
               ],
             ),
           ],
         ),
-      )), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(0),
+      ))), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
     );
   }
 }

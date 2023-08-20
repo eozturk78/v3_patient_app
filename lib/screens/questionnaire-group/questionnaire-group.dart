@@ -66,7 +66,7 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
     String title = "MP";
 
     return Scaffold(
-      appBar: leadingSubpage('Grafische Darstellungen', context),
+      appBar: leadingSubpage('Tägliche Messungen', context),
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(15),
