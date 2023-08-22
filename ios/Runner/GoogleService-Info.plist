@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>870497548445-vbnph7hjabh3ek1su1srl0q49qj8gcea.apps.googleusercontent.com</string>
+	<string>870497548445-v0vortjpscjut6eg0op7dsh9gf1momqj.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.870497548445-vbnph7hjabh3ek1su1srl0q49qj8gcea</string>
+	<string>com.googleusercontent.apps.870497548445-v0vortjpscjut6eg0op7dsh9gf1momqj</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBzEihoUy92NbU9qNf8lcPfpSf4dAA7WM0</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.iMedCom</string>
+	<string>com.PatientApp.iMedCom</string>
 	<key>PROJECT_ID</key>
 	<string>imedcom-patient-app</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:870497548445:ios:e91195b0cc30d5ff107c74</string>
+	<string>1:870497548445:ios:8fc6ba50de8f84c0107c74</string>
+	<key>DATABASE_URL</key>
+	<string>https://imedcom-patient-app-default-rtdb.europe-west1.firebasedatabase.app</string>
 </dict>
 </plist>
