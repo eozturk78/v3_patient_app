@@ -1,25 +1,28 @@
 class MedicalPlan {
   final String treatmentId;
-  String? mpName;
+  String mpName;
   DateTime? updatedAt;
   final String createdAt;
   DateTime? sendDate;
   final int rowCount;
   String? updatedBy;
-
+  bool isExpanded;
+  List<MedicalPlanRows> rows;
   MedicalPlan(
       {required this.treatmentId,
-      this.mpName,
+      required this.mpName,
       this.updatedAt,
       required this.createdAt,
       required this.sendDate,
       required this.rowCount,
-      required this.updatedBy});
+      required this.updatedBy,
+      required this.isExpanded,
+      required this.rows});
 
   factory MedicalPlan.fromJson(Map<String, dynamic> json) {
     return MedicalPlan(
       treatmentId: json['treatmentid'],
-      mpName: json['mpname'],
+      mpName: json['mpname'] ?? "",
       updatedAt:
           json['updatedat'] != null ? DateTime.parse(json['updatedat']) : null,
       createdAt: json['createdat'],
@@ -27,6 +30,47 @@ class MedicalPlan {
           json['sendDate'] != null ? DateTime.parse(json['sendDate']) : null,
       rowCount: json['rowcount'],
       updatedBy: json['updated_by'],
+      isExpanded: false,
+      rows: (json['rows'] as List)
+          .map((e) => MedicalPlanRows.fromJson(e))
+          .toList(),
+    );
+  }
+}
+
+class MedicalPlanRows {
+  final String activeingredient;
+  String commercialname;
+  String dosestrength;
+  String form;
+  String applicationform;
+  String doseearly;
+  String dosenoon;
+  String doseafternoon;
+  String doseevening;
+  MedicalPlanRows({
+    required this.activeingredient,
+    required this.commercialname,
+    required this.dosestrength,
+    required this.form,
+    required this.applicationform,
+    required this.doseearly,
+    required this.dosenoon,
+    required this.doseafternoon,
+    required this.doseevening,
+  });
+
+  factory MedicalPlanRows.fromJson(Map<String, dynamic> json) {
+    return MedicalPlanRows(
+      commercialname: json['commercialname'],
+      activeingredient: json['activeingredient'],
+      dosestrength: json['dosestrength'],
+      form: json['form'],
+      applicationform: json['applicationform'],
+      doseearly: json['doseearly'],
+      dosenoon: json['dosenoon'],
+      doseafternoon: json['doseafternoon'],
+      doseevening: json['doseevening'],
     );
   }
 }

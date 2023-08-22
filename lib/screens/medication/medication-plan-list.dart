@@ -53,8 +53,9 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingSubpage('Medikamentenplan', context),
-      body: SafeArea( // Wrap your body with SafeArea
-      child: SingleChildScrollView(
+      body: SafeArea(
+          // Wrap your body with SafeArea
+          child: SingleChildScrollView(
         child: Center(
           child: Padding(
             padding: EdgeInsets.all(15),
@@ -64,22 +65,136 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                   )
                 : mpLis.isEmpty
                     ? Center(child: Text("no data found"))
-                    : Column(
+                    : ExpansionPanelList(
+                        expansionCallback: (int index, bool isExpanded) {
+                          setState(() {
+                            mpLis![index].isExpanded = !isExpanded;
+                          });
+                        },
                         children: [
-                          for (var element in mpLis)
-                            GestureDetector(
-                                onTap: () async {
-                                  await launch(
-                                      '${apis.apiPublic}/medicalplan-pdf?treatmentid=${element.treatmentId}');
+                            for (var item in mpLis!)
+                              ExpansionPanel(
+                                headerBuilder:
+                                    (BuildContext context, bool isExpanded) {
+                                  return ListTile(
+                                    title: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.picture_as_pdf,
+                                          color: iconColor,
+                                          size: 30,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Flexible(
+                                            child: Text(
+                                          item.mpName,
+                                          overflow: TextOverflow.ellipsis,
+                                        ))
+                                      ],
+                                    ),
+                                    subtitle: Text(sh.formatDateTime(
+                                        item.createdAt.toString())),
+                                  );
                                 },
-                                child: CustomMedicationPlanBox(
-                                    element.mpName ?? "noname",
-                                    element.createdAt != null
-                                        ? sh.formatDateImc(element.createdAt)
-                                        : "",
-                                    element.updatedBy ?? ""))
-                        ],
-                      ),
+                                body: Padding(
+                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      for (var mpr in item.rows)
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Divider(),
+                                            Text(
+                                              mpr.activeingredient,
+                                              style: TextStyle(fontSize: 15),
+                                            ),
+                                            Text(
+                                              mpr.commercialname,
+                                              style: TextStyle(fontSize: 15),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(mpr.form),
+                                                Text(' / '),
+                                                Text(mpr.applicationform)
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Table(children: [
+                                              TableRow(
+                                                children: [
+                                                  Center(
+                                                    child: Text(
+                                                      'morgens',
+                                                      style: labelText,
+                                                    ),
+                                                  ),
+                                                  Center(
+                                                    child: Text(
+                                                      'mittag',
+                                                      style: labelText,
+                                                    ),
+                                                  ),
+                                                  Center(
+                                                    child: Text(
+                                                      'abend',
+                                                      style: labelText,
+                                                    ),
+                                                  ),
+                                                  Center(
+                                                    child: Text(
+                                                      'nacht',
+                                                      style: labelText,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              TableRow(children: [
+                                                Center(
+                                                  child: Text(mpr.doseearly),
+                                                ),
+                                                Center(
+                                                  child: Text(mpr.dosenoon),
+                                                ),
+                                                Center(
+                                                  child:
+                                                      Text(mpr.doseafternoon),
+                                                ),
+                                                Center(
+                                                  child: Text(mpr.doseevening),
+                                                ),
+                                              ])
+                                            ]),
+                                            Divider(),
+                                          ],
+                                        ),
+                                      TextButton(
+                                        onPressed: () async {
+                                          await launch(
+                                              '${apis.apiPublic}/medicalplan-pdf?treatmentid=${item.treatmentId}');
+                                        },
+                                        child: Text('Datei herunterladen'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                isExpanded: item.isExpanded ?? false,
+                              )
+                          ]),
           ),
         ),
       )), // This trailing comma makes auto-formatting nicer for build methods.

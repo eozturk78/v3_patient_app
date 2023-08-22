@@ -173,24 +173,34 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                         builder: (BuildContext dialogContext) {
                           return AlertDialog(
                             title: Text("Hinweis"),
-                            content: Text("Ihre Einwilligung ist eine Voraussetzung für die nutzung der App.\nWenn Sie diese Einwilligung widerrufen, wird die Löschung Ihres\nBenutzerkontos veranlasst.",
-                            style: TextStyle(fontWeight: FontWeight.bold),),
+                            content: Text(
+                              "Ihre Einwilligung ist eine Voraussetzung für die nutzung der App.\nWenn Sie diese Einwilligung widerrufen, wird die Löschung Ihres\nBenutzerkontos veranlasst.",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () async {
                                   SharedPreferences pref =
                                       await SharedPreferences.getInstance();
                                   pref.setBool("isAgreementRead", false);
+                                  apis
+                                      .deleteRequestByPatient()
+                                      .then((resp) => {});
                                   Navigator.of(context).pushNamedAndRemoveUntil(
                                       '/login', ModalRoute.withName("/"));
-                                  },
+                                },
                                 child: Text("Ja"),
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.of(dialogContext).pop(); // Return false to not pop
+                                  Navigator.of(dialogContext)
+                                      .pop(); // Return false to not pop
                                 },
-                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green), foregroundColor: MaterialStateProperty.all(Colors.white)),
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all(Colors.green),
+                                    foregroundColor: MaterialStateProperty.all(
+                                        Colors.white)),
                                 child: Text("Nein"),
                               ),
                             ],

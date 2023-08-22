@@ -164,7 +164,7 @@ class _AgreementsPageState extends State<AgreementsPage> {
                   onPressed: () async {
                     if (check1 && check2 && check3) {
                       SharedPreferences pref =
-                      await SharedPreferences.getInstance();
+                          await SharedPreferences.getInstance();
                       pref.setBool("isAgreementRead", true);
                       //Navigator.of(context).pop();
                       Navigator.of(context).pushNamedAndRemoveUntil(
@@ -175,21 +175,26 @@ class _AgreementsPageState extends State<AgreementsPage> {
                         builder: (BuildContext dialogContext) {
                           return AlertDialog(
                             title: Text("Konfirmation"),
-                            content: Text("Sind Sie sicher, dass Sie gehen wollen, ohne allen Bedingungen zuzustimmen?"),
+                            content: Text(
+                                "Sind Sie sicher, dass Sie gehen wollen, ohne allen Bedingungen zuzustimmen?"),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () async {
                                   SharedPreferences pref =
-                                  await SharedPreferences.getInstance();
+                                      await SharedPreferences.getInstance();
                                   pref.setBool("isAgreementRead", false);
-                                  Navigator.of(context).pushNamedAndRemoveUntil(
-                                      '/login', ModalRoute.withName("/"));
+                                  apis.deleteRequestByPatient().then((resp) => {
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil('/login',
+                                                ModalRoute.withName("/"))
+                                      });
                                 },
                                 child: Text("Ja"),
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.of(dialogContext).pop(); // Return false to not pop
+                                  Navigator.of(dialogContext)
+                                      .pop(); // Return false to not pop
                                 },
                                 child: Text("Nein"),
                               ),

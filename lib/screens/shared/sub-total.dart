@@ -9,6 +9,7 @@ class CustomSubTotal extends StatelessWidget {
   final String? subText;
   final String? warningText;
   final int? colorState;
+
   const CustomSubTotal(this.iconData, this.headText, this.subText,
       this.warningText, this.colorState,
       {super.key});
@@ -37,7 +38,10 @@ class CustomSubTotal extends StatelessWidget {
           Text(
             headText,
             overflow: TextOverflow.visible,
-            style: TextStyle(fontWeight: FontWeight.normal, color: menuTextColor,),
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              color: menuTextColor,
+            ),
             textAlign: TextAlign.center,
           ),
           SizedBox(

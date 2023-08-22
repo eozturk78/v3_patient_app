@@ -83,7 +83,8 @@ class Apis {
     Map<String, dynamic> result = {};
     data.forEach((key, value) {
       if (value is Map<String, dynamic>) {
-        result[key] = convertNullValues(value); // Recursively convert nested maps
+        result[key] =
+            convertNullValues(value); // Recursively convert nested maps
       } else {
         result[key] = value ?? ''; // Replace null values with empty string
       }
@@ -125,7 +126,8 @@ class Apis {
       return getResponseFromApi(result);
     } catch (err) {
       print(err);
-      throw Exception(AppLocalizations.tr("Can't delete the contact!") ?? "Can't delete the contact!");
+      throw Exception(AppLocalizations.tr("Can't delete the contact!") ??
+          "Can't delete the contact!");
     }
   }
 
@@ -616,6 +618,21 @@ class Apis {
     }
   }
 
+  Future deleteRequestByPatient() async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/deleterequestbypatient';
+      print(finalUrl);
+      var result = await http.get(Uri.parse(finalUrl),
+          headers: {'lang': lang, 'token': pref.getString('token').toString()});
+      print(result);
+      return getResponseFromApi(result);
+    } catch (err) {
+      print(err);
+      throw Exception("can't decode");
+    }
+  } 
+
   Future extractdata() async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
@@ -645,9 +662,9 @@ class Apis {
       body = jsonDecode(body);
       showToast(AppLocalizations.tr(body['message']));
 
-        if(body['message']=="Need to login again"){
-          navigatorKey.currentState?.pushReplacementNamed("/login");
-        }
+      if (body['message'] == "Need to login again") {
+        navigatorKey.currentState?.pushReplacementNamed("/login");
+      }
 
       if (body['errors'] != null) {
         var firstError = (body['errors'] as List).first;
