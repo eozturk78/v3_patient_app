@@ -27,10 +27,10 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
   @override
   void initState() {
     super.initState();
-    onGetRecipes();
+    onGetDiagnoses();
   }
 
-  onGetRecipes() {
+  onGetDiagnoses() {
     apis.getPatientDiagnoses().then((value) {
       setState(() {
         isStarted = false;
@@ -49,10 +49,11 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leading('Meine Diagnosen', context),
-      body: SafeArea( // Wrap your body with SafeArea
-      child: SingleChildScrollView(
-          child: Center(
-              child: Padding(
+      body: SafeArea(
+          // Wrap your body with SafeArea
+          child: SingleChildScrollView(
+              child: Center(
+                  child: Padding(
         padding: const EdgeInsets.all(15),
         child: isStarted
             ? CircularProgressIndicator(
@@ -60,8 +61,91 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
               )
             : diagnoseList!.isEmpty
                 ? Center(child: Text("no data found"))
-                : Column(
+                : ExpansionPanelList(
+                    expansionCallback: (int index, bool isExpanded) {
+                      setState(() {
+                        diagnoseList![index].isExpanded = !isExpanded;
+                      });
+                    },
                     children: [
+                        for (var item in diagnoseList!)
+                          ExpansionPanel(
+                            headerBuilder:
+                                (BuildContext context, bool isExpanded) {
+                              return ListTile(
+                                title: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.medical_services_outlined,
+                                      color: iconColor,
+                                      size: 30,
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Flexible(
+                                        child: Text(
+                                      item.diagnoseName,
+                                      overflow: TextOverflow.ellipsis,
+                                    ))
+                                  ],
+                                ),
+                                subtitle: Text(sh
+                                    .formatDateTime(item.createdAt.toString())),
+                              );
+                            },
+                            body: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Center(
+                                    child: Text(item.diagnoseName ?? ""),
+                                  ),
+                                  Center(
+                                      child: Text(item.subDiagnoseName ?? "")),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Wrap(
+                                    runSpacing: 5.0,
+                                    spacing: 5.0,
+                                    children: [
+                                      if (item.securedDiagnoseG == 1)
+                                        Text("gesicherte Diagnose (G)",
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey)),
+                                      if (item.suspicionV == 1)
+                                        Text("Verdacht (V)",
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey)),
+                                      if (item.exclusionA == 1)
+                                        Text("Ausschluss (A)",
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey)),
+                                      if (item.stateAfter == 1)
+                                        Text("Zustand nach (Z.n)",
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey))
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  )
+                                ],
+                              ),
+                            ),
+                            isExpanded: item.isExpanded ?? false,
+                          )
+                      ]) /*Column(
+
+                  
+                    /*children: [
                       for (var element in diagnoseList)
                         CustomDiagnoseBox(
                             element.diagnoseName,
@@ -75,8 +159,9 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
                             element.createdAt,
                             element.stateAfter,
                             element.doctor ?? "")
-                    ],
-                  ),
+                    ],*/
+                  )*/
+        ,
       )))), // This trailing comma makes auto-formatting nicer for build methods.
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
     );

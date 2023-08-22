@@ -233,7 +233,7 @@ class _LoginPageState extends State<LoginPage> {
         .then((value) async {
       if (value != null) {
         // TODO: add else block to this if block
-        setState(() {
+        setState(() { 
           isSendEP = false;
         });
         print(value['firstName']);

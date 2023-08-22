@@ -11,7 +11,7 @@ class PatientDiagnose {
   final int diaRight;
   final int bothSide;
   final String? createdAt;
-
+  bool? isExpanded;
   PatientDiagnose({
     required this.diagnoseId,
     required this.diagnoseName,
@@ -25,6 +25,7 @@ class PatientDiagnose {
     required this.diaRight,
     required this.bothSide,
     required this.createdAt,
+    this.isExpanded,
   });
 
   factory PatientDiagnose.fromJson(Map<String, dynamic> json) {
@@ -41,6 +42,7 @@ class PatientDiagnose {
       diaRight: json['diaRight'],
       bothSide: json['bothSide'],
       createdAt: json['createdDate'],
+      isExpanded: false,
     );
   }
 }
