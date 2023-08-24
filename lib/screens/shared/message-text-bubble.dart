@@ -159,8 +159,8 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
                   ),
                   Spacer(),
                   if (widget.readAt != null && widget.senderType == 20)
-                    GestureDetector(
-                      onTap: () {
+                    TextButton(
+                      onPressed: () {
                         setState(() {
                           widget.showReadDateTime = true;
                         });
@@ -172,6 +172,12 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
                           });
                         });
                       },
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsets>(
+                            EdgeInsets.all(2)),
+                        alignment: Alignment.bottomRight,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
                       child: Icon(
                         Icons.check,
                         color: const Color.fromARGB(255, 5, 110, 9),
