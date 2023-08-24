@@ -153,7 +153,6 @@ class _MessagesPageState extends State<MessagesPage> {
           for (var item in patientGroups)
             FloatingActionButton.extended(
               onPressed: () async {
-                print(item.links.organization);
                 SharedPreferences pref = await SharedPreferences.getInstance();
 
                 if (item.links != null && item.links.organization != null) {

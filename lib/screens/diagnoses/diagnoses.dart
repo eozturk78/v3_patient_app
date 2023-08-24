@@ -34,7 +34,6 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
     apis.getPatientDiagnoses().then((value) {
       setState(() {
         isStarted = false;
-        print(value);
         diagnoseList =
             (value as List).map((e) => PatientDiagnose.fromJson(e)).toList();
       });
@@ -90,8 +89,14 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
                                     ))
                                   ],
                                 ),
-                                subtitle: Text(sh
-                                    .formatDateTime(item.createdAt.toString())),
+                                subtitle: Row(
+                                  children: [
+                                    Text(item.doctor ?? ""),
+                                    Spacer(),
+                                    Text(sh.formatDateTime(
+                                        item.createdAt.toString())),
+                                  ],
+                                ),
                               );
                             },
                             body: Padding(

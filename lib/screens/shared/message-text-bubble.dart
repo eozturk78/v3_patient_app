@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/shared/shared.dart';
+import 'package:patient_app/shared/toast.dart';
 import 'package:photo_view/photo_view.dart';
 
 class CustomMessageTextBubble extends StatefulWidget {
@@ -13,17 +15,21 @@ class CustomMessageTextBubble extends StatefulWidget {
     required this.dateTime,
     this.senderType,
     required this.senderTitle,
+    this.readAt,
     this.image,
     required this.messageType,
+    this.messageId,
   });
 
   final String? image;
   final String text;
   final String dateTime;
+  final String? messageId;
   final int? senderType; // 10 active user , 20 system
   final String senderTitle;
+  final String? readAt;
   final int? messageType; // 10 one message , 20 whole chage
-
+  bool showReadDateTime = false;
   var startedLoadImage = false;
   @override
   State<CustomMessageTextBubble> createState() =>
@@ -39,6 +45,11 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
   initState() {
     super.initState();
     if (widget.image != null) saveLoad();
+    if (widget.senderType == 10 && widget.readAt == null) markAsRead();
+  }
+
+  markAsRead() {
+    apis.markAdRead(widget.messageId).then((value) {}, onError: (err) => {});
   }
 
   saveLoad() {
@@ -98,6 +109,9 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              SizedBox(
+                height: 5,
+              ),
               if (imageText != null && !widget.startedLoadImage)
                 GestureDetector(
                   onTap: () {
@@ -129,13 +143,55 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
                       ),
                     ),
                   ),
-                )
+                ),
+              SizedBox(
+                height: 4,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    '${widget.senderTitle} - ${widget.dateTime}',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 245, 245, 245),
+                        fontSize: 11),
+                  ),
+                  Spacer(),
+                  if (widget.readAt != null && widget.senderType == 20)
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          widget.showReadDateTime = true;
+                        });
+                        Future.delayed(const Duration(seconds: 3), () {
+                          setState(() {
+                            setState(() {
+                              widget.showReadDateTime = false;
+                            });
+                          });
+                        });
+                      },
+                      child: Icon(
+                        Icons.check,
+                        color: const Color.fromARGB(255, 5, 110, 9),
+                        size: 15,
+                      ),
+                    )
+                ],
+              ),
+              if (widget.showReadDateTime == true && widget.readAt != null)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(sh.formatDateTime(widget.readAt!),
+                        style: TextStyle(
+                            fontSize: 11,
+                            color: const Color.fromARGB(255, 5, 110, 9)))
+                  ],
+                ),
             ],
           ),
-        ),
-        Text(
-          '${widget.senderTitle} - ${widget.dateTime}',
-          style: TextStyle(color: Colors.grey),
         ),
         SizedBox(
           height: 2,

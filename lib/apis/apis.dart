@@ -56,7 +56,6 @@ class Apis {
       var result = await http.post(Uri.parse(finalUrl),
           body: params,
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
-      //print(result.body);
       return getResponseFromApi(result);
     } catch (err) {
       throw Exception("can't decode");
@@ -68,13 +67,11 @@ class Apis {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/createPatientContact';
       contactdata['category'] = contactdata['category'].toString();
-      print(contactdata);
       var result = await http.post(Uri.parse(finalUrl),
           body: contactdata,
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
       return getResponseFromApi(result);
     } catch (err) {
-      print(err);
       throw Exception("Can't create new contact!");
     }
   }
@@ -99,13 +96,11 @@ class Apis {
       contactdata['category'] = contactdata['category'].toString();
       contactdata['id'] = contactdata['id'].toString();
       Map<String, dynamic> convertedData = convertNullValues(contactdata);
-      //print(convertedData);
       var result = await http.post(Uri.parse(finalUrl),
           body: convertedData,
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
       return getResponseFromApi(result);
     } catch (err) {
-      print(err);
       throw Exception("Can't update the contact!");
     }
   }
@@ -118,14 +113,12 @@ class Apis {
       contactdata['id'] = contactdata['id'].toString();
 
       Map<String, dynamic> convertedData = convertNullValues(contactdata);
-      print(convertedData);
 
       var result = await http.post(Uri.parse(finalUrl),
           body: convertedData,
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
       return getResponseFromApi(result);
     } catch (err) {
-      print(err);
       throw Exception(AppLocalizations.tr("Can't delete the contact!") ??
           "Can't delete the contact!");
     }
@@ -169,7 +162,6 @@ class Apis {
       'lang': lang,
       'token': pref.getString('token').toString()
     });
-    //print(result.body);
     return result;
   }
 
@@ -182,7 +174,6 @@ class Apis {
         'lang': lang,
         'token': pref.getString('token').toString()
       });
-      print(result.body);
       return result;
     } catch (err) {
       throw Exception("can't decode");
@@ -213,7 +204,6 @@ class Apis {
         'lang': lang,
         'token': pref.getString('token').toString()
       });
-      print(result.body);
       return result;
     } catch (err) {
       throw Exception("can't decode");
@@ -304,7 +294,6 @@ class Apis {
       });
       return getResponseFromApi(result);
     } catch (err) {
-      print(err);
       throw Exception("can't decode");
     }
   }
@@ -315,13 +304,11 @@ class Apis {
       String finalUrl = '$baseUrl/setpatientfoldername';
       var body = {"foldername": folderName};
       if (folderId != null) body['folderid'] = folderId;
-      print(body);
       var result = await http.post(Uri.parse(finalUrl),
           body: body,
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
       return getResponseFromApi(result);
     } catch (err) {
-      print(err);
       throw Exception("can't decode");
     }
   }
@@ -330,10 +317,8 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/deletepatientfolder?folderid=$folderId';
-      print(finalUrl);
       var result = await http.delete(Uri.parse(finalUrl),
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
-      print(result);
       return getResponseFromApi(result);
     } catch (err) {
       throw Exception("can't decode");
@@ -360,7 +345,6 @@ class Apis {
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
       return getResponseFromApi(result);
     } catch (err) {
-      print(err);
       throw Exception("can't decode");
     }
   }
@@ -377,7 +361,7 @@ class Apis {
       });
       return getResponseFromApi(result);
     } catch (err) {
-      print(err);
+      
       throw Exception("can't decode");
     }
   }
@@ -582,7 +566,6 @@ class Apis {
       });
       return getResponseFromApi(result);
     } catch (err) {
-      print(err);
       throw Exception("can't decode");
     }
   }
@@ -598,7 +581,6 @@ class Apis {
       });
       return getResponseFromApi(result);
     } catch (err) {
-      print(err);
       throw Exception("can't decode");
     }
   }
@@ -613,7 +595,6 @@ class Apis {
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
       return getResponseFromApi(result);
     } catch (err) {
-      print(err);
       throw Exception("can't decode");
     }
   }
@@ -622,28 +603,36 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/deleterequestbypatient';
-      print(finalUrl);
       var result = await http.get(Uri.parse(finalUrl),
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
-      print(result);
       return getResponseFromApi(result);
     } catch (err) {
-      print(err);
       throw Exception("can't decode");
     }
-  } 
+  }
 
   Future extractdata() async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl =
           '$apiPublic/extractdata?token=${pref.getString('token')}';
-      print(finalUrl);
       var result = await http.get(Uri.parse(finalUrl),
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
       return getResponseFromApi(result);
     } catch (err) {
-      print(err);
+      throw Exception("can't decode");
+    }
+  }
+
+  Future markAdRead(messageId) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      print(messageId);
+      String finalUrl = '$baseUrl/markasread?messageid=$messageId';
+      var result = await http.post(Uri.parse(finalUrl),
+          headers: {'lang': lang, 'token': pref.getString('token').toString()});
+      return getResponseFromApi(result);
+    } catch (err) {
       throw Exception("can't decode");
     }
   }
@@ -668,7 +657,6 @@ class Apis {
 
       if (body['errors'] != null) {
         var firstError = (body['errors'] as List).first;
-        print(firstError['error']);
         throw (firstError);
       }
       throw Exception(body['message']);

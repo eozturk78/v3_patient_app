@@ -8,16 +8,17 @@ class MedicalPlan {
   String? updatedBy;
   bool isExpanded;
   List<MedicalPlanRows> rows;
-  MedicalPlan(
-      {required this.treatmentId,
-      required this.mpName,
-      this.updatedAt,
-      required this.createdAt,
-      required this.sendDate,
-      required this.rowCount,
-      required this.updatedBy,
-      required this.isExpanded,
-      required this.rows});
+  MedicalPlan({
+    required this.treatmentId,
+    required this.mpName,
+    this.updatedAt,
+    required this.createdAt,
+    required this.sendDate,
+    required this.rowCount,
+    required this.updatedBy,
+    required this.isExpanded,
+    required this.rows,
+  });
 
   factory MedicalPlan.fromJson(Map<String, dynamic> json) {
     return MedicalPlan(

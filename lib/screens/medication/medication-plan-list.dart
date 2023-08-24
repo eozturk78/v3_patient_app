@@ -94,8 +94,14 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                         ))
                                       ],
                                     ),
-                                    subtitle: Text(sh.formatDateTime(
-                                        item.createdAt.toString())),
+                                    subtitle: Row(
+                                      children: [
+                                        Text(item.updatedBy ?? ""),
+                                        Spacer(),
+                                        Text(sh.formatDateTime(
+                                            item.createdAt.toString())),
+                                      ],
+                                    ),
                                   );
                                 },
                                 body: Padding(

@@ -27,15 +27,19 @@ class ChatPage extends StatefulWidget {
 class Message {
   String? image;
   String? text;
+  String? messageId;
   String dateTime;
   String senderTitle;
+  String? readAt;
   int senderType;
   int index;
   Message(
       {this.text,
       required this.senderType,
       required this.senderTitle,
+      required this.messageId,
       required this.dateTime,
+      this.readAt,
       this.image,
       required this.index});
 }
@@ -55,6 +59,8 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     getThreadMessages();
+
+    controller = new ScrollController()..addListener(_scrollListener);
   }
 
   getThreadMessages() async {
@@ -68,7 +74,6 @@ class _ChatPageState extends State<ChatPage> {
         var i = 0;
         for (var element in value) {
           if (element['body'] != null) {
-            print(element['sender']['type']);
             listMessages.add(Message(
                 image: element['links'] != null &&
                         element['links']['attachments']?.length > 0
@@ -79,10 +84,15 @@ class _ChatPageState extends State<ChatPage> {
                     element['sender']['type'] == "organization" ? 10 : 20,
                 senderTitle: element['sender']['name'],
                 dateTime: sh.formatDateTime(element['timestamp']),
+                readAt: element['readAt'],
+                messageId: element['links'] != null
+                    ? sh.getBaseName(element['links']['message'])
+                    : null,
                 index: i));
             i++;
           }
         }
+
         listMessages.sort((a, b) => b.index.compareTo(a.index));
         setState(() {
           isStarted = false;
@@ -96,11 +106,34 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   _scrollToEnd() {
-    controller.animateTo(
-      controller.position.maxScrollExtent,
-      curve: Curves.easeOut,
-      duration: const Duration(milliseconds: 1),
-    );
+    if (scrollToEnd)
+      controller.animateTo(
+        controller.position.maxScrollExtent,
+        curve: Curves.easeOut,
+        duration: const Duration(milliseconds: 1),
+      );
+  }
+
+  bool scrollToEnd = true;
+  int itemLength = 16;
+  _scrollListener() {
+    if (controller.offset == 0.0) {
+      setState(() {
+        scrollToEnd = false;
+        if (listMessages.length > itemLength) {
+          if (listMessages.length - itemLength > 10) {
+            itemLength = itemLength + 10;
+            Future.delayed(const Duration(milliseconds: 100), () {
+              setState(() {
+                controller.animateTo(2,
+                    duration: Duration(milliseconds: 100), curve: Curves.ease);
+              });
+            });
+          } else
+            itemLength = listMessages.length;
+        }
+      });
+    }
   }
 
   @override
@@ -123,20 +156,40 @@ class _ChatPageState extends State<ChatPage> {
                     child: SingleChildScrollView(
                       controller: controller,
                       child: ListView.builder(
-                          itemCount: listMessages?.length,
-                          physics: const ScrollPhysics(), // new
-                          shrinkWrap: true,
-                          itemBuilder: (BuildContext context, int index) {
-                            return CustomMessageTextBubble(
-                              dateTime: listMessages[index].dateTime,
-                              senderTitle:
-                                  listMessages[index].senderTitle ?? "",
-                              text: listMessages[index].text ?? "",
-                              senderType: listMessages[index].senderType,
-                              image: listMessages[index].image,
-                              messageType: 20,
-                            );
-                          }),
+                        itemCount: itemLength,
+                        physics: const ScrollPhysics(),
+                        shrinkWrap: true,
+                        reverse: true,
+                        itemBuilder: (BuildContext context, int index) {
+                          return CustomMessageTextBubble(
+                            dateTime:
+                                listMessages[(listMessages.length - 1) - index]
+                                    .dateTime,
+                            senderTitle:
+                                listMessages[(listMessages.length - 1) - index]
+                                        .senderTitle ??
+                                    "",
+                            text:
+                                listMessages[(listMessages.length - 1) - index]
+                                        .text ??
+                                    "",
+                            senderType:
+                                listMessages[(listMessages.length - 1) - index]
+                                    .senderType,
+                            readAt:
+                                listMessages[(listMessages.length - 1) - index]
+                                    .readAt,
+                            image:
+                                listMessages[(listMessages.length - 1) - index]
+                                    .image,
+                            messageId:
+                                listMessages[(listMessages.length - 1) - index]
+                                        .messageId ??
+                                    "",
+                            messageType: 20,
+                          );
+                        },
+                      ),
                     ),
                   ),
       ),
@@ -159,17 +212,23 @@ class _ChatPageState extends State<ChatPage> {
                       builder: (context) => onChoosePhotoOption(context),
                     ).then((resp) {
                       selectedFile = null;
-                      listMessages.add(Message(
-                          image: resp['links'] != null &&
-                                  resp['links']['attachments']?.length > 0
-                              ? resp['links']['attachments'][0]['full']
-                              : null,
-                          text: resp['body'],
-                          senderType: 20,
-                          senderTitle: resp['sender']['name'],
-                          dateTime: sh.formatDateTime(resp['timestamp']),
-                          index:
-                              listMessages[listMessages.length - 1].index - 1));
+                      var index =
+                          listMessages[listMessages.length - 1].index - 1;
+                      setState(() {
+                        listMessages.add(Message(
+                            image: resp['links'] != null &&
+                                    resp['links']['attachments']?.length > 0
+                                ? resp['links']['attachments'][0]['full']
+                                : null,
+                            text: resp['body'],
+                            senderType: 20,
+                            senderTitle: resp['sender']['name'],
+                            dateTime: sh.formatDateTime(resp['timestamp']),
+                            messageId: resp['links'] != null
+                                ? sh.getBaseName(resp['links']['message'])
+                                : null,
+                            index: index));
+                      });
                       listMessages.sort((a, b) => b.index.compareTo(a.index));
                       FocusScope.of(context).unfocus();
                     });
@@ -186,7 +245,6 @@ class _ChatPageState extends State<ChatPage> {
                     apis
                         .sendMessage(txtMessageController.text, organization)
                         .then((resp) {
-                      print(resp);
                       txtMessageController.text = "";
                       setState(
                         () {
@@ -198,6 +256,9 @@ class _ChatPageState extends State<ChatPage> {
                               image: resp['links'] != null &&
                                       resp['links']['attachments']?.length > 0
                                   ? resp['links']['attachments'][0]['full']
+                                  : null,
+                              messageId: resp['links'] != null
+                                  ? sh.getBaseName(resp['links']['message'])
                                   : null,
                               text: resp['body'],
                               senderType: 20,

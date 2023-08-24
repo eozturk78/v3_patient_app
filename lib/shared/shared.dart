@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-
 bool isLoggedIn = false;
 
 class Shared {
@@ -122,10 +121,14 @@ class Shared {
   }
 
   formatDateTime(String date) {
-    var d = DateTime.parse(date).toLocal();
+    var d = date.length > 10
+        ? DateTime.parse(date).toLocal()
+        : DateTime.parse(date).toLocal().toString().substring(0, 10);
     var listData = d.toString().split(" ");
     var dateList = listData[0].split("-");
-    var time = listData[1].substring(0, 5);
+    var time = "";
+    if (d.toString().length > 10) time = listData[1].substring(0, 5);
+
     var day = dateList[2];
     var month = dateList[1];
     var year = dateList[0];
