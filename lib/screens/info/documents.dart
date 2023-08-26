@@ -66,6 +66,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
       },
       onError: (err) => setState(
         () {
+          sh.redirectPatient(err, context);
           isStarted = false;
         },
       ),
@@ -94,18 +95,23 @@ class _DocumentListPageState extends State<DocumentListPage> {
     });
     if (file != null) {
       apis.setPatientFile(file, fileNameController.text, folderId).then(
-          (value) {
-        var folderName =
-            folderList.where((x) => x.id == folderId)?.first?.folderName;
-        setState(() {
-          isSendEP = false;
-        });
-        onGotoFileScreen(folderId, folderName!);
-      }, onError: (err) {
-        setState(() {
-          isSendEP = false;
-        });
-      });
+        (value) {
+          var folderName =
+              folderList.where((x) => x.id == folderId)?.first?.folderName;
+          setState(() {
+            isSendEP = false;
+          });
+          onGotoFileScreen(folderId, folderName!);
+        },
+        onError: (err) {
+          sh.redirectPatient(err, context);
+          setState(
+            () {
+              isSendEP = false;
+            },
+          );
+        },
+      );
     }
   }
 
@@ -127,8 +133,9 @@ class _DocumentListPageState extends State<DocumentListPage> {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
       appBar: leadingSubpage('Meine Dokumente', context),
-      body: SafeArea( // Wrap your body with SafeArea
-      child: Center(
+      body: SafeArea(
+          // Wrap your body with SafeArea
+          child: Center(
         child: Padding(
           padding: EdgeInsets.all(15),
           child: isStarted
@@ -449,8 +456,6 @@ class _DocumentListPageState extends State<DocumentListPage> {
     );
   }
 
-
-
   Widget onOpenFolderInfo(BuildContext context) {
     TextEditingController folderNameController = new TextEditingController();
     Shared sh = Shared();
@@ -497,17 +502,23 @@ class _DocumentListPageState extends State<DocumentListPage> {
                           apis
                               .setPatientFolderName(
                                   null, folderNameController.text)
-                              .then((resp) {
-                            setState(() {
-                              isSendEP = false;
-                            });
-                            Navigator.of(context)
-                                .pop(folderNameController.text);
-                          }, onError: (err) {
-                            setState(() {
-                              isSendEP = false;
-                            });
-                          });
+                              .then(
+                            (resp) {
+                              setState(() {
+                                isSendEP = false;
+                              });
+                              Navigator.of(context)
+                                  .pop(folderNameController.text);
+                            },
+                            onError: (err) {
+                              sh.redirectPatient(err, context);
+                              setState(
+                                () {
+                                  isSendEP = false;
+                                },
+                              );
+                            },
+                          );
                         },
                         child: !isSendEP
                             ? const Text("Senden")

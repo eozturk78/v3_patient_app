@@ -174,6 +174,7 @@ class _Registration4PageState extends State<Registration4Page> {
                         },
                                 onError: (err) => {
                                       setState(() {
+                                        sh.redirectPatient(err, context);
                                         isSendEP = false;
                                       })
                                     });

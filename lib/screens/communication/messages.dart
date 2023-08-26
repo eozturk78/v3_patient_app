@@ -45,24 +45,28 @@ class _MessagesPageState extends State<MessagesPage> {
           .toList();
     }
     apis.getPatientNotificationList().then(
-        (resp) => {
-              setState(() {
-                notificationList = (resp as List)
-                    .map((e) => MessageNotification.fromJson(e))
-                    .toList();
-                notificationList
-                    .sort((a, b) => b.createdAt.compareTo(a.createdAt));
-                isStarted = false;
+      (resp) => {
+        setState(() {
+          notificationList = (resp as List)
+              .map((e) => MessageNotification.fromJson(e))
+              .toList();
+          notificationList.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+          isStarted = false;
 
-                threadList = notificationList
-                    .where((element) => element.notificationtype != 10)
-                    .toList();
-              }),
-            }, onError: (err) {
-      setState(() {
-        isStarted = false;
-      });
-    });
+          threadList = notificationList
+              .where((element) => element.notificationtype != 10)
+              .toList();
+        }),
+      },
+      onError: (err) {
+        sh.redirectPatient(err, context);
+        setState(
+          () {
+            isStarted = false;
+          },
+        );
+      },
+    );
   }
 
   @override

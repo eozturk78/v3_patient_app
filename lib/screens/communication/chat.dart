@@ -99,6 +99,7 @@ class _ChatPageState extends State<ChatPage> {
         });
       });
     }, onError: (err) {
+      sh.redirectPatient(err, context);
       setState(() {
         isStarted = false;
       });
@@ -161,33 +162,35 @@ class _ChatPageState extends State<ChatPage> {
                         shrinkWrap: true,
                         reverse: true,
                         itemBuilder: (BuildContext context, int index) {
-                          return CustomMessageTextBubble(
-                            dateTime:
-                                listMessages[(listMessages.length - 1) - index]
-                                    .dateTime,
-                            senderTitle:
-                                listMessages[(listMessages.length - 1) - index]
-                                        .senderTitle ??
-                                    "",
-                            text:
-                                listMessages[(listMessages.length - 1) - index]
-                                        .text ??
-                                    "",
-                            senderType:
-                                listMessages[(listMessages.length - 1) - index]
-                                    .senderType,
-                            readAt:
-                                listMessages[(listMessages.length - 1) - index]
-                                    .readAt,
-                            image:
-                                listMessages[(listMessages.length - 1) - index]
-                                    .image,
-                            messageId:
-                                listMessages[(listMessages.length - 1) - index]
-                                        .messageId ??
-                                    "",
-                            messageType: 20,
-                          );
+                          return (listMessages.length - 1) - index > 0
+                              ? CustomMessageTextBubble(
+                                  dateTime: listMessages[
+                                          (listMessages.length - 1) - index]
+                                      .dateTime,
+                                  senderTitle: listMessages[
+                                              (listMessages.length - 1) - index]
+                                          .senderTitle ??
+                                      "",
+                                  text: listMessages[
+                                              (listMessages.length - 1) - index]
+                                          .text ??
+                                      "",
+                                  senderType: listMessages[
+                                          (listMessages.length - 1) - index]
+                                      .senderType,
+                                  readAt: listMessages[
+                                          (listMessages.length - 1) - index]
+                                      .readAt,
+                                  image: listMessages[
+                                          (listMessages.length - 1) - index]
+                                      .image,
+                                  messageId: listMessages[
+                                              (listMessages.length - 1) - index]
+                                          .messageId ??
+                                      "",
+                                  messageType: 20,
+                                )
+                              : null;
                         },
                       ),
                     ),
@@ -279,6 +282,7 @@ class _ChatPageState extends State<ChatPage> {
                         },
                       );
                     }, onError: (err) {
+                      sh.redirectPatient(err, context);
                       setState(() {
                         loaderSendMessage = false;
                       });
@@ -492,6 +496,7 @@ class _ChatPageState extends State<ChatPage> {
                                   txtHeaderMessageController.clear();
                                   Navigator.pop(context, resp);
                                 }, onError: (err) {
+                                  sh.redirectPatient(err, context);
                                   setState(
                                     () {
                                       loaderSendMessage = true;

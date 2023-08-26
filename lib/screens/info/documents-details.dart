@@ -71,6 +71,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
             },
             onError: (err) => setState(
               () {
+                sh.redirectPatient(err, context);
                 isStarted = false;
               },
             ),
@@ -93,6 +94,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
       },
       onError: (err) => setState(
         () {
+          sh.redirectPatient(err, context);
           isStarted = false;
         },
       ),
@@ -110,19 +112,24 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
     });
     if (file != null) {
       apis.setPatientFile(file, fileNameController.text, folderId).then(
-          (value) {
-        var folderName =
-            folderList.where((x) => x.id == folderId)?.first?.folderName;
-        setState(() {
-          isSendEP = false;
-        });
-        Navigator.of(context).pop('ok');
-        getFiles();
-      }, onError: (err) {
-        setState(() {
-          isSendEP = false;
-        });
-      });
+        (value) {
+          var folderName =
+              folderList.where((x) => x.id == folderId)?.first?.folderName;
+          setState(() {
+            isSendEP = false;
+          });
+          Navigator.of(context).pop('ok');
+          getFiles();
+        },
+        onError: (err) {
+          sh.redirectPatient(err, context);
+          setState(
+            () {
+              isSendEP = false;
+            },
+          );
+        },
+      );
     }
   }
 
@@ -570,17 +577,23 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                           apis
                               .setPatientFolderName(
                                   folderId, folderNameController.text)
-                              .then((resp) {
-                            setState(() {
-                              isSendEP = false;
-                            });
-                            Navigator.of(context)
-                                .pop(folderNameController.text);
-                          }, onError: (err) {
-                            setState(() {
-                              isSendEP = false;
-                            });
-                          });
+                              .then(
+                            (resp) {
+                              setState(() {
+                                isSendEP = false;
+                              });
+                              Navigator.of(context)
+                                  .pop(folderNameController.text);
+                            },
+                            onError: (err) {
+                              sh.redirectPatient(err, context);
+                              setState(
+                                () {
+                                  isSendEP = false;
+                                },
+                              );
+                            },
+                          );
                         },
                         child: !isSendEP
                             ? const Text("Senden")
@@ -684,16 +697,23 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                           apis
                               .movePatientFile(
                                   fileId, fileNameController.text, folderId)
-                              .then((data) {
-                            Navigator.of(context).pop(fileNameController.text);
-                            setState(() {
-                              isSendEP = false;
-                            });
-                          }, onError: (err) {
-                            setState(() {
-                              isSendEP = false;
-                            });
-                          });
+                              .then(
+                            (data) {
+                              Navigator.of(context)
+                                  .pop(fileNameController.text);
+                              setState(() {
+                                isSendEP = false;
+                              });
+                            },
+                            onError: (err) {
+                              sh.redirectPatient(err, context);
+                              setState(
+                                () {
+                                  isSendEP = false;
+                                },
+                              );
+                            },
+                          );
                         },
                         child: !isSendEP
                             ? const Text("Senden")

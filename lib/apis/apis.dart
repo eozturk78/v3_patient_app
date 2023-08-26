@@ -637,8 +637,13 @@ class Apis {
     }
   }
 
-  getResponseFromApi(http.Response result) {
-    print(result.body);
+  getResponseFromApi(http.Response result) async {
+    if (result.headers['token'] != null) {
+      print(result.headers['token']);
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setString('token', result.headers['token'].toString());
+    }
+
     var body = jsonDecode(result.body);
     if (result.statusCode == 200 || result.statusCode == 201) {
       try {

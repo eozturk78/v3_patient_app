@@ -32,12 +32,12 @@ class _RecipesPageState extends State<RecipesPage> {
     apis.getPatientRecipes().then((value) {
       setState(() {
         isStarted = false;
-        print(value);
         recipeList = (value as List).map((e) => Recipe.fromJson(e)).toList();
         if (recipeList != null && recipeList?.length != 0)
           recipeList![0].isExpanded = true;
       });
     }, onError: (err) {
+      sh.redirectPatient(err, context);
       setState(() {
         isStarted = false;
       });
@@ -48,8 +48,9 @@ class _RecipesPageState extends State<RecipesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leading('Rezept', context),
-      body: SafeArea( // Wrap your body with SafeArea
-      child: Padding(
+      body: SafeArea(
+          // Wrap your body with SafeArea
+          child: Padding(
         padding: const EdgeInsets.all(15),
         child: Center(
             child: SingleChildScrollView(

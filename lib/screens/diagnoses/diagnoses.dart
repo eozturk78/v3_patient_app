@@ -31,17 +31,23 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
   }
 
   onGetDiagnoses() {
-    apis.getPatientDiagnoses().then((value) {
-      setState(() {
-        isStarted = false;
-        diagnoseList =
-            (value as List).map((e) => PatientDiagnose.fromJson(e)).toList();
-      });
-    }, onError: (err) {
-      setState(() {
-        isStarted = false;
-      });
-    });
+    apis.getPatientDiagnoses().then(
+      (value) {
+        setState(() {
+          isStarted = false;
+          diagnoseList =
+              (value as List).map((e) => PatientDiagnose.fromJson(e)).toList();
+        });
+      },
+      onError: (err) {
+        sh.redirectPatient(err, context);
+        setState(
+          () {
+            isStarted = false;
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -102,14 +108,14 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
                             body: Padding(
                               padding: EdgeInsets.all(10),
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Center(
-                                    child: Text(item.diagnoseName ?? ""),
+                                  Text(item.diagnoseName ?? ""),
+                                  SizedBox(
+                                    height: 10,
                                   ),
-                                  Center(
-                                      child: Text(item.subDiagnoseName ?? "")),
+                                  Text(item.subDiagnoseName ?? ""),
                                   SizedBox(
                                     height: 20,
                                   ),

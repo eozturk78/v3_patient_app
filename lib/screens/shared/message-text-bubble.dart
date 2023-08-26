@@ -49,7 +49,9 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
   }
 
   markAsRead() {
-    apis.markAdRead(widget.messageId).then((value) {}, onError: (err) => {});
+    apis
+        .markAdRead(widget.messageId)
+        .then((value) {}, onError: (err) => {sh.redirectPatient(err, context)});
   }
 
   saveLoad() {
@@ -67,6 +69,7 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
       },
       onError: (err) => setState(
         () {
+          sh.redirectPatient(err, context);
           imageText = null;
           widget.startedLoadImage = false;
         },

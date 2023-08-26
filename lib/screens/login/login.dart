@@ -163,8 +163,7 @@ class _LoginPageState extends State<LoginPage> {
           _authorized = 'Authenticating';
         });
         authenticated = await auth.authenticate(
-          localizedReason:
-              'Scan your fingerprint (or face) to authenticate',
+          localizedReason: 'Scan your fingerprint (or face) to authenticate',
           options: const AuthenticationOptions(
             stickyAuth: true,
             biometricOnly: true,
@@ -210,76 +209,75 @@ class _LoginPageState extends State<LoginPage> {
 
   onLogin() async {
     bool result = await InternetConnectionChecker().hasConnection;
-    if(result == true) {
+    if (result == true) {
       //print('Has internet connection!');
 
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setString("userName", userNameController.text);
-    if (remeberMeState) {
-      pref.setString("rememberMe", true.toString());
-      pref.setString("password", passwordController.text);
-    } else if (proceedLoginWithTouchId) {
+      SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setString("userName", userNameController.text);
-      pref.setString("password", passwordController.text);
-    } else {
-      pref.remove("rememberMe");
-    }
-    setState(() {
-      isSendEP = true;
-    });
+      if (remeberMeState) {
+        pref.setString("rememberMe", true.toString());
+        pref.setString("password", passwordController.text);
+      } else if (proceedLoginWithTouchId) {
+        pref.setString("userName", userNameController.text);
+        pref.setString("password", passwordController.text);
+      } else {
+        pref.remove("rememberMe");
+      }
+      setState(() {
+        isSendEP = true;
+      });
 
-    await apis
-        .login(userNameController.text, passwordController.text, deviceToken)
-        .then((value) async {
-      if (value != null) {
-        // TODO: add else block to this if block
-        setState(() { 
+      await apis
+          .login(userNameController.text, passwordController.text, deviceToken)
+          .then((value) async {
+        if (value != null) {
+          // TODO: add else block to this if block
+          setState(() {
+            isSendEP = false;
+          });
+          print(value['firstName']);
+          pref.setString("patientTitle", value['firstName']);
+          pref.setString('token', value['token']);
+          pref.setString('patientGroups', jsonEncode(value['token']));
+
+          //isLoggedIn = true;
+          //Navigator.of(context).pushReplacementNamed("/main-menu");
+          checkRedirection();
+        }
+      }, onError: (err) {
+        setState(() {
           isSendEP = false;
         });
-        print(value['firstName']);
-        pref.setString("patientTitle", value['firstName']);
-        pref.setString('token', value['token']);
-        pref.setString('patientGroups', jsonEncode(value['token']));
-
-        //isLoggedIn = true;
-        //Navigator.of(context).pushReplacementNamed("/main-menu");
-        checkRedirection();
-      }
-    }, onError: (err) {
-      setState(() {
-        isSendEP = false;
-      });
-      print(err);
-      try {
-        sh.redirectPatient(err, context);
-      }
-      catch(e){
+        print(err);
+        try {
+          sh.redirectPatient(err, context);
+        } catch (e) {
           showToast(e.toString());
-      }
-    });
-
+        }
+      });
     } else {
       //showToast("No internet connection!");
       //return AlertDialog(title: Text("Error"), content: Text("No internet connection!"),);
-      if(context.mounted) {
-        showDialog(context: context, builder: (BuildContext context) {
-          return AlertDialog(title: const Text("Fehler"),
-            content: const Text("Keine Internetverbindung!"),
-            actions: <Widget>[
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: Theme
-                      .of(context)
-                      .textTheme
-                      .labelLarge,
-                ),
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],);
-        });
+      if (context.mounted) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("Fehler"),
+                content: const Text("Keine Internetverbindung!"),
+                actions: <Widget>[
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    child: const Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
       }
     }
   }

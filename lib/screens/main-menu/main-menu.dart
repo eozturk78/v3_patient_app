@@ -27,7 +27,8 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final currentModalRoute = ModalRoute.of(context);
-    if (currentModalRoute != null) { // Check if currentModalRoute is not null
+    if (currentModalRoute != null) {
+      // Check if currentModalRoute is not null
       routeObserver.subscribe(this, currentModalRoute);
     }
   }
@@ -45,7 +46,6 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
     // You can execute logic here when the user returns to this page
     setState(() {
       _selectedIndex = -1;
-
     });
     print('User returned to MainMenuPage');
   }
@@ -68,7 +68,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? selectedRouteNamesJson = prefs.getString('selectedMenuItems');
 
-    if (selectedRouteNamesJson != null || selectedRouteNamesJson!='') {
+    if (selectedRouteNamesJson != null || selectedRouteNamesJson != '') {
       List<dynamic> selectedRouteNames = jsonDecode(selectedRouteNamesJson!);
 
       setState(() {
@@ -84,7 +84,6 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
     }
   }
 
-
   getPatientInfo() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
 
@@ -99,6 +98,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
         pref.setString("patientGroups", jsonEncode(value['patientGroups']));
       });
     }, onError: (err) {
+      sh.redirectPatient(err, context);
       setState(() {});
     });
   }
@@ -107,8 +107,9 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingWithoutBack('Hallo $title!', context),
-      body: SafeArea( // Wrap your body with SafeArea
-      child: Center(
+      body: SafeArea(
+          // Wrap your body with SafeArea
+          child: Center(
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
@@ -147,12 +148,8 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                   ),
                   const Spacer(),
                   GestureDetector(
-                    child: const CustomSubTotal(
-                        FontAwesomeIcons.kitMedical,
-                        "Medikation & \nRezepte",
-                        null,
-                        null,
-                        10),
+                    child: const CustomSubTotal(FontAwesomeIcons.kitMedical,
+                        "Medikation & \nRezepte", null, null, 10),
                     onTap: () {
                       Navigator.of(context).pushNamed('/medication');
                     },
@@ -187,21 +184,19 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                     ),
                     onTap: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => CustomizedMenuPage()),
+                        MaterialPageRoute(
+                            builder: (context) => CustomizedMenuPage()),
                       );
                     },
                   ),
                 ],
               ),
               const Spacer(),
-
             ],
           ),
         ),
       )),
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: _selectedIndex),
     );
-
   }
-
 }

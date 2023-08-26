@@ -33,26 +33,33 @@ class _ExtractDataPageState extends State<ExtractDataPage> {
   }
 
   onGetRecipes() {
-    apis.getPatientDiagnoses().then((value) {
-      setState(() {
-        isStarted = false;
-        print(value);
-        diagnoseList =
-            (value as List).map((e) => PatientDiagnose.fromJson(e)).toList();
-      });
-    }, onError: (err) {
-      setState(() {
-        isStarted = false;
-      });
-    });
+    apis.getPatientDiagnoses().then(
+      (value) {
+        setState(() {
+          isStarted = false;
+          print(value);
+          diagnoseList =
+              (value as List).map((e) => PatientDiagnose.fromJson(e)).toList();
+        });
+      },
+      onError: (err) {
+        sh.redirectPatient(err, context);
+        setState(
+          () {
+            isStarted = false;
+          },
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leading('Auszug meiner Daten', context),
-      body: SafeArea( // Wrap your body with SafeArea
-      child: SingleChildScrollView(
+      body: SafeArea(
+          // Wrap your body with SafeArea
+          child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(10),
           child: Column(

@@ -37,6 +37,7 @@ class _AboutMeState extends State<AboutMe> {
         isStarted = false;
       });
     }, onError: (err) {
+      sh.redirectPatient(err, context);
       setState(() {
         isStarted = false;
       });
@@ -47,209 +48,213 @@ class _AboutMeState extends State<AboutMe> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingSubpage('Über mich', context),
-      body: SafeArea( // Wrap your body with SafeArea
-      child:Padding(
-        padding: EdgeInsets.all(15),
-        child: SingleChildScrollView(
-          child: Center(
-            child: isStarted
-                ? Center(
-                    child: CircularProgressIndicator(
-                    color: mainButtonColor,
-                  ))
-                : aboutPatient == null
-                    ? Center(child: Text("no data found"))
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.person,
-                            size: 80,
-                            color: iconColor,
-                          ),
-                          Center(
-                            child: Text(
-                              '${aboutPatient["firstName"]} ${aboutPatient["lastName"]}',
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 30),
+      body: SafeArea(
+        // Wrap your body with SafeArea
+        child: Padding(
+          padding: EdgeInsets.all(15),
+          child: SingleChildScrollView(
+            child: Center(
+              child: isStarted
+                  ? Center(
+                      child: CircularProgressIndicator(
+                      color: mainButtonColor,
+                    ))
+                  : aboutPatient == null
+                      ? Center(child: Text("no data found"))
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.person,
+                              size: 80,
+                              color: iconColor,
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text("Über mich",
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            decoration: infoBoxDecoration,
-                            padding: EdgeInsets.all(20),
-                            margin: EdgeInsets.all(10),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.person,
-                                      color: iconColor,
-                                    ),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Text(getLocalizedGender(aboutPatient['sex'], context)??aboutPatient['sex']),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.cake,
-                                      color: iconColor,
-                                    ),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Text(formatDate(aboutPatient['dateOfBirth']))
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Text(aboutPatient['comment'] ?? ""),
-                                SizedBox(
-                                  height: 20,
-                                )
-                              ],
+                            Center(
+                              child: Text(
+                                '${aboutPatient["firstName"]} ${aboutPatient["lastName"]}',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 30),
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text("Kontaktinformationen",
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            decoration: infoBoxDecoration,
-                            padding: EdgeInsets.all(20),
-                            margin: EdgeInsets.all(10),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.email,
-                                      color: iconColor,
-                                    ),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Text(aboutPatient['email'] ?? "")
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.phone_iphone,
-                                      color: iconColor,
-                                    ),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Text(aboutPatient['mobilePhone'] ?? "")
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.phone,
-                                      color: iconColor,
-                                    ),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Text(aboutPatient['phone'] ?? "")
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.home,
-                                      color: iconColor,
-                                    ),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Text(
-                                        "${aboutPatient['address']}"),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 38,
-                                    ),
-                                    Text(
-                                        "${aboutPatient['postalCode']} / ${aboutPatient['city']}")
-                                  ],
-                                ),
-                              ],
+                            SizedBox(
+                              height: 20,
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text("Patientengruppen",
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            decoration: infoBoxDecoration,
-                            padding: EdgeInsets.all(20),
-                            margin: EdgeInsets.all(10),
-                            child: Column(
-                              children: [
-                                for (var item in aboutPatient['patientGroups'])
-                                  Column(children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.info,
-                                          color: iconColor,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(item['name'])
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    )
-                                  ])
-                              ],
+                            Text("Über mich",
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            SizedBox(
+                              height: 10,
                             ),
-                          )
-                        ],
-                      ),
+                            Container(
+                              decoration: infoBoxDecoration,
+                              padding: EdgeInsets.all(20),
+                              margin: EdgeInsets.all(10),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.person,
+                                        color: iconColor,
+                                      ),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Text(getLocalizedGender(
+                                              aboutPatient['sex'], context) ??
+                                          aboutPatient['sex']),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.cake,
+                                        color: iconColor,
+                                      ),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Text(formatDate(
+                                          aboutPatient['dateOfBirth']))
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text(aboutPatient['comment'] ?? ""),
+                                  SizedBox(
+                                    height: 20,
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text("Kontaktinformationen",
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              decoration: infoBoxDecoration,
+                              padding: EdgeInsets.all(20),
+                              margin: EdgeInsets.all(10),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.email,
+                                        color: iconColor,
+                                      ),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Text(aboutPatient['email'] ?? "")
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.phone_iphone,
+                                        color: iconColor,
+                                      ),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Text(aboutPatient['mobilePhone'] ?? "")
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.phone,
+                                        color: iconColor,
+                                      ),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Text(aboutPatient['phone'] ?? "")
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.home,
+                                        color: iconColor,
+                                      ),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Text("${aboutPatient['address']}"),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 38,
+                                      ),
+                                      Text(
+                                          "${aboutPatient['postalCode']} / ${aboutPatient['city']}")
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text("Patientengruppen",
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              decoration: infoBoxDecoration,
+                              padding: EdgeInsets.all(20),
+                              margin: EdgeInsets.all(10),
+                              child: Column(
+                                children: [
+                                  for (var item
+                                      in aboutPatient['patientGroups'])
+                                    Column(children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.info,
+                                            color: iconColor,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(item['name'])
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      )
+                                    ])
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+            ),
           ),
         ),
-      ),
       ),
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
     );

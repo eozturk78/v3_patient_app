@@ -51,20 +51,26 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     apis
         .changePassword(userName!, newPasswordController.text,
             passwordController.text, deviceToken)
-        .then((resp) {
-      if (resp != null) {
-        setState(() {
-          isSendEP = false;
-        });
-        pref.setString("patientTitle", resp['firstName']);
-        pref.setString('token', resp['token']);
-        Navigator.of(context).pushReplacementNamed("/main-menu");
-      }
-    }, onError: (err) {
-      setState(() {
-        isSendEP = false;
-      });
-    });
+        .then(
+      (resp) {
+        if (resp != null) {
+          setState(() {
+            isSendEP = false;
+          });
+          pref.setString("patientTitle", resp['firstName']);
+          pref.setString('token', resp['token']);
+          Navigator.of(context).pushReplacementNamed("/main-menu");
+        }
+      },
+      onError: (err) {
+        sh.redirectPatient(err, context);
+        setState(
+          () {
+            isSendEP = false;
+          },
+        );
+      },
+    );
   }
 
   @override

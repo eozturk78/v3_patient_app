@@ -13,6 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../apis/apis.dart';
 import '../../model/patient-file.dart';
+import '../../shared/shared.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/document-box.dart';
 import '../shared/library-box.dart';
@@ -33,6 +34,7 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
   PDFDocument? document;
   String? imageUrl;
   bool isPdf = false;
+  Shared sh = Shared();
 
   @override
   void initState() {
@@ -54,6 +56,7 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
           },
           onError: (err) => setState(
             () {
+              sh.redirectPatient(err, context);
               isStarted = false;
             },
           ),

@@ -11,6 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../colors/colors.dart';
 import '../../model/library.dart';
+import '../../shared/shared.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/library-box.dart';
 import '../shared/medication-plan-box.dart';
@@ -26,6 +27,8 @@ class _LibraryListPageState extends State<LibraryListPage> {
   Apis apis = Apis();
   List<Library> list = [];
   bool isStarted = true;
+  Shared sh = Shared();
+
   @override
   void initState() {
     super.initState();
@@ -38,26 +41,33 @@ class _LibraryListPageState extends State<LibraryListPage> {
     setState(() {
       isStarted = true;
     });
-    apis.getPatientLibraryList(params).then((data) {
-      setState(() {
-        list = (data as List).map((e) => Library.fromJson(e)).toList();
-        isStarted = false;
-      });
-    }, onError: (err) {
-      setState(() {
-        isStarted = false;
-      });
-    });
+    apis.getPatientLibraryList(params).then(
+      (data) {
+        setState(() {
+          list = (data as List).map((e) => Library.fromJson(e)).toList();
+          isStarted = false;
+        });
+      },
+      onError: (err) {
+        sh.redirectPatient(err, context);
+        setState(
+          () {
+            isStarted = false;
+          },
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingSubpage('Bibliothek', context),
-      body: SafeArea( // Wrap your body with SafeArea
-      child: SingleChildScrollView(
-          child: Center(
-              child: Padding(
+      body: SafeArea(
+          // Wrap your body with SafeArea
+          child: SingleChildScrollView(
+              child: Center(
+                  child: Padding(
         padding: EdgeInsets.all(15),
         child: isStarted
             ? CircularProgressIndicator(

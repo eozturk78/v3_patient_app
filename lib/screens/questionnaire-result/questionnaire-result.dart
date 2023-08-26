@@ -83,6 +83,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
           },
           onError: (err) => setState(
             () {
+              sh.redirectPatient(err, context);
               isStarted = false;
             },
           ),
