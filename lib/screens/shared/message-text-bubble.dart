@@ -45,7 +45,7 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
   initState() {
     super.initState();
     if (widget.image != null) saveLoad();
-    if (widget.senderType == 10 && widget.readAt == null) markAsRead();
+    //if (widget.senderType == 10 && widget.readAt == null) markAsRead();
   }
 
   markAsRead() {

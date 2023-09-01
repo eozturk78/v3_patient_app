@@ -396,6 +396,7 @@ class Apis {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/sendmessage';
     var params = {'message': message.toString(), 'organization': organization};
+    print(params);
     var result = await http.post(Uri.parse(finalUrl),
         body: params,
         headers: {'lang': lang, 'token': pref.getString('token').toString()});

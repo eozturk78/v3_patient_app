@@ -248,6 +248,7 @@ class _ChatPageState extends State<ChatPage> {
                     apis
                         .sendMessage(txtMessageController.text, organization)
                         .then((resp) {
+                      print(resp);
                       txtMessageController.text = "";
                       setState(
                         () {
