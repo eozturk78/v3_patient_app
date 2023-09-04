@@ -17,97 +17,67 @@ class _CustomMenuButtonState extends State<BottomNavigatorBar> {
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.selectedIndex ?? -1;
+    _selectedIndex = widget.selectedIndex ?? 0;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 25.0),
-      child: CustomBottomNavigationBar(
-        selectedIndex: widget.selectedIndex ?? -1, // Provide a default value
-        icons: [
-          FontAwesomeIcons.fileMedical,
-          FontAwesomeIcons.kitMedical,
-          FontAwesomeIcons.message,
-          Icons.info_outline,
-          Icons.view_cozy_outlined,
-        ],
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-          _onItemTapped(index);
-          print('Selected index: $index');
-        },
-      ),
+    return BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.business),
+          label: 'Daten',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.school),
+          label: 'Medikation',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.messenger_outline),
+          label: 'Nachrichten',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.info),
+          label: 'Infothek',
+        ),
+      ],
+      type: BottomNavigationBarType.fixed,
+      unselectedItemColor: Colors.grey,
+      currentIndex: _selectedIndex,
+      selectedItemColor: mainButtonColor,
+      onTap: _onItemTapped,
     );
   }
 
   void _onItemTapped(int index) {
     setState(() {
+      _selectedIndex = index;
       switch (index) {
         case 0:
           Navigator.of(context).pushNamedAndRemoveUntil(
-              "/main-sub-menu", ModalRoute.withName('/main-menu'));
+              "/main-menu", ModalRoute.withName('/main-menu'));
           break;
         case 1:
           Navigator.of(context).pushNamedAndRemoveUntil(
-              "/medication", ModalRoute.withName('/main-menu'));
+              "/main-sub-menu", ModalRoute.withName('/main-menu'));
           break;
         case 2:
           Navigator.of(context).pushNamedAndRemoveUntil(
-              "/communication", ModalRoute.withName('/main-menu'));
+              "/medication", ModalRoute.withName('/main-menu'));
           break;
         case 3:
           Navigator.of(context).pushNamedAndRemoveUntil(
-              "/info", ModalRoute.withName('/main-menu'));
+              "/communication", ModalRoute.withName('/main-menu'));
           break;
         case 4:
           Navigator.of(context).pushNamedAndRemoveUntil(
-              "/quick-access", ModalRoute.withName('/main-menu'));
+              "/info", ModalRoute.withName('/main-menu'));
           break;
       }
     });
-  }
-}
-
-class CustomBottomNavigationBar extends StatefulWidget {
-  final List<IconData> icons;
-  final ValueChanged<int> onTap;
-  final int selectedIndex;
-
-  const CustomBottomNavigationBar({
-    required this.icons,
-    required this.onTap,
-    required this.selectedIndex,
-  });
-
-  @override
-  _CustomBottomNavigationBarState createState() =>
-      _CustomBottomNavigationBarState();
-}
-
-class _CustomBottomNavigationBarState
-    extends State<CustomBottomNavigationBar> {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: List.generate(widget.icons.length, (index) {
-        return GestureDetector(
-          onTap: () {
-            widget.onTap(index);
-          },
-          child: Icon(
-            widget.icons[index],
-            size: 32.0, // Increase icon size
-            color: widget.selectedIndex == index
-                ? iconColor // Active color
-                : Colors.black, // Inactive color
-          ),
-        );
-      }),
-    );
   }
 }

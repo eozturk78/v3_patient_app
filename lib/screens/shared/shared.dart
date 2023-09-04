@@ -9,11 +9,13 @@ import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'dart:convert';
 
 String formatDate(String inputDate) {
-  DateTime date = DateTime.parse(inputDate); // Convert the input string to a DateTime object
-  DateFormat formatter = DateFormat('dd.MM.yyyy'); // Create a formatter with the desired output format
-  return formatter.format(date); // Format the date and return the formatted string
+  DateTime date = DateTime.parse(
+      inputDate); // Convert the input string to a DateTime object
+  DateFormat formatter = DateFormat(
+      'dd.MM.yyyy'); // Create a formatter with the desired output format
+  return formatter
+      .format(date); // Format the date and return the formatted string
 }
-
 
 String? getLocalizedGender(String gender, BuildContext context) {
   switch (gender) {
@@ -37,17 +39,20 @@ class AppLocalizations {
   static AppLocalizations? _instance;
 
   static Future<void> load(Locale locale) async {
-    String jsonString = await rootBundle.loadString('lib/l10n/intl_${locale.languageCode}.arb');
+    String jsonString =
+        await rootBundle.loadString('lib/l10n/intl_${locale.languageCode}.arb');
     _instance = AppLocalizations._(locale);
-    _instance?._localizedStrings = json.decode(jsonString) as Map<String, dynamic>;
+    _instance?._localizedStrings =
+        json.decode(jsonString) as Map<String, dynamic>;
   }
 
   static AppLocalizations get instance {
     if (_instance == null) {
-      try{
-        AppLocalizations.load(Locale("de","DE"));
-      }catch(e){
-        throw Exception("Localization has not been initialized. Call load() first.");
+      try {
+        AppLocalizations.load(Locale("de", "DE"));
+      } catch (e) {
+        throw Exception(
+            "Localization has not been initialized. Call load() first.");
       }
     }
     return _instance!;
@@ -58,20 +63,24 @@ class AppLocalizations {
   }
 
   static String tr(String key) {
-    return instance.translate(key)??key;
+    return instance.translate(key) ?? key;
   }
 
   static const LocalizationsDelegate<AppLocalizations> delegate =
-  _AppLocalizationsDelegate();
+      _AppLocalizationsDelegate();
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
   bool isSupported(Locale locale) {
     // Return true if your app supports the given locale
-    return ['en', 'de', /* Add other supported locales here */].contains(locale.languageCode);
+    return [
+      'en',
+      'de', /* Add other supported locales here */
+    ].contains(locale.languageCode);
   }
 
   @override
@@ -84,7 +93,6 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
-
 
 /*
 class AppLocalizations {
@@ -183,15 +191,14 @@ leadingWithoutBack(String title, BuildContext context) {
   return AppBar(
     title: Text(
       title,
-      style: TextStyle(color: Colors.black),
+      style: TextStyle(color: Color.fromARGB(255, 69, 81, 84), fontSize: 36),
     ),
     shadowColor: null,
     elevation: 0.0,
-    centerTitle: true,
     automaticallyImplyLeading: false,
     backgroundColor: Colors.white,
     actions: <Widget>[
-      IconButton(
+      /* IconButton(
         icon: const Icon(
           Icons.person_outline,
           color: Colors.black,
@@ -199,14 +206,14 @@ leadingWithoutBack(String title, BuildContext context) {
         onPressed: () {
           Navigator.of(context).pushNamed("/profile");
         },
-      ),
+      ),*/
       IconButton(
         icon: const Icon(
           Icons.settings_outlined,
           color: Colors.black,
         ),
         onPressed: () {
-          Navigator.of(context).pushNamed("/settings");
+          Navigator.of(context).pushNamed("/profile");
         },
       )
     ],
@@ -260,7 +267,8 @@ leadingDescSubpage(String title, BuildContext context) {
   return AppBar(
     leading: IconButton(
       icon: Icon(Icons.arrow_back, color: Colors.black),
-      onPressed: () => Navigator.of(context).pop(), //Navigator.of(context).pushNamed("/home"),
+      onPressed: () => Navigator.of(context)
+          .pop(), //Navigator.of(context).pushNamed("/home"),
     ),
     title: Text(
       title,
@@ -375,20 +383,12 @@ TextStyle labelText =
 TextStyle selectionLabel = const TextStyle(color: Colors.black, fontSize: 20);
 
 BoxDecoration menuBoxDecoration = BoxDecoration(
-  color: mainItemColor,
+  color: Colors.white,
   border: Border.all(
-    color: Color.fromARGB(50, 0, 0, 0),
+    color: Color.fromARGB(255, 162, 28, 52),
     width: 1,
   ),
   borderRadius: BorderRadius.circular(15),
-  boxShadow: [
-    BoxShadow(
-      color: Color.fromARGB(255, 189, 187, 187).withOpacity(0.3),
-      spreadRadius: 2,
-      blurRadius: 0,
-      offset: Offset(1, 1), // changes position of shadow
-    ),
-  ],
 );
 
 TextStyle agreementHeader = TextStyle(

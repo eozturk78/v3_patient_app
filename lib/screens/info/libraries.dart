@@ -92,7 +92,7 @@ class _LibraryListPageState extends State<LibraryListPage> {
                     ],
                   ),
       )))), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 4),
     );
   }
 }

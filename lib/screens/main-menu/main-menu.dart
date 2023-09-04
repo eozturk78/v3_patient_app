@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../main.dart';
+import '../communication/calendar.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/custom_menu.dart';
 import '../../apis/apis.dart';
@@ -21,7 +22,7 @@ class MainMenuPage extends StatefulWidget {
 }
 
 class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
-  int _selectedIndex = -1;
+  int _selectedIndex = 0;
 
   @override
   void didChangeDependencies() {
@@ -45,7 +46,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
     // This method is called when a route is popped (subpage is closed)
     // You can execute logic here when the user returns to this page
     setState(() {
-      _selectedIndex = -1;
+      _selectedIndex = 0;
     });
     print('User returned to MainMenuPage');
   }
@@ -106,96 +107,154 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingWithoutBack('Hallo $title!', context),
+      appBar: leadingWithoutBack('Dashboard', context),
       body: SafeArea(
-          // Wrap your body with SafeArea
-          child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(15),
+        child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            verticalDirection: VerticalDirection.down,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "assets/images/logo-imedcom.png",
-                    width: 200,
-                    height: 100,
+              Container(
+                decoration: BoxDecoration(color: Colors.white),
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Hello ${title}!",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Color.fromARGB(244, 115, 123, 126)),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: const Color.fromARGB(255, 244, 246, 246),
+                            hintText: 'Search',
+                            hintStyle: TextStyle(
+                                fontSize: 16.0,
+                                color: Color.fromARGB(255, 69, 81, 84)),
+                            prefixIcon: Icon(Icons.search_sharp),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-              const Spacer(),
-              Row(
-                children: [
-                  GestureDetector(
-                    child: const CustomSubTotal(FontAwesomeIcons.user,
-                        "Mein \nBenutzerprofil", null, null, 10),
-                    onTap: () {
-                      Navigator.of(context).pushNamed('/profile');
-                    },
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    child: const CustomSubTotal(FontAwesomeIcons.fileMedical,
-                        "Datenmanagement", null, null, 20),
-                    onTap: () {
-                      Navigator.of(context).pushNamed('/main-sub-menu');
-                    },
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    child: const CustomSubTotal(FontAwesomeIcons.kitMedical,
-                        "Medikation & \nRezepte", null, null, 10),
-                    onTap: () {
-                      Navigator.of(context).pushNamed('/medication');
-                    },
-                  ),
-                ],
+              SizedBox(
+                height: 20,
               ),
-              Row(
-                children: [
-                  GestureDetector(
-                    child: const CustomSubTotal(FontAwesomeIcons.message,
-                        "Kommunikation", null, null, 20),
-                    onTap: () {
-                      Navigator.of(context).pushNamed('/communication');
-                    },
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    child: const CustomSubTotal(Icons.info_outline,
-                        "Dokumente & \nInformationen", null, null, 10),
-                    onTap: () {
-                      Navigator.of(context).pushNamed('/info');
-                    },
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    child: const CustomSubTotal(
-                      Icons.view_cozy_outlined,
-                      "Schnellzugriffsmenü",
-                      null,
-                      null,
-                      10,
-                    ),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => CustomizedMenuPage()),
-                      );
-                    },
-                  ),
-                ],
-              ),
-              const Spacer(),
+              Padding(
+                  padding: const EdgeInsets.only(left: 40, right: 40),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              GestureDetector(
+                                child: const CustomSubTotal(
+                                    FontAwesomeIcons.user,
+                                    "Profil",
+                                    null,
+                                    null,
+                                    10),
+                                onTap: () {
+                                  Navigator.of(context).pushNamed('/profile');
+                                },
+                              ),
+                              const Spacer(),
+                              GestureDetector(
+                                child: const CustomSubTotal(
+                                    FontAwesomeIcons.fileMedical,
+                                    "Daten",
+                                    null,
+                                    null,
+                                    20),
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .pushNamed('/main-sub-menu');
+                                },
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              GestureDetector(
+                                child: const CustomSubTotal(
+                                    FontAwesomeIcons.kitMedical,
+                                    "Medikation",
+                                    null,
+                                    null,
+                                    10),
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .pushNamed('/medication');
+                                },
+                              ),
+                              const Spacer(),
+                              GestureDetector(
+                                child: const CustomSubTotal(
+                                    FontAwesomeIcons.message,
+                                    "Nachrichten",
+                                    null,
+                                    null,
+                                    20),
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .pushNamed('/communication');
+                                },
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              GestureDetector(
+                                child: const CustomSubTotal(
+                                  Icons.timer_sharp,
+                                  "Erinnerungen",
+                                  null,
+                                  null,
+                                  10,
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context) => CalendarScreen()),
+                                  );
+                                },
+                              ),
+                              const Spacer(),
+                              GestureDetector(
+                                child: const CustomSubTotal(Icons.info_outline,
+                                    "Infothek", null, null, 10),
+                                onTap: () {
+                                  Navigator.of(context).pushNamed('/info');
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  )),
             ],
           ),
         ),
-      )),
+      ),
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: _selectedIndex),
     );
   }

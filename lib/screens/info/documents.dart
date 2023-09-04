@@ -261,7 +261,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 4),
     );
   }
 

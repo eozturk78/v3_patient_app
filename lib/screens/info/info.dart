@@ -24,10 +24,11 @@ class _InfoPageState extends State<InfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leading('Infothek', context),
-      body: SafeArea( // Wrap your body with SafeArea
+      body: SafeArea(
+          // Wrap your body with SafeArea
           child: Center(
-          child: Padding(
-        padding: const EdgeInsets.all(15),
+              child: Padding(
+        padding: const EdgeInsets.all(40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -42,7 +43,10 @@ class _InfoPageState extends State<InfoPage> {
                     Navigator.of(context).pushNamed('/libraries');
                   },
                 ),
-                Spacer(),
+              ],
+            ),
+            Row(
+              children: [
                 GestureDetector(
                   child: const CustomSubTotal(Icons.text_snippet_outlined,
                       "Meine Dokumente", null, null, 10),
@@ -64,17 +68,10 @@ class _InfoPageState extends State<InfoPage> {
                 ),
               ],
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-
-              ],
-            ),
           ],
         ),
       ))), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 4),
     );
   }
 }

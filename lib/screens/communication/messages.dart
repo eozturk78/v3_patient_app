@@ -188,7 +188,7 @@ class _MessagesPageState extends State<MessagesPage> {
             ),
         ],
       ),
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 2),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
     );
   }
 }

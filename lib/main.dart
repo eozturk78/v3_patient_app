@@ -162,12 +162,11 @@ main() async {
     }
   });
 
-  Locale initialLocale = Locale("de","DE");
+  Locale initialLocale = Locale("de", "DE");
   WidgetsFlutterBinding.ensureInitialized();
 
   await AppLocalizations.load(initialLocale);
   runApp(const MyApp());
-
 }
 
 // Background message handler
@@ -177,7 +176,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -196,12 +194,11 @@ class MyApp extends StatelessWidget {
       supportedLocales: [
         const Locale('de', 'DE'), // German
       ],
-      color: Colors.transparent,
+      color: Color.fromARGB(0, 179, 55, 55),
       debugShowCheckedModeBanner: false,
       title: 'iMedCom Patient App',
       theme: ThemeData(
-        fontFamily: 'Poppins',
-        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Color.fromARGB(255, 245, 245, 245),
       ),
       navigatorKey: navigatorKey,
       //home: const MyHomePage(title: 'iMedCom App Demo Home Page'),

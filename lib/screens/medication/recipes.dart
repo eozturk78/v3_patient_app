@@ -96,7 +96,7 @@ class _RecipesPageState extends State<RecipesPage> {
                               ])
                         : Text("no data found"))),
       )),
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 1),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 2),
     );
   }
 }

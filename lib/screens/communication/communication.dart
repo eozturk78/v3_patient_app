@@ -33,10 +33,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
           if (today.compareTo(meetingDate) < 0) {
             videoUrl = element['meeting_link'];
           }
-        }
-        catch(e){
-
-        }
+        } catch (e) {}
       }
     });
   }
@@ -45,10 +42,11 @@ class _CommunicationPageState extends State<CommunicationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leading('Kommunikation', context),
-      body: SafeArea( // Wrap your body with SafeArea
-      child: Center(
-          child: Padding(
-        padding: const EdgeInsets.all(15),
+      body: SafeArea(
+          // Wrap your body with SafeArea
+          child: Center(
+              child: Padding(
+        padding: const EdgeInsets.all(40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -63,18 +61,20 @@ class _CommunicationPageState extends State<CommunicationPage> {
                     Navigator.of(context).pushNamed('/messages');
                   },
                 ),
-                const Spacer(),
+              ],
+            ),
+            Row(
+              children: [
                 GestureDetector(
                   child: const CustomSubTotal(
                       Icons.video_call, "Videosprechstunde", null, null, 20),
                   onTap: () async {
-                    if (videoUrl != null){
+                    if (videoUrl != null) {
                       await launch(videoUrl!);
+                    } else {
+                      showToast(
+                          "Derzeit ist kein Treffen verfügbar. Bitte versuchen Sie es noch einmal mit der Besprechungszeit!");
                     }
-                    else
-                      {
-                        showToast("Derzeit ist kein Treffen verfügbar. Bitte versuchen Sie es noch einmal mit der Besprechungszeit!");
-                      }
                   },
                 ),
                 const Spacer(),
@@ -90,14 +90,12 @@ class _CommunicationPageState extends State<CommunicationPage> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-
-              ],
+              children: [],
             ),
           ],
         ),
       ))), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar:  BottomNavigatorBar(selectedIndex: 2),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
     );
   }
 }

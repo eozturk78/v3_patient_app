@@ -17,8 +17,8 @@ class CustomSubTotal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.275,
-      height: MediaQuery.of(context).size.height * 0.15,
+      width: MediaQuery.of(context).size.width * 0.38,
+      height: MediaQuery.of(context).size.height * 0.19,
       margin: EdgeInsets.only(bottom: 10),
       padding: EdgeInsets.only(top: 10, bottom: 10, left: 2),
       decoration: menuBoxDecoration,
@@ -29,17 +29,18 @@ class CustomSubTotal extends StatelessWidget {
           if (iconData != null)
             Icon(
               iconData,
-              size: 40,
+              size: 50,
               color: iconColor,
             ),
           SizedBox(
-            height: 5,
+            height: 15,
           ),
           Text(
             headText,
             overflow: TextOverflow.visible,
             style: TextStyle(
               fontWeight: FontWeight.normal,
+              fontSize: 13,
               color: menuTextColor,
             ),
             textAlign: TextAlign.center,
