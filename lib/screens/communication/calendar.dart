@@ -37,8 +37,8 @@ class CalendarEvent {
 
 // Map event titles to their corresponding EventType
 final Map<String, EventType> eventTypeMap = {
-  'Sprechstunde vor Ort': EventType('Sprechstunde vor Ort', Colors.red),
-  'Videosprechstunde': EventType('Videosprechstunde', Colors.blue),
+  'Sprechstunde vor Ort': EventType('Sprechstunde vor Ort', Colors.pink),
+  'Videosprechstunde': EventType('Videosprechstunde', Colors.lightBlueAccent),
   'Dokumente': EventType('Dokumente', Colors.orange),
   // Add more mappings as needed for other event titles
 };
@@ -151,33 +151,90 @@ class _CalendarScreenState extends State<CalendarScreen> {
       appBar: leadingSubpage('Kalender', context),
       body: Column(
         children: [
-          TableCalendar(
-            firstDay: DateTime.now().subtract(Duration(days: 365)),
-            lastDay: DateTime.now().add(Duration(days: 365)),
-            locale: 'DE',
-            availableCalendarFormats: const {CalendarFormat.month : 'Monat',},
-            pageJumpingEnabled: true,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            focusedDay: _selectedDay,
-            selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _selectedDay = selectedDay;
-              });
-            },
-            calendarFormat: _calendarFormat,
-            onFormatChanged: (format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            },
-            calendarBuilders: CalendarBuilders(
-              markerBuilder: _buildMarkers,
+          Padding(padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+      child:
+      Container(
+      decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(18),
+        color: Colors.white),
+    child:
+        Column(
+          children: [
+            TableCalendar(
+              calendarStyle: CalendarStyle(
+                // Other style properties...
+                defaultTextStyle: TextStyle(
+                  fontWeight: FontWeight.w600
+                ),
+              ),
+              firstDay: DateTime.now().subtract(Duration(days: 365)),
+              lastDay: DateTime.now().add(Duration(days: 365)),
+              locale: 'DE',
+              availableCalendarFormats: const {CalendarFormat.month : 'Monat',},
+              pageJumpingEnabled: true,
+              startingDayOfWeek: StartingDayOfWeek.monday,
+              focusedDay: _selectedDay,
+              rowHeight: 47,
+              selectedDayPredicate: (day) {
+                return isSameDay(_selectedDay, day);
+              },
+              onDaySelected: (selectedDay, focusedDay) {
+                setState(() {
+                  _selectedDay = selectedDay;
+                });
+              },
+              calendarFormat: _calendarFormat,
+              onFormatChanged: (format) {
+                setState(() {
+                  _calendarFormat = format;
+                });
+              },
+              calendarBuilders: CalendarBuilders(
+                markerBuilder: _buildMarkers,
+                todayBuilder: (context, date, _) {
+                  return Container(
+                    margin: const EdgeInsets.all(2.0),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 162, 28, 52), // Filled indicator color for today
+                      borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                    ),
+                    child: Text(
+                      date.day.toString(),
+                      style: TextStyle(
+                        color: Colors.white, // Text color
+                        fontWeight: FontWeight.bold, // Optional: Add bold text style
+                      ),
+                    ),
+                  );
+                },
+                selectedBuilder: (context, date, events) {
+                  return Container(
+                    margin: const EdgeInsets.all(3.0),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color.fromARGB(255, 162, 28, 52), // Border color
+                        width: 1.0, // Border width
+                      ),
+                      borderRadius: BorderRadius.circular(12.0), // Adjust border radius for rounded corners
+                    ),
+                    child: Text(
+                      date.day.toString(),
+                      style: TextStyle(
+                        color: Colors.black, // Text color
+                        fontWeight: FontWeight.w900, // Optional: Add bold text style
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
+            Legend(_getEventTypes()),
+          ],
+          )
           ),
-          Legend(_getEventTypes()),
+          ),
           Expanded(
             child: EventList(
               selectedDay: _selectedDay,
@@ -194,7 +251,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
     if (eventMarkers != null && eventMarkers.isNotEmpty) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: eventMarkers.map((eventType) => _buildMarkerIndicator(eventType)).toList(),
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: eventMarkers
+            .map((eventType) => _buildMarkerIndicator(eventType))
+            .map((marker) => Transform.translate(
+          offset: Offset(0, -8.6), // Move the event marker points higher
+          child: marker,
+        ))
+            .toList(),
       );
     }
     return SizedBox.shrink();
@@ -203,8 +267,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   Widget _buildMarkerIndicator(EventType eventType) {
     return Container(
-      width: 8,
-      height: 8,
+      width: 5,
+      height: 5,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: eventType.color,
@@ -214,8 +278,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   List<EventType> _getEventTypes() {
     return [
-      EventType('Sprechstunde vor Ort', Colors.red),
-      EventType('Videosprechstunde', Colors.blue),
+      EventType('Sprechstunde vor Ort', Colors.pink),
+      EventType('Videosprechstunde', Colors.lightBlueAccent),
       EventType('Dokumente', Colors.orange),
     ];
   }
@@ -229,19 +293,22 @@ class Legend extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: eventTypes
             .map((eventType) => Row(
           children: [
-            Container(
-              width: 12,
-              height: 12,
-              color: eventType.color,
+            ClipOval(
+              child: Container(
+                width: 10,
+                height: 10,
+                color: eventType.color,
+              ),
             ),
             SizedBox(width: 2),
-            Text(eventType.title),SizedBox(width: 2),
+            Text(eventType.title, style: TextStyle(fontSize: 11),
+            ),SizedBox(width: 2),
           ],
         ))
             .toList(),

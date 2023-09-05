@@ -130,7 +130,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                             fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 12,
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 20, right: 20),
@@ -148,14 +148,14 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 12,
                       ),
                     ],
                   ),
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 15,
               ),
               Padding(
                   padding: const EdgeInsets.only(left: 40, right: 40),
