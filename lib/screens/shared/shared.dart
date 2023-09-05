@@ -193,7 +193,7 @@ leadingWithoutBack(String title, BuildContext context) {
       padding: EdgeInsets.only(top: 25),
       child: Text(
         title,
-        style: TextStyle(color: Color.fromARGB(255, 69, 81, 84), fontSize: 36),
+        style: TextStyle(color: Color.fromARGB(255, 69, 81, 84), fontSize: 32, fontWeight: FontWeight.bold),
       ),
     ),
     shadowColor: null,

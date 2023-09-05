@@ -238,11 +238,14 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                                   .drag_handle), // Add this line for the drag handle icon
                               const SizedBox(
                                   width:
-                                      16), // Add spacing between the icon and title
-                              Text(
+                                      12), // Add spacing between the icon and title
+                              Expanded(child: Text(
                                 item.displayName,
                                 style: TextStyle(fontSize: 14),
-                              ),
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: false,
+                                maxLines: 1,
+                              )),
                             ]),
                             trailing: Transform.scale(
                               scale: 1,

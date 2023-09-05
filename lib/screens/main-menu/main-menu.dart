@@ -48,7 +48,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
     setState(() {
       _selectedIndex = 0;
     });
-    print('User returned to MainMenuPage');
+    //print('User returned to MainMenuPage');
   }
 
   Apis apis = Apis();
@@ -123,7 +123,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Hello ${title}!",
+                        "Hallo ${title}!",
                         style: TextStyle(
                             fontSize: 14,
                             color: Color.fromARGB(244, 115, 123, 126),
@@ -139,7 +139,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                             border: InputBorder.none,
                             filled: true,
                             fillColor: const Color.fromARGB(255, 244, 246, 246),
-                            hintText: 'Search',
+                            hintText: 'Suchen',
                             hintStyle: TextStyle(
                                 fontSize: 16.0,
                                 color: Color.fromARGB(255, 69, 81, 84)),
