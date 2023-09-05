@@ -209,6 +209,7 @@ class _LoginPageState extends State<LoginPage> {
 
   onLogin() async {
     bool result = await InternetConnectionChecker().hasConnection;
+    print(result);
     if (result == true) {
       //print('Has internet connection!');
 

@@ -66,12 +66,17 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
-      appBar: leading('Grafische Darstellungen', context),
-      body: SafeArea( // Wrap your body with SafeArea
-      child: Center(
-        child: Padding(
-          padding: EdgeInsets.all(15),
-          child: SingleChildScrollView(
+      appBar: leadingSubpage('Grafische Darstellungen', context),
+      body: SafeArea(
+        // Wrap your body with SafeArea
+        child: SingleChildScrollView(
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(15))),
+            width: double.infinity,
+            padding: EdgeInsets.all(20),
+            margin: EdgeInsets.only(left: 20, right: 20, top: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -93,6 +98,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.of(context).pushNamed('/measurement-result');
                   },
                 ),
+                Divider(),
                 GestureDetector(
                   child: CustomListComponent(
                       Icons.monitor_weight_outlined,
@@ -109,6 +115,7 @@ class _HomePageState extends State<HomePage> {
                         .pushNamed('/measurement-result-weight');
                   },
                 ),
+                Divider(),
                 GestureDetector(
                   child: CustomListComponent(
                       Icons.monitor_heart_outlined,
@@ -125,6 +132,7 @@ class _HomePageState extends State<HomePage> {
                         .pushNamed('/measurement-result-pulse');
                   },
                 ),
+                Divider(),
                 GestureDetector(
                   child: CustomListComponent(
                       Icons.thermostat,
@@ -143,6 +151,7 @@ class _HomePageState extends State<HomePage> {
                         .pushNamed('/measurement-result-temperature');
                   },
                 ),
+                Divider(),
                 GestureDetector(
                   child: CustomListComponent(
                       Icons.air,
@@ -161,6 +170,7 @@ class _HomePageState extends State<HomePage> {
                         .pushNamed('/measurement-result-saturation');
                   },
                 ),
+                Divider(),
                 GestureDetector(
                   child: const CustomListComponent(
                       Icons.question_mark_outlined,
@@ -176,7 +186,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-      )),
+      ),
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
     );
   }

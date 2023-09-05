@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../apis/apis.dart';
 import '../shared/bottom-menu.dart';
+import '../shared/custom_menu.dart';
 import '../shared/profile-menu.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -33,14 +34,17 @@ class _SettingsPageState extends State<SettingsPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _notificationsEnabled =
-          prefs.getBool('medication_notifications_enabled') ?? true;
+          prefs.getString('medication_notifications_enabled') == "true"
+              ? true
+              : false;
     });
   }
 
   // Save user preference for notification enable/disable to SharedPreferences
   Future<void> _saveMedicationNotificationPreference(bool value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('medication_notifications_enabled', value);
+    print(value);
+    prefs.setString('medication_notifications_enabled', value.toString());
     await apis.setPatientMedicationReminderPreference();
   }
 
@@ -81,18 +85,27 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                         ),
                         Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border(
-                                  bottom: BorderSide(color: mainButtonColor),
-                                  top: BorderSide(color: mainButtonColor)),
-                            ),
-                            height: 35,
-                            child: Center(
-                              child: Text(
-                                "Dashboard",
-                                style: TextStyle(color: mainButtonColor),
+                          child: GestureDetector(
+                            onTap: () async {
+                              await Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                builder: (context) =>
+                                    CustomMenuPage(menuItems: []),
+                              ));
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border(
+                                    bottom: BorderSide(color: mainButtonColor),
+                                    top: BorderSide(color: mainButtonColor)),
+                              ),
+                              height: 35,
+                              child: Center(
+                                child: Text(
+                                  "Dashboard",
+                                  style: TextStyle(color: mainButtonColor),
+                                ),
                               ),
                             ),
                           ),

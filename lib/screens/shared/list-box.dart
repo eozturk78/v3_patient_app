@@ -18,7 +18,6 @@ class CustomListComponent extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 10),
       padding: EdgeInsets.only(top: 10, bottom: 10, left: 2),
-      decoration: menuBoxDecoration,
       child: Row(
         children: [
           if (iconData != null)
@@ -37,7 +36,9 @@ class CustomListComponent extends StatelessWidget {
               Text(
                 headText,
                 style: TextStyle(
-                    color: mainButtonColor, fontWeight: FontWeight.bold),
+                    color: mainButtonColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),
               ),
               SizedBox(
                 height: 5,

@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/main.dart';
+import 'package:patient_app/screens/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../colors/colors.dart';
@@ -92,7 +94,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
       };
     }).toList();
     prefs.setString('selectedMenuItems', jsonEncode(selectedMenuItemsData));
-    Navigator.pop(context); // Close the customization page after saving
+    //Navigator.pop(context); // Close the customization page after saving
   }
 
   void _onReorder(int oldIndex, int newIndex) {
@@ -115,21 +117,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        centerTitle: true,
-        title: Text('Einstellungen'),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.save,
-              color: Colors.red[800],
-            ),
-            onPressed: _saveSelectedMenuItems,
-          ),
-        ],
-      ),
+      appBar: leadingSubpage('Einstellungen', context),
       body: _selectedMenuItems.isEmpty
           ? _buildDefaultMenuItems()
           : Column(
@@ -144,12 +132,8 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                           children: [
                             Expanded(
                               child: GestureDetector(
-                                onTap: () async {
-                                  await Navigator.of(context)
-                                      .push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        CustomMenuPage(menuItems: []),
-                                  ));
+                                onTap: () {
+                                  Navigator.of(context).pushNamed("/profile");
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -167,17 +151,26 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                               ),
                             ),
                             Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(2),
-                                        bottomLeft: Radius.circular(2)),
-                                    color: mainButtonColor),
-                                height: 35,
-                                child: Center(
-                                  child: Text(
-                                    "Dashboard",
-                                    style: TextStyle(color: Colors.white),
+                              child: GestureDetector(
+                                onTap: () async {
+                                  await Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        CustomMenuPage(menuItems: []),
+                                  ));
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(2),
+                                          bottomLeft: Radius.circular(2)),
+                                      color: mainButtonColor),
+                                  height: 35,
+                                  child: Center(
+                                    child: Text(
+                                      "Dashboard",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -223,34 +216,53 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 20,
+                ),
                 Expanded(
-                  child: ReorderableListView(
-                    onReorder: _onReorder,
-                    children: _selectedMenuItems.map(
-                      (item) {
-                        return ListTile(
-                          key: Key(item.routeName),
-                          title: Row(children: [
-                            const Icon(Icons
-                                .drag_handle), // Add this line for the drag handle icon
-                            const SizedBox(
-                                width:
-                                    16), // Add spacing between the icon and title
-                            Text(item.displayName),
-                          ]),
-                          trailing: Switch(
-                            value: item.isSelected,
-                            onChanged: (value) {
-                              setState(() {
-                                item.isSelected = value;
-                              });
-                            },
-                          ),
-                        );
-                      },
-                    ).toList(),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    width: double.infinity,
+                    padding: EdgeInsets.all(2),
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    child: ReorderableListView(
+                      onReorder: _onReorder,
+                      children: _selectedMenuItems.map(
+                        (item) {
+                          return ListTile(
+                            key: Key(item.routeName),
+                            title: Row(children: [
+                              const Icon(Icons
+                                  .drag_handle), // Add this line for the drag handle icon
+                              const SizedBox(
+                                  width:
+                                      16), // Add spacing between the icon and title
+                              Text(
+                                item.displayName,
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ]),
+                            trailing: Transform.scale(
+                              scale: 1,
+                              child: CupertinoSwitch(
+                                activeColor: mainButtonColor,
+                                value: item.isSelected,
+                                onChanged: (value) {
+                                  setState(() {
+                                    item.isSelected = value;
+                                    _saveSelectedMenuItems();
+                                  });
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                      ).toList(),
+                    ),
                   ),
-                )
+                ),
               ],
             ),
     );

@@ -41,7 +41,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leading('Kommunikation', context),
+      appBar: leadingWithoutBack('Nachrichten', context),
       body: SafeArea(
           // Wrap your body with SafeArea
           child: Center(
@@ -56,7 +56,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
               children: [
                 GestureDetector(
                   child: const CustomSubTotal(Icons.chat_bubble_outline_rounded,
-                      "Mitteilungen", null, null, 10),
+                      "Nachrichten", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/messages');
                   },

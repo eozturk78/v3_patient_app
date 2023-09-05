@@ -23,7 +23,7 @@ class _InfoPageState extends State<InfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leading('Infothek', context),
+      appBar: leadingWithoutBack('Infothek', context),
       body: SafeArea(
           // Wrap your body with SafeArea
           child: Center(

@@ -23,10 +23,11 @@ class _MedicationPageState extends State<MedicationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leading('Meine Medication', context),
-      body: SafeArea( // Wrap your body with SafeArea
-      child: Center(
-          child: Padding(
+      appBar: leadingWithoutBack('Medikation', context),
+      body: SafeArea(
+          // Wrap your body with SafeArea
+          child: Center(
+              child: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

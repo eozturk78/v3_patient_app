@@ -189,28 +189,22 @@ leading(String title, BuildContext context) {
 
 leadingWithoutBack(String title, BuildContext context) {
   return AppBar(
-    title: Text(
-      title,
-      style: TextStyle(color: Color.fromARGB(255, 69, 81, 84), fontSize: 36),
+    title: Padding(
+      padding: EdgeInsets.only(top: 25),
+      child: Text(
+        title,
+        style: TextStyle(color: Color.fromARGB(255, 69, 81, 84), fontSize: 36),
+      ),
     ),
     shadowColor: null,
     elevation: 0.0,
     automaticallyImplyLeading: false,
     backgroundColor: Colors.white,
     actions: <Widget>[
-      /* IconButton(
-        icon: const Icon(
-          Icons.person_outline,
-          color: Colors.black,
-        ),
-        onPressed: () {
-          Navigator.of(context).pushNamed("/profile");
-        },
-      ),*/
       IconButton(
         icon: const Icon(
-          Icons.settings_outlined,
-          color: Colors.black,
+          Icons.settings,
+          color: Color.fromARGB(255, 69, 81, 84),
         ),
         onPressed: () {
           Navigator.of(context).pushNamed("/profile");
@@ -236,13 +230,23 @@ leadingWithoutIcon(String title, BuildContext context) {
 
 leadingSubpage(String title, BuildContext context) {
   return AppBar(
-    leading: IconButton(
-      icon: Icon(Icons.arrow_back, color: Colors.black),
+    leading: TextButton(
       onPressed: () => Navigator.of(context).pop(),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Icon(Icons.arrow_back_ios, color: mainButtonColor),
+          Text(
+            "Zurück",
+            style: TextStyle(color: mainButtonColor),
+          )
+        ],
+      ),
     ),
+    leadingWidth: 100,
     title: Text(
       title,
-      style: TextStyle(color: Colors.black),
+      style: TextStyle(color: Color.fromARGB(255, 69, 81, 84), fontSize: 16),
     ),
     shadowColor: null,
     elevation: 0.0,

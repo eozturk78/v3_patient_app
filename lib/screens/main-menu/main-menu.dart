@@ -117,7 +117,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
               Container(
                 decoration: BoxDecoration(color: Colors.white),
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,7 +126,8 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                         "Hello ${title}!",
                         style: TextStyle(
                             fontSize: 14,
-                            color: Color.fromARGB(244, 115, 123, 126)),
+                            color: Color.fromARGB(244, 115, 123, 126),
+                            fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
                         height: 20,
@@ -145,6 +146,9 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                             prefixIcon: Icon(Icons.search_sharp),
                           ),
                         ),
+                      ),
+                      SizedBox(
+                        height: 20,
                       ),
                     ],
                   ),

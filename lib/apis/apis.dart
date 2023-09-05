@@ -143,7 +143,9 @@ class Apis {
   Future setPatientMedicationReminderPreference() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var medicationReminderPreference =
-        pref.getBool('medication_notifications_enabled') ?? true;
+        pref.getString('medication_notifications_enabled') == "true"
+            ? true
+            : false;
     String finalUrl = '$baseUrl/setPatientMedicationReminderPreference';
     var params = {
       'medication_reminder_preference': medicationReminderPreference.toString()

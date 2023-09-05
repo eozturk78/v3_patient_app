@@ -153,6 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Icon(
                           Icons.arrow_forward_ios,
                           color: mainButtonColor,
+                          size: 20,
                         )
                       ],
                     ),
@@ -172,6 +173,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Icon(
                           Icons.arrow_forward_ios,
                           color: mainButtonColor,
+                          size: 20,
                         )
                       ],
                     ),
@@ -191,6 +193,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Icon(
                           Icons.arrow_forward_ios,
                           color: mainButtonColor,
+                          size: 20,
                         )
                       ],
                     ),
@@ -218,6 +221,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Icon(
                           Icons.arrow_forward_ios,
                           color: mainButtonColor,
+                          size: 20,
                         )
                       ],
                     ),
@@ -237,6 +241,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Icon(
                           Icons.arrow_forward_ios,
                           color: mainButtonColor,
+                          size: 20,
                         )
                       ],
                     ),
@@ -264,6 +269,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Icon(
                           Icons.arrow_forward_ios,
                           color: mainButtonColor,
+                          size: 20,
                         )
                       ],
                     ),
@@ -283,6 +289,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Icon(
                           Icons.arrow_forward_ios,
                           color: mainButtonColor,
+                          size: 20,
                         )
                       ],
                     ),
@@ -302,6 +309,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Icon(
                           Icons.arrow_forward_ios,
                           color: mainButtonColor,
+                          size: 20,
                         )
                       ],
                     ),
@@ -324,6 +332,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Icon(
                           Icons.arrow_forward_ios,
                           color: mainButtonColor,
+                          size: 20,
                         )
                       ],
                     ),
