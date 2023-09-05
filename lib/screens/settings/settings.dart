@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,7 +32,8 @@ class _SettingsPageState extends State<SettingsPage> {
     await apis.getPatientMedicationReminderPreference();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _notificationsEnabled = prefs.getBool('medication_notifications_enabled') ?? true;
+      _notificationsEnabled =
+          prefs.getBool('medication_notifications_enabled') ?? true;
     });
   }
 
@@ -45,35 +48,142 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingSubpage('Einstellungen', context),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Medikamentenerinnerungen',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              decoration: BoxDecoration(color: Colors.white),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushNamed("/profile");
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: mainButtonColor),
+                              ),
+                              height: 35,
+                              child: Center(
+                                child: Text(
+                                  "Benutzer",
+                                  style: TextStyle(color: mainButtonColor),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border(
+                                  bottom: BorderSide(color: mainButtonColor),
+                                  top: BorderSide(color: mainButtonColor)),
+                            ),
+                            height: 35,
+                            child: Center(
+                              child: Text(
+                                "Dashboard",
+                                style: TextStyle(color: mainButtonColor),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(2),
+                                    bottomLeft: Radius.circular(2)),
+                                color: mainButtonColor),
+                            height: 35,
+                            child: Center(
+                              child: Text(
+                                "Erinnerungen",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 244, 246, 246),
+                        hintText: 'Search',
+                        hintStyle: TextStyle(
+                            fontSize: 16.0,
+                            color: Color.fromARGB(255, 69, 81, 84)),
+                        prefixIcon: Icon(Icons.search_sharp),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 16),
-                SwitchListTile(
-                  title: const Text('Aktivieren Medikamentenerinnerungen'),
-                  value: _notificationsEnabled,
-                  onChanged: (value) {
-                    setState(() {
-                      _notificationsEnabled = value;
-                    });
-                    _saveMedicationNotificationPreference(value);
-                  },
-                ),
-                const SizedBox(height: 16),
-              ],
+              ),
             ),
-          ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
+              width: double.infinity,
+              padding: EdgeInsets.all(20),
+              margin: EdgeInsets.only(left: 20, right: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Medikamentenerinnerungen',
+                    style: TextStyle(color: Color.fromARGB(255, 150, 159, 162)),
+                  ),
+                  Divider(),
+                  Row(
+                    children: [
+                      Text(
+                        "Activieren",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Spacer(),
+                      Transform.scale(
+                        scale: 1,
+                        child: CupertinoSwitch(
+                          activeColor: mainButtonColor,
+                          value: _notificationsEnabled,
+                          onChanged: (value) {
+                            setState(() {
+                              _notificationsEnabled = value;
+                            });
+                            _saveMedicationNotificationPreference(value);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  Divider(),
+                ],
+              ),
+            )
+          ],
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-      //bottomNavigationBar: BottomNavigatorBar(0),
+      ),
+      bottomNavigationBar: BottomNavigatorBar(
+        selectedIndex: 0,
+      ),
     );
   }
 }

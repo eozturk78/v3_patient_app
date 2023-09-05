@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../colors/colors.dart';
 import '../shared/bottom-menu.dart';
+import '../shared/custom_menu.dart';
 import '../shared/profile-menu.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -54,33 +55,47 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border(
-                                  bottom: BorderSide(color: mainButtonColor),
-                                  top: BorderSide(color: mainButtonColor)),
-                            ),
-                            height: 35,
-                            child: Center(
-                              child: Text(
-                                "Dashboard",
-                                style: TextStyle(color: mainButtonColor),
+                          child: GestureDetector(
+                            onTap: () async {
+                              await Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                builder: (context) =>
+                                    CustomMenuPage(menuItems: []),
+                              ));
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border(
+                                    bottom: BorderSide(color: mainButtonColor),
+                                    top: BorderSide(color: mainButtonColor)),
+                              ),
+                              height: 35,
+                              child: Center(
+                                child: Text(
+                                  "Dashboard",
+                                  style: TextStyle(color: mainButtonColor),
+                                ),
                               ),
                             ),
                           ),
                         ),
                         Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(color: mainButtonColor),
-                            ),
-                            height: 35,
-                            child: Center(
-                              child: Text(
-                                "Erinnerungen",
-                                style: TextStyle(color: mainButtonColor),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushNamed("/settings");
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: mainButtonColor),
+                              ),
+                              height: 35,
+                              child: Center(
+                                child: Text(
+                                  "Erinnerungen",
+                                  style: TextStyle(color: mainButtonColor),
+                                ),
                               ),
                             ),
                           ),
@@ -110,7 +125,9 @@ class _ProfilePageState extends State<ProfilePage> {
               height: 40,
             ),
             Container(
-              decoration: BoxDecoration(color: Colors.white),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
               width: double.infinity,
               padding: EdgeInsets.all(20),
               margin: EdgeInsets.only(left: 20, right: 20),

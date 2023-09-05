@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:patient_app/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../colors/colors.dart';
 import '../main-menu/route_util.dart';
 
 class CustomMenuItem {
@@ -21,7 +23,6 @@ class CustomMenuPage extends StatefulWidget {
 
   @override
   _CustomMenuPageState createState() => _CustomMenuPageState();
-
 }
 
 class _CustomMenuPageState extends State<CustomMenuPage> {
@@ -42,13 +43,13 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
     _loadSelectedMenuItems(); // Load selected menu items on initialization
   }
 
-
-
   void _loadSelectedMenuItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String selectedMenuItemsDataString = prefs.getString('selectedMenuItems') ?? '';
+    String selectedMenuItemsDataString =
+        prefs.getString('selectedMenuItems') ?? '';
 
-    if (selectedMenuItemsDataString.isEmpty || selectedMenuItemsDataString == '') {
+    if (selectedMenuItemsDataString.isEmpty ||
+        selectedMenuItemsDataString == '') {
       setState(() {
         _selectedMenuItems = routeDisplayNames.entries.map((entry) {
           return CustomMenuItem(
@@ -61,7 +62,8 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
       });
     } else {
       // Decode and update the selected menu items
-      List<Map<String, dynamic>> selectedMenuItemsData = List<Map<String, dynamic>>.from(
+      List<Map<String, dynamic>> selectedMenuItemsData =
+          List<Map<String, dynamic>>.from(
         jsonDecode(selectedMenuItemsDataString),
       );
 
@@ -78,11 +80,10 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
     }
   }
 
-
   void _saveSelectedMenuItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<Map<String, dynamic>> selectedMenuItemsData = _selectedMenuItems.map((
-        item) {
+    List<Map<String, dynamic>> selectedMenuItemsData =
+        _selectedMenuItems.map((item) {
       return {
         'routeName': item.routeName,
         'displayName': item.displayName,
@@ -93,8 +94,6 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
     prefs.setString('selectedMenuItems', jsonEncode(selectedMenuItemsData));
     Navigator.pop(context); // Close the customization page after saving
   }
-
-
 
   void _onReorder(int oldIndex, int newIndex) {
     setState(() {
@@ -120,38 +119,140 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         centerTitle: true,
-        title: Text('Schnellzugriff festlegen'),
+        title: Text('Einstellungen'),
         actions: [
           IconButton(
-            icon: Icon(Icons.save, color: Colors.red[800],),
+            icon: Icon(
+              Icons.save,
+              color: Colors.red[800],
+            ),
             onPressed: _saveSelectedMenuItems,
           ),
         ],
       ),
       body: _selectedMenuItems.isEmpty
           ? _buildDefaultMenuItems()
-          : ReorderableListView(
-        onReorder: _onReorder,
-        children: _selectedMenuItems.map((item) {
-          return ListTile(
-            key: Key(item.routeName),
-          title: Row(
-          children: [
-          const Icon(Icons.drag_handle), // Add this line for the drag handle icon
-          const SizedBox(width: 16), // Add spacing between the icon and title
-          Text(item.displayName),
-          ]),
-            trailing: Switch(
-              value: item.isSelected,
-              onChanged: (value) {
-                setState(() {
-                  item.isSelected = value;
-                });
-              },
+          : Column(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(color: Colors.white),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () async {
+                                  await Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        CustomMenuPage(menuItems: []),
+                                  ));
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(color: mainButtonColor),
+                                  ),
+                                  height: 35,
+                                  child: Center(
+                                    child: Text(
+                                      "Benutzer",
+                                      style: TextStyle(color: mainButtonColor),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(2),
+                                        bottomLeft: Radius.circular(2)),
+                                    color: mainButtonColor),
+                                height: 35,
+                                child: Center(
+                                  child: Text(
+                                    "Dashboard",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed("/settings");
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(color: mainButtonColor),
+                                  ),
+                                  height: 35,
+                                  child: Center(
+                                    child: Text(
+                                      "Erinnerungen",
+                                      style: TextStyle(color: mainButtonColor),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: const Color.fromARGB(255, 244, 246, 246),
+                            hintText: 'Search',
+                            hintStyle: TextStyle(
+                                fontSize: 16.0,
+                                color: Color.fromARGB(255, 69, 81, 84)),
+                            prefixIcon: Icon(Icons.search_sharp),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ReorderableListView(
+                    onReorder: _onReorder,
+                    children: _selectedMenuItems.map(
+                      (item) {
+                        return ListTile(
+                          key: Key(item.routeName),
+                          title: Row(children: [
+                            const Icon(Icons
+                                .drag_handle), // Add this line for the drag handle icon
+                            const SizedBox(
+                                width:
+                                    16), // Add spacing between the icon and title
+                            Text(item.displayName),
+                          ]),
+                          trailing: Switch(
+                            value: item.isSelected,
+                            onChanged: (value) {
+                              setState(() {
+                                item.isSelected = value;
+                              });
+                            },
+                          ),
+                        );
+                      },
+                    ).toList(),
+                  ),
+                )
+              ],
             ),
-          );
-        }).toList(),
-      ),
     );
   }
 
