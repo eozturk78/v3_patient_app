@@ -339,7 +339,10 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                 ],
                               ),
                           Container(
-                            decoration: menuBoxDecoration,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15))),
                             margin: EdgeInsets.only(top: 20),
                             padding: EdgeInsets.all(10),
                             child: Column(
@@ -390,6 +393,22 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                               RegExp('[0-9.]')),
                                         ],
                                         keyboardType: TextInputType.number,
+                                        decoration: InputDecoration(
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            borderSide: BorderSide(
+                                              color: Color.fromARGB(
+                                                  255, 216, 216, 216),
+                                            ),
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Color.fromARGB(
+                                                  255, 216, 216, 216),
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                       RadioListTile(
                                         value: 0,
@@ -447,9 +466,32 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                           Text(
                                             sh.getTranslation(
                                                 inputList[i]['title']),
-                                            style: labelText,
+                                            style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 150, 159, 162)),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
                                           ),
                                           TextFormField(
+                                            decoration: InputDecoration(
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                borderSide: BorderSide(
+                                                  color: Color.fromARGB(
+                                                      255, 216, 216, 216),
+                                                ),
+                                              ),
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                                borderSide: BorderSide(
+                                                  color: Color.fromARGB(
+                                                      255, 216, 216, 216),
+                                                ),
+                                              ),
+                                            ),
                                             controller: _controllers[i],
                                             obscureText: false,
                                             focusNode:
@@ -477,9 +519,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                 inputList[i]['type'] != "String"
                                                     ? TextInputType.number
                                                     : TextInputType.text,
-                                            decoration: const InputDecoration(
-                                              border: InputBorder.none,
-                                            ),
                                             inputFormatters: inputList[i]
                                                         ['type'] !=
                                                     "String"
@@ -501,9 +540,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                           SizedBox(
                                             height: 10,
                                           ),
-                                          Divider(
-                                              color: const Color.fromARGB(
-                                                  255, 134, 134, 134)),
                                           SizedBox(
                                             height: 10,
                                           ),
@@ -530,39 +566,30 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
           children: [
             for (var item in buttons)
               SizedBox(
-                  width: 150,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary:
-                            (item['isNo']) ? mainButtonColor : confirmButton,
-                      ),
-                      onPressed: () async {
+                width: 150,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: (item['isNo']) ? confirmButton : mainButtonColor,
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        focusNotToFirst.unfocus();
+                      });
+                      prepareOutputs();
+                      if (item['next'] == endNode) {
+                        print(outPuts);
                         setState(() {
-                          focusNotToFirst.unfocus();
+                          isLast = true;
                         });
-                        prepareOutputs();
-                        if (item['next'] == endNode) {
-                          print(outPuts);
-                          setState(() {
-                            isLast = true;
-                          });
-                          clearAll();
-                        } else {
-                          if (item['next'] != null) {
-                            findQuestionaire(item['next']);
-                          }
+                        clearAll();
+                      } else {
+                        if (item['next'] != null) {
+                          findQuestionaire(item['next']);
                         }
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          (item['isNo'])
-                              ? Icon(Icons.close)
-                              : Icon(Icons.check),
-                          Text(item['text'])
-                        ],
-                      ))),
+                      }
+                    },
+                    child: Text(item['text'])),
+              )
           ],
         ),
       ),
