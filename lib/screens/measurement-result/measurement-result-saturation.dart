@@ -37,18 +37,17 @@ class _MeasurementResultSaturationPageState
     apis.getMeasurementList(date, bp).then((value) {
       var results = value['results'] as List;
       for (var result in results) {
-          var timestamp = sh.formatDate(result['timestamp']);
-          var value = result['measurement']['value'];
-          if (sh.formatDate(DateTime.now().toString()) ==
-              sh.formatDate(result['timestamp'])) {
-            todayValue = "$value";
-          }
-          if (sh.formatDate(
-                  DateTime.now().add(Duration(days: -1)).toString()) ==
-              sh.formatDate(result['timestamp'])) {
-            yesterdayValue = "$value";
-          }
-          dataFrom.add(_SalesData(timestamp, value));
+        var timestamp = sh.formatDate(result['timestamp']);
+        var value = result['measurement']['value'];
+        if (sh.formatDate(DateTime.now().toString()) ==
+            sh.formatDate(result['timestamp'])) {
+          todayValue = "$value";
+        }
+        if (sh.formatDate(DateTime.now().add(Duration(days: -1)).toString()) ==
+            sh.formatDate(result['timestamp'])) {
+          yesterdayValue = "$value";
+        }
+        dataFrom.add(_SalesData(timestamp, value));
       }
       setState(() {
         data = dataFrom;
@@ -81,149 +80,273 @@ class _MeasurementResultSaturationPageState
     return Scaffold(
       appBar: leadingSubpage('Sauerstoffsättigung', context),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              const Text(
-                  "Hier haben Sie einen Überblick über die zeitliche Entwicklung Ihrer Werte"),
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        setState(() {
-                          periodType = 10;
-                          var d = DateTime.now().add(const Duration(days: -8));
-                          onGetMeasurementList(d, 'saturation');
-                        });
-                      },
-                      child: Text(
-                        '1 Woche',
-                        style: periodType == 10
-                            ? selectedPeriod
-                            : TextStyle(color: Colors.black),
-                      )),
-                  Spacer(),
-                  TextButton(
-                      onPressed: () {
-                        setState(() {
-                          periodType = 20;
-                          var d = DateTime.now().add(const Duration(days: -91));
-                          onGetMeasurementList(d, 'saturation');
-                        });
-                      },
-                      child: Text(
-                        '3 Monate',
-                        style: periodType == 20
-                            ? selectedPeriod
-                            : TextStyle(color: Colors.black),
-                      )),
-                  Spacer(),
-                  TextButton(
-                      onPressed: () {
-                        setState(() {
-                          periodType = 30;
-                          var d =
-                              DateTime.now().add(const Duration(days: -366));
-                          onGetMeasurementList(d, 'saturation');
-                        });
-                      },
-                      child: Text(
-                        '1 Jahr',
-                        style: periodType == 30
-                            ? selectedPeriod
-                            : TextStyle(color: Colors.black),
-                      )),
-                ],
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              //Initialize the chart widget
-              SfCartesianChart(
-                primaryXAxis: CategoryAxis(),
-                // Chart title
-                title: ChartTitle(text: ''),
-                // Enable legend
-                legend: Legend(isVisible: false),
-                // Enable tooltip
-                tooltipBehavior: TooltipBehavior(enable: true),
-                series: <ChartSeries<_SalesData, String>>[
-                  LineSeries<_SalesData, String>(
-                      dataSource: yellowHigh,
-                      color: Colors.amber,
-                      xValueMapper: (_SalesData sales, _) => sales.year,
-                      yValueMapper: (_SalesData sales, _) => sales.sales,
-                      name: 'Sauerstoffsättigung',
-                      // Enable data label
-                      dataLabelSettings:
-                          const DataLabelSettings(isVisible: false)),
-                  LineSeries<_SalesData, String>(
-                      dataSource: yellowLow,
-                      color: Colors.amber,
-                      xValueMapper: (_SalesData sales, _) => sales.year,
-                      yValueMapper: (_SalesData sales, _) => sales.sales,
-                      name: 'Sauerstoffsättigung',
-                      // Enable data label
-                      dataLabelSettings:
-                          const DataLabelSettings(isVisible: false)),
-                  LineSeries<_SalesData, String>(
-                      dataSource: data,
-                      color: Colors.blue[900],
-                      xValueMapper: (_SalesData sales, _) => sales.year,
-                      yValueMapper: (_SalesData sales, _) => sales.sales,
-                      name: 'Sauerstoffsättigung',
-                      // Enable data label
-                      dataLabelSettings:
-                          const DataLabelSettings(isVisible: false)),
-                ],
-              ),
-              Row(
-                children: [
-                  CustomSubTotal(
-                      null, "Gestern", "$yesterdayValue %", null, null),
-                  Spacer(),
-                  CustomSubTotal(null, "Heute", "$todayValue %", null, null),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                  "Sauerstoff ist überlebenswichtig und für jede Körperzelle und -funktion notwendig. Damit unser Körper mit genug Sauerstoff versorgt wird, muss das Zusammenspiel aus Atmung, Kreislauf und der Gewebsdurchblutung stimmen. Die Sauerstoffsättigung gibt den Sauerstoffgehalt im Blut an."),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.info,
-                    color: Color.fromARGB(255, 0, 90, 47),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushNamed('/saturation-description');
-                    },
-                    child: Text(
-                      "Mehr Informationen über die Einstufung Ihrer Messwerte",
-                      style: TextStyle(
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue),
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(color: Colors.white),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            periodType = 10;
+                            var d =
+                                DateTime.now().add(const Duration(days: -8));
+                            onGetMeasurementList(d, 'saturation');
+                          });
+                        },
+                        child: Container(
+                          decoration: periodType == 10
+                              ? BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(2),
+                                      bottomLeft: Radius.circular(2)),
+                                  color: mainButtonColor)
+                              : BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: mainButtonColor),
+                                ),
+                          height: 35,
+                          child: Center(
+                            child: Text(
+                              "1 Woche",
+                              style: TextStyle(
+                                  color: periodType == 10
+                                      ? Colors.white
+                                      : mainButtonColor),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          setState(() {
+                            periodType = 20;
+                            var d =
+                                DateTime.now().add(const Duration(days: -91));
+                            onGetMeasurementList(d, 'saturation');
+                          });
+                        },
+                        child: Container(
+                          decoration: periodType == 20
+                              ? BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(2),
+                                      bottomLeft: Radius.circular(2)),
+                                  color: mainButtonColor)
+                              : BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border(
+                                      bottom:
+                                          BorderSide(color: mainButtonColor),
+                                      top: BorderSide(color: mainButtonColor)),
+                                ),
+                          height: 35,
+                          child: Center(
+                            child: Text(
+                              "3 Monate",
+                              style: TextStyle(
+                                  color: periodType == 20
+                                      ? Colors.white
+                                      : mainButtonColor),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            periodType = 30;
+                            var d =
+                                DateTime.now().add(const Duration(days: -366));
+                            onGetMeasurementList(d, 'saturation');
+                          });
+                        },
+                        child: Container(
+                          decoration: periodType == 30
+                              ? BoxDecoration(
+                                  color: mainButtonColor,
+                                  border: Border.all(color: mainButtonColor),
+                                )
+                              : BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: mainButtonColor),
+                                ),
+                          height: 35,
+                          child: Center(
+                            child: Text(
+                              "1 Jahr",
+                              style: TextStyle(
+                                  color: periodType == 30
+                                      ? Colors.white
+                                      : mainButtonColor),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  //Initialize the chart widget
+                  SfCartesianChart(
+                    primaryXAxis: CategoryAxis(),
+                    // Chart title
+                    title: ChartTitle(text: ''),
+                    // Enable legend
+                    legend: Legend(isVisible: false),
+                    // Enable tooltip
+                    tooltipBehavior: TooltipBehavior(enable: true),
+                    series: <ChartSeries<_SalesData, String>>[
+                      LineSeries<_SalesData, String>(
+                          dataSource: yellowHigh,
+                          color: Colors.amber,
+                          xValueMapper: (_SalesData sales, _) => sales.year,
+                          yValueMapper: (_SalesData sales, _) => sales.sales,
+                          name: 'Sauerstoffsättigung',
+                          // Enable data label
+                          dataLabelSettings:
+                              const DataLabelSettings(isVisible: false)),
+                      LineSeries<_SalesData, String>(
+                          dataSource: yellowLow,
+                          color: Colors.amber,
+                          xValueMapper: (_SalesData sales, _) => sales.year,
+                          yValueMapper: (_SalesData sales, _) => sales.sales,
+                          name: 'Sauerstoffsättigung',
+                          // Enable data label
+                          dataLabelSettings:
+                              const DataLabelSettings(isVisible: false)),
+                      LineSeries<_SalesData, String>(
+                          dataSource: data,
+                          color: Colors.blue[900],
+                          xValueMapper: (_SalesData sales, _) => sales.year,
+                          yValueMapper: (_SalesData sales, _) => sales.sales,
+                          name: 'Sauerstoffsättigung',
+                          // Enable data label
+                          dataLabelSettings:
+                              const DataLabelSettings(isVisible: false)),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: mainButtonColor),
+                            ),
+                            height: 45,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Gestern",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  "$yesterdayValue %",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            )),
+                      ),
+                      Expanded(
+                        child: Container(
+                            decoration: BoxDecoration(
+                              color: mainButtonColor,
+                              border: Border(
+                                  right: BorderSide(color: mainButtonColor),
+                                  top: BorderSide(color: mainButtonColor),
+                                  bottom: BorderSide(color: mainButtonColor)),
+                            ),
+                            height: 45,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Heute",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                                Text(
+                                  "$todayValue %",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                              ],
+                            )),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Sauerstoffsättigung",
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: mainButtonColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                      "Sauerstoff ist überlebenswichtig und für jede Körperzelle und -funktion notwendig. Damit unser Körper mit genug Sauerstoff versorgt wird, muss das Zusammenspiel aus Atmung, Kreislauf und der Gewebsdurchblutung stimmen. Die Sauerstoffsättigung gibt den Sauerstoffgehalt im Blut an."),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.info,
+                        color: Color.fromARGB(255, 0, 90, 47),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed('/saturation-description');
+                        },
+                        child: Text(
+                          "Mehr Informationen über die Einstufung Ihrer Messwerte",
+                          style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue),
+                        ),
+                      )
+                    ],
                   )
                 ],
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
-      bottomNavigationBar:  BottomNavigatorBar(selectedIndex: 0),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
     );
   }
 }

@@ -11,25 +11,12 @@ class CustomDocumentBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 75.0,
+      height: 50.0,
       margin: EdgeInsets.only(bottom: 10),
       padding: EdgeInsets.only(right: 3),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Color.fromARGB(255, 233, 232, 232),
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(5),
-      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          if (this.iconData != null)
-            Icon(
-              iconData,
-              size: 40,
-              color: iconColor,
-            ),
           SizedBox(
             width: 10,
           ),

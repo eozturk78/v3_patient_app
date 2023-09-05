@@ -49,7 +49,9 @@ class _CustomMenuButtonState extends State<BottomNavigatorBar> {
       unselectedItemColor: Colors.grey,
       currentIndex: _selectedIndex,
       selectedItemColor: mainButtonColor,
-      iconSize: 18,
+      iconSize: 16,
+      selectedFontSize: 12,
+      unselectedFontSize: 12,
       onTap: _onItemTapped,
     );
   }

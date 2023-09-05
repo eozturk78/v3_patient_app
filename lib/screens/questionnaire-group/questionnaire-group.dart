@@ -70,25 +70,33 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
 
     return Scaffold(
       appBar: leadingSubpage('Tägliche Messungen', context),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(15),
-          child: isStarted
-              ? CircularProgressIndicator(
-                  color: mainButtonColor,
-                )
-              : questionnaireGroups.isEmpty
-                  ? Center(child: Text("no data found"))
-                  : SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        verticalDirection: VerticalDirection.down,
-                        children: [
-                          SizedBox(
-                            height: 15,
-                          ),
-                          for (var item in questionnaireGroups)
-                            GestureDetector(
+      body: isStarted
+          ? Center(
+              child: CircularProgressIndicator(
+                color: mainButtonColor,
+              ),
+            )
+          : questionnaireGroups.isEmpty
+              ? Center(child: Text("no data found"))
+              : Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(15))),
+                  width: double.infinity,
+                  padding: EdgeInsets.all(20),
+                  margin: EdgeInsets.only(left: 20, right: 20, top: 30),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      verticalDirection: VerticalDirection.down,
+                      children: [
+                        SizedBox(
+                          height: 15,
+                        ),
+                        for (var item in questionnaireGroups)
+                          Column(
+                            children: [
+                              GestureDetector(
                                 onTap: () async {
                                   SharedPreferences pref =
                                       await SharedPreferences.getInstance();
@@ -99,15 +107,27 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
                                   Navigator.of(context)
                                       .pushNamed('/questionnaire-result');
                                 },
-                                child: CustomDocumentBox(
-                                    Icons.file_copy_rounded,
-                                    item.nameShownToPatient ?? item.name,
-                                    null)),
-                        ],
-                      ),
+                                child: Row(
+                                  children: [
+                                    Text(item.nameShownToPatient ?? item.name),
+                                    Spacer(),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: mainButtonColor,
+                                      size: 20,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Divider(
+                                height: 40,
+                              )
+                            ],
+                          )
+                      ],
                     ),
-        ),
-      ),
+                  ),
+                ),
     );
   }
 }
