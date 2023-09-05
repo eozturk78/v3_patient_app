@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:patient_app/colors/colors.dart';
+import 'package:patient_app/main.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:photo_view/photo_view.dart';
@@ -182,45 +183,59 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                       ],
                     ))
                   : SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        verticalDirection: VerticalDirection.down,
-                        children: [
-                          SizedBox(
-                            height: 15,
-                          ),
-                          for (var item in fileList)
-                            GestureDetector(
-                                onTap: () async {
-                                  var fileUrl = "";
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15))),
+                        width: double.infinity,
+                        padding: EdgeInsets.all(20),
+                        margin: EdgeInsets.only(left: 20, right: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          verticalDirection: VerticalDirection.down,
+                          children: [
+                            SizedBox(
+                              height: 15,
+                            ),
+                            for (var item in fileList)
+                              Column(children: [
+                                GestureDetector(
+                                    onTap: () async {
+                                      var fileUrl = "";
 
-                                  fileUrl =
-                                      '${apis.apiPublic}/patient_files/${item.fileUrl}';
+                                      fileUrl =
+                                          '${apis.apiPublic}/patient_files/${item.fileUrl}';
 
-                                  if (item.fileUrl.contains('treatmentid')) {
-                                    await launch(
-                                        '${apis.apiPublic}/${item.fileUrl}');
-                                  } else if (fileUrl.contains('pdf')) {
-                                    PDFDocument.fromURL(fileUrl).then((value) {
-                                      setState(() {
-                                        isPdf = true;
-                                        document = value;
-                                        openDialog(item);
-                                      });
-                                    });
-                                  } else {
-                                    setState(() {
-                                      isPdf = false;
-                                      imageUrl = fileUrl;
-                                      openDialog(item);
-                                    });
-                                  }
-                                },
-                                child: CustomDocumentBox(
-                                    Icons.file_copy_rounded,
-                                    item.fileName,
-                                    null)),
-                        ],
+                                      if (item.fileUrl
+                                          .contains('treatmentid')) {
+                                        await launch(
+                                            '${apis.apiPublic}/${item.fileUrl}');
+                                      } else if (fileUrl.contains('pdf')) {
+                                        PDFDocument.fromURL(fileUrl)
+                                            .then((value) {
+                                          setState(() {
+                                            isPdf = true;
+                                            document = value;
+                                            openDialog(item);
+                                          });
+                                        });
+                                      } else {
+                                        setState(() {
+                                          isPdf = false;
+                                          imageUrl = fileUrl;
+                                          openDialog(item);
+                                        });
+                                      }
+                                    },
+                                    child: CustomDocumentBox(
+                                        Icons.file_copy_rounded,
+                                        item.fileName,
+                                        null)),
+                                Divider()
+                              ])
+                          ],
+                        ),
                       ),
                     ),
         ),
@@ -230,7 +245,11 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
         key: key,
         distance: 60.0,
         type: ExpandableFabType.up,
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: mainButtonColor,
+        ),
+        backgroundColor: Colors.white,
         overlayStyle: ExpandableFabOverlayStyle(
           blur: 2,
         ),

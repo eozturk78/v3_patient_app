@@ -34,8 +34,14 @@ class CustomDocumentBox extends StatelessWidget {
           if (fileCount != null)
             Text(
               fileCount.toString(),
-              style: TextStyle(fontSize: 18),
-            )
+              style: TextStyle(
+                  fontSize: 14, color: Color.fromARGB(255, 150, 159, 162)),
+            ),
+          Icon(
+            Icons.arrow_forward_ios,
+            color: Color.fromARGB(255, 150, 159, 162),
+            size: 15,
+          )
         ],
       ),
     );

@@ -144,28 +144,39 @@ class _DocumentListPageState extends State<DocumentListPage> {
                 )
               : folderList.isEmpty
                   ? Center(child: Text("no data found"))
-                  : SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        verticalDirection: VerticalDirection.down,
-                        children: [
-                          Text(
-                              "Hier können Sie Ihre ärztliche Dokumente ablegen und verwalten."),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          for (var item in folderList)
-                            GestureDetector(
-                              onTap: () {
-                                onGotoFileScreen(item.id, item.folderName);
-                              },
-                              child: CustomDocumentBox(
-                                Icons.medication_outlined,
-                                item.folderName,
-                                item.fileCount,
-                              ),
-                            ),
-                        ],
+                  : Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(15))),
+                      width: double.infinity,
+                      padding: EdgeInsets.all(10),
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          verticalDirection: VerticalDirection.down,
+                          children: [
+                            for (var item in folderList)
+                              Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      onGotoFileScreen(
+                                          item.id, item.folderName);
+                                    },
+                                    child: CustomDocumentBox(
+                                      Icons.medication_outlined,
+                                      item.folderName,
+                                      item.fileCount,
+                                    ),
+                                  ),
+                                  Divider(
+                                    height: 10,
+                                  )
+                                ],
+                              )
+                          ],
+                        ),
                       ),
                     ),
         ),
@@ -176,7 +187,11 @@ class _DocumentListPageState extends State<DocumentListPage> {
         key: key,
         distance: 60.0,
         type: ExpandableFabType.up,
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+          color: mainButtonColor,
+        ),
+        backgroundColor: Colors.white,
         overlayStyle: ExpandableFabOverlayStyle(
           blur: 2,
         ),
