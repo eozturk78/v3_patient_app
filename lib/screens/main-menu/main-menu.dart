@@ -117,7 +117,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
               Container(
                 decoration: BoxDecoration(color: Colors.white),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 12),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,

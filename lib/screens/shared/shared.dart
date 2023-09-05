@@ -189,11 +189,13 @@ leading(String title, BuildContext context) {
 
 leadingWithoutBack(String title, BuildContext context) {
   return AppBar(
+    centerTitle: false,
     title: Padding(
       padding: EdgeInsets.only(top: 25),
       child: Text(
         title,
         style: TextStyle(color: Color.fromARGB(255, 69, 81, 84), fontSize: 32, fontWeight: FontWeight.bold),
+        textAlign: TextAlign.left,
       ),
     ),
     shadowColor: null,
