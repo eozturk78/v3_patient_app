@@ -194,12 +194,16 @@ leadingWithoutBack(String title, BuildContext context) {
       padding: EdgeInsets.only(top: 25),
       child: Text(
         title,
-        style: TextStyle(color: Color.fromARGB(255, 69, 81, 84), fontSize: 32, fontWeight: FontWeight.bold),
+        style: TextStyle(
+            color: Color.fromARGB(255, 69, 81, 84),
+            fontSize: 32,
+            fontWeight: FontWeight.bold),
         textAlign: TextAlign.left,
       ),
     ),
     shadowColor: null,
     elevation: 0.0,
+    toolbarHeight: 85,
     automaticallyImplyLeading: false,
     backgroundColor: Colors.white,
     actions: <Widget>[
