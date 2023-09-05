@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:patient_app/colors/colors.dart';
 
 class BottomNavigatorBar extends StatefulWidget {
@@ -23,25 +23,45 @@ class _CustomMenuButtonState extends State<BottomNavigatorBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
+      items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: _buildNavItem(
+            'assets/images/home.svg',
+            'Home',
+            0,
+          ),
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.business),
+          icon: _buildNavItem(
+            'assets/images/daten.svg',
+            'Daten',
+            1,
+          ),
           label: 'Daten',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.school),
+          icon: _buildNavItem(
+            'assets/images/medikation.svg',
+            'Medikation',
+            2,
+          ),
           label: 'Medikation',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.messenger_outline),
+          icon: _buildNavItem(
+            'assets/images/messenger_outline.svg',
+            'Nachrichten',
+            3,
+          ),
           label: 'Nachrichten',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.info),
+          icon: _buildNavItem(
+            'assets/images/info.svg',
+            'Infothek',
+            4,
+          ),
           label: 'Infothek',
         ),
       ],
@@ -53,6 +73,36 @@ class _CustomMenuButtonState extends State<BottomNavigatorBar> {
       selectedFontSize: 12,
       unselectedFontSize: 12,
       onTap: _onItemTapped,
+    );
+  }
+
+  Widget _buildNavItem(String assetName, String label, int index) {
+    final isSelected = index == _selectedIndex;
+    final color = isSelected ? mainButtonColor : Colors.grey;
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Padding(padding: const EdgeInsets.only(bottom: 6),
+        child:
+        SvgPicture.asset(
+          assetName,
+          height: 20,
+          color: color, // Set the color based on selection
+        ),),
+        if (isSelected)
+          Positioned(
+            bottom: 0,
+            child: Container(
+              width: 0,
+              height: 0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: mainButtonColor, // Set the color for the indicator dot
+              ),
+            ),
+          ),
+      ],
     );
   }
 

@@ -70,7 +70,7 @@ dependencies:
   intl: ^0.18.1
   intl_phone_number_input: any
   internet_connection_checker: ^1.0.0+1
-
+  flutter_svg: any
 
 dev_dependencies:
   flutter_launcher_icons: "^0.13.1"
@@ -115,6 +115,8 @@ flutter:
      - assets/images/saturation-text-img.png
      - assets/images/pulse-text-img.png
      - assets/icon/icon.png
+     - assets/images/home.svg
+     - assets/images/medikation.svg
      - lib/l10n/
 
   fonts:
