@@ -55,7 +55,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
   Shared sh = Shared();
 
   String title = "";
-  List<CustomMenuItem> _menuItems = []; // Store all menu items
+  List<MenuSet> _menuItems = []; // Store all menu items
 
   @override
   void initState() {
@@ -68,19 +68,36 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
   void _loadMenuItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? selectedRouteNamesJson = prefs.getString('selectedMenuItems');
+    print(selectedRouteNamesJson);
 
     if (selectedRouteNamesJson != null || selectedRouteNamesJson != '') {
       List<dynamic> selectedRouteNames = jsonDecode(selectedRouteNamesJson!);
 
-      setState(() {
+      selectedRouteNames.forEach((element) {
+        if (element['isSelected'] == true) {
+          var p = routeDisplayNames.entries
+              .where((x) => x.key == element['routeName'])
+              .first;
+          p.value.routerName = element['routeName'];
+          _menuItems.add(p.value);
+        }
+      });
+      /*setState(() {
         _menuItems = allRoutes.entries.map((entry) {
           return CustomMenuItem(
             entry.key,
             entry.key,
             selectedRouteNames.contains(entry.key), // Check if item is selected
+
             0, // Add a default order value
           );
         }).toList();
+      });*/
+    } else {
+      defaultMenuList.forEach((element) {
+        var p = routeDisplayNames.entries.where((x) => x.key == element).first;
+        p.value.routerName = element;
+        _menuItems.add(p.value);
       });
     }
   }
@@ -167,90 +184,29 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Row(
-                            children: [
-                              GestureDetector(
-                                child: const CustomSubTotal(
-                                    FontAwesomeIcons.user,
-                                    "Profil",
-                                    null,
-                                    null,
-                                    10),
-                                onTap: () {
-                                  Navigator.of(context).pushNamed('/profile');
-                                },
-                              ),
-                              const Spacer(),
-                              GestureDetector(
-                                child: const CustomSubTotal(
-                                    FontAwesomeIcons.fileMedical,
-                                    "Daten",
-                                    null,
-                                    null,
-                                    20),
-                                onTap: () {
-                                  Navigator.of(context)
-                                      .pushNamed('/main-sub-menu');
-                                },
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              GestureDetector(
-                                child: const CustomSubTotal(
-                                    FontAwesomeIcons.kitMedical,
-                                    "Medikation",
-                                    null,
-                                    null,
-                                    10),
-                                onTap: () {
-                                  Navigator.of(context)
-                                      .pushNamed('/medication');
-                                },
-                              ),
-                              const Spacer(),
-                              GestureDetector(
-                                child: const CustomSubTotal(
-                                    FontAwesomeIcons.message,
-                                    "Nachrichten",
-                                    null,
-                                    null,
-                                    20),
-                                onTap: () {
-                                  Navigator.of(context)
-                                      .pushNamed('/communication');
-                                },
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              GestureDetector(
-                                child: const CustomSubTotal(
-                                  Icons.timer_sharp,
-                                  "Erinnerungen",
-                                  null,
-                                  null,
-                                  10,
-                                ),
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (context) => CalendarScreen()),
-                                  );
-                                },
-                              ),
-                              const Spacer(),
-                              GestureDetector(
-                                child: const CustomSubTotal(Icons.info_outline,
-                                    "Infothek", null, null, 10),
-                                onTap: () {
-                                  Navigator.of(context).pushNamed('/info');
-                                },
-                              ),
-                            ],
-                          ),
+                          GridView.count(
+                              crossAxisCount: 2,
+                              physics: const ScrollPhysics(),
+                              shrinkWrap: true,
+                              reverse: false,
+                              mainAxisSpacing: 5,
+                              crossAxisSpacing: 5,
+                              children:
+                                  List.generate(_menuItems.length, (index) {
+                                return GestureDetector(
+                                  child: CustomSubTotal(
+                                      _menuItems[index].icon,
+                                      _menuItems[index].displayName!,
+                                      null,
+                                      null,
+                                      10),
+                                  onTap: () {
+                                    Navigator.of(context).pushNamed(
+                                        _menuItems[index].routerName!);
+                                  },
+                                );
+                              })),
+                          /**/
                         ],
                       ),
                     ],

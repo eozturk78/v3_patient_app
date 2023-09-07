@@ -65,7 +65,9 @@ class _LoginPageState extends State<LoginPage> {
       userNameController.text = pref.getString("userName")!;
       passwordController.text = pref.getString("password")!;
     }
-    setState(() {});
+    setState(() {
+      print(pref.getString("messages"));
+    });
   }
 
   Future<bool> authenticateIsAvailable() async {

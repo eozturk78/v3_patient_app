@@ -55,7 +55,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
             Row(
               children: [
                 GestureDetector(
-                  child: const CustomSubTotal(Icons.chat_bubble_outline_rounded,
+                  child: CustomSubTotal(Icons.chat_bubble_outline_rounded,
                       "Nachrichten", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/messages');
@@ -66,7 +66,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
             Row(
               children: [
                 GestureDetector(
-                  child: const CustomSubTotal(
+                  child: CustomSubTotal(
                       Icons.video_call, "Videosprechstunde", null, null, 20),
                   onTap: () async {
                     if (videoUrl != null) {
@@ -79,7 +79,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
                 ),
                 const Spacer(),
                 GestureDetector(
-                  child: const CustomSubTotal(Icons.calendar_month_outlined,
+                  child: CustomSubTotal(Icons.calendar_month_outlined,
                       "Kalender", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/calendar');

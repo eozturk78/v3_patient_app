@@ -4,14 +4,14 @@ import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 
 class CustomSubTotal extends StatelessWidget {
-  final IconData? iconData;
-  final String headText;
-  final String? subText;
+  IconData? iconData;
+  String headText;
+  String? subText;
   final String? warningText;
   final int? colorState;
 
-  const CustomSubTotal(this.iconData, this.headText, this.subText,
-      this.warningText, this.colorState,
+  CustomSubTotal(this.iconData, this.headText, this.subText, this.warningText,
+      this.colorState,
       {super.key});
 
   @override

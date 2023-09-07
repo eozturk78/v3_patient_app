@@ -38,7 +38,7 @@ class _MedicationPageState extends State<MedicationPage> {
               children: [
                 const Spacer(),
                 GestureDetector(
-                  child: const CustomSubTotal(Icons.text_snippet_outlined,
+                  child: CustomSubTotal(Icons.text_snippet_outlined,
                       "Medikamentenplan", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/medication-plan-list');
@@ -46,12 +46,8 @@ class _MedicationPageState extends State<MedicationPage> {
                 ),
                 Spacer(),
                 GestureDetector(
-                  child: const CustomSubTotal(
-                      Icons.medical_information_outlined,
-                      "Rezept",
-                      null,
-                      null,
-                      20),
+                  child: CustomSubTotal(Icons.medical_information_outlined,
+                      "Rezept", null, null, 20),
                   onTap: () {
                     Navigator.of(context).pushNamed('/recipes');
                   },

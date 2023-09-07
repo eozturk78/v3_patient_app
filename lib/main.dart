@@ -171,7 +171,13 @@ main() async {
 
 // Background message handler
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print('Received background message: ${message.notification?.title}');
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  var msg = message.notification!.body.toString();
+  if (pref.getString('messages') != null) {
+    msg += pref.getString('messages')!;
+  }
+  await pref.setString("messages", msg);
+  print(pref.getString('messages'));
   //AwesomeNotificationsFCM().createNotificationFromJsonData(message.data);
 }
 

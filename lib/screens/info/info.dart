@@ -37,7 +37,7 @@ class _InfoPageState extends State<InfoPage> {
             Row(
               children: [
                 GestureDetector(
-                  child: const CustomSubTotal(
+                  child: CustomSubTotal(
                       Icons.book_online_outlined, "Bibliothek", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/libraries');
@@ -48,7 +48,7 @@ class _InfoPageState extends State<InfoPage> {
             Row(
               children: [
                 GestureDetector(
-                  child: const CustomSubTotal(Icons.text_snippet_outlined,
+                  child: CustomSubTotal(Icons.text_snippet_outlined,
                       "Meine Dokumente", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/documents');
@@ -56,12 +56,8 @@ class _InfoPageState extends State<InfoPage> {
                 ),
                 Spacer(),
                 GestureDetector(
-                  child: const CustomSubTotal(
-                      Icons.medical_information_outlined,
-                      "Aufklärung",
-                      null,
-                      null,
-                      10),
+                  child: CustomSubTotal(Icons.medical_information_outlined,
+                      "Aufklärung", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/enlightenment');
                   },

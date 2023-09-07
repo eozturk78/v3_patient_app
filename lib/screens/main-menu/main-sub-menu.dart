@@ -47,7 +47,7 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
               children: [
                 const Spacer(),
                 GestureDetector(
-                  child: const CustomSubTotal(Icons.addchart_outlined,
+                  child: CustomSubTotal(Icons.addchart_outlined,
                       "Tägliche Messungen", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/questionnaire-group');
@@ -55,12 +55,8 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
                 ),
                 const Spacer(),
                 GestureDetector(
-                  child: const CustomSubTotal(
-                      Icons.medical_information_outlined,
-                      "Grafische Darstellungen",
-                      null,
-                      null,
-                      20),
+                  child: CustomSubTotal(Icons.medical_information_outlined,
+                      "Grafische Darstellungen", null, null, 20),
                   onTap: () {
                     Navigator.of(context).pushNamed('/home');
                   },

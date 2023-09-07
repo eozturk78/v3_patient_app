@@ -36,7 +36,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
     _selectedMenuItems = routeDisplayNames.entries.map((entry) {
       return CustomMenuItem(
         entry.key, // Use the display name as the route name
-        entry.value, // Use the route name from the map
+        entry.value.displayName!, // Use the route name from the map
         false, // Default isSelected value
         0, // Use the existing order
       );
@@ -56,7 +56,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
         _selectedMenuItems = routeDisplayNames.entries.map((entry) {
           return CustomMenuItem(
             entry.key, // Use the display name as the route name
-            entry.value, // Use the route name from the map
+            entry.value.displayName!, // Use the route name from the map
             false, // Default isSelected value
             _selectedMenuItems.length, // Use the existing order
           );
@@ -71,12 +71,8 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
 
       setState(() {
         _selectedMenuItems = selectedMenuItemsData.map((itemData) {
-          return CustomMenuItem(
-            itemData['routeName'],
-            itemData['displayName'],
-            itemData['isSelected'],
-            itemData['order'],
-          );
+          return CustomMenuItem(itemData['routeName'], itemData['displayName'],
+              itemData['isSelected'], itemData['order']);
         }).toList();
       });
     }
@@ -107,6 +103,8 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
       for (int i = 0; i < _selectedMenuItems.length; i++) {
         _selectedMenuItems[i].order = i;
       }
+
+      _saveSelectedMenuItems();
     });
   }
 
@@ -239,7 +237,8 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                               const SizedBox(
                                   width:
                                       12), // Add spacing between the icon and title
-                              Expanded(child: Text(
+                              Expanded(
+                                  child: Text(
                                 item.displayName,
                                 style: TextStyle(fontSize: 14),
                                 overflow: TextOverflow.ellipsis,
