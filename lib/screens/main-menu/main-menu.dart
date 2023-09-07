@@ -68,9 +68,10 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
   void _loadMenuItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? selectedRouteNamesJson = prefs.getString('selectedMenuItems');
+    print("stored data");
     print(selectedRouteNamesJson);
 
-    if (selectedRouteNamesJson != null || selectedRouteNamesJson != '') {
+    if (selectedRouteNamesJson != null && selectedRouteNamesJson != '') {
       List<dynamic> selectedRouteNames = jsonDecode(selectedRouteNamesJson!);
 
       selectedRouteNames.forEach((element) {

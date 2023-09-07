@@ -153,26 +153,7 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
                             ),
                             isExpanded: item.isExpanded ?? false,
                           )
-                      ]) /*Column(
-
-                  
-                    /*children: [
-                      for (var element in diagnoseList)
-                        CustomDiagnoseBox(
-                            element.diagnoseName,
-                            element.subDiagnoseName ?? "",
-                            element.securedDiagnoseG,
-                            element.suspicionV,
-                            element.exclusionA,
-                            element.diaLeft,
-                            element.diaRight,
-                            element.bothSide,
-                            element.createdAt,
-                            element.stateAfter,
-                            element.doctor ?? "")
-                    ],*/
-                  )*/
-        ,
+                      ]),
       )))), // This trailing comma makes auto-formatting nicer for build methods.
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
     );

@@ -39,6 +39,7 @@ import 'package:patient_app/screens/measurement-result/measurement-result-weight
 import 'package:patient_app/screens/medication/medication-plan-list.dart';
 import 'package:patient_app/screens/medication/medication.dart';
 import 'package:patient_app/screens/medication/recipes.dart';
+import 'package:patient_app/screens/noticiation-history/notification-history.dart';
 import 'package:patient_app/screens/patient-contacts/contacts.dart';
 import 'package:patient_app/screens/profile/about-me/about-me.dart';
 import 'package:patient_app/screens/profile/profile.dart';
@@ -160,6 +161,7 @@ main() async {
             ),
           ));
     }
+    _saveMessages(message);
   });
 
   Locale initialLocale = Locale("de", "DE");
@@ -171,14 +173,35 @@ main() async {
 
 // Background message handler
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  SharedPreferences pref = await SharedPreferences.getInstance();
-  var msg = message.notification!.body.toString();
-  if (pref.getString('messages') != null) {
-    msg += pref.getString('messages')!;
-  }
-  await pref.setString("messages", msg);
-  print(pref.getString('messages'));
+  _saveMessages(message);
   //AwesomeNotificationsFCM().createNotificationFromJsonData(message.data);
+}
+
+_saveMessages(RemoteMessage message) async {
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  var listMessages = [];
+  var d = DateTime.now().day.toString().length == 1
+      ? "0${DateTime.now().day}"
+      : DateTime.now().day;
+  var m = DateTime.now().month.toString().length == 1
+      ? "0${DateTime.now().month}"
+      : DateTime.now().month;
+  var h = DateTime.now().hour.toString().length == 1
+      ? "0${DateTime.now().hour}"
+      : DateTime.now().hour;
+  var mm = DateTime.now().minute.toString().length == 1
+      ? "0${DateTime.now().minute}"
+      : DateTime.now().minute;
+  var date = "${d}.${m}.${DateTime.now().year} ${h}:${mm}";
+  var msg = message.notification!.body.toString();
+  var title = message.notification!.title.toString();
+  var p = {"message": msg, "title": title, "date": date};
+  if (pref.getString('messages') != null) {
+    listMessages = jsonDecode(pref.getString('messages')!) as List;
+  }
+  listMessages.add(p);
+  await pref.setString("messages", jsonEncode(listMessages));
+  print(jsonEncode(listMessages));
 }
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
@@ -275,7 +298,8 @@ class MyApp extends StatelessWidget {
         "/terms-and-conditions": (context) => const TermsAndConditionsPage(),
         "/patient-contacts-list": (context) => ContactsListingPage(),
         "/impresum": (context) => ImpresumPage(),
-        "/extract-data": (context) => ExtractDataPage()
+        "/extract-data": (context) => ExtractDataPage(),
+        "/notification-history": (context) => NotificationHistoryPage()
       },
     );
   }

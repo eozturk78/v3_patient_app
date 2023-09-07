@@ -54,10 +54,11 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
         selectedMenuItemsDataString == '') {
       setState(() {
         _selectedMenuItems = routeDisplayNames.entries.map((entry) {
+          print(entry.key);
           return CustomMenuItem(
             entry.key, // Use the display name as the route name
             entry.value.displayName!, // Use the route name from the map
-            false, // Default isSelected value
+            defaultMenuList.contains(entry.key), // Default isSelected value
             _selectedMenuItems.length, // Use the existing order
           );
         }).toList();

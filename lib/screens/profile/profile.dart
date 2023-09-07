@@ -320,6 +320,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       SharedPreferences pref =
                           await SharedPreferences.getInstance();
                       pref.remove("token");
+                      pref.remove("messages");
                       Navigator.of(context).pushNamed("/login");
                     },
                     child: Row(
