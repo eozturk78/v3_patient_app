@@ -8,6 +8,21 @@ import '../../shared/shared.dart';
 import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'dart:convert';
 
+class SvgIconData extends IconData {
+  const SvgIconData(String assetName, {Key? key})
+      : super(
+    0xe000, // This is a custom code point, we can use any unused one.
+    fontFamily: 'SvgIcons',
+    fontPackage: 'iMedComSvgIcons', // package name
+    matchTextDirection: true,
+  );
+
+  static IconData fromAsset(String assetName) {
+    return SvgIconData(assetName);
+  }
+}
+
+
 String formatDate(String inputDate) {
   DateTime date = DateTime.parse(
       inputDate); // Convert the input string to a DateTime object

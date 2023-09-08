@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -13,8 +14,9 @@ Apis apis = Apis();
 class EventType {
   final String title;
   final Color color;
+  final SvgPicture icon;
 
-  EventType(this.title, this.color);
+  EventType(this.title, this.color, this.icon);
 }
 
 class CalendarEvent {
@@ -30,16 +32,16 @@ class CalendarEvent {
       json['event_title'] as String,
       json['event_description'] as String,
       DateTime.parse(json['event_date'] as String),
-      eventTypeMap[json['event_type']] ?? EventType('Default', Colors.grey),
+      eventTypeMap[json['event_type']] ?? EventType('Default', Colors.grey, SvgPicture.asset("assets/images/info.svg", height: 40,)),
     );
   }
 }
 
 // Map event titles to their corresponding EventType
 final Map<String, EventType> eventTypeMap = {
-  'Sprechstunde vor Ort': EventType('Sprechstunde vor Ort', Colors.pink),
-  'Videosprechstunde': EventType('Videosprechstunde', Colors.lightBlueAccent),
-  'Dokumente': EventType('Dokumente', Colors.orange),
+  'Sprechstunde vor Ort': EventType('Sprechstunde vor Ort', Colors.pink, SvgPicture.asset("assets/images/calendar_sprech_vor_ort.svg", height: 40,)),
+  'Videosprechstunde': EventType('Videosprechstunde', Colors.lightBlueAccent, SvgPicture.asset("assets/images/calendar_video.svg", height: 40,)),
+  'Dokumente': EventType('Dokumente', Colors.orange, SvgPicture.asset("assets/images/calendar_dokumente.svg", height: 40,)),
   // Add more mappings as needed for other event titles
 };
 
@@ -152,88 +154,88 @@ class _CalendarScreenState extends State<CalendarScreen> {
       body: Column(
         children: [
           Padding(padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
-      child:
-      Container(
-      decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(18),
-        color: Colors.white),
-    child:
-        Column(
-          children: [
-            TableCalendar(
-              calendarStyle: CalendarStyle(
-                // Other style properties...
-                defaultTextStyle: TextStyle(
-                  fontWeight: FontWeight.w600
-                ),
-              ),
-              firstDay: DateTime.now().subtract(Duration(days: 365)),
-              lastDay: DateTime.now().add(Duration(days: 365)),
-              locale: 'DE',
-              availableCalendarFormats: const {CalendarFormat.month : 'Monat',},
-              pageJumpingEnabled: true,
-              startingDayOfWeek: StartingDayOfWeek.monday,
-              focusedDay: _selectedDay,
-              rowHeight: 47,
-              selectedDayPredicate: (day) {
-                return isSameDay(_selectedDay, day);
-              },
-              onDaySelected: (selectedDay, focusedDay) {
-                setState(() {
-                  _selectedDay = selectedDay;
-                });
-              },
-              calendarFormat: _calendarFormat,
-              onFormatChanged: (format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              },
-              calendarBuilders: CalendarBuilders(
-                markerBuilder: _buildMarkers,
-                todayBuilder: (context, date, _) {
-                  return Container(
-                    margin: const EdgeInsets.all(2.0),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 162, 28, 52), // Filled indicator color for today
-                      borderRadius: BorderRadius.circular(10.0), // Rounded corners
-                    ),
-                    child: Text(
-                      date.day.toString(),
-                      style: TextStyle(
-                        color: Colors.white, // Text color
-                        fontWeight: FontWeight.bold, // Optional: Add bold text style
+            child:
+            Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(18),
+                    color: Colors.white),
+                child:
+                Column(
+                  children: [
+                    TableCalendar(
+                      calendarStyle: CalendarStyle(
+                        // Other style properties...
+                        defaultTextStyle: TextStyle(
+                            fontWeight: FontWeight.w600
+                        ),
+                      ),
+                      firstDay: DateTime.now().subtract(Duration(days: 365)),
+                      lastDay: DateTime.now().add(Duration(days: 365)),
+                      locale: 'DE',
+                      availableCalendarFormats: const {CalendarFormat.month : 'Monat',},
+                      pageJumpingEnabled: true,
+                      startingDayOfWeek: StartingDayOfWeek.monday,
+                      focusedDay: _selectedDay,
+                      rowHeight: 47,
+                      selectedDayPredicate: (day) {
+                        return isSameDay(_selectedDay, day);
+                      },
+                      onDaySelected: (selectedDay, focusedDay) {
+                        setState(() {
+                          _selectedDay = selectedDay;
+                        });
+                      },
+                      calendarFormat: _calendarFormat,
+                      onFormatChanged: (format) {
+                        setState(() {
+                          _calendarFormat = format;
+                        });
+                      },
+                      calendarBuilders: CalendarBuilders(
+                        markerBuilder: _buildMarkers,
+                        todayBuilder: (context, date, _) {
+                          return Container(
+                            margin: const EdgeInsets.all(2.0),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 162, 28, 52), // Filled indicator color for today
+                              borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                            ),
+                            child: Text(
+                              date.day.toString(),
+                              style: TextStyle(
+                                color: Colors.white, // Text color
+                                fontWeight: FontWeight.bold, // Optional: Add bold text style
+                              ),
+                            ),
+                          );
+                        },
+                        selectedBuilder: (context, date, events) {
+                          return Container(
+                            margin: const EdgeInsets.all(3.0),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Color.fromARGB(255, 162, 28, 52), // Border color
+                                width: 1.0, // Border width
+                              ),
+                              borderRadius: BorderRadius.circular(12.0), // Adjust border radius for rounded corners
+                            ),
+                            child: Text(
+                              date.day.toString(),
+                              style: TextStyle(
+                                color: Colors.black, // Text color
+                                fontWeight: FontWeight.w900, // Optional: Add bold text style
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
-                  );
-                },
-                selectedBuilder: (context, date, events) {
-                  return Container(
-                    margin: const EdgeInsets.all(3.0),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Color.fromARGB(255, 162, 28, 52), // Border color
-                        width: 1.0, // Border width
-                      ),
-                      borderRadius: BorderRadius.circular(12.0), // Adjust border radius for rounded corners
-                    ),
-                    child: Text(
-                      date.day.toString(),
-                      style: TextStyle(
-                        color: Colors.black, // Text color
-                        fontWeight: FontWeight.w900, // Optional: Add bold text style
-                      ),
-                    ),
-                  );
-                },
-              ),
+                    Legend(_getEventTypes()),
+                  ],
+                )
             ),
-            Legend(_getEventTypes()),
-          ],
-          )
-          ),
           ),
           Expanded(
             child: EventList(
@@ -278,9 +280,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   List<EventType> _getEventTypes() {
     return [
-      EventType('Sprechstunde vor Ort', Colors.pink),
-      EventType('Videosprechstunde', Colors.lightBlueAccent),
-      EventType('Dokumente', Colors.orange),
+      EventType('Sprechstunde vor Ort', Colors.pink, SvgPicture.asset("assets/images/calendar_sprech_vor_ort.svg", height: 40,)),
+      EventType('Videosprechstunde', Colors.lightBlueAccent, SvgPicture.asset("assets/images/calendar_video.svg", height: 40,)),
+      EventType('Dokumente', Colors.orange, SvgPicture.asset("assets/images/calendar_dokumente.svg", height: 40,)),
     ];
   }
 }
@@ -374,25 +376,53 @@ class _EventListItemState extends State<EventListItem> {
         });
       },
       child: Container(
-        margin: EdgeInsets.only(bottom: 2.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10)
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 7,
+              offset: Offset(0, 3), // changes position of shadow
+            ),
+          ],
+        ),
+        margin: EdgeInsets.only(top: 5, bottom: 12.0, right: 15, left: 15),
         padding: EdgeInsets.all(8),
-        color: widget.event.eventType.color.withOpacity(0.99),
+        //color: widget.event.eventType.color.withOpacity(0.99),
+        //color: Colors.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  '${widget.event.dateTime.hour.toString().padLeft(2,"0")}:${widget.event.dateTime.minute.toString().padLeft(2,"0")}',
-                  style: TextStyle(color: Colors.white),
+                widget.event.eventType.icon,
+                SizedBox(width: 10.0,),
+                Expanded(child:
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.event.eventType.title, style: TextStyle(color: Colors.grey),
+                    ),
+                    Text(
+                      widget.event.title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      '${widget.event.dateTime.hour.toString().padLeft(2,"0")}:${widget.event.dateTime.minute.toString().padLeft(2,"0") + " Uhr"}',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: Text(
-                    widget.event.title,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white),
-                  ),
                 ),
               ],
             ),
