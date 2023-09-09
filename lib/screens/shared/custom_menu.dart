@@ -132,7 +132,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).pushNamed("/profile");
+                                  Navigator.of(context).pushReplacementNamed("/profile");
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -151,13 +151,6 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                             ),
                             Expanded(
                               child: GestureDetector(
-                                onTap: () async {
-                                  await Navigator.of(context)
-                                      .push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        CustomMenuPage(menuItems: []),
-                                  ));
-                                },
                                 child: Container(
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.only(
@@ -177,7 +170,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).pushNamed("/settings");
+                                  Navigator.of(context).pushReplacementNamed("/settings");
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -226,10 +219,36 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                     width: double.infinity,
                     padding: EdgeInsets.all(2),
                     margin: EdgeInsets.only(left: 20, right: 20),
-                    child: ReorderableListView(
+                    child:
+                    ReorderableListView(
+                      header: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(padding: EdgeInsets.only(top: 20, bottom: 5, left: 15),
+                          child: Text(
+                            'DASHBOARD FELDER',
+                            style: TextStyle(color: Color.fromARGB(255, 150, 159, 162)),
+                            textAlign: TextAlign.left,
+                          )),
+                          Divider(thickness: 1,),
+                        ],
+                        ),
                       onReorder: _onReorder,
-                      children: _selectedMenuItems.map(
+                      children:
+                      _selectedMenuItems.map(
                         (item) {
+                          /*return Container(
+                            key: UniqueKey(),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                      bottom: BorderSide(
+                                              color: Colors.white54, // Adjust the color as needed
+                                              width: 0.5, // Adjust the width as needed
+                                              ),
+                                      ),
+                          ),
+                          child:*/
                           return ListTile(
                             key: Key(item.routeName),
                             title: Row(children: [
@@ -260,6 +279,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                                 },
                               ),
                             ),
+                          //)
                           );
                         },
                       ).toList(),
@@ -284,6 +304,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
             onChanged: (value) {
               setState(() {
                 item.isSelected = value;
+                _saveSelectedMenuItems();
               });
             },
           ),

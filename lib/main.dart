@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/date_symbol_data_file.dart';
 import 'package:patient_app/screens/agreements/agreements.dart';
 import 'package:patient_app/screens/agreements/edit-agreements.dart';
 import 'package:patient_app/screens/agreements/privacy-policy.dart';
@@ -39,7 +38,7 @@ import 'package:patient_app/screens/measurement-result/measurement-result-weight
 import 'package:patient_app/screens/medication/medication-plan-list.dart';
 import 'package:patient_app/screens/medication/medication.dart';
 import 'package:patient_app/screens/medication/recipes.dart';
-import 'package:patient_app/screens/noticiation-history/notification-history.dart';
+import 'package:patient_app/screens/notification-history/notification-history.dart';
 import 'package:patient_app/screens/patient-contacts/contacts.dart';
 import 'package:patient_app/screens/profile/about-me/about-me.dart';
 import 'package:patient_app/screens/profile/profile.dart';

@@ -67,7 +67,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pushNamed("/profile");
+                              Navigator.of(context).pushReplacementNamed("/profile");
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -88,7 +88,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: GestureDetector(
                             onTap: () async {
                               await Navigator.of(context)
-                                  .push(MaterialPageRoute(
+                                  .pushReplacement(MaterialPageRoute(
                                 builder: (context) =>
                                     CustomMenuPage(menuItems: []),
                               ));
@@ -161,14 +161,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Medikamentenerinnerungen',
+                    'MEDIKAMENTENERINNERUNGEN',
                     style: TextStyle(color: Color.fromARGB(255, 150, 159, 162)),
                   ),
                   Divider(),
                   Row(
                     children: [
                       Text(
-                        "Activieren",
+                        "Aktivieren",
                         style: TextStyle(fontSize: 16),
                       ),
                       Spacer(),

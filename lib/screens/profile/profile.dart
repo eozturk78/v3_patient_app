@@ -58,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: GestureDetector(
                             onTap: () async {
                               await Navigator.of(context)
-                                  .push(MaterialPageRoute(
+                                  .pushReplacement(MaterialPageRoute(
                                 builder: (context) =>
                                     CustomMenuPage(menuItems: []),
                               ));
@@ -83,7 +83,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pushNamed("/settings");
+                              Navigator.of(context).pushReplacementNamed("/settings");
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -122,7 +122,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             SizedBox(
-              height: 40,
+              height: 20,
             ),
             Container(
               decoration: BoxDecoration(

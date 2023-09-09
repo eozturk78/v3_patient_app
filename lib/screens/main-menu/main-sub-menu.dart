@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -47,7 +48,7 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
               children: [
                 const Spacer(),
                 GestureDetector(
-                  child: CustomSubTotal(Icons.addchart_outlined,
+                  child: CustomSubTotal(SvgPicture.asset('assets/images/menu-icons/tagliche-main.svg'),
                       "Tägliche Messungen", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/questionnaire-group');
@@ -55,7 +56,7 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
                 ),
                 const Spacer(),
                 GestureDetector(
-                  child: CustomSubTotal(Icons.medical_information_outlined,
+                  child: CustomSubTotal(SvgPicture.asset('assets/images/menu-icons/graphische-main.svg'),
                       "Grafische Darstellungen", null, null, 20),
                   onTap: () {
                     Navigator.of(context).pushNamed('/home');

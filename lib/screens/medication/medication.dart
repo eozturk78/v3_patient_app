@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 
@@ -38,7 +39,7 @@ class _MedicationPageState extends State<MedicationPage> {
               children: [
                 const Spacer(),
                 GestureDetector(
-                  child: CustomSubTotal(Icons.text_snippet_outlined,
+                  child: CustomSubTotal(SvgPicture.asset('assets/images/menu-icons/medikamentenplan-main.svg'),
                       "Medikamentenplan", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/medication-plan-list');
@@ -46,7 +47,7 @@ class _MedicationPageState extends State<MedicationPage> {
                 ),
                 Spacer(),
                 GestureDetector(
-                  child: CustomSubTotal(Icons.medical_information_outlined,
+                  child: CustomSubTotal(SvgPicture.asset('assets/images/menu-icons/rezept-main.svg'),
                       "Rezept", null, null, 20),
                   onTap: () {
                     Navigator.of(context).pushNamed('/recipes');

@@ -125,6 +125,22 @@ flutter:
      - assets/images/calendar_dokumente.svg
      - assets/images/calendar_video.svg
      - assets/images/calendar_sprech_vor_ort.svg
+     - assets/images/menu-icons/daten-main.svg
+     - assets/images/menu-icons/erinnerungen-main.svg
+     - assets/images/menu-icons/infothek-main.svg
+     - assets/images/menu-icons/medikation-main.svg
+     - assets/images/menu-icons/nachrichten-main.svg
+     - assets/images/menu-icons/aufklarung-main.svg
+     - assets/images/menu-icons/bibliothek-main.svg
+     - assets/images/menu-icons/dokumente-main.svg
+     - assets/images/menu-icons/graphische-main.svg
+     - assets/images/menu-icons/kalender-main.svg
+     - assets/images/menu-icons/medikamentenplan-main.svg
+     - assets/images/menu-icons/mitteilungen-main.svg
+     - assets/images/menu-icons/profil-main.svg
+     - assets/images/menu-icons/rezept-main.svg
+     - assets/images/menu-icons/tagliche-main.svg
+     - assets/images/menu-icons/videosprech-main.svg
      - lib/l10n/
 
   fonts:

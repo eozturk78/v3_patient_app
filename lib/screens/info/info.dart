@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 
@@ -38,7 +39,7 @@ class _InfoPageState extends State<InfoPage> {
               children: [
                 GestureDetector(
                   child: CustomSubTotal(
-                      Icons.book_online_outlined, "Bibliothek", null, null, 10),
+                      SvgPicture.asset('assets/images/menu-icons/bibliothek-main.svg'), "Bibliothek", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/libraries');
                   },
@@ -48,7 +49,7 @@ class _InfoPageState extends State<InfoPage> {
             Row(
               children: [
                 GestureDetector(
-                  child: CustomSubTotal(Icons.text_snippet_outlined,
+                  child: CustomSubTotal(SvgPicture.asset('assets/images/menu-icons/dokumente-main.svg'),
                       "Meine Dokumente", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/documents');
@@ -56,7 +57,7 @@ class _InfoPageState extends State<InfoPage> {
                 ),
                 Spacer(),
                 GestureDetector(
-                  child: CustomSubTotal(Icons.medical_information_outlined,
+                  child: CustomSubTotal(SvgPicture.asset('assets/images/menu-icons/aufklarung-main.svg'),
                       "Aufklärung", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/enlightenment');

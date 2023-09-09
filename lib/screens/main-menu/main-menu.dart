@@ -15,7 +15,7 @@ import 'route_util.dart';
 import '../shared/customized_menu.dart'; // Import the customized_menu.dart file
 
 class MainMenuPage extends StatefulWidget {
-  const MainMenuPage({Key? key});
+  const MainMenuPage({Key? key}) : super(key: key);
 
   @override
   _MainMenuPageState createState() => _MainMenuPageState();
@@ -44,8 +44,9 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
   @override
   void didPopNext() {
     // This method is called when a route is popped (subpage is closed)
-    // You can execute logic here when the user returns to this page
+    // We can execute logic here when the user returns to this page
     setState(() {
+      _loadMenuItems();
       _selectedIndex = 0;
     });
     //print('User returned to MainMenuPage');
@@ -53,6 +54,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
 
   Apis apis = Apis();
   Shared sh = Shared();
+  Key _refreshKey = UniqueKey();
 
   String title = "";
   List<MenuSet> _menuItems = []; // Store all menu items
@@ -68,12 +70,13 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
   void _loadMenuItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? selectedRouteNamesJson = prefs.getString('selectedMenuItems');
-    print("stored data");
-    print(selectedRouteNamesJson);
-
+    //print("stored data");
+    //print(selectedRouteNamesJson);
+    setState(() {
     if (selectedRouteNamesJson != null && selectedRouteNamesJson != '') {
       List<dynamic> selectedRouteNames = jsonDecode(selectedRouteNamesJson!);
 
+      _menuItems.clear();
       selectedRouteNames.forEach((element) {
         if (element['isSelected'] == true) {
           var p = routeDisplayNames.entries
@@ -95,12 +98,16 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
         }).toList();
       });*/
     } else {
+      _menuItems.clear();
       defaultMenuList.forEach((element) {
         var p = routeDisplayNames.entries.where((x) => x.key == element).first;
         p.value.routerName = element;
         _menuItems.add(p.value);
       });
     }
+      _refreshKey = UniqueKey();
+      //print(_refreshKey);
+    });
   }
 
   getPatientInfo() async {
@@ -112,14 +119,45 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
       pref.setString("patientTitle", title);
     });
     await apis.patientInfo().then((value) {
-      print(value);
+      //print(value);
       setState(() {
         pref.setString("patientGroups", jsonEncode(value['patientGroups']));
       });
     }, onError: (err) {
       sh.redirectPatient(err, context);
-      setState(() {});
+      setState(() {
+      });
     });
+  }
+
+  Widget buildCustomizedMenuItemButtons(BuildContext context) {
+    return GridView.builder(
+      key: _refreshKey,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 15,
+      ),
+      physics: const ScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: _menuItems.length,
+      itemBuilder: (context, index) {
+        final menuItem = _menuItems[index];
+        return GestureDetector(
+          child: CustomSubTotal(
+            key: UniqueKey(), // UniqueKey for CustomSubTotal
+            menuItem.icon,
+            menuItem.displayName!,
+            null,
+            null,
+            10,
+          ),
+          onTap: () {
+            Navigator.of(context).pushNamed(menuItem.routerName!);
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -151,7 +189,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                         height: 12,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 20, right: 20),
+                        padding: EdgeInsets.only(left: 0, right: 0),
                         child: TextFormField(
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -176,7 +214,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                 height: 15,
               ),
               Padding(
-                  padding: const EdgeInsets.only(left: 40, right: 40),
+                  padding: const EdgeInsets.only(left: 20, right: 20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,29 +223,14 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          GridView.count(
-                              crossAxisCount: 2,
-                              physics: const ScrollPhysics(),
-                              shrinkWrap: true,
-                              reverse: false,
-                              mainAxisSpacing: 5,
-                              crossAxisSpacing: 5,
-                              children:
-                                  List.generate(_menuItems.length, (index) {
-                                return GestureDetector(
-                                  child: CustomSubTotal(
-                                      _menuItems[index].icon,
-                                      _menuItems[index].displayName!,
-                                      null,
-                                      null,
-                                      10),
-                                  onTap: () {
-                                    Navigator.of(context).pushNamed(
-                                        _menuItems[index].routerName!);
-                                  },
-                                );
-                              })),
-                          /**/
+                      Builder(
+                          key: _refreshKey,
+                          builder: (BuildContext context) {
+                        // This Builder will rebuild the UI when _menuItems change
+                        return buildCustomizedMenuItemButtons(context);
+                        /**/
+                      }
+                      )
                         ],
                       ),
                     ],

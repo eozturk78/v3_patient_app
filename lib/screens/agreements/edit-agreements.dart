@@ -52,6 +52,9 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                   width: 160,
                   height: 70,
                 ),
+                const SizedBox(
+                  height: 7,
+                ),
                 const Text(
                   "Willkommen bei iMedCom",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
@@ -69,9 +72,23 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      check2 = !check2;
+                    });
+                  },
+                  child:
+                  Row(
                   children: [
                     Checkbox(
+                      fillColor: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return mainButtonColor; // Set to your login button color
+                          }
+                          return Colors.white70; // Change to your desired unselected color
+                        },),
                       onChanged: (value) {
                         setState(() {
                           check2 = !check2;
@@ -85,13 +102,27 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                       style: TextStyle(fontSize: 16),
                     ))
                   ],
-                ),
+                ),),
                 const SizedBox(
                   height: 20,
                 ),
-                Row(
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      check3 = !check3;
+                    });
+                  },
+                  child:
+                  Row(
                   children: [
                     Checkbox(
+                      fillColor: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return mainButtonColor; // Set to your login button color
+                          }
+                          return Colors.white70; // Change to your desired unselected color
+                        },),
                       onChanged: (value) {
                         setState(() {
                           check3 = !check3;
@@ -105,7 +136,7 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                       style: TextStyle(fontSize: 16),
                     ))
                   ],
-                ),
+                ),),
                 const SizedBox(
                   height: 20,
                 ),
@@ -122,6 +153,13 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                 Row(
                   children: [
                     Checkbox(
+                      fillColor: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return mainButtonColor; // Set to your login button color
+                          }
+                          return Colors.white70; // Change to your desired unselected color
+                        },),
                       onChanged: (value) {
                         setState(() {
                           check1 = !check1;

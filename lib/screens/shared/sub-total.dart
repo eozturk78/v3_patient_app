@@ -4,7 +4,7 @@ import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 
 class CustomSubTotal extends StatelessWidget {
-  IconData? iconData;
+  dynamic iconData;
   String headText;
   String? subText;
   final String? warningText;
@@ -26,12 +26,20 @@ class CustomSubTotal extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (iconData != null)
-            Icon(
-              iconData,
-              size: 50,
-              color: iconColor,
-            ),
+          if (iconData != null) ...[
+            if (iconData is IconData) // Check if it's IconData
+                Icon(
+                  iconData,
+                  size: 50,
+                  color: iconColor,
+                )
+                else if (iconData is Widget) // Check if it's Widget (for SVG)
+                Container(
+                child: iconData,
+                width: 50,
+                height: 50,
+                ),
+          ],
           SizedBox(
             height: 15,
           ),

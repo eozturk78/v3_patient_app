@@ -69,9 +69,23 @@ class _AgreementsPageState extends State<AgreementsPage> {
                 const SizedBox(
                   height: 20,
                 ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      check2 = !check2;
+                    });
+                  },
+                  child:
                 Row(
                   children: [
                     Checkbox(
+                      fillColor: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return mainButtonColor; // Set to your login button color
+                          }
+                          return Colors.white70; // Change to your desired unselected color
+                        },),
                       onChanged: (value) {
                         setState(() {
                           check2 = !check2;
@@ -85,13 +99,27 @@ class _AgreementsPageState extends State<AgreementsPage> {
                       style: TextStyle(fontSize: 16),
                     ))
                   ],
-                ),
+                ),),
                 const SizedBox(
                   height: 20,
                 ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      check3 = !check3;
+                    });
+                  },
+                  child:
                 Row(
                   children: [
                     Checkbox(
+                      fillColor: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return mainButtonColor; // Set to your login button color
+                          }
+                          return Colors.white70; // Change to your desired unselected color
+                        },),
                       onChanged: (value) {
                         setState(() {
                           check3 = !check3;
@@ -105,7 +133,7 @@ class _AgreementsPageState extends State<AgreementsPage> {
                       style: TextStyle(fontSize: 16),
                     ))
                   ],
-                ),
+                ),),
                 const SizedBox(
                   height: 20,
                 ),
@@ -122,6 +150,13 @@ class _AgreementsPageState extends State<AgreementsPage> {
                 Row(
                   children: [
                     Checkbox(
+                      fillColor: MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return mainButtonColor; // Set to your login button color
+                          }
+                          return Colors.white70; // Change to your desired unselected color
+                        },),
                       onChanged: (value) {
                         setState(() {
                           check1 = !check1;
@@ -183,11 +218,15 @@ class _AgreementsPageState extends State<AgreementsPage> {
                                   SharedPreferences pref =
                                       await SharedPreferences.getInstance();
                                   pref.setBool("isAgreementRead", false);
+                                  /*
                                   apis.deleteRequestByPatient().then((resp) => {
+
                                         Navigator.of(context)
                                             .pushNamedAndRemoveUntil('/login',
                                                 ModalRoute.withName("/"))
-                                      });
+                                      }); */
+                                  Navigator.of(context).pushNamedAndRemoveUntil(
+                                      '/login', ModalRoute.withName("/"));
                                 },
                                 child: Text("Ja"),
                               ),

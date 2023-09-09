@@ -227,8 +227,8 @@ leadingWithoutBack(String title, BuildContext context) {
           Icons.settings,
           color: Color.fromARGB(255, 69, 81, 84),
         ),
-        onPressed: () {
-          Navigator.of(context).pushNamed("/profile");
+        onPressed: () async {
+          await Navigator.of(context).pushNamed("/profile");
         },
       )
     ],
@@ -252,7 +252,7 @@ leadingWithoutIcon(String title, BuildContext context) {
 leadingSubpage(String title, BuildContext context) {
   return AppBar(
     leading: TextButton(
-      onPressed: () => Navigator.of(context).pop(),
+      onPressed: () => Navigator.of(context).pop(true),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [

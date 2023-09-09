@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../communication/calendar.dart';
 import '../communication/chat.dart';
@@ -30,7 +31,7 @@ import '../main-menu/main-menu.dart';
 class MenuSet {
   String? displayName;
   String? routerName;
-  IconData? icon;
+  dynamic icon;
   MenuSet(this.displayName, this.icon);
 }
 
@@ -45,10 +46,10 @@ final defaultMenuList = [
 
 final Map<String, MenuSet> routeDisplayNames = {
   "/main-menu": MenuSet('Hauptmenü', Icons.abc),
-  "/settings": MenuSet('Einstellungen', Icons.abc),
-  "/home": MenuSet('Grafische Darstellungen', Icons.abc),
-  "/profile": MenuSet('Profil', Icons.person_2_outlined),
-  "/main-sub-menu": MenuSet('Daten', FontAwesomeIcons.fileMedical),
+  "/settings": MenuSet('Einstellungen', Icons.settings),
+  "/home": MenuSet('Grafische Darstellungen', SvgPicture.asset('assets/images/menu-icons/graphische-main.svg')),
+  "/profile": MenuSet('Profil', SvgPicture.asset('assets/images/menu-icons/profil-main.svg')),
+  "/main-sub-menu": MenuSet('Daten', SvgPicture.asset('assets/images/menu-icons/daten-main.svg')),
   "/measurement-result": MenuSet('Messergebnis', Icons.abc),
   "/measurement-result-weight":
       MenuSet('Gewicht des Messergebnisses', Icons.abc),
@@ -57,22 +58,22 @@ final Map<String, MenuSet> routeDisplayNames = {
       MenuSet('Messergebnistemperatur', Icons.abc),
   "/measurement-result-saturation":
       MenuSet('Sättigung des Messergebnisses', Icons.abc),
-  "/communication": MenuSet('Kommunikation', Icons.abc),
-  "/info": MenuSet('Infothek', Icons.info_outline),
-  "/medication": MenuSet('Medication', FontAwesomeIcons.kitMedical),
-  "/messages": MenuSet('Nachrichten', FontAwesomeIcons.message),
+  "/communication": MenuSet('Kommunikation', SvgPicture.asset('assets/images/menu-icons/nachrichten-main.svg')),
+  "/info": MenuSet('Infothek', SvgPicture.asset('assets/images/menu-icons/infothek-main.svg')),
+  "/medication": MenuSet('Medication', SvgPicture.asset('assets/images/menu-icons/medikation-main.svg')),
+  "/messages": MenuSet('Mitteilungen', SvgPicture.asset('assets/images/menu-icons/mitteilungen-main.svg')),
   "/chat": MenuSet('Chat', Icons.abc),
   "/medical-plan-1": MenuSet('Medizinischer Plan', Icons.abc),
-  "/calendar": MenuSet('Kalender', Icons.abc),
+  "/calendar": MenuSet('Kalender', SvgPicture.asset('assets/images/menu-icons/kalender-main.svg')),
   "/medication-plan-list": MenuSet('Liste der Medikamentenpläne', Icons.abc),
-  "/recipes": MenuSet('Rezepte', Icons.abc),
-  "/libraries": MenuSet('Bibliotheken', Icons.abc),
+  "/recipes": MenuSet('Rezepte', SvgPicture.asset('assets/images/menu-icons/rezept-main.svg')),
+  "/libraries": MenuSet('Bibliotheken', SvgPicture.asset('assets/images/menu-icons/bibliothek-main.svg')),
   "/enlightenment": MenuSet('Erleuchtung', Icons.abc),
-  "/documents": MenuSet('Dokumente', Icons.abc),
+  "/documents": MenuSet('Dokumente', SvgPicture.asset('assets/images/menu-icons/dokumente-main.svg')),
   "/document-details": MenuSet('Dokumentdetails', Icons.abc),
-  "/about-me": MenuSet('Über mich', Icons.abc),
+  "/about-me": MenuSet('Über mich', SvgPicture.asset('assets/images/menu-icons/profil-main.svg')),
   "/patient-contacts-list": MenuSet('Meine medizinischen Kontakte', Icons.abc),
-  "/notification-history": MenuSet('Erinnerungen', Icons.timer_sharp),
+  "/notification-history": MenuSet('Erinnerungen', SvgPicture.asset('assets/images/menu-icons/erinnerungen-main.svg')),
 
   // ... Add other route display names here
 };

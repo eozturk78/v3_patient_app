@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/toast.dart';
@@ -55,8 +56,8 @@ class _CommunicationPageState extends State<CommunicationPage> {
             Row(
               children: [
                 GestureDetector(
-                  child: CustomSubTotal(Icons.chat_bubble_outline_rounded,
-                      "Nachrichten", null, null, 10),
+                  child: CustomSubTotal(SvgPicture.asset('assets/images/menu-icons/mitteilungen-main.svg'),
+                      "Mitteilungen", null, null, 10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/messages');
                   },

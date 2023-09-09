@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   Shared sh = new Shared();
   Apis apis = new Apis();
-  bool remeberMeState = false;
+  bool rememberMeState = false;
   bool check1 = false;
   bool check2 = false;
   bool isSendEP = false;
@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
   checkRememberMe() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     if (pref.getString("rememberMe") == true.toString()) {
-      remeberMeState = true;
+      rememberMeState = true;
       userNameController.text = pref.getString("userName")!;
       passwordController.text = pref.getString("password")!;
     }
@@ -217,7 +217,7 @@ class _LoginPageState extends State<LoginPage> {
 
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setString("userName", userNameController.text);
-      if (remeberMeState) {
+      if (rememberMeState) {
         pref.setString("rememberMe", true.toString());
         pref.setString("password", passwordController.text);
       } else if (proceedLoginWithTouchId) {
@@ -348,13 +348,31 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Row(
                         children: [
-                          Checkbox(
-                            value: remeberMeState,
-                            onChanged: ((value) => setState(() {
-                                  remeberMeState = !remeberMeState;
-                                })),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                rememberMeState = !rememberMeState;
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                   fillColor: MaterialStateProperty.resolveWith<Color>(
+                                                  (Set<MaterialState> states) {
+                                      if (states.contains(MaterialState.selected)) {
+                                      return mainButtonColor; // Set to your login button color
+                                      }
+                                      return Colors.white70; // Change to your desired unselected color
+                                      },),
+                                  value: rememberMeState,
+                                  onChanged: ((value) => setState(() {
+                                    rememberMeState = !rememberMeState;
+                                  })),
+                                ),
+                                Text("Angemeldet bleiben"),
+                              ],
+                            ),
                           ),
-                          Text("Angemeldet bleiben"),
                         ],
                       ),
                       const SizedBox(
