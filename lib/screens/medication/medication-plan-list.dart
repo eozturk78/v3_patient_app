@@ -198,7 +198,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                     ],
                                   ),
                                 ),
-                                isExpanded: item.isExpanded ?? false,
+                                isExpanded: item.isExpanded,
                               )
                           ]),
           ),

@@ -86,17 +86,6 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
           _menuItems.add(p.value);
         }
       });
-      /*setState(() {
-        _menuItems = allRoutes.entries.map((entry) {
-          return CustomMenuItem(
-            entry.key,
-            entry.key,
-            selectedRouteNames.contains(entry.key), // Check if item is selected
-
-            0, // Add a default order value
-          );
-        }).toList();
-      });*/
     } else {
       _menuItems.clear();
       defaultMenuList.forEach((element) {
