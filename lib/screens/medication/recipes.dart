@@ -62,7 +62,7 @@ class _RecipesPageState extends State<RecipesPage> {
                         ? ExpansionPanelList(
                             expansionCallback: (int index, bool isExpanded) {
                               setState(() {
-                                recipeList![index].isExpanded = !isExpanded;
+                                recipeList![index].isExpanded = isExpanded;
                               });
                             },
                             children: [

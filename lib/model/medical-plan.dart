@@ -6,7 +6,7 @@ class MedicalPlan {
   DateTime? sendDate;
   final int rowCount;
   String? updatedBy;
-  bool isExpanded;
+  bool isExpanded=false;
   List<MedicalPlanRows> rows;
   MedicalPlan({
     required this.treatmentId,

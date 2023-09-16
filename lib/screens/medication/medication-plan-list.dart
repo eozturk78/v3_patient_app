@@ -23,6 +23,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
   Apis apis = Apis();
   Shared sh = Shared();
   List<MedicalPlan> mpLis = [];
+
   bool isStarted = true;
   @override
   void initState() {
@@ -51,6 +52,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: leadingSubpage('Medikamentenplan', context),
       body: SafeArea(
@@ -68,7 +70,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                     : ExpansionPanelList(
                         expansionCallback: (int index, bool isExpanded) {
                           setState(() {
-                            mpLis![index].isExpanded = !isExpanded;
+                            mpLis[index].isExpanded = isExpanded;
                           });
                         },
                         children: [
