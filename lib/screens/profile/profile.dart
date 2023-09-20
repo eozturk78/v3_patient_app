@@ -83,7 +83,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pushReplacementNamed("/settings");
+                              Navigator.of(context)
+                                  .pushReplacementNamed("/settings");
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -320,7 +321,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       SharedPreferences pref =
                           await SharedPreferences.getInstance();
                       pref.remove("token");
-                      pref.remove("messages");
                       Navigator.of(context).pushNamed("/login");
                     },
                     child: Row(

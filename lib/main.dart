@@ -200,7 +200,7 @@ _saveMessages(RemoteMessage message) async {
   }
   listMessages.add(p);
   await pref.setString("messages", jsonEncode(listMessages));
-  print(jsonEncode(listMessages));
+  print(jsonEncode(pref.getString('messages')));
 }
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();

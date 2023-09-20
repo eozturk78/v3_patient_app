@@ -56,10 +56,28 @@ class _CommunicationPageState extends State<CommunicationPage> {
             Row(
               children: [
                 GestureDetector(
-                  child: CustomSubTotal(SvgPicture.asset('assets/images/menu-icons/mitteilungen-main.svg'),
-                      "Mitteilungen", null, null, 10),
+                  child: CustomSubTotal(
+                      SvgPicture.asset(
+                          'assets/images/menu-icons/mitteilungen-main.svg'),
+                      "Mitteilungen",
+                      null,
+                      null,
+                      10),
                   onTap: () {
                     Navigator.of(context).pushNamed('/messages');
+                  },
+                ),
+                const Spacer(),
+                GestureDetector(
+                  child: CustomSubTotal(
+                      SvgPicture.asset(
+                          'assets/images/menu-icons/erinnerungen-main.svg'),
+                      "Erinnerungen",
+                      null,
+                      null,
+                      10),
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/notification-history');
                   },
                 ),
               ],

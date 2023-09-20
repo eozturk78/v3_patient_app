@@ -357,19 +357,23 @@ class _LoginPageState extends State<LoginPage> {
                             child: Row(
                               children: [
                                 Checkbox(
-                                   fillColor: MaterialStateProperty.resolveWith<Color>(
-                                                  (Set<MaterialState> states) {
-                                      if (states.contains(MaterialState.selected)) {
-                                      return mainButtonColor; // Set to your login button color
+                                  fillColor:
+                                      MaterialStateProperty.resolveWith<Color>(
+                                    (Set<MaterialState> states) {
+                                      if (states
+                                          .contains(MaterialState.selected)) {
+                                        return mainButtonColor; // Set to your login button color
                                       }
-                                      return Colors.white70; // Change to your desired unselected color
-                                      },),
+                                      return Colors
+                                          .white70; // Change to your desired unselected color
+                                    },
+                                  ),
                                   value: rememberMeState,
                                   onChanged: ((value) => setState(() {
-                                    rememberMeState = !rememberMeState;
-                                  })),
+                                        rememberMeState = !rememberMeState;
+                                      })),
                                 ),
-                                Text("Angemeldet bleiben"),
+                                Text("Anmeldedaten speichern"),
                               ],
                             ),
                           ),

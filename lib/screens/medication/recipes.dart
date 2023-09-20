@@ -47,7 +47,7 @@ class _RecipesPageState extends State<RecipesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leading('Rezept', context),
+      appBar: leadingSubpage('Rezept', context),
       body: SafeArea(
           // Wrap your body with SafeArea
           child: Padding(
@@ -62,7 +62,7 @@ class _RecipesPageState extends State<RecipesPage> {
                         ? ExpansionPanelList(
                             expansionCallback: (int index, bool isExpanded) {
                               setState(() {
-                                recipeList![index].isExpanded = isExpanded;
+                                recipeList![index].isExpanded = !isExpanded;
                               });
                             },
                             children: [
@@ -71,7 +71,17 @@ class _RecipesPageState extends State<RecipesPage> {
                                     headerBuilder: (BuildContext context,
                                         bool isExpanded) {
                                       return ListTile(
-                                        title: Text(item.recipeName),
+                                        title: Text(
+                                          item.recipeName,
+                                          style: item.isExpanded
+                                              ? TextStyle(
+                                                  color: iconColor,
+                                                  fontWeight: FontWeight.bold)
+                                              : TextStyle(
+                                                  color: const Color.fromARGB(
+                                                      255, 75, 74, 74),
+                                                  fontWeight: FontWeight.bold),
+                                        ),
                                         subtitle: Text(sh.formatDateTime(
                                             item.createdAt.toString())),
                                       );

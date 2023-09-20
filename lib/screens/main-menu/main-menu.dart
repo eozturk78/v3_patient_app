@@ -70,30 +70,37 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
   void _loadMenuItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? selectedRouteNamesJson = prefs.getString('selectedMenuItems');
-    //print("stored data");
-    //print(selectedRouteNamesJson);
+    print("stored data");
+    print(selectedRouteNamesJson);
     setState(() {
-    if (selectedRouteNamesJson != null && selectedRouteNamesJson != '') {
-      List<dynamic> selectedRouteNames = jsonDecode(selectedRouteNamesJson!);
+      if (selectedRouteNamesJson != null && selectedRouteNamesJson != '') {
+        List<dynamic> selectedRouteNames = jsonDecode(selectedRouteNamesJson!);
 
-      _menuItems.clear();
-      selectedRouteNames.forEach((element) {
-        if (element['isSelected'] == true) {
-          var p = routeDisplayNames.entries
-              .where((x) => x.key == element['routeName'])
-              .first;
-          p.value.routerName = element['routeName'];
+        _menuItems.clear();
+        selectedRouteNames.forEach((element) {
+          if (element['isSelected'] == true) {
+            if (routeDisplayNames.entries
+                    .where((x) => x.key == element['routeName'])
+                    .length >
+                0) {
+              var p = routeDisplayNames.entries
+                  .where((x) => x.key == element['routeName'])
+                  .first;
+              p.value.routerName = element['routeName'];
+              _menuItems.add(p.value);
+            }
+          }
+        });
+      } else {
+        _menuItems.clear();
+        defaultMenuList.forEach((element) {
+          print(element);
+          var p =
+              routeDisplayNames.entries.where((x) => x.key == element).first;
+          p.value.routerName = element;
           _menuItems.add(p.value);
-        }
-      });
-    } else {
-      _menuItems.clear();
-      defaultMenuList.forEach((element) {
-        var p = routeDisplayNames.entries.where((x) => x.key == element).first;
-        p.value.routerName = element;
-        _menuItems.add(p.value);
-      });
-    }
+        });
+      }
       _refreshKey = UniqueKey();
       //print(_refreshKey);
     });
@@ -114,8 +121,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
       });
     }, onError: (err) {
       sh.redirectPatient(err, context);
-      setState(() {
-      });
+      setState(() {});
     });
   }
 
@@ -212,14 +218,13 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                      Builder(
-                          key: _refreshKey,
-                          builder: (BuildContext context) {
-                        // This Builder will rebuild the UI when _menuItems change
-                        return buildCustomizedMenuItemButtons(context);
-                        /**/
-                      }
-                      )
+                          Builder(
+                              key: _refreshKey,
+                              builder: (BuildContext context) {
+                                // This Builder will rebuild the UI when _menuItems change
+                                return buildCustomizedMenuItemButtons(context);
+                                /**/
+                              })
                         ],
                       ),
                     ],

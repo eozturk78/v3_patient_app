@@ -54,7 +54,6 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
         selectedMenuItemsDataString == '') {
       setState(() {
         _selectedMenuItems = routeDisplayNames.entries.map((entry) {
-          print(entry.key);
           return CustomMenuItem(
             entry.key, // Use the display name as the route name
             entry.value.displayName!, // Use the route name from the map
@@ -69,11 +68,20 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
           List<Map<String, dynamic>>.from(
         jsonDecode(selectedMenuItemsDataString),
       );
+      print(selectedMenuItemsData);
 
       setState(() {
-        _selectedMenuItems = selectedMenuItemsData.map((itemData) {
-          return CustomMenuItem(itemData['routeName'], itemData['displayName'],
-              itemData['isSelected'], itemData['order']);
+        _selectedMenuItems = routeDisplayNames.entries.map((entry) {
+          print(entry.key);
+          return CustomMenuItem(
+            entry.key, // Use the display name as the route name
+            entry.value.displayName!, // Use the route name from the map
+            !selectedMenuItemsData
+                .where((element) =>
+                    element['routeName'].toString().contains(entry.key) && element['isSelected'] == true)
+                .isEmpty,
+            _selectedMenuItems.length,
+          );
         }).toList();
       });
     }
@@ -81,6 +89,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
 
   void _saveSelectedMenuItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('selectedMenuItems');
     List<Map<String, dynamic>> selectedMenuItemsData =
         _selectedMenuItems.map((item) {
       return {
@@ -132,7 +141,8 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).pushReplacementNamed("/profile");
+                                  Navigator.of(context)
+                                      .pushReplacementNamed("/profile");
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -170,7 +180,8 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context).pushReplacementNamed("/settings");
+                                  Navigator.of(context)
+                                      .pushReplacementNamed("/settings");
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -219,24 +230,27 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                     width: double.infinity,
                     padding: EdgeInsets.all(2),
                     margin: EdgeInsets.only(left: 20, right: 20),
-                    child:
-                    ReorderableListView(
+                    child: ReorderableListView(
                       header: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(padding: EdgeInsets.only(top: 20, bottom: 5, left: 15),
-                          child: Text(
-                            'DASHBOARD FELDER',
-                            style: TextStyle(color: Color.fromARGB(255, 150, 159, 162)),
-                            textAlign: TextAlign.left,
-                          )),
-                          Divider(thickness: 1,),
+                          Padding(
+                              padding:
+                                  EdgeInsets.only(top: 20, bottom: 5, left: 15),
+                              child: Text(
+                                'DASHBOARD FELDER',
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 150, 159, 162)),
+                                textAlign: TextAlign.left,
+                              )),
+                          Divider(
+                            thickness: 1,
+                          ),
                         ],
-                        ),
+                      ),
                       onReorder: _onReorder,
-                      children:
-                      _selectedMenuItems.map(
+                      children: _selectedMenuItems.map(
                         (item) {
                           /*return Container(
                             key: UniqueKey(),
@@ -279,7 +293,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                                 },
                               ),
                             ),
-                          //)
+                            //)
                           );
                         },
                       ).toList(),

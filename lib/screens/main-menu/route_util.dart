@@ -36,9 +36,8 @@ class MenuSet {
 }
 
 final defaultMenuList = [
-  "/profile",
-  "/main-sub-menu",
-  "/medication",
+  "/questionnaire-group",
+  "/medication-plan-list",
   "/messages",
   "/notification-history",
   "/info"
@@ -46,49 +45,44 @@ final defaultMenuList = [
 
 final Map<String, MenuSet> routeDisplayNames = {
   // "/main-menu": MenuSet('Hauptmenü', Icons.abc),
-  "/settings": MenuSet('Einstellungen', Icons.settings),
+  //"/settings": MenuSet('Einstellungen', Icons.settings),
   "/home": MenuSet('Grafische Darstellungen',
       SvgPicture.asset('assets/images/menu-icons/graphische-main.svg')),
-  "/profile": MenuSet(
-      'Profil', SvgPicture.asset('assets/images/menu-icons/profil-main.svg')),
-  "/main-sub-menu": MenuSet(
-      'Daten', SvgPicture.asset('assets/images/menu-icons/daten-main.svg')),
-  "/measurement-result": MenuSet('Messergebnis', Icons.abc),
-  "/measurement-result-weight":
-      MenuSet('Gewicht des Messergebnisses', Icons.abc),
-  "/measurement-result-pulse": MenuSet('Messergebnisimpuls', Icons.abc),
-  "/measurement-result-temperature":
-      MenuSet('Messergebnistemperatur', Icons.abc),
-  "/measurement-result-saturation":
-      MenuSet('Sättigung des Messergebnisses', Icons.abc),
+  //"/profile": MenuSet( 'Profil', SvgPicture.asset('assets/images/menu-icons/profil-main.svg')),
+  "/questionnaire-group": MenuSet(
+      'Daten', SvgPicture.asset('assets/images/menu-icons/tagliche-main.svg')),
+  // "/measurement-result": MenuSet('Blutdruckmessergebnisse', Icons.abc),
+  // "/measurement-result-weight": MenuSet('Gewichtsergebnisse', Icons.abc),
+  // "/measurement-result-pulse": MenuSet('Messergebnisimpuls', Icons.abc),
+  // "/measurement-result-temperature":  MenuSet('Messergebnistemperatur', Icons.abc),
+  // "/measurement-result-saturation": MenuSet('Sättigungsmessergebnisse', Icons.abc),
   "/communication": MenuSet('Kommunikation',
       SvgPicture.asset('assets/images/menu-icons/nachrichten-main.svg')),
   "/info": MenuSet('Infothek',
       SvgPicture.asset('assets/images/menu-icons/infothek-main.svg')),
-  "/medication": MenuSet('Medication',
+  "/medication-plan-list": MenuSet('Medikamentenplan',
       SvgPicture.asset('assets/images/menu-icons/medikation-main.svg')),
   "/messages": MenuSet('Mitteilungen',
       SvgPicture.asset('assets/images/menu-icons/mitteilungen-main.svg')),
   // "/chat": MenuSet('Chat', Icons.abc),
-  "/medical-plan-1": MenuSet('Medizinischer Plan', Icons.abc),
-  "/calendar": MenuSet('Kalender',
-      SvgPicture.asset('assets/images/menu-icons/kalender-main.svg')),
-  "/medication-plan-list": MenuSet('Liste der Medikamentenpläne', Icons.abc),
+  //"/medical-plan-1": MenuSet('Medizinischer Plan', Icons.abc),
+  //"/calendar": MenuSet('Kalender', SvgPicture.asset('assets/images/menu-icons/kalender-main.svg')),
+  // "/medication-plan-list": MenuSet('Liste der Medikamentenpläne', Icons.abc),
   "/recipes": MenuSet(
       'Rezepte', SvgPicture.asset('assets/images/menu-icons/rezept-main.svg')),
   "/libraries": MenuSet('Bibliotheken',
       SvgPicture.asset('assets/images/menu-icons/bibliothek-main.svg')),
-  "/enlightenment": MenuSet('Erleuchtung', Icons.abc),
+  "/enlightenment": MenuSet('Aufklärung',
+      SvgPicture.asset('assets/images/menu-icons/aufklarung-main.svg')),
+
   "/documents": MenuSet('Dokumente',
       SvgPicture.asset('assets/images/menu-icons/dokumente-main.svg')),
   // "/document-details": MenuSet('Dokumentdetails', Icons.abc),
-  "/about-me": MenuSet('Über mich',
-      SvgPicture.asset('assets/images/menu-icons/profil-main.svg')),
-  "/patient-contacts-list": MenuSet('Meine medizinischen Kontakte', Icons.abc),
+  //"/about-me": MenuSet('Über mich', SvgPicture.asset('assets/images/menu-icons/profil-main.svg')),
+  "/patient-contacts-list":
+      MenuSet('Meine medizinischen Kontakte', Icons.contact_page),
   "/notification-history": MenuSet('Erinnerungen',
       SvgPicture.asset('assets/images/menu-icons/erinnerungen-main.svg')),
-
-  // ... Add other route display names here
 };
 
 Map<String, WidgetBuilder> allRoutes = {

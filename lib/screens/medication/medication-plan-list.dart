@@ -52,7 +52,6 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: leadingSubpage('Medikamentenplan', context),
       body: SafeArea(
@@ -70,7 +69,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                     : ExpansionPanelList(
                         expansionCallback: (int index, bool isExpanded) {
                           setState(() {
-                            mpLis[index].isExpanded = isExpanded;
+                            mpLis[index].isExpanded = !isExpanded;
                           });
                         },
                         children: [
@@ -90,10 +89,20 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                           width: 10,
                                         ),
                                         Flexible(
-                                            child: Text(
-                                          item.mpName,
-                                          overflow: TextOverflow.ellipsis,
-                                        ))
+                                          child: Text(
+                                            item.mpName,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: item.isExpanded
+                                                ? TextStyle(
+                                                    color: iconColor,
+                                                    fontWeight: FontWeight.bold)
+                                                : TextStyle(
+                                                    color: const Color.fromARGB(
+                                                        255, 75, 74, 74),
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                          ),
+                                        )
                                       ],
                                     ),
                                     subtitle: Row(
@@ -195,7 +204,23 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                           await launch(
                                               '${apis.apiPublic}/medicalplan-pdf?treatmentid=${item.treatmentId}');
                                         },
-                                        child: Text('Datei herunterladen'),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.download,
+                                              color: iconColor,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              'Datei herunterladen',
+                                              style: TextStyle(
+                                                  color: iconColor,
+                                                  fontSize: 16),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),

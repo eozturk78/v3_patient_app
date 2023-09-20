@@ -25,17 +25,19 @@ class _NotificationHistoryPage extends State<NotificationHistoryPage> {
   List<dynamic> listMessages = [];
   @override
   void initState() {
-    _savedMessages();
     // TODO: implement initState
     super.initState();
+    _savedMessages();
   }
 
   _savedMessages() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.reload();
     setState(() {
       isStarted = false;
       if (pref.getString('messages') != null) {
-        listMessages = jsonDecode(pref.getString('messages')!) as List;
+        listMessages =
+            (jsonDecode(pref.getString('messages')!) as List).reversed.toList();
       }
     });
   }
