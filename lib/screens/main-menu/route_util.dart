@@ -49,8 +49,8 @@ final Map<String, MenuSet> routeDisplayNames = {
   "/home": MenuSet('Grafische Darstellungen',
       SvgPicture.asset('assets/images/menu-icons/graphische-main.svg')),
   //"/profile": MenuSet( 'Profil', SvgPicture.asset('assets/images/menu-icons/profil-main.svg')),
-  "/questionnaire-group": MenuSet(
-      'Daten', SvgPicture.asset('assets/images/menu-icons/tagliche-main.svg')),
+  "/questionnaire-group": MenuSet('Fragebögen',
+      SvgPicture.asset('assets/images/menu-icons/tagliche-main.svg')),
   // "/measurement-result": MenuSet('Blutdruckmessergebnisse', Icons.abc),
   // "/measurement-result-weight": MenuSet('Gewichtsergebnisse', Icons.abc),
   // "/measurement-result-pulse": MenuSet('Messergebnisimpuls', Icons.abc),

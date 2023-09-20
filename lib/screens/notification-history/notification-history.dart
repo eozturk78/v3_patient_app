@@ -8,6 +8,7 @@ import 'package:patient_app/shared/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../apis/apis.dart';
+import '../../model/notification-history.dart';
 import '../../shared/shared.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/shared.dart';
@@ -22,15 +23,15 @@ class _NotificationHistoryPage extends State<NotificationHistoryPage> {
   Shared sh = Shared();
   Apis apis = Apis();
   bool isStarted = true;
-  List<dynamic> listMessages = [];
+  List<NotificationHistory> listMessages = [];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _savedMessages();
+    onGetRecipes();
   }
 
-  _savedMessages() async {
+  /* _savedMessages() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.reload();
     setState(() {
@@ -39,6 +40,25 @@ class _NotificationHistoryPage extends State<NotificationHistoryPage> {
         listMessages =
             (jsonDecode(pref.getString('messages')!) as List).reversed.toList();
       }
+    });
+  }*/
+
+  onGetRecipes() {
+    apis.getnotificationhistories().then((value) {
+      setState(() {
+        isStarted = false;
+        print(value);
+        listMessages = (value as List)
+            .map((e) => NotificationHistory.fromJson(e))
+            .toList();
+        if (listMessages != null && listMessages?.length != 0)
+          listMessages![0].isExpanded = true;
+      });
+    }, onError: (err) {
+      sh.redirectPatient(err, context);
+      setState(() {
+        isStarted = false;
+      });
     });
   }
 
@@ -59,7 +79,7 @@ class _NotificationHistoryPage extends State<NotificationHistoryPage> {
                   : ExpansionPanelList(
                       expansionCallback: (int index, bool isExpanded) {
                         setState(() {
-                          listMessages![index]['isExpanded'] = !isExpanded;
+                          listMessages![index].isExpanded = !isExpanded;
                         });
                       },
                       children: [
@@ -80,12 +100,13 @@ class _NotificationHistoryPage extends State<NotificationHistoryPage> {
                                     ),
                                     Flexible(
                                         child: Text(
-                                      item['title'],
+                                      item.title,
                                       overflow: TextOverflow.ellipsis,
                                     ))
                                   ],
                                 ),
-                                subtitle: Text(item['date'].toString()),
+                                subtitle: Text(sh
+                                    .formatDateTime(item.createdAt.toString())),
                               );
                             },
                             body: Padding(
@@ -94,11 +115,11 @@ class _NotificationHistoryPage extends State<NotificationHistoryPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(item['message'] ?? ""),
+                                  Text(item.body ?? ""),
                                 ],
                               ),
                             ),
-                            isExpanded: item['isExpanded'] ?? false,
+                            isExpanded: item.isExpanded ?? false,
                           )
                       ],
                     ),

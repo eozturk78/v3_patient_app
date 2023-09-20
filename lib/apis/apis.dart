@@ -640,6 +640,19 @@ class Apis {
     }
   }
 
+  
+  Future getnotificationhistories() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/getnotificationhistories';
+    var result = await http.get(Uri.parse(finalUrl), headers: {
+      'Content-Type': 'application/text',
+      'lang': lang,
+      'token': pref.getString('token').toString()
+    });
+    return getResponseFromApi(result);
+  }
+
+
   getResponseFromApi(http.Response result) async {
     if (result.headers['token'] != null) {
       print(result.headers['token']);

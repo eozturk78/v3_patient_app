@@ -160,7 +160,7 @@ main() async {
             ),
           ));
     }
-    _saveMessages(message);
+    // _saveMessages(message);
   });
 
   Locale initialLocale = Locale("de", "DE");
@@ -172,11 +172,11 @@ main() async {
 
 // Background message handler
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  _saveMessages(message);
+  // _saveMessages(message);
   //AwesomeNotificationsFCM().createNotificationFromJsonData(message.data);
 }
 
-_saveMessages(RemoteMessage message) async {
+/*_saveMessages(RemoteMessage message) async {
   SharedPreferences pref = await SharedPreferences.getInstance();
   var listMessages = [];
   var d = DateTime.now().day.toString().length == 1
@@ -201,7 +201,7 @@ _saveMessages(RemoteMessage message) async {
   listMessages.add(p);
   await pref.setString("messages", jsonEncode(listMessages));
   print(jsonEncode(pref.getString('messages')));
-}
+}*/
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
