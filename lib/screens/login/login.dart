@@ -50,6 +50,7 @@ class _LoginPageState extends State<LoginPage> {
     });
     checkRememberMe();
     _getAvailableBiometrics();
+    _authenticateWithBiometrics();
     super.initState();
     auth.isDeviceSupported().then(
           (bool isSupported) => setState(() => _supportState = isSupported

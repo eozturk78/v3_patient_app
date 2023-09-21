@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/screens/agreements/agreements.dart';
 import 'package:patient_app/screens/agreements/edit-agreements.dart';
 import 'package:patient_app/screens/agreements/privacy-policy.dart';
@@ -64,6 +65,7 @@ import 'package:patient_app/screens/registration/registration-4.dart';
 import 'package:patient_app/screens/settings/settings.dart';
 import 'package:patient_app/screens/shared/customized_menu.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:patient_app/shared/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../shared/shared.dart';
 import '../screens/main-menu/route_util.dart';
@@ -87,6 +89,7 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
+String? redirectionScreen;
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize the plugin
@@ -107,8 +110,31 @@ main() async {
     iOS: iosInitializationSettings,
   );
 
+  redirection(screenNumber) async {
+    if (screenNumber == "10")
+      redirectionScreen = '/messages';
+    else if (screenNumber == "20")
+      redirectionScreen = '/calendar';
+    else if (screenNumber == "30")
+      redirectionScreen = '/medication-plan-list';
+    else
+      redirectionScreen = '/medication-plan-list';
+
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    apis.patientrenewtoken().then((value) async {
+      print(value);
+      pref.setString("token", value['token']);
+      navigatorKey.currentState?.pushNamed(redirectionScreen.toString());
+    });
+  }
+
+  Future<void> onSelectNotification(payload) async {
+    redirection(payload);
+  }
+
   // Initialize the plugin with the settings
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onSelectNotification: onSelectNotification);
 
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
@@ -128,6 +154,24 @@ main() async {
   String? token = await messaging.getToken();
   print('FCM Token: $token');
 
+  FirebaseMessaging.instance.getInitialMessage().then((message) {
+    if (message != null) {
+      var data = message.data;
+      var payload = data['screen'];
+      redirection(payload);
+    }
+  });
+
+// Background message handler
+  Future<void> _firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async {
+    var data = message.data;
+    var payload = data['screen'];
+    redirection(payload);
+    // _saveMessages(message);
+    //AwesomeNotificationsFCM().createNotificationFromJsonData(message.data);
+  }
+
   // Set up background message handler
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -137,10 +181,18 @@ main() async {
     badge: true,
     sound: true,
   );
+
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    var data = message.data;
+    var payload = data['screen'];
+    redirection(payload);
+  });
+
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     RemoteNotification? notification = message.notification;
     AndroidNotification? android = message.notification?.android;
-
+    var data = message.data;
+    var payload = data['screen'];
     // If `onMessage` is triggered with a notification, construct our own
     // local notification to show to users using the created channel.
     if (notification != null && android != null) {
@@ -158,7 +210,8 @@ main() async {
               icon: '@drawable/ic_launcher',
               // other properties...
             ),
-          ));
+          ),
+          payload: payload);
     }
     // _saveMessages(message);
   });
@@ -170,45 +223,12 @@ main() async {
   runApp(const MyApp());
 }
 
-// Background message handler
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // _saveMessages(message);
-  //AwesomeNotificationsFCM().createNotificationFromJsonData(message.data);
-}
-
-/*_saveMessages(RemoteMessage message) async {
-  SharedPreferences pref = await SharedPreferences.getInstance();
-  var listMessages = [];
-  var d = DateTime.now().day.toString().length == 1
-      ? "0${DateTime.now().day}"
-      : DateTime.now().day;
-  var m = DateTime.now().month.toString().length == 1
-      ? "0${DateTime.now().month}"
-      : DateTime.now().month;
-  var h = DateTime.now().hour.toString().length == 1
-      ? "0${DateTime.now().hour}"
-      : DateTime.now().hour;
-  var mm = DateTime.now().minute.toString().length == 1
-      ? "0${DateTime.now().minute}"
-      : DateTime.now().minute;
-  var date = "${d}.${m}.${DateTime.now().year} ${h}:${mm}";
-  var msg = message.notification!.body.toString();
-  var title = message.notification!.title.toString();
-  var p = {"message": msg, "title": title, "date": date};
-  if (pref.getString('messages') != null) {
-    listMessages = jsonDecode(pref.getString('messages')!) as List;
-  }
-  listMessages.add(p);
-  await pref.setString("messages", jsonEncode(listMessages));
-  print(jsonEncode(pref.getString('messages')));
-}*/
-
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -330,12 +350,25 @@ class _MyHomePageState extends State<MyHomePage> {
     checkRedirection();
   }
 
+  redirectToInside() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    apis.patientrenewtoken().then((value) async {
+      print(value);
+      pref.setString("token", value['token']);
+      Navigator.of(context).pushReplacementNamed("/main-menu");
+    }, onError: (err) {
+      Navigator.of(context).pushReplacementNamed("/login");
+    });
+  }
+
   checkRedirection() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var isAgreementRead = Timer(
       Duration(seconds: 3),
       (() {
-        if (pref.getBool('isAgreementRead') == true)
+        if (pref.getString("token") != null && pref.getString("token") != "") {
+          redirectToInside();
+        } else if (pref.getBool('isAgreementRead') == true)
           Navigator.of(context).pushReplacementNamed("/login");
         else
           Navigator.of(context).pushReplacementNamed("/agreements");
