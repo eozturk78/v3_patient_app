@@ -1,9 +1,16 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 
+import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
+import 'package:patient_app/colors/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../main.dart';
+import '../../model/patient-file.dart';
+import '../../model/search-menu.dart';
 import '../communication/calendar.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/custom_menu.dart';
@@ -125,6 +132,131 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
     });
   }
 
+  onsearchfunction(searchText) {
+    apis.getSearchFunctions(searchText).then((resp) {
+      var r = (resp as List).map((e) => SearchMenu.fromJson(e)).toList();
+      setState(() {
+        r.forEach((x) {
+          filteredRouters.add(x);
+        });
+      });
+      if (_searchText == "") filteredRouters = [];
+    });
+  }
+
+  onClickSearchFunctionResult(item) async {
+    if (item.type == 'menu')
+      Navigator.of(context).pushNamed(item.route!);
+    else if (item?.type == 'folder') {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setString('folderId', item.id.toString());
+      pref.setString('folderName', item.displayName);
+      Navigator.of(context).pushNamed('/document-details').then((value) {
+        setState(() {});
+      });
+    } else if (item.type == 'file') {
+      onOpenFile(item);
+    }
+  }
+
+  bool isPdf = false;
+  PDFDocument? document;
+  String? imageUrl;
+  onOpenFile(item) async {
+    var fileUrl = "";
+
+    fileUrl = '${apis.apiPublic}/patient_files/${item.id}';
+
+    if (item?.id.contains('treatmentid')) {
+      await launch('${apis.apiPublic}/${item.id}');
+    } else if (fileUrl.contains('pdf')) {
+      PDFDocument.fromURL(fileUrl).then((value) {
+        setState(() {
+          isPdf = true;
+          document = value;
+          openDialog(item);
+        });
+      });
+    } else {
+      setState(() {
+        isPdf = false;
+        imageUrl = fileUrl;
+        openDialog(item);
+      });
+    }
+  }
+
+  Widget onOpenImage(BuildContext context, String? fileName) {
+    String? _fileName = fileName ?? null;
+    return AlertDialog(
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: 0,
+        vertical: 0,
+      ),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 0,
+        vertical: 0,
+      ),
+      content: StatefulBuilder(
+        builder: (BuildContext context, setState) {
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: double.infinity,
+            child: Column(children: [
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Icon(Icons.close),
+                    ),
+                  ],
+                ),
+                height: 40,
+                padding: EdgeInsets.only(right: 10, left: 10),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 5,
+                      color: Colors.black.withOpacity(0.3),
+                    ),
+                  ],
+                ),
+              ),
+              if (isPdf)
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.84,
+                  width: double.infinity,
+                  child: PDFViewer(
+                    document: document!,
+                  ),
+                ),
+              if (!isPdf && imageUrl != null)
+                Flexible(child: Image.network(imageUrl!))
+            ]),
+          );
+        },
+      ),
+    );
+  }
+
+  openDialog(SearchMenu? file) {
+    showDialog(
+      context: context,
+      builder: (context) => onOpenImage(context, file?.displayName),
+    ).then((value) {});
+  }
+
+  bool isFocusedSearch = false;
+  var filteredRouters = [];
+  var _searchText = null;
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  Timer? _debounce;
   Widget buildCustomizedMenuItemButtons(BuildContext context) {
     return GridView.builder(
       key: _refreshKey,
@@ -157,8 +289,11 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController tec = TextEditingController();
     return Scaffold(
-      appBar: leadingWithoutBack('Dashboard', context),
+      appBar: isFocusedSearch == false
+          ? leadingWithoutBack('Dashboard', context)
+          : null,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -173,30 +308,92 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Hallo ${title}!",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Color.fromARGB(244, 115, 123, 126),
-                            fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: 12,
-                      ),
+                      if (isFocusedSearch == false)
+                        Text(
+                          "Hallo ${title}!",
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Color.fromARGB(244, 115, 123, 126),
+                              fontWeight: FontWeight.bold),
+                        ),
+                      if (isFocusedSearch == false)
+                        SizedBox(
+                          height: 12,
+                        ),
                       Padding(
                         padding: EdgeInsets.only(left: 0, right: 0),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            filled: true,
-                            fillColor: const Color.fromARGB(255, 244, 246, 246),
-                            hintText: 'Suchen',
-                            hintStyle: TextStyle(
-                                fontSize: 16.0,
-                                color: Color.fromARGB(255, 69, 81, 84)),
-                            prefixIcon: Icon(Icons.search_sharp),
-                          ),
-                        ),
+                        child: Form(
+                            key: _formkey,
+                            child: TextFormField(
+                              // controller: tec,
+                              onTapOutside: (event) {
+                                if (filteredRouters.length == 0) {
+                                  FocusScope.of(context).unfocus();
+                                  setState(() {
+                                    isFocusedSearch = false;
+                                  }); /**/
+                                }
+                              },
+                              onChanged: (value) {
+                                filteredRouters = [];
+                                // ignore: unnecessary_null_comparison
+                                print(value);
+                                _searchText = value;
+                                if (value != "" && value != null) {
+                                  filteredRouters = [];
+                                  filteredRouters = searchAllRoutes
+                                      .where((element) => element.displayName
+                                          .toLowerCase()
+                                          .contains(value.toLowerCase()))
+                                      .toList();
+
+                                  if (_debounce?.isActive ?? false)
+                                    _debounce?.cancel();
+                                  _debounce = Timer(
+                                      const Duration(milliseconds: 500), () {
+                                    onsearchfunction(value);
+                                  });
+                                } else {
+                                  _debounce?.cancel();
+                                  filteredRouters = [];
+                                }
+
+                                setState(() {});
+                              },
+                              onTap: () {
+                                setState(() {
+                                  //filteredRouters = searchAllRoutes;
+                                  isFocusedSearch = true;
+                                }); /**/
+                              },
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  filled: true,
+                                  fillColor:
+                                      const Color.fromARGB(255, 244, 246, 246),
+                                  hintText: 'Suchen',
+                                  hintStyle: TextStyle(
+                                      fontSize: 16.0,
+                                      color: Color.fromARGB(255, 69, 81, 84)),
+                                  prefixIcon: Icon(Icons.search_sharp),
+                                  suffixIcon: filteredRouters.length > 0
+                                      ? Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            GestureDetector(
+                                              child: Icon(Icons.close_outlined),
+                                              onTap: () {
+                                                setState(() {
+                                                  filteredRouters = [];
+                                                  _formkey.currentState
+                                                      ?.reset();
+                                                });
+                                              },
+                                            )
+                                          ],
+                                        )
+                                      : null),
+                            )),
                       ),
                       SizedBox(
                         height: 12,
@@ -208,7 +405,8 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
               SizedBox(
                 height: 15,
               ),
-              Padding(
+              if (isFocusedSearch == false)
+                Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -228,7 +426,59 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                         ],
                       ),
                     ],
-                  )),
+                  ),
+                ),
+              if (isFocusedSearch == true)
+                for (var item in filteredRouters)
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                    child: GestureDetector(
+                      onTap: () async {
+                        onClickSearchFunctionResult(item);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          if (item.type == 'folder')
+                            Icon(
+                              Icons.folder,
+                              color: iconColor,
+                              size: 40,
+                            ),
+                          if (item.type == 'file')
+                            Icon(
+                              Icons.file_copy,
+                              color: iconColor,
+                              size: 40,
+                            ),
+                          if (item.icon != null && item.icon is IconData)
+                            Icon(
+                              item.icon,
+                              color: iconColor,
+                              size: 40,
+                            ),
+                          if (item.icon != null && item.icon is Widget)
+                            Container(
+                              child: item.icon,
+                              width: 40,
+                              height: 40,
+                            ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Flexible(
+                            child: Text(
+                              item.displayName,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
             ],
           ),
         ),

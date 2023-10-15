@@ -659,13 +659,21 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future getSearchFunctions(searchText) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/getsearchfunctions?searchText=$searchText';
+    var result = await http.get(Uri.parse(finalUrl),
+        headers: {'lang': lang, 'token': pref.getString('token').toString()});
+    return getResponseFromApi(result);
+  }
+
   getResponseFromApi(http.Response result) async {
     if (result.headers['token'] != null) {
       print(result.headers['token']);
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setString('token', result.headers['token'].toString());
     }
-
+    print(result.body);
     var body = jsonDecode(result.body);
     if (result.statusCode == 200 || result.statusCode == 201) {
       try {
