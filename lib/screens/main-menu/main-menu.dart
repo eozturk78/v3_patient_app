@@ -320,6 +320,22 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                         SizedBox(
                           height: 12,
                         ),
+                      if (isFocusedSearch)
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isFocusedSearch = false;
+                            });
+                          },
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Icon(Icons.close),
+                              Text('Schließen'),
+                            ],
+                          ),
+                        ),
                       Padding(
                         padding: EdgeInsets.only(left: 0, right: 0),
                         child: Form(
@@ -342,9 +358,12 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                                 if (value != "" && value != null) {
                                   filteredRouters = [];
                                   filteredRouters = searchAllRoutes
-                                      .where((element) => element.displayName
-                                          .toLowerCase()
-                                          .contains(value.toLowerCase()))
+                                      .where((element) => (element.displayName
+                                              .toLowerCase()
+                                              .contains(value.toLowerCase()) ||
+                                          (element.keywords!
+                                              .toLowerCase()
+                                              .contains(value.toLowerCase()))))
                                       .toList();
 
                                   if (_debounce?.isActive ?? false)

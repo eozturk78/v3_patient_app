@@ -29,6 +29,7 @@ import 'package:patient_app/screens/info/info.dart';
 import 'package:patient_app/screens/info/libraries.dart';
 import 'package:patient_app/screens/login/change-password.dart';
 import 'package:patient_app/screens/login/login.dart';
+import 'package:patient_app/screens/login/secret-question.dart';
 import 'package:patient_app/screens/main-menu/main-menu.dart';
 import 'package:patient_app/screens/main-menu/main-sub-menu.dart';
 import 'package:patient_app/screens/measurement-result/measurement-result-blutdruck.dart';
@@ -318,7 +319,8 @@ class MyApp extends StatelessWidget {
         "/patient-contacts-list": (context) => ContactsListingPage(),
         "/impresum": (context) => ImpresumPage(),
         "/extract-data": (context) => ExtractDataPage(),
-        "/notification-history": (context) => NotificationHistoryPage()
+        "/notification-history": (context) => NotificationHistoryPage(),
+        "/secret-question": (context) => SecretQuestionPage()
       },
     );
   }
@@ -355,7 +357,11 @@ class _MyHomePageState extends State<MyHomePage> {
     apis.patientrenewtoken().then((value) async {
       print(value);
       pref.setString("token", value['token']);
-      Navigator.of(context).pushReplacementNamed("/main-menu");
+      if (value['isRequiredSecretQuestion'])
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            "/main-menu", ModalRoute.withName('/main-menu'));
+      else
+        Navigator.of(context).pushNamed("/secret-question");
     }, onError: (err) {
       Navigator.of(context).pushReplacementNamed("/login");
     });

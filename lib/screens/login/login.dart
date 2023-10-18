@@ -38,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
   String _authorized = 'Not Authorized';
   bool _isAuthenticating = false;
   bool proceedLoginWithTouchId = false;
+  bool _isRequiredSecretQuestion = false;
   String? deviceToken;
   @override
   void initState() {
@@ -239,11 +240,11 @@ class _LoginPageState extends State<LoginPage> {
           setState(() {
             isSendEP = false;
           });
-          print(value['firstName']);
           pref.setString("patientTitle", value['firstName']);
           pref.setString('token', value['token']);
           pref.setString('patientGroups', jsonEncode(value['token']));
-
+          _isRequiredSecretQuestion = value['isRequiredSecretQuestion'];
+          print(_isRequiredSecretQuestion);
           //isLoggedIn = true;
           //Navigator.of(context).pushReplacementNamed("/main-menu");
           checkRedirection();
@@ -296,8 +297,11 @@ class _LoginPageState extends State<LoginPage> {
 
     if (pref.getBool('isAgreementRead') == true) {
       isLoggedIn = true;
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          "/main-menu", ModalRoute.withName('/main-menu'));
+      if (_isRequiredSecretQuestion)
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            "/main-menu", ModalRoute.withName('/main-menu'));
+      else
+        Navigator.of(context).pushNamed("/secret-question");
     } else {
       Navigator.of(context).pushReplacementNamed("/agreements");
     }

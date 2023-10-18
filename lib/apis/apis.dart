@@ -558,10 +558,31 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future setSecretQuestion(int? patientAnswerId, int? questionId,
+      String? ownQuestion, String answer) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/setpatientsecretanswer';
+    var params = {
+      'ownquestion': ownQuestion.toString(),
+      'answer': answer.toString()
+    };
+    print(params);
+    if (patientAnswerId != null)
+      params['patientanswerid'] = patientAnswerId.toString();
+
+    if (questionId != null) params['secretquestionid'] = questionId.toString();
+
+    var result = await http.post(Uri.parse(finalUrl), body: params, headers: {
+      'lang': lang,
+      'token': pref.getString('token').toString()
+    }); /**/
+    return getResponseFromApi(result);
+  }
+
   Future getPatientRecipes() async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
-      String finalUrl = '$baseUrl/getpatientrecipes';
+      String finalUrl = '$baseUrl/getsecretquestionlist';
       var result = await http.get(Uri.parse(finalUrl), headers: {
         'Content-Type': 'application/text',
         'lang': lang,
@@ -667,13 +688,20 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future getPatientSecretQuestions() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/getpatientsecretquestionlist';
+    var result = await http.get(Uri.parse(finalUrl),
+        headers: {'lang': lang, 'token': pref.getString('token').toString()});
+    return getResponseFromApi(result);
+  }
+
   getResponseFromApi(http.Response result) async {
+    print(result.body);
     if (result.headers['token'] != null) {
-      print(result.headers['token']);
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setString('token', result.headers['token'].toString());
     }
-    print(result.body);
     var body = jsonDecode(result.body);
     if (result.statusCode == 200 || result.statusCode == 201) {
       try {

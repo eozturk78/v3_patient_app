@@ -6,12 +6,14 @@ class SearchMenu {
   final String displayName;
   final String type;
   final dynamic? icon;
+  final String? keywords;
   SearchMenu(
       {required this.displayName,
       this.route,
       required this.type,
       this.id,
-      this.icon});
+      this.icon,
+      this.keywords});
 
   factory SearchMenu.fromJson(Map<String, dynamic> json) {
     return SearchMenu(
