@@ -20,6 +20,10 @@ import 'package:patient_app/screens/description/temperature-description.dart';
 import 'package:patient_app/screens/description/weight-description.dart';
 import 'package:patient_app/screens/diagnoses/diagnoses.dart';
 import 'package:patient_app/screens/extract-data/extract-data.dart';
+import 'package:patient_app/screens/forgot-password/forgot-password.dart';
+import 'package:patient_app/screens/forgot-password/answer-secret-question.dart';
+import 'package:patient_app/screens/forgot-password/reset-password.dart';
+import 'package:patient_app/screens/forgot-password/temporary-password.dart';
 import 'package:patient_app/screens/home/home.dart';
 import 'package:patient_app/screens/impresum/impresum.dart';
 import 'package:patient_app/screens/info/documents-details.dart';
@@ -56,7 +60,6 @@ import 'package:patient_app/screens/questionnaire/questionnaire-6.dart';
 import 'package:patient_app/screens/questionnaire/questionnaire-7.dart';
 import 'package:patient_app/screens/questionnaire/questionnaire-8.dart';
 import 'package:patient_app/screens/questionnaire/questionnaire-9.dart';
-import 'package:patient_app/screens/quick-access/quick-access.dart';
 import 'package:patient_app/screens/redirection/redirection.dart';
 import 'package:patient_app/screens/registration/registration-completed.dart';
 import 'package:patient_app/screens/registration/registration-1.dart';
@@ -66,7 +69,6 @@ import 'package:patient_app/screens/registration/registration-4.dart';
 import 'package:patient_app/screens/settings/settings.dart';
 import 'package:patient_app/screens/shared/customized_menu.dart';
 import 'package:patient_app/screens/shared/shared.dart';
-import 'package:patient_app/shared/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../shared/shared.dart';
 import '../screens/main-menu/route_util.dart';
@@ -320,7 +322,11 @@ class MyApp extends StatelessWidget {
         "/impresum": (context) => ImpresumPage(),
         "/extract-data": (context) => ExtractDataPage(),
         "/notification-history": (context) => NotificationHistoryPage(),
-        "/secret-question": (context) => SecretQuestionPage()
+        '/secret-question': (context) => SecretQuestionPage(),
+        '/forgot-password': (context) => ForgotPasswordPage(),
+        '/answer-secret-question': (context) => AnswerSecretQuestionPage(),
+        '/reset-password': (context) => ResetPasswordPage(),
+        '/temporary-password': (context) => TemporaryPasswordPage(),
       },
     );
   }

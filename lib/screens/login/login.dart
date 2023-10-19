@@ -47,7 +47,6 @@ class _LoginPageState extends State<LoginPage> {
         FirebaseMessaging.instance; // Change here
     _firebaseMessaging.getToken().then((token) {
       if (token != null) deviceToken = token;
-      print(deviceToken);
     });
     checkRememberMe();
     _getAvailableBiometrics();
@@ -436,7 +435,12 @@ class _LoginPageState extends State<LoginPage> {
                             Text(
                                 "Bitte melden Sie sich zum ersten Mal an, um die Touch-ID/Face-ID-Anmeldung zu aktivieren")
                           ],
-                        )
+                        ),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed("/forgot-password");
+                          },
+                          child: Text('Ich habe mein Passwort vergessen'))
                     ],
                   ),
                 ),

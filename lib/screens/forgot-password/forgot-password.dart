@@ -14,68 +14,39 @@ import 'package:local_auth/local_auth.dart';
 import '../../apis/apis.dart';
 import '../../shared/shared.dart';
 
-class ChangePasswordPage extends StatefulWidget {
-  const ChangePasswordPage({super.key});
+class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({super.key});
   @override
-  State<ChangePasswordPage> createState() => _ChangePasswordPageState();
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
-class _ChangePasswordPageState extends State<ChangePasswordPage> {
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController newPasswordController = TextEditingController();
-  TextEditingController repeatNewPasswordController = TextEditingController();
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+  TextEditingController userNameController = TextEditingController();
   Apis apis = Apis();
   Shared sh = Shared();
   bool isSendEP = false;
-  String? deviceToken;
+
   final _formKey = GlobalKey<FormState>();
-  bool fromForgotPassword = false;
   @override
   void initState() {
-    // TODO: implement initState
-    FirebaseMessaging _firebaseMessaging =
-        FirebaseMessaging.instance; // Change here
-    _firebaseMessaging.getToken().then((token) {
-      if (token != null) deviceToken = token;
-      print(deviceToken);
-    });
-    checkUserWhere();
     super.initState();
   }
 
-  checkUserWhere() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    if (pref.getString('temporaryPassword') != null)
-      setState(() {
-        fromForgotPassword = true;
-      });
-  }
-
-  onChangePassword() async {
+  onForgotPassword() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
       isSendEP = true;
     });
     var userName = pref.getString("userName");
-    var pass = passwordController.text;
-    if (pref.getString('temporaryPassword') != null)
-      pass = pref.getString('temporaryPassword')!;
-
-    pref.remove("temporaryPassword");
-    pref.remove("question");
-    pref.remove("answer");
-    apis
-        .changePassword(
-            userName!, newPasswordController.text, pass, deviceToken)
-        .then(
+    apis.getSecretQuestion(userName!).then(
       (resp) {
         if (resp != null) {
           setState(() {
             isSendEP = false;
           });
-          pref.setString("patientTitle", resp['firstName']);
-          pref.setString('token', resp['token']);
-          Navigator.of(context).pushReplacementNamed("/main-menu");
+          pref.setString("answer", resp['answer']);
+          pref.setString('question', resp['question']);
+          Navigator.of(context).pushReplacementNamed("/answer-secret-question");
         }
       },
       onError: (err) {
@@ -93,7 +64,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: leadingWithoutProfile("Passwort ändern", context),
+      appBar: leadingWithoutProfile("Passwort vergessen", context),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,42 +81,18 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     const SizedBox(
                       height: 5,
                     ),
-                    Image.asset(
-                      "assets/images/logo-imedcom.png",
-                      width: 200,
-                      height: 100,
-                    ),
+                    Text(
+                        "Bitte geben Sie Ihren Benutzernamen ein, um das Passwort zurückzusetzen"),
                     const SizedBox(
                       height: 5,
                     ),
-                    if (!fromForgotPassword)
-                      TextFormField(
-                        controller: passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Aktuelles Passwort',
-                        ),
-                        validator: (text) => sh.textValidator(text),
-                      ),
                     TextFormField(
-                      controller: newPasswordController,
-                      obscureText: true,
+                      controller: userNameController,
+                      obscureText: false,
                       decoration: const InputDecoration(
-                        labelText: 'Neues Passwort',
+                        labelText: 'Benutzername',
                       ),
                       validator: (text) => sh.textValidator(text),
-                    ),
-                    TextFormField(
-                      controller: repeatNewPasswordController,
-                      obscureText: true,
-                      validator: (text) => sh.textRepeatPassword(
-                          text, newPasswordController.text),
-                      decoration: const InputDecoration(
-                        labelText: 'Wiederhole das neue Passwort',
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -155,7 +102,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       onPressed: () async {
                         final isValid = _formKey.currentState?.validate();
                         if (!isValid! || isSendEP) return;
-                        onChangePassword();
+                        onForgotPassword();
                       },
                       child: !isSendEP
                           ? const Text("Send")

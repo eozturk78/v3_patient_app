@@ -14,86 +14,34 @@ import 'package:local_auth/local_auth.dart';
 import '../../apis/apis.dart';
 import '../../shared/shared.dart';
 
-class ChangePasswordPage extends StatefulWidget {
-  const ChangePasswordPage({super.key});
+class ResetPasswordPage extends StatefulWidget {
+  const ResetPasswordPage({super.key});
   @override
-  State<ChangePasswordPage> createState() => _ChangePasswordPageState();
+  State<ResetPasswordPage> createState() => _ResetPasswordPageState();
 }
 
-class _ChangePasswordPageState extends State<ChangePasswordPage> {
-  TextEditingController passwordController = TextEditingController();
+class _ResetPasswordPageState extends State<ResetPasswordPage> {
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController repeatNewPasswordController = TextEditingController();
   Apis apis = Apis();
   Shared sh = Shared();
   bool isSendEP = false;
-  String? deviceToken;
+  String? question;
   final _formKey = GlobalKey<FormState>();
-  bool fromForgotPassword = false;
   @override
   void initState() {
-    // TODO: implement initState
-    FirebaseMessaging _firebaseMessaging =
-        FirebaseMessaging.instance; // Change here
-    _firebaseMessaging.getToken().then((token) {
-      if (token != null) deviceToken = token;
-      print(deviceToken);
-    });
-    checkUserWhere();
     super.initState();
   }
 
-  checkUserWhere() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    if (pref.getString('temporaryPassword') != null)
-      setState(() {
-        fromForgotPassword = true;
-      });
-  }
-
   onChangePassword() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    setState(() {
-      isSendEP = true;
-    });
-    var userName = pref.getString("userName");
-    var pass = passwordController.text;
-    if (pref.getString('temporaryPassword') != null)
-      pass = pref.getString('temporaryPassword')!;
-
-    pref.remove("temporaryPassword");
-    pref.remove("question");
-    pref.remove("answer");
-    apis
-        .changePassword(
-            userName!, newPasswordController.text, pass, deviceToken)
-        .then(
-      (resp) {
-        if (resp != null) {
-          setState(() {
-            isSendEP = false;
-          });
-          pref.setString("patientTitle", resp['firstName']);
-          pref.setString('token', resp['token']);
-          Navigator.of(context).pushReplacementNamed("/main-menu");
-        }
-      },
-      onError: (err) {
-        sh.redirectPatient(err, context);
-        setState(
-          () {
-            isSendEP = false;
-          },
-        );
-      },
-    );
+    // apis.changeResetPassword()
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: leadingWithoutProfile("Passwort ändern", context),
+      appBar: leadingWithoutProfile("Passwort vergessen", context),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,23 +58,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     const SizedBox(
                       height: 5,
                     ),
-                    Image.asset(
-                      "assets/images/logo-imedcom.png",
-                      width: 200,
-                      height: 100,
-                    ),
                     const SizedBox(
                       height: 5,
                     ),
-                    if (!fromForgotPassword)
-                      TextFormField(
-                        controller: passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Aktuelles Passwort',
-                        ),
-                        validator: (text) => sh.textValidator(text),
-                      ),
                     TextFormField(
                       controller: newPasswordController,
                       obscureText: true,

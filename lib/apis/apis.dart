@@ -558,6 +558,29 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future getSecretQuestion(String userName) async {
+    String finalUrl = '$baseUrl/getsecretquestion?username=$userName';
+    var result =
+        await http.get(Uri.parse(finalUrl), headers: {'lang': lang}); /**/
+    return getResponseFromApi(result);
+  }
+
+  Future onCheckAnswer(String answer, String userName) async {
+    String finalUrl = '$baseUrl/oncheckanswer';
+    var params = {'answer': answer, 'username': userName};
+    var result = await http
+        .post(Uri.parse(finalUrl), body: params, headers: {'lang': lang}); /**/
+    return getResponseFromApi(result);
+  }
+
+  Future resetPassword(String userName) async {
+    String finalUrl = '$baseUrl/resetpassword';
+    var params = {'username': userName};
+    var result = await http
+        .post(Uri.parse(finalUrl), body: params, headers: {'lang': lang}); /**/
+    return getResponseFromApi(result);
+  }
+
   Future setSecretQuestion(int? patientAnswerId, int? questionId,
       String? ownQuestion, String answer) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -697,7 +720,7 @@ class Apis {
   }
 
   getResponseFromApi(http.Response result) async {
-    print(result.body);
+    print(result);
     if (result.headers['token'] != null) {
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setString('token', result.headers['token'].toString());
