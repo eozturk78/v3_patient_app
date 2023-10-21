@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../colors/colors.dart';
+import '../../model/scale-size.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/custom_menu.dart';
 import '../shared/profile-menu.dart';
@@ -49,6 +50,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Center(
                               child: Text(
                                 "Benutzer",
+                                textScaleFactor:
+                                    ScaleSize.textScaleFactor(context),
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
@@ -74,6 +77,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: Center(
                                 child: Text(
                                   "Dashboard",
+                                  textScaleFactor:
+                                      ScaleSize.textScaleFactor(context),
                                   style: TextStyle(color: mainButtonColor),
                                 ),
                               ),
@@ -95,6 +100,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: Center(
                                 child: Text(
                                   "Erinnerungen",
+                                  textScaleFactor:
+                                      ScaleSize.textScaleFactor(context),
                                   style: TextStyle(color: mainButtonColor),
                                 ),
                               ),
@@ -138,6 +145,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Text(
                     "BENUTZERPROFIL",
                     style: TextStyle(color: Color.fromARGB(255, 150, 159, 162)),
+                    textScaleFactor: ScaleSize.textScaleFactor(context),
                   ),
                   Divider(),
                   GestureDetector(
@@ -149,6 +157,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Text(
                           "Über mich",
                           style: profileMenuItemColor,
+                          textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
                         Spacer(),
                         Icon(
@@ -169,6 +178,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Text(
                           "Meine Diagnosen",
                           style: profileMenuItemColor,
+                          textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
                         Spacer(),
                         Icon(
@@ -189,6 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Text(
                           "Meine medizinischen Kontakte",
                           style: profileMenuItemColor,
+                          textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
                         Spacer(),
                         Icon(
@@ -206,6 +217,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Text(
                     "BENUTZERKONTO",
                     style: TextStyle(color: Color.fromARGB(255, 150, 159, 162)),
+                    textScaleFactor: ScaleSize.textScaleFactor(context),
                   ),
                   Divider(),
                   GestureDetector(
@@ -217,6 +229,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Text(
                           "Einwilligungen",
                           style: profileMenuItemColor,
+                          textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
                         Spacer(),
                         Icon(
@@ -237,6 +250,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Text(
                           "Auszug meiner Daten",
                           style: profileMenuItemColor,
+                          textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
                         Spacer(),
                         Icon(
@@ -254,6 +268,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Text(
                     "RECHTLICHES",
                     style: TextStyle(color: Color.fromARGB(255, 150, 159, 162)),
+                    textScaleFactor: ScaleSize.textScaleFactor(context),
                   ),
                   Divider(),
                   GestureDetector(
@@ -265,6 +280,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Text(
                           "Nutzungsbedingungen",
                           style: profileMenuItemColor,
+                          textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
                         Spacer(),
                         Icon(
@@ -285,6 +301,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Text(
                           "Datenschutzinformation",
                           style: profileMenuItemColor,
+                          textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
                         Spacer(),
                         Icon(
@@ -305,6 +322,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Text(
                           "Impressum",
                           style: profileMenuItemColor,
+                          textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
                         Spacer(),
                         Icon(
@@ -328,6 +346,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Text(
                           "Abmelden",
                           style: profileMenuItemColor,
+                          textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
                         Spacer(),
                         Icon(
@@ -345,7 +364,9 @@ class _ProfilePageState extends State<ProfilePage> {
               height: 20,
             ),
             const Center(
-              child: Text("Version 1.2.4"),
+              child: Text(
+                "Version 1.2.4",
+              ),
             ),
             SizedBox(
               height: 20,

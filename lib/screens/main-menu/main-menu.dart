@@ -5,11 +5,13 @@ import 'dart:ffi';
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../main.dart';
 import '../../model/patient-file.dart';
+import '../../model/scale-size.dart';
 import '../../model/search-menu.dart';
 import '../communication/calendar.dart';
 import '../shared/bottom-menu.dart';
@@ -20,6 +22,7 @@ import '../shared/shared.dart';
 import '../shared/sub-total.dart';
 import 'route_util.dart';
 import '../shared/customized_menu.dart'; // Import the customized_menu.dart file
+import 'package:responsive_grid/responsive_grid.dart';
 
 class MainMenuPage extends StatefulWidget {
   const MainMenuPage({Key? key}) : super(key: key);
@@ -258,7 +261,29 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   Timer? _debounce;
   Widget buildCustomizedMenuItemButtons(BuildContext context) {
-    return GridView.builder(
+    return ResponsiveGridRow(
+      children: [
+        for (var menuItem in _menuItems)
+          ResponsiveGridCol(
+            lg: 2,
+            xs: 6,
+            md: 3,
+            child: GestureDetector(
+              child: CustomSubTotal(
+                key: UniqueKey(), // UniqueKey for CustomSubTotal
+                menuItem.icon,
+                menuItem.displayName!,
+                null,
+                null,
+                10,
+              ),
+              onTap: () {
+                Navigator.of(context).pushNamed(menuItem.routerName!);
+              },
+            ),
+          ),
+      ],
+    ); /*GridView.builder(
       key: _refreshKey,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -284,7 +309,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
           },
         );
       },
-    );
+    );*/
   }
 
   @override
@@ -312,7 +337,17 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                         Text(
                           "Hallo ${title}!",
                           style: TextStyle(
-                              fontSize: 14,
+                              fontSize: ResponsiveValue(
+                                context,
+                                defaultValue: 12.0,
+                                conditionalValues: [
+                                  Condition.largerThan(
+                                    //Tablet
+                                    name: MOBILE,
+                                    value: 16.0,
+                                  ),
+                                ],
+                              ).value!,
                               color: Color.fromARGB(244, 115, 123, 126),
                               fontWeight: FontWeight.bold),
                         ),
@@ -428,8 +463,8 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -491,7 +526,18 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                               item.displayName,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
+                                  fontSize: ResponsiveValue(
+                                    context,
+                                    defaultValue: 15.0,
+                                    conditionalValues: [
+                                      Condition.largerThan(
+                                        //Tablet
+                                        name: MOBILE,
+                                        value: 30.0,
+                                      ),
+                                    ],
+                                  ).value!,
+                                  fontWeight: FontWeight.bold),
                             ),
                           )
                         ],

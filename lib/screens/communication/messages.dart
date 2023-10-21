@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../apis/apis.dart';
 import '../../colors/colors.dart';
 import '../../model/message-notification.dart';
+import '../../model/scale-size.dart';
 import '../../shared/shared.dart';
 import '../shared/bottom-menu.dart';
 
@@ -74,61 +75,65 @@ class _MessagesPageState extends State<MessagesPage> {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
       appBar: leadingSubpage('Mitteilungen', context),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(15),
-            child: isStarted
-                ? CircularProgressIndicator(
-                    color: mainButtonColor,
-                  )
-                : notificationList.isEmpty
-                    ? Center(child: Text("no data found"))
-                    : Column(
-                        children: [
-                          Text("Hier können Sie Ihre Mitteilungen einsehen."),
-                          TextFormField(
-                            obscureText: false,
-                            decoration: const InputDecoration(
-                              labelText: 'Suchen',
+      body: Container(
+        alignment: Alignment.center,
+        child: isStarted
+            ? CircularProgressIndicator(
+                color: mainButtonColor,
+              )
+            : notificationList.isEmpty
+                ? Center(child: Text("no data found"))
+                : AspectRatio(
+                    aspectRatio: 1,
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Column(
+                          children: [
+                            Text(
+                              "Hier können Sie Ihre Mitteilungen einsehen.",
+                              textScaleFactor:
+                                  ScaleSize.textScaleFactor(context),
+                              textAlign: TextAlign.center,
                             ),
-                          ),
-                          SizedBox(
-                            height: 40,
-                          ),
-                          Column(
-                            children: [
-                              for (var element in notificationList)
-                                GestureDetector(
-                                  child: CustomMessageListContainer(
-                                      Icons.info,
-                                      element.notificationTitle.length > 22
-                                          ? element.notificationTitle
-                                              .substring(0, 22)
-                                          : element.notificationTitle,
-                                      sh.formatDateTime(element.createdAt)),
-                                  onTap: () async {
-                                    if (element.notificationtype == 10) {
-                                      Navigator.pushNamed(
-                                          context, '/medical-plan-1',
-                                          arguments: element);
-                                    } else {
-                                      SharedPreferences pref =
-                                          await SharedPreferences.getInstance();
-                                      pref.setString("organization",
-                                          element.organization ?? "");
-                                      pref.setString(
-                                          "thread", element.thread ?? "");
-                                      Navigator.pushNamed(context, '/chat');
-                                    }
-                                  },
-                                ),
-                            ],
-                          ),
-                        ],
+                            SizedBox(
+                              height: 40,
+                            ),
+                            Column(
+                              children: [
+                                for (var element in notificationList)
+                                  GestureDetector(
+                                    child: CustomMessageListContainer(
+                                        Icons.info,
+                                        element.notificationTitle.length > 22
+                                            ? element.notificationTitle
+                                                .substring(0, 22)
+                                            : element.notificationTitle,
+                                        sh.formatDateTime(element.createdAt)),
+                                    onTap: () async {
+                                      if (element.notificationtype == 10) {
+                                        Navigator.pushNamed(
+                                            context, '/medical-plan-1',
+                                            arguments: element);
+                                      } else {
+                                        SharedPreferences pref =
+                                            await SharedPreferences
+                                                .getInstance();
+                                        pref.setString("organization",
+                                            element.organization ?? "");
+                                        pref.setString(
+                                            "thread", element.thread ?? "");
+                                        Navigator.pushNamed(context, '/chat');
+                                      }
+                                    },
+                                  ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-          ),
-        ),
+                    ),
+                  ),
       ),
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(

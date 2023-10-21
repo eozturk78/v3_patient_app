@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/toast.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../apis/apis.dart';
@@ -44,76 +45,90 @@ class _CommunicationPageState extends State<CommunicationPage> {
     return Scaffold(
       appBar: leadingWithoutBack('Nachrichten', context),
       body: SafeArea(
-          // Wrap your body with SafeArea
-          child: Center(
-              child: Padding(
-        padding: const EdgeInsets.all(40),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          verticalDirection: VerticalDirection.down,
-          children: [
-            Row(
-              children: [
-                GestureDetector(
-                  child: CustomSubTotal(
-                      SvgPicture.asset(
-                          'assets/images/menu-icons/mitteilungen-main.svg'),
-                      "Mitteilungen",
-                      null,
-                      null,
-                      10),
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/messages');
-                  },
-                ),
-                const Spacer(),
-                GestureDetector(
-                  child: CustomSubTotal(
-                      SvgPicture.asset(
-                          'assets/images/menu-icons/erinnerungen-main.svg'),
-                      "Erinnerungen",
-                      null,
-                      null,
-                      10),
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/notification-history');
-                  },
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                GestureDetector(
-                  child: CustomSubTotal(
-                      Icons.video_call, "Videosprechstunde", null, null, 20),
-                  onTap: () async {
-                    if (videoUrl != null) {
-                      await launch(videoUrl!);
-                    } else {
-                      showToast(
-                          "Derzeit ist kein Treffen verfügbar. Bitte versuchen Sie es noch einmal mit der Besprechungszeit!");
-                    }
-                  },
-                ),
-                const Spacer(),
-                GestureDetector(
-                  child: CustomSubTotal(Icons.calendar_month_outlined,
-                      "Kalender", null, null, 10),
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/calendar');
-                  },
-                ),
-              ],
-            ),
-            Row(
+        // Wrap your body with SafeArea
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [],
+              verticalDirection: VerticalDirection.down,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: ResponsiveGridRow(
+                    children: [
+                      ResponsiveGridCol(
+                        lg: 2,
+                        xs: 6,
+                        md: 3,
+                        child: GestureDetector(
+                          child: CustomSubTotal(
+                              SvgPicture.asset(
+                                  'assets/images/menu-icons/mitteilungen-main.svg'),
+                              "Mitteilungen",
+                              null,
+                              null,
+                              10),
+                          onTap: () {
+                            Navigator.of(context).pushNamed('/messages');
+                          },
+                        ),
+                      ),
+                      ResponsiveGridCol(
+                        lg: 2,
+                        xs: 6,
+                        md: 3,
+                        child: GestureDetector(
+                          child: CustomSubTotal(
+                              SvgPicture.asset(
+                                  'assets/images/menu-icons/erinnerungen-main.svg'),
+                              "Erinnerungen",
+                              null,
+                              null,
+                              10),
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed('/notification-history');
+                          },
+                        ),
+                      ),
+                      ResponsiveGridCol(
+                        lg: 2,
+                        xs: 6,
+                        md: 3,
+                        child: GestureDetector(
+                          child: CustomSubTotal(Icons.video_call,
+                              "Videosprechstunde", null, null, 20),
+                          onTap: () async {
+                            if (videoUrl != null) {
+                              await launch(videoUrl!);
+                            } else {
+                              showToast(
+                                  "Derzeit ist kein Treffen verfügbar. Bitte versuchen Sie es noch einmal mit der Besprechungszeit!");
+                            }
+                          },
+                        ),
+                      ),
+                      ResponsiveGridCol(
+                        lg: 2,
+                        xs: 6,
+                        md: 3,
+                        child: GestureDetector(
+                          child: CustomSubTotal(Icons.calendar_month_outlined,
+                              "Kalender", null, null, 10),
+                          onTap: () {
+                            Navigator.of(context).pushNamed('/calendar');
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ))), // This trailing comma makes auto-formatting nicer for build methods.
+      ), // This trailing comma makes auto-formatting nicer for build methods.
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
     );
   }

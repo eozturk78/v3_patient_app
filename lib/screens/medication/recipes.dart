@@ -32,6 +32,7 @@ class _RecipesPageState extends State<RecipesPage> {
     apis.getPatientRecipes().then((value) {
       setState(() {
         isStarted = false;
+        print(value);
         recipeList = (value as List).map((e) => Recipe.fromJson(e)).toList();
         if (recipeList != null && recipeList?.length != 0)
           recipeList![0].isExpanded = true;
@@ -72,7 +73,7 @@ class _RecipesPageState extends State<RecipesPage> {
                                         bool isExpanded) {
                                       return ListTile(
                                         title: Text(
-                                          item.recipeName,
+                                          item.recipeName ?? "",
                                           style: item.isExpanded
                                               ? TextStyle(
                                                   color: iconColor,
@@ -82,8 +83,10 @@ class _RecipesPageState extends State<RecipesPage> {
                                                       255, 75, 74, 74),
                                                   fontWeight: FontWeight.bold),
                                         ),
-                                        subtitle: Text(sh.formatDateTime(
-                                            item.createdAt.toString())),
+                                        subtitle: Text(item.createdAt != null
+                                            ? sh.formatDateTime(
+                                                item.createdAt.toString())
+                                            : ""),
                                       );
                                     },
                                     body: Column(
@@ -94,7 +97,7 @@ class _RecipesPageState extends State<RecipesPage> {
                                           subtitle: Column(
                                             children: [
                                               Text(
-                                                item.recipeDescription,
+                                                item.recipeDescription ?? "",
                                               ),
                                             ],
                                           ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:patient_app/colors/colors.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
+import 'package:responsive_framework/responsive_value.dart';
 
 class BottomNavigatorBar extends StatefulWidget {
   final int? selectedIndex;
@@ -69,9 +71,39 @@ class _CustomMenuButtonState extends State<BottomNavigatorBar> {
       unselectedItemColor: Colors.grey,
       currentIndex: _selectedIndex,
       selectedItemColor: mainButtonColor,
-      iconSize: 16,
-      selectedFontSize: 12,
-      unselectedFontSize: 12,
+      iconSize: ResponsiveValue(
+        context,
+        defaultValue: 16.0,
+        conditionalValues: [
+          Condition.largerThan(
+            //Tablet
+            name: MOBILE,
+            value: 20.0,
+          ),
+        ],
+      ).value!,
+      selectedFontSize: ResponsiveValue(
+        context,
+        defaultValue: 12.0,
+        conditionalValues: [
+          Condition.largerThan(
+            //Tablet
+            name: MOBILE,
+            value: 16.0,
+          ),
+        ],
+      ).value!,
+      unselectedFontSize: ResponsiveValue(
+        context,
+        defaultValue: 12.0,
+        conditionalValues: [
+          Condition.largerThan(
+            //Tablet
+            name: MOBILE,
+            value: 16.0,
+          ),
+        ],
+      ).value!,
       onTap: _onItemTapped,
     );
   }
@@ -83,13 +115,14 @@ class _CustomMenuButtonState extends State<BottomNavigatorBar> {
     return Stack(
       alignment: Alignment.center,
       children: [
-        Padding(padding: const EdgeInsets.only(bottom: 6),
-        child:
-        SvgPicture.asset(
-          assetName,
-          height: 20,
-          color: color, // Set the color based on selection
-        ),),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 6),
+          child: SvgPicture.asset(
+            assetName,
+            height: 20,
+            color: color, // Set the color based on selection
+          ),
+        ),
         if (isSelected)
           Positioned(
             bottom: 0,

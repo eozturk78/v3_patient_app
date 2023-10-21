@@ -1,10 +1,10 @@
 class Recipe {
-  final int recipeId;
-  final int patientId;
-  final String recipeName;
+  final int? recipeId;
+  final int? patientId;
+  final String? recipeName;
   final DateTime? createdAt;
-  final String recipeDescription;
-  final String qrCodeImage;
+  final String? recipeDescription;
+  final String? qrCodeImage;
   bool isExpanded;
 
   Recipe(

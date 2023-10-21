@@ -605,7 +605,7 @@ class Apis {
   Future getPatientRecipes() async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
-      String finalUrl = '$baseUrl/getsecretquestionlist';
+      String finalUrl = '$baseUrl/getpatientrecipes';
       var result = await http.get(Uri.parse(finalUrl), headers: {
         'Content-Type': 'application/text',
         'lang': lang,
@@ -720,7 +720,6 @@ class Apis {
   }
 
   getResponseFromApi(http.Response result) async {
-    print(result);
     if (result.headers['token'] != null) {
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setString('token', result.headers['token'].toString());
@@ -735,16 +734,19 @@ class Apis {
       }
     } else {
       body = jsonDecode(body);
-      showToast(AppLocalizations.tr(body['message']));
 
+      if (body['errors'] != null) {
+        var firstError = (body['errors'] as List).first;
+        print(firstError);
+        print(firstError['error']);
+        showToast(firstError['error']);
+        throw (firstError);
+      }
+      showToast(AppLocalizations.tr(body['message']));
       if (body['message'] == "Need to login again") {
         navigatorKey.currentState?.pushReplacementNamed("/login");
       }
 
-      if (body['errors'] != null) {
-        var firstError = (body['errors'] as List).first;
-        throw (firstError);
-      }
       throw Exception(body['message']);
     }
   }

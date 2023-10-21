@@ -69,6 +69,8 @@ import 'package:patient_app/screens/registration/registration-4.dart';
 import 'package:patient_app/screens/settings/settings.dart';
 import 'package:patient_app/screens/shared/customized_menu.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:responsive_framework/breakpoint.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../shared/shared.dart';
 import '../screens/main-menu/route_util.dart';
@@ -242,6 +244,14 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      builder: (context, child) => ResponsiveBreakpoints.builder(
+        child: child!,
+        breakpoints: [
+          const Breakpoint(start: 0, end: 767, name: MOBILE),
+          const Breakpoint(start: 768, end: 1024, name: TABLET),
+          const Breakpoint(start: 1025, end: double.infinity, name: DESKTOP),
+        ],
+      ),
       supportedLocales: [
         const Locale('de', 'DE'), // German
       ],
@@ -361,7 +371,6 @@ class _MyHomePageState extends State<MyHomePage> {
   redirectToInside() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     apis.patientrenewtoken().then((value) async {
-      print(value);
       pref.setString("token", value['token']);
       if (value['isRequiredSecretQuestion'])
         Navigator.of(context).pushNamedAndRemoveUntil(
@@ -388,28 +397,22 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  /*checkRedirection() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    if (pref.getBool('isAgreementRead') == true)
-      Navigator.of(context).pushReplacementNamed("/login");
-    else
-      Navigator.of(context).pushReplacementNamed("/agreements");
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
             Image.asset(
               "assets/images/logo-imedcom.png",
               width: 200,
               height: 100,
             ),
-          ])),
+          ],
+        ),
+      ),
     );
   }
 }

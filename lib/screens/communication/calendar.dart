@@ -32,16 +32,41 @@ class CalendarEvent {
       json['event_title'] as String,
       json['event_description'] as String,
       DateTime.parse(json['event_date'] as String),
-      eventTypeMap[json['event_type']] ?? EventType('Default', Colors.grey, SvgPicture.asset("assets/images/info.svg", height: 40,)),
+      eventTypeMap[json['event_type']] ??
+          EventType(
+              'Default',
+              Colors.grey,
+              SvgPicture.asset(
+                "assets/images/info.svg",
+                height: 40,
+              )),
     );
   }
 }
 
 // Map event titles to their corresponding EventType
 final Map<String, EventType> eventTypeMap = {
-  'Sprechstunde vor Ort': EventType('Sprechstunde vor Ort', Colors.pink, SvgPicture.asset("assets/images/calendar_sprech_vor_ort.svg", height: 40,)),
-  'Videosprechstunde': EventType('Videosprechstunde', Colors.lightBlueAccent, SvgPicture.asset("assets/images/calendar_video.svg", height: 40,)),
-  'Dokumente': EventType('Dokumente', Colors.orange, SvgPicture.asset("assets/images/calendar_dokumente.svg", height: 40,)),
+  'Sprechstunde vor Ort': EventType(
+      'Sprechstunde vor Ort',
+      Colors.pink,
+      SvgPicture.asset(
+        "assets/images/calendar_sprech_vor_ort.svg",
+        height: 40,
+      )),
+  'Videosprechstunde': EventType(
+      'Videosprechstunde',
+      Colors.lightBlueAccent,
+      SvgPicture.asset(
+        "assets/images/calendar_video.svg",
+        height: 40,
+      )),
+  'Dokumente': EventType(
+      'Dokumente',
+      Colors.orange,
+      SvgPicture.asset(
+        "assets/images/calendar_dokumente.svg",
+        height: 40,
+      )),
   // Add more mappings as needed for other event titles
 };
 
@@ -64,7 +89,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Future<void> _fetchPatientCalendarEventsFromBackend() async {
-
     //final apiUrl = '$apis.baseUrl/getPatientCalendarEvents';
     final response = await apis.getPatientCalendarEvents();
 
@@ -82,7 +106,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Future<void> _fetchPatientOnlineMeetingEventsFromBackend() async {
-
     //final apiUrl = '$apis.baseUrl/getPatientCalendarEvents';
     final response = await apis.getPatientOnlineMeetingEvents();
 
@@ -100,7 +123,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Future<void> _fetchPatientFileEventsFromBackend() async {
-
     //final apiUrl = '$apis.baseUrl/getPatientCalendarEvents';
     final response = await apis.getPatientFileEvents();
 
@@ -117,25 +139,30 @@ class _CalendarScreenState extends State<CalendarScreen> {
     }
   }
 
-  Map<DateTime, List<CalendarEvent>> _convertToCalendarEvents(List<Map<String, dynamic>> events) {
+  Map<DateTime, List<CalendarEvent>> _convertToCalendarEvents(
+      List<Map<String, dynamic>> events) {
     final calendarEvents = <DateTime, List<CalendarEvent>>{};
     for (var event in events) {
       final calendarEvent = CalendarEvent.fromJson(event);
-      final date = DateTime(calendarEvent.dateTime.year, calendarEvent.dateTime.month, calendarEvent.dateTime.day);
+      final date = DateTime(calendarEvent.dateTime.year,
+          calendarEvent.dateTime.month, calendarEvent.dateTime.day);
       calendarEvents[date] = calendarEvents[date] ?? [];
       calendarEvents[date]!.add(calendarEvent);
     }
     return calendarEvents;
   }
 
-  List<CalendarEvent> _getEventsForSelectedDay(DateTime selectedDay, Map<DateTime, List<CalendarEvent>> events) {
-    final eventsForSelectedDay = events[DateTime(selectedDay.year,selectedDay.month,selectedDay.day)] ?? [];
+  List<CalendarEvent> _getEventsForSelectedDay(
+      DateTime selectedDay, Map<DateTime, List<CalendarEvent>> events) {
+    final eventsForSelectedDay = events[
+            DateTime(selectedDay.year, selectedDay.month, selectedDay.day)] ??
+        [];
     //print(eventsForSelectedDay);
     return eventsForSelectedDay;
-
   }
 
-  Map<DateTime, List<EventType>> _getEventMarkers(Map<DateTime, List<CalendarEvent>> events) {
+  Map<DateTime, List<EventType>> _getEventMarkers(
+      Map<DateTime, List<CalendarEvent>> events) {
     final eventMarkers = <DateTime, List<EventType>>{};
     events.forEach((day, events) {
       final eventTypeList = events.map((event) => event.eventType).toList();
@@ -145,34 +172,35 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return eventMarkers;
   }
 
-
   @override
   Widget build(BuildContext context) {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
       appBar: leadingSubpage('Kalender', context),
-      body: Column(
-        children: [
-          Padding(padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
-            child:
-            Container(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding:
+                  EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+              child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(18),
                     color: Colors.white),
-                child:
-                Column(
+                child: Column(
                   children: [
                     TableCalendar(
                       calendarStyle: CalendarStyle(
                         // Other style properties...
-                        defaultTextStyle: TextStyle(
-                            fontWeight: FontWeight.w600
-                        ),
+                        defaultTextStyle:
+                            TextStyle(fontWeight: FontWeight.w600),
                       ),
                       firstDay: DateTime.now().subtract(Duration(days: 365)),
                       lastDay: DateTime.now().add(Duration(days: 365)),
                       locale: 'DE',
-                      availableCalendarFormats: const {CalendarFormat.month : 'Monat',},
+                      availableCalendarFormats: const {
+                        CalendarFormat.month: 'Monat',
+                      },
                       pageJumpingEnabled: true,
                       startingDayOfWeek: StartingDayOfWeek.monday,
                       focusedDay: _selectedDay,
@@ -198,14 +226,17 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             margin: const EdgeInsets.all(2.0),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 162, 28, 52), // Filled indicator color for today
-                              borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                              color: Color.fromARGB(255, 162, 28,
+                                  52), // Filled indicator color for today
+                              borderRadius: BorderRadius.circular(
+                                  10.0), // Rounded corners
                             ),
                             child: Text(
                               date.day.toString(),
                               style: TextStyle(
                                 color: Colors.white, // Text color
-                                fontWeight: FontWeight.bold, // Optional: Add bold text style
+                                fontWeight: FontWeight
+                                    .bold, // Optional: Add bold text style
                               ),
                             ),
                           );
@@ -216,16 +247,19 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               border: Border.all(
-                                color: Color.fromARGB(255, 162, 28, 52), // Border color
+                                color: Color.fromARGB(
+                                    255, 162, 28, 52), // Border color
                                 width: 1.0, // Border width
                               ),
-                              borderRadius: BorderRadius.circular(12.0), // Adjust border radius for rounded corners
+                              borderRadius: BorderRadius.circular(
+                                  12.0), // Adjust border radius for rounded corners
                             ),
                             child: Text(
                               date.day.toString(),
                               style: TextStyle(
                                 color: Colors.black, // Text color
-                                fontWeight: FontWeight.w900, // Optional: Add bold text style
+                                fontWeight: FontWeight
+                                    .w900, // Optional: Add bold text style
                               ),
                             ),
                           );
@@ -234,22 +268,23 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     ),
                     Legend(_getEventTypes()),
                   ],
-                )
+                ),
+              ),
             ),
-          ),
-          Expanded(
-            child: EventList(
+            EventList(
               selectedDay: _selectedDay,
               events: _getEventsForSelectedDay(_selectedDay, _events),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildMarkers(BuildContext context, DateTime date, List<dynamic> events) {
-    final eventMarkers = _getEventMarkers(_events)[DateTime(date.year, date.month, date.day)];
+  Widget _buildMarkers(
+      BuildContext context, DateTime date, List<dynamic> events) {
+    final eventMarkers =
+        _getEventMarkers(_events)[DateTime(date.year, date.month, date.day)];
     if (eventMarkers != null && eventMarkers.isNotEmpty) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -257,15 +292,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
         children: eventMarkers
             .map((eventType) => _buildMarkerIndicator(eventType))
             .map((marker) => Transform.translate(
-          offset: Offset(0, -8.6), // Move the event marker points higher
-          child: marker,
-        ))
+                  offset:
+                      Offset(0, -8.6), // Move the event marker points higher
+                  child: marker,
+                ))
             .toList(),
       );
     }
     return SizedBox.shrink();
   }
-
 
   Widget _buildMarkerIndicator(EventType eventType) {
     return Container(
@@ -280,9 +315,27 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   List<EventType> _getEventTypes() {
     return [
-      EventType('Sprechstunde vor Ort', Colors.pink, SvgPicture.asset("assets/images/calendar_sprech_vor_ort.svg", height: 40,)),
-      EventType('Videosprechstunde', Colors.lightBlueAccent, SvgPicture.asset("assets/images/calendar_video.svg", height: 40,)),
-      EventType('Dokumente', Colors.orange, SvgPicture.asset("assets/images/calendar_dokumente.svg", height: 40,)),
+      EventType(
+          'Sprechstunde vor Ort',
+          Colors.pink,
+          SvgPicture.asset(
+            "assets/images/calendar_sprech_vor_ort.svg",
+            height: 40,
+          )),
+      EventType(
+          'Videosprechstunde',
+          Colors.lightBlueAccent,
+          SvgPicture.asset(
+            "assets/images/calendar_video.svg",
+            height: 40,
+          )),
+      EventType(
+          'Dokumente',
+          Colors.orange,
+          SvgPicture.asset(
+            "assets/images/calendar_dokumente.svg",
+            height: 40,
+          )),
     ];
   }
 }
@@ -300,19 +353,22 @@ class Legend extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: eventTypes
             .map((eventType) => Row(
-          children: [
-            ClipOval(
-              child: Container(
-                width: 10,
-                height: 10,
-                color: eventType.color,
-              ),
-            ),
-            SizedBox(width: 2),
-            Text(eventType.title, style: TextStyle(fontSize: 11),
-            ),SizedBox(width: 2),
-          ],
-        ))
+                  children: [
+                    ClipOval(
+                      child: Container(
+                        width: 10,
+                        height: 10,
+                        color: eventType.color,
+                      ),
+                    ),
+                    SizedBox(width: 2),
+                    Text(
+                      eventType.title,
+                      style: TextStyle(fontSize: 11),
+                    ),
+                    SizedBox(width: 2),
+                  ],
+                ))
             .toList(),
       ),
     );
@@ -336,11 +392,12 @@ class EventList extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'Veranstaltungen am ${selectedDay.day.toString().padLeft(2,"0")}.${selectedDay.month.toString().padLeft(2,"0")}.${selectedDay.year}',
+              'Veranstaltungen am ${selectedDay.day.toString().padLeft(2, "0")}.${selectedDay.month.toString().padLeft(2, "0")}.${selectedDay.year}',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
-          if (events.isNotEmpty) ...events.map((event) => EventListItem(event)).toList(),
+          if (events.isNotEmpty)
+            ...events.map((event) => EventListItem(event)).toList(),
         ],
       ),
     );
@@ -362,9 +419,9 @@ class _EventListItemState extends State<EventListItem> {
   void _copyDescriptionToClipboard() {
     Clipboard.setData(ClipboardData(text: widget.event.description))
         .then((value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Description copied to clipboard!'),
-      duration: Duration(seconds: 2),
-    )));
+              content: Text('Description copied to clipboard!'),
+              duration: Duration(seconds: 2),
+            )));
   }
 
   @override
@@ -382,8 +439,7 @@ class _EventListItemState extends State<EventListItem> {
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
               bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10)
-          ),
+              bottomRight: Radius.circular(10)),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
@@ -404,25 +460,29 @@ class _EventListItemState extends State<EventListItem> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 widget.event.eventType.icon,
-                SizedBox(width: 10.0,),
-                Expanded(child:
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.event.eventType.title, style: TextStyle(color: Colors.grey),
-                    ),
-                    Text(
-                      widget.event.title,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      '${widget.event.dateTime.hour.toString().padLeft(2,"0")}:${widget.event.dateTime.minute.toString().padLeft(2,"0") + " Uhr"}',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ],
+                SizedBox(
+                  width: 10.0,
                 ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.event.eventType.title,
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      Text(
+                        widget.event.title,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '${widget.event.dateTime.hour.toString().padLeft(2, "0")}:${widget.event.dateTime.minute.toString().padLeft(2, "0") + " Uhr"}',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

@@ -8,6 +8,8 @@ import 'package:patient_app/model/questionnaire-group.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
+import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -70,64 +72,99 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
 
     return Scaffold(
       appBar: leadingSubpage('Tägliche Messungen', context),
-      body: isStarted
-          ? Center(
-              child: CircularProgressIndicator(
-                color: mainButtonColor,
-              ),
-            )
-          : questionnaireGroups.isEmpty
-              ? Center(child: Text("no data found"))
-              : Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                  width: double.infinity,
-                  padding: EdgeInsets.all(20),
-                  margin: EdgeInsets.only(left: 20, right: 20, top: 30),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      verticalDirection: VerticalDirection.down,
-                      children: [
-                        SizedBox(
-                          height: 15,
-                        ),
-                        for (var item in questionnaireGroups)
-                          Column(
+      body: Center(
+          child: SingleChildScrollView(
+        child: Container(
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width *
+                ResponsiveValue(
+                  context,
+                  defaultValue: 1,
+                  conditionalValues: [
+                    Condition.largerThan(
+                      //Tablet
+                      name: MOBILE,
+                      value: 0.7,
+                    ),
+                  ],
+                ).value!,
+            child: isStarted
+                ? Center(
+                    child: CircularProgressIndicator(
+                      color: mainButtonColor,
+                    ),
+                  )
+                : questionnaireGroups.isEmpty
+                    ? Center(child: Text("no data found"))
+                    : Center(
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          width: double.infinity,
+                          padding: EdgeInsets.all(20),
+                          margin: EdgeInsets.only(left: 20, right: 20, top: 30),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            verticalDirection: VerticalDirection.down,
                             children: [
-                              GestureDetector(
-                                onTap: () async {
-                                  SharedPreferences pref =
-                                      await SharedPreferences.getInstance();
-                                  pref.setString(
-                                      'questionnaireId', item.questionnaireId);
-                                  pref.setString(
-                                      'questionnaireName', item.name);
-                                  Navigator.of(context)
-                                      .pushNamed('/questionnaire-result');
-                                },
-                                child: Row(
+                              SizedBox(
+                                height: 15,
+                              ),
+                              for (var item in questionnaireGroups)
+                                Column(
                                   children: [
-                                    Text(item.nameShownToPatient ?? item.name),
-                                    Spacer(),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: mainButtonColor,
-                                      size: 20,
+                                    GestureDetector(
+                                      onTap: () async {
+                                        SharedPreferences pref =
+                                            await SharedPreferences
+                                                .getInstance();
+                                        pref.setString('questionnaireId',
+                                            item.questionnaireId);
+                                        pref.setString(
+                                            'questionnaireName', item.name);
+                                        Navigator.of(context)
+                                            .pushNamed('/questionnaire-result');
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            item.nameShownToPatient ??
+                                                item.name,
+                                            style: TextStyle(
+                                                fontSize: ResponsiveValue(
+                                              context,
+                                              defaultValue: 12.0,
+                                              conditionalValues: [
+                                                Condition.largerThan(
+                                                  //Tablet
+                                                  name: MOBILE,
+                                                  value: 20.0,
+                                                ),
+                                              ],
+                                            ).value!),
+                                          ),
+                                          Spacer(),
+                                          Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: mainButtonColor,
+                                            size: 20,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Divider(
+                                      height: 40,
                                     )
                                   ],
-                                ),
-                              ),
-                              Divider(
-                                height: 40,
-                              )
+                                )
                             ],
-                          )
-                      ],
-                    ),
-                  ),
-                ),
+                          ),
+                        ),
+                      )),
+      )),
     );
   }
 }

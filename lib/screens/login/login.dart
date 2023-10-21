@@ -9,6 +9,8 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/toast.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
+import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:local_auth/local_auth.dart';
 
@@ -213,7 +215,7 @@ class _LoginPageState extends State<LoginPage> {
   onLogin() async {
     bool result = await InternetConnectionChecker().hasConnection;
     print(result);
-    if (result == true) {
+    if (result == false) {
       //print('Has internet connection!');
 
       SharedPreferences pref = await SharedPreferences.getInstance();
@@ -310,144 +312,164 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(20),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Image.asset(
-                        "assets/images/logo-imedcom.png",
-                        width: 200,
-                        height: 100,
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      TextFormField(
-                        controller: userNameController,
-                        obscureText: false,
-                        decoration: const InputDecoration(
-                          labelText: 'Benutzername',
+      body: Center(
+        child: Container(
+          alignment: Alignment.center,
+          width: MediaQuery.of(context).size.width *
+              ResponsiveValue(
+                context,
+                defaultValue: 1,
+                conditionalValues: [
+                  Condition.largerThan(
+                    //Tablet
+                    name: MOBILE,
+                    value: 0.5,
+                  ),
+                ],
+              ).value!,
+          child: SingleChildScrollView(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          height: 5,
                         ),
-                        validator: (text) => sh.textValidator(text),
-                      ),
-                      TextFormField(
-                        controller: passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Passwort',
+                        Image.asset(
+                          "assets/images/logo-imedcom.png",
+                          width: 200,
+                          height: 100,
                         ),
-                        validator: (text) => sh.textValidator(text),
-                      ),
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                rememberMeState = !rememberMeState;
-                              });
-                            },
-                            child: Row(
-                              children: [
-                                Checkbox(
-                                  fillColor:
-                                      MaterialStateProperty.resolveWith<Color>(
-                                    (Set<MaterialState> states) {
-                                      if (states
-                                          .contains(MaterialState.selected)) {
-                                        return mainButtonColor; // Set to your login button color
-                                      }
-                                      return Colors
-                                          .white70; // Change to your desired unselected color
-                                    },
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        TextFormField(
+                          controller: userNameController,
+                          obscureText: false,
+                          decoration: const InputDecoration(
+                            labelText: 'Benutzername',
+                          ),
+                          validator: (text) => sh.textValidator(text),
+                        ),
+                        TextFormField(
+                          controller: passwordController,
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            labelText: 'Passwort',
+                          ),
+                          validator: (text) => sh.textValidator(text),
+                        ),
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  rememberMeState = !rememberMeState;
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  Checkbox(
+                                    fillColor: MaterialStateProperty
+                                        .resolveWith<Color>(
+                                      (Set<MaterialState> states) {
+                                        if (states
+                                            .contains(MaterialState.selected)) {
+                                          return mainButtonColor; // Set to your login button color
+                                        }
+                                        return Colors
+                                            .white70; // Change to your desired unselected color
+                                      },
+                                    ),
+                                    value: rememberMeState,
+                                    onChanged: ((value) => setState(() {
+                                          rememberMeState = !rememberMeState;
+                                        })),
                                   ),
-                                  value: rememberMeState,
-                                  onChanged: ((value) => setState(() {
-                                        rememberMeState = !rememberMeState;
-                                      })),
+                                  Text("Anmeldedaten speichern"),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size.fromHeight(40),
+                            primary: mainButtonColor,
+                          ),
+                          onPressed: () async {
+                            final isValid = _formKey.currentState?.validate();
+                            if (!isValid! || isSendEP) return;
+                            onLogin();
+                          },
+                          child: !isSendEP
+                              ? const Text("Anmelden")
+                              : Transform.scale(
+                                  scale: 0.5,
+                                  child: const CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  )),
+                        ),
+                        if (_availableBiometrics != null &&
+                            _availableBiometrics!.isNotEmpty)
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: const StadiumBorder(),
+                              backgroundColor: Colors.white,
+                              minimumSize: const Size.fromHeight(30),
+                              primary: mainButtonColor,
+                            ),
+                            onPressed: _authenticateWithBiometrics,
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Text(
+                                  "Anmelden mit Touch ID / Face ID",
+                                  style: TextStyle(color: mainButtonColor),
                                 ),
-                                Text("Anmeldedaten speichern"),
+                                Icon(
+                                  Icons.fingerprint,
+                                  color: mainButtonColor,
+                                ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(40),
-                          primary: mainButtonColor,
-                        ),
-                        onPressed: () async {
-                          final isValid = _formKey.currentState?.validate();
-                          if (!isValid! || isSendEP) return;
-                          onLogin();
-                        },
-                        child: !isSendEP
-                            ? const Text("Anmelden")
-                            : Transform.scale(
-                                scale: 0.5,
-                                child: const CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white,
-                                )),
-                      ),
-                      if (_availableBiometrics != null &&
-                          _availableBiometrics!.isNotEmpty)
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: const StadiumBorder(),
-                            backgroundColor: Colors.white,
-                            minimumSize: const Size.fromHeight(30),
-                            primary: mainButtonColor,
-                          ),
-                          onPressed: _authenticateWithBiometrics,
-                          child: const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
+                        if (proceedLoginWithTouchId)
+                          const Column(
+                            children: [
                               Text(
-                                "Anmelden mit Touch ID / Face ID",
-                                style: TextStyle(color: mainButtonColor),
-                              ),
-                              Icon(
-                                Icons.fingerprint,
-                                color: mainButtonColor,
-                              ),
+                                  "Bitte melden Sie sich zum ersten Mal an, um die Touch-ID/Face-ID-Anmeldung zu aktivieren")
                             ],
                           ),
-                        ),
-                      if (proceedLoginWithTouchId)
-                        const Column(
-                          children: [
-                            Text(
-                                "Bitte melden Sie sich zum ersten Mal an, um die Touch-ID/Face-ID-Anmeldung zu aktivieren")
-                          ],
-                        ),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pushNamed("/forgot-password");
-                          },
-                          child: Text('Ich habe mein Passwort vergessen'))
-                    ],
+                        TextButton(
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushNamed("/forgot-password");
+                            },
+                            child: Text('Ich habe mein Passwort vergessen'))
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            //SharedPreferences glopref =  SharedPreferences.getInstance()
-          ]),
+              //SharedPreferences glopref =  SharedPreferences.getInstance()
+            ],
+          )),
+        ),
+      ),
     );
   }
 }

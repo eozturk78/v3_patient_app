@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
+import 'package:responsive_framework/responsive_value.dart';
 
 import '../../colors/colors.dart';
+import '../../model/scale-size.dart';
 import '../../shared/shared.dart';
 import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'dart:convert';
@@ -11,17 +14,16 @@ import 'dart:convert';
 class SvgIconData extends IconData {
   const SvgIconData(String assetName, {Key? key})
       : super(
-    0xe000, // This is a custom code point, we can use any unused one.
-    fontFamily: 'SvgIcons',
-    fontPackage: 'iMedComSvgIcons', // package name
-    matchTextDirection: true,
-  );
+          0xe000, // This is a custom code point, we can use any unused one.
+          fontFamily: 'SvgIcons',
+          fontPackage: 'iMedComSvgIcons', // package name
+          matchTextDirection: true,
+        );
 
   static IconData fromAsset(String assetName) {
     return SvgIconData(assetName);
   }
 }
-
 
 String formatDate(String inputDate) {
   DateTime date = DateTime.parse(
@@ -259,7 +261,19 @@ leadingSubpage(String title, BuildContext context) {
           Icon(Icons.arrow_back_ios, color: mainButtonColor),
           Text(
             "Zurück",
-            style: TextStyle(color: mainButtonColor),
+            style: TextStyle(
+                color: mainButtonColor,
+                fontSize: ResponsiveValue(
+                  context,
+                  defaultValue: 10.0,
+                  conditionalValues: [
+                    Condition.largerThan(
+                      //Tablet
+                      name: MOBILE,
+                      value: 16.0,
+                    ),
+                  ],
+                ).value!),
           )
         ],
       ),
@@ -267,7 +281,20 @@ leadingSubpage(String title, BuildContext context) {
     leadingWidth: 100,
     title: Text(
       title,
-      style: TextStyle(color: Color.fromARGB(255, 69, 81, 84), fontSize: 16),
+      style: TextStyle(
+          color: Color.fromARGB(255, 69, 81, 84),
+          fontSize: ResponsiveValue(
+            context,
+            defaultValue: 16.0,
+            conditionalValues: [
+              Condition.largerThan(
+                //Tablet
+                name: MOBILE,
+                value: 25.0,
+              ),
+            ],
+          ).value!),
+      textScaleFactor: ScaleSize.textScaleFactor(context),
     ),
     shadowColor: null,
     elevation: 0.0,

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../shared/bottom-menu.dart';
@@ -44,25 +45,42 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           verticalDirection: VerticalDirection.down,
           children: [
-            Row(
+            ResponsiveGridRow(
               children: [
-                const Spacer(),
-                GestureDetector(
-                  child: CustomSubTotal(SvgPicture.asset('assets/images/menu-icons/tagliche-main.svg'),
-                      "Tägliche Messungen", null, null, 10),
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/questionnaire-group');
-                  },
+                ResponsiveGridCol(
+                  lg: 2,
+                  xs: 6,
+                  md: 4,
+                  child: GestureDetector(
+                    child: CustomSubTotal(
+                        SvgPicture.asset(
+                            'assets/images/menu-icons/tagliche-main.svg'),
+                        "Tägliche Messungen",
+                        null,
+                        null,
+                        10),
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/questionnaire-group');
+                    },
+                  ),
                 ),
-                const Spacer(),
-                GestureDetector(
-                  child: CustomSubTotal(SvgPicture.asset('assets/images/menu-icons/graphische-main.svg'),
-                      "Grafische Darstellungen", null, null, 20),
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/home');
-                  },
+                ResponsiveGridCol(
+                  lg: 2,
+                  xs: 6,
+                  md: 4,
+                  child: GestureDetector(
+                    child: CustomSubTotal(
+                        SvgPicture.asset(
+                            'assets/images/menu-icons/graphische-main.svg'),
+                        "Grafische Darstellungen",
+                        null,
+                        null,
+                        20),
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/home');
+                    },
+                  ),
                 ),
-                const Spacer(),
               ],
             ),
           ],

@@ -71,6 +71,8 @@ dependencies:
   intl_phone_number_input: any
   internet_connection_checker: ^1.0.0+1
   flutter_svg: any
+  responsive_grid: ^2.4.4
+  responsive_framework: ^1.1.1
 
 dev_dependencies:
   flutter_launcher_icons: "^0.13.1"

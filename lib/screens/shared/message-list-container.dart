@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
 
+import '../../model/scale-size.dart';
+
 class CustomMessageListContainer extends StatelessWidget {
   final IconData? iconData;
   final String headText;
@@ -38,13 +40,16 @@ class CustomMessageListContainer extends StatelessWidget {
               Text(
                 headText,
                 overflow: TextOverflow.ellipsis,
+                textScaleFactor: ScaleSize.textScaleFactor(context),
+                textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ],
           ),
           Text(
             dateTime,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.normal),
+            textScaleFactor: ScaleSize.textScaleFactor(context),
           ),
         ],
       ),

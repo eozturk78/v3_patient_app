@@ -110,7 +110,8 @@ class _TemporaryPasswordPageState extends State<TemporaryPasswordPage> {
                     const SizedBox(
                       height: 5,
                     ),
-                    Text("Do you want to  continue reset your password?"),
+                    Text(
+                        "Möchten Sie fortfahren, Ihr Passwort zurückzusetzen?"),
                     const SizedBox(
                       height: 5,
                     ),
@@ -122,7 +123,7 @@ class _TemporaryPasswordPageState extends State<TemporaryPasswordPage> {
                           onPressed: () {
                             onResetPassword();
                           },
-                          child: Text('Yes'),
+                          child: Text('Ja'),
                           style: ElevatedButton.styleFrom(
                             primary: mainButtonColor,
                           ),
@@ -131,8 +132,11 @@ class _TemporaryPasswordPageState extends State<TemporaryPasswordPage> {
                           width: 5,
                         ),
                         ElevatedButton(
-                          onPressed: () {},
-                          child: Text('No'),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushReplacementNamed('/login');
+                          },
+                          child: Text('Nein'),
                           style: ElevatedButton.styleFrom(
                             primary: mainItemColor,
                           ),
