@@ -40,7 +40,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: leadingWithoutProfile("Passwort vergessen", context),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

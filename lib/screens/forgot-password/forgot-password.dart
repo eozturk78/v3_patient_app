@@ -37,9 +37,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     setState(() {
       isSendEP = true;
     });
-    var userName = pref.getString("userName");
+    var userName = userNameController.text; //pref.getString("userName");
     apis.getSecretQuestion(userName!).then(
       (resp) {
+        print(resp);
         if (resp != null) {
           setState(() {
             isSendEP = false;
@@ -63,7 +64,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: leadingWithoutProfile("Passwort vergessen", context),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

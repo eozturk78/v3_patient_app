@@ -117,8 +117,10 @@ class _AboutMeState extends State<AboutMe> {
                                       SizedBox(
                                         width: 15,
                                       ),
-                                      Text(formatDate(
-                                          aboutPatient['dateOfBirth']))
+                                      Text(aboutPatient['dateOfBirth'] != null
+                                          ? formatDate(
+                                              aboutPatient['dateOfBirth'])
+                                          : "")
                                     ],
                                   ),
                                   SizedBox(

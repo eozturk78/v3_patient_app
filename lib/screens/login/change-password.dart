@@ -75,7 +75,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           });
           pref.setString("patientTitle", resp['firstName']);
           pref.setString('token', resp['token']);
-          Navigator.of(context).pushReplacementNamed("/main-menu");
+
+          if (resp['isRequiredSecretQuestion'])
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                "/main-menu", ModalRoute.withName('/main-menu'));
+          else
+            Navigator.of(context).pushNamed("/secret-question");
         }
       },
       onError: (err) {
@@ -92,7 +97,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: leadingWithoutProfile("Passwort ändern", context),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

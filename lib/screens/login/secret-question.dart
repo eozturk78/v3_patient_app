@@ -102,15 +102,15 @@ class _SecretQuestionPageState extends State<SecretQuestionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: leadingWithoutProfile("Geheime Frage / Antwort", context),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-            padding: EdgeInsets.all(20),
-            child: SingleChildScrollView(
+          SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(20),
               child: Form(
                 key: _formKey,
                 child: Column(

@@ -30,6 +30,7 @@ class Apis {
       'password': password.toString(),
       'deviceToken': deviceToken
     };
+    print(params);
     //TODO: try-catch
     var result = await http.post(Uri.parse(finalUrl),
         body: jsonEncode(params),
@@ -560,6 +561,7 @@ class Apis {
 
   Future getSecretQuestion(String userName) async {
     String finalUrl = '$baseUrl/getsecretquestion?username=$userName';
+    print(finalUrl);
     var result =
         await http.get(Uri.parse(finalUrl), headers: {'lang': lang}); /**/
     return getResponseFromApi(result);
@@ -725,6 +727,7 @@ class Apis {
       pref.setString('token', result.headers['token'].toString());
     }
     var body = jsonDecode(result.body);
+    print(body);
     if (result.statusCode == 200 || result.statusCode == 201) {
       try {
         return body;
@@ -735,14 +738,11 @@ class Apis {
     } else {
       body = jsonDecode(body);
 
+      showToast(AppLocalizations.tr(body['message']));
       if (body['errors'] != null) {
         var firstError = (body['errors'] as List).first;
-        print(firstError);
-        print(firstError['error']);
-        showToast(firstError['error']);
         throw (firstError);
       }
-      showToast(AppLocalizations.tr(body['message']));
       if (body['message'] == "Need to login again") {
         navigatorKey.currentState?.pushReplacementNamed("/login");
       }

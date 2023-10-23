@@ -384,6 +384,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   checkRedirection() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.remove("token");
     var isAgreementRead = Timer(
       Duration(seconds: 3),
       (() {

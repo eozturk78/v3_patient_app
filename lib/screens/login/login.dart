@@ -13,7 +13,6 @@ import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:local_auth/local_auth.dart';
-
 import '../../apis/apis.dart';
 import '../../shared/shared.dart';
 
@@ -213,9 +212,15 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   onLogin() async {
-    bool result = await InternetConnectionChecker().hasConnection;
-    print(result);
-    if (result == false) {
+    setState(() {
+      isSendEP = true;
+    });
+    bool isConnected = false;
+    final result = await InternetAddress.lookup('imedcom.de');
+    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+      isConnected = true;
+    }
+    if (isConnected) {
       //print('Has internet connection!');
 
       SharedPreferences pref = await SharedPreferences.getInstance();
@@ -229,9 +234,6 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         pref.remove("rememberMe");
       }
-      setState(() {
-        isSendEP = true;
-      });
 
       await apis
           .login(userNameController.text, passwordController.text, deviceToken)
@@ -262,6 +264,9 @@ class _LoginPageState extends State<LoginPage> {
         }
       });
     } else {
+      setState(() {
+        isSendEP = false;
+      });
       //showToast("No internet connection!");
       //return AlertDialog(title: Text("Error"), content: Text("No internet connection!"),);
       if (context.mounted) {
@@ -311,7 +316,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Center(
         child: Container(
           alignment: Alignment.center,

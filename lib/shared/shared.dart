@@ -288,8 +288,8 @@ class Shared {
   }
 
   redirectPatient(error, context) {
-    // print(error);
-    var errorStatus = error['error'];
+    print(error);
+    var errorStatus = error['error'] ?? "";
     // TODO: HANDLE FOLLOWING ERROR
     //  [ERROR:flutter/runtime/dart_vm_initializer.cc(41)] Unhandled Exception: NoSuchMethodError: Class '_ClientSocketException' has no instance method '[]'.
     // E/flutter (21469): Receiver: Instance of '_ClientSocketException'
