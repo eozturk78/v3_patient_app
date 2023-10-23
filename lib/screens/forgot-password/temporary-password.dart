@@ -49,7 +49,9 @@ class _TemporaryPasswordPageState extends State<TemporaryPasswordPage> {
   onResetPassword() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var userName = pref.getString('userName')!;
-
+    setState(() {
+      isSendEP = true;
+    });
     apis.resetPassword(userName).then(
       (resp) async {
         print(resp['temporaryPassword']);
@@ -123,7 +125,15 @@ class _TemporaryPasswordPageState extends State<TemporaryPasswordPage> {
                           onPressed: () {
                             onResetPassword();
                           },
-                          child: Text('Ja'),
+                          child: !isSendEP
+                              ? const Text("Ja")
+                              : Transform.scale(
+                                  scale: 0.5,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                ),
                           style: ElevatedButton.styleFrom(
                             primary: mainButtonColor,
                           ),

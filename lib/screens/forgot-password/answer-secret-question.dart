@@ -10,6 +10,7 @@ import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../apis/apis.dart';
 import '../../shared/shared.dart';
@@ -27,7 +28,10 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
   Shared sh = Shared();
   bool isSendEP = false;
   String? question;
+  String? supportPhoneNumber;
+  String? supportEmail;
   final _formKey = GlobalKey<FormState>();
+  int fpType = 100; // 10 with secret question 20 with contact
   @override
   void initState() {
     onGetQuestion();
@@ -37,8 +41,38 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
   onGetQuestion() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
-      question = pref.getString('question')!;
+      question = pref.getString('question') ?? null;
+      supportPhoneNumber = pref.getString('supportPhoneNumber') ?? null;
+      supportEmail = pref.getString('supportEmail') ?? null;
+      setState(() {
+        if (question != null)
+          fpType = 10;
+        else if (supportEmail != null) fpType = 20;
+      });
     });
+  }
+
+  bool isEmailSent = false;
+  resetPasswordRequestEmail() {
+    setState(() {
+      isSendEP = true;
+    });
+    apis.resetPasswordRequestEmail().then(
+      (resp) {
+        setState(() {
+          isEmailSent = true;
+          isSendEP = false;
+        });
+      },
+      onError: (err) {
+        sh.redirectPatient(err, context);
+        setState(
+          () {
+            isSendEP = false;
+          },
+        );
+      },
+    );
   }
 
   onCheckAnswer() async {
@@ -67,7 +101,7 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: leadingWithoutProfile("Passwort vergessen", context),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -82,47 +116,153 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (question != null &&
+                            (supportEmail != null ||
+                                supportPhoneNumber != null))
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.38,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: fpType == 10
+                                      ? mainButtonColor
+                                      : mainItemColor,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    fpType = 10;
+                                  });
+                                },
+                                child: Text("Security Question")),
+                          ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        if ((supportEmail != null ||
+                                supportPhoneNumber != null) &&
+                            (question != null))
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.38,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: fpType == 20
+                                      ? mainButtonColor
+                                      : mainItemColor,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    fpType = 20;
+                                  });
+                                },
+                                child: Text("Contact to klinik")),
+                          ),
+                      ],
+                    ),
                     const SizedBox(
                       height: 5,
                     ),
-                    Text(
-                      question!,
-                      style: labelText,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    TextFormField(
-                      controller: answerController,
-                      obscureText: false,
-                      decoration: const InputDecoration(
-                        labelText: 'Antwort',
-                      ),
-                      validator: (text) => sh.textValidator(text),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(30),
-                        primary: mainButtonColor,
-                      ),
-                      onPressed: () async {
-                        final isValid = _formKey.currentState?.validate();
-                        if (!isValid! || isSendEP) return;
-                        onCheckAnswer();
-                      },
-                      child: !isSendEP
-                          ? const Text("Send")
-                          : Transform.scale(
-                              scale: 0.5,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Colors.white,
-                              ),
+                    if (fpType == 10)
+                      Column(
+                        children: [
+                          Text(
+                            question!,
+                            style: labelText,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          TextFormField(
+                            controller: answerController,
+                            obscureText: false,
+                            decoration: const InputDecoration(
+                              labelText: 'Antwort',
                             ),
-                    )
+                            validator: (text) => sh.textValidator(text),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size.fromHeight(30),
+                              primary: mainButtonColor,
+                            ),
+                            onPressed: () async {
+                              final isValid = _formKey.currentState?.validate();
+                              if (!isValid! || isSendEP) return;
+                              onCheckAnswer();
+                            },
+                            child: !isSendEP
+                                ? const Text("Send")
+                                : Transform.scale(
+                                    scale: 0.5,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                          )
+                        ],
+                      )
+                    else
+                      Column(
+                        children: [
+                          if (supportEmail != null ||
+                              supportPhoneNumber != null)
+                            Text(
+                              "Bitte wählen Sie unten Ihre Kontaktmethode",
+                              style: labelText,
+                            ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          if (supportPhoneNumber != null)
+                            Column(
+                              children: [
+                                Text("$supportPhoneNumber"),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width * 1,
+                                  child: ElevatedButton(
+                                      onPressed: () =>
+                                          launch("tel://$supportPhoneNumber"),
+                                      child: Text("Den Kliniker anrufen")),
+                                ),
+                              ],
+                            ),
+                          if (supportEmail != null)
+                            Column(
+                              children: [
+                                Text("$supportEmail"),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width * 1,
+                                  child: ElevatedButton(
+                                      onPressed: () {
+                                        resetPasswordRequestEmail();
+                                      },
+                                      child: !isSendEP
+                                          ? const Text(
+                                              "E-Mail an Kliniker senden")
+                                          : Transform.scale(
+                                              scale: 0.5,
+                                              child:
+                                                  const CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                color: Colors.white,
+                                              ))),
+                                )
+                              ],
+                            ),
+                          if (supportEmail == null &&
+                              supportPhoneNumber == null)
+                            Text("Bitte kontaktieren Sie den iMedCom Support")
+                        ],
+                      ),
+                    if (isEmailSent)
+                      Text(
+                          "Wir haben eine E-Mail an Ihre Klinik geschickt, die sich bald mit Ihnen in Verbindung setzen wird.")
                   ],
                 ),
               ),

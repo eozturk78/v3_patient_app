@@ -37,6 +37,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     setState(() {
       isSendEP = true;
     });
+    pref.remove("answer");
+    pref.remove("question");
+    pref.remove("supportPhoneNumber");
+    pref.remove("supportEmail");
     var userName = userNameController.text; //pref.getString("userName");
     apis.getSecretQuestion(userName!).then(
       (resp) {
@@ -45,8 +49,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           setState(() {
             isSendEP = false;
           });
-          pref.setString("answer", resp['answer']);
-          pref.setString('question', resp['question']);
+          if (resp['answer'] != null) pref.setString("answer", resp['answer']);
+          if (resp['question'] != null)
+            pref.setString('question', resp['question']);
+          if (resp['supportphonenumber'] != null)
+            pref.setString('supportPhoneNumber', resp['supportphonenumber']);
+          if (resp['supportemail'] != null)
+            pref.setString('supportEmail', resp['supportemail']);
+          pref.setString('userName', userName);
+
           Navigator.of(context).pushReplacementNamed("/answer-secret-question");
         }
       },

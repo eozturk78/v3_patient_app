@@ -570,8 +570,16 @@ class Apis {
   Future onCheckAnswer(String answer, String userName) async {
     String finalUrl = '$baseUrl/oncheckanswer';
     var params = {'answer': answer, 'username': userName};
+    print(params);
     var result = await http
         .post(Uri.parse(finalUrl), body: params, headers: {'lang': lang}); /**/
+    return getResponseFromApi(result);
+  }
+
+  Future resetPasswordRequestEmail() async {
+    String finalUrl = '$baseUrl/resetpasswordrequestemail';
+    var result =
+        await http.get(Uri.parse(finalUrl), headers: {'lang': lang}); /**/
     return getResponseFromApi(result);
   }
 
