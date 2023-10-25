@@ -27,44 +27,49 @@ class _EnlightenmentPageState extends State<EnlightenmentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingSubpage('Aufklärung', context),
-      body: SafeArea( // Wrap your body with SafeArea
-      child: Center(
-          child: Padding(
-        padding: EdgeInsets.all(15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          verticalDirection: VerticalDirection.down,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) =>
-                      onOpenImage(context, "assets/images/enlightenment-1.jpg"),
-                ).then((value) {});
-              },
-              child: Image.asset(
-                "assets/images/enlightenment-1.jpg",
+      body: SafeArea(
+        // Wrap your body with SafeArea
+        child: SingleChildScrollView(
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                verticalDirection: VerticalDirection.down,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => onOpenImage(
+                            context, "assets/images/enlightenment-1.jpg"),
+                      ).then((value) {});
+                    },
+                    child: Image.asset(
+                      "assets/images/enlightenment-1.jpg",
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => onOpenImage(
+                            context, "assets/images/enlightenment-2.jpg"),
+                      ).then((value) {});
+                    },
+                    child: Image.asset(
+                      "assets/images/enlightenment-2.jpg",
+                    ),
+                  )
+                ],
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) =>
-                      onOpenImage(context, "assets/images/enlightenment-2.jpg"),
-                ).then((value) {});
-              },
-              child: Image.asset(
-                "assets/images/enlightenment-2.jpg",
-              ),
-            )
-          ],
+          ),
         ),
-      ))), // This trailing comma makes auto-formatting nicer for build methods.
+      ), // This trailing comma makes auto-formatting nicer for build methods.
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
     );
   }

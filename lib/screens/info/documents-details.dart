@@ -11,6 +11,7 @@ import 'package:patient_app/main.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -162,82 +163,97 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
     return Scaffold(
       appBar: leadingSubpage(screenTitle, context),
       body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(15),
-          child: isStarted
-              ? CircularProgressIndicator(
-                  color: mainButtonColor,
-                )
-              : fileList.isEmpty
-                  ? Center(
-                      child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          "assets/images/empty-folder.png",
-                          width: 200,
-                          height: 100,
-                        ),
-                        Text("Ordner ist leer")
-                      ],
-                    ))
-                  : SingleChildScrollView(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(15))),
-                        width: double.infinity,
-                        padding: EdgeInsets.all(20),
-                        margin: EdgeInsets.only(left: 20, right: 20),
+        child: Container(
+          alignment: Alignment.center,
+          width: MediaQuery.of(context).size.width *
+              ResponsiveValue(
+                context,
+                defaultValue: 1,
+                conditionalValues: [
+                  Condition.largerThan(
+                    //Tablet
+                    name: MOBILE,
+                    value: 0.5,
+                  ),
+                ],
+              ).value!,
+          child: Padding(
+            padding: EdgeInsets.all(15),
+            child: isStarted
+                ? CircularProgressIndicator(
+                    color: mainButtonColor,
+                  )
+                : fileList.isEmpty
+                    ? Center(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          verticalDirection: VerticalDirection.down,
-                          children: [
-                            SizedBox(
-                              height: 15,
-                            ),
-                            for (var item in fileList)
-                              Column(children: [
-                                GestureDetector(
-                                    onTap: () async {
-                                      var fileUrl = "";
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/images/empty-folder.png",
+                            width: 200,
+                            height: 100,
+                          ),
+                          Text("Ordner ist leer")
+                        ],
+                      ))
+                    : SingleChildScrollView(
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          width: double.infinity,
+                          padding: EdgeInsets.all(20),
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            verticalDirection: VerticalDirection.down,
+                            children: [
+                              SizedBox(
+                                height: 15,
+                              ),
+                              for (var item in fileList)
+                                Column(children: [
+                                  GestureDetector(
+                                      onTap: () async {
+                                        var fileUrl = "";
 
-                                      fileUrl =
-                                          '${apis.apiPublic}/patient_files/${item.fileUrl}';
+                                        fileUrl =
+                                            '${apis.apiPublic}/patient_files/${item.fileUrl}';
 
-                                      if (item.fileUrl
-                                          .contains('treatmentid')) {
-                                        await launch(
-                                            '${apis.apiPublic}/${item.fileUrl}');
-                                      } else if (fileUrl.contains('pdf')) {
-                                        PDFDocument.fromURL(fileUrl)
-                                            .then((value) {
+                                        if (item.fileUrl
+                                            .contains('treatmentid')) {
+                                          await launch(
+                                              '${apis.apiPublic}/${item.fileUrl}');
+                                        } else if (fileUrl.contains('pdf')) {
+                                          PDFDocument.fromURL(fileUrl)
+                                              .then((value) {
+                                            setState(() {
+                                              isPdf = true;
+                                              document = value;
+                                              openDialog(item);
+                                            });
+                                          });
+                                        } else {
                                           setState(() {
-                                            isPdf = true;
-                                            document = value;
+                                            isPdf = false;
+                                            imageUrl = fileUrl;
                                             openDialog(item);
                                           });
-                                        });
-                                      } else {
-                                        setState(() {
-                                          isPdf = false;
-                                          imageUrl = fileUrl;
-                                          openDialog(item);
-                                        });
-                                      }
-                                    },
-                                    child: CustomDocumentBox(
-                                        Icons.file_copy_rounded,
-                                        item.fileName,
-                                        null)),
-                                Divider()
-                              ])
-                          ],
+                                        }
+                                      },
+                                      child: CustomDocumentBox(
+                                          Icons.file_copy_rounded,
+                                          item.fileName,
+                                          null)),
+                                  Divider()
+                                ])
+                            ],
+                          ),
                         ),
                       ),
-                    ),
+          ),
         ),
       ),
       floatingActionButtonLocation: ExpandableFab.location,

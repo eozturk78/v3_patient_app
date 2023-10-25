@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/toast.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:local_auth/local_auth.dart';
 
@@ -96,72 +97,89 @@ class _TemporaryPasswordPageState extends State<TemporaryPasswordPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: leadingWithoutProfile("Passwort vergessen", context),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(20),
-            child: SingleChildScrollView(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                        "Möchten Sie fortfahren, Ihr Passwort zurückzusetzen?"),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
+      body: Center(
+        child: Container(
+          alignment: Alignment.center,
+          width: MediaQuery.of(context).size.width *
+              ResponsiveValue(
+                context,
+                defaultValue: 1,
+                conditionalValues: [
+                  Condition.largerThan(
+                    //Tablet
+                    name: MOBILE,
+                    value: 0.5,
+                  ),
+                ],
+              ).value!,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            onResetPassword();
-                          },
-                          child: !isSendEP
-                              ? const Text("Ja")
-                              : Transform.scale(
-                                  scale: 0.5,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                          style: ElevatedButton.styleFrom(
-                            primary: mainButtonColor,
-                          ),
+                        const SizedBox(
+                          height: 5,
                         ),
-                        SizedBox(
-                          width: 5,
+                        Text(
+                            "Möchten Sie fortfahren, Ihr Passwort zurückzusetzen?"),
+                        const SizedBox(
+                          height: 5,
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushReplacementNamed('/login');
-                          },
-                          child: Text('Nein'),
-                          style: ElevatedButton.styleFrom(
-                            primary: mainItemColor,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                onResetPassword();
+                              },
+                              child: !isSendEP
+                                  ? const Text("Ja")
+                                  : Transform.scale(
+                                      scale: 0.5,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                              style: ElevatedButton.styleFrom(
+                                primary: mainButtonColor,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .pushReplacementNamed('/login');
+                              },
+                              child: Text('Nein'),
+                              style: ElevatedButton.styleFrom(
+                                primary: mainItemColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 5,
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

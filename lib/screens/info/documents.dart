@@ -13,6 +13,8 @@ import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
+import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -134,53 +136,70 @@ class _DocumentListPageState extends State<DocumentListPage> {
     return Scaffold(
       appBar: leadingSubpage('Meine Dokumente', context),
       body: SafeArea(
-          // Wrap your body with SafeArea
-          child: Center(
-        child: Padding(
-          padding: EdgeInsets.all(15),
-          child: isStarted
-              ? CircularProgressIndicator(
-                  color: mainButtonColor,
-                )
-              : folderList.isEmpty
-                  ? Center(child: Text("no data found"))
-                  : Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      width: double.infinity,
-                      padding: EdgeInsets.all(10),
-                      margin: EdgeInsets.only(left: 20, right: 20),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          verticalDirection: VerticalDirection.down,
-                          children: [
-                            for (var item in folderList)
-                              Column(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      onGotoFileScreen(
-                                          item.id, item.folderName);
-                                    },
-                                    child: CustomDocumentBox(
-                                      Icons.medication_outlined,
-                                      item.folderName,
-                                      item.fileCount,
-                                    ),
-                                  ),
-                                  Divider(
-                                    height: 10,
-                                  )
-                                ],
-                              )
-                          ],
-                        ),
-                      ),
+        // Wrap your body with SafeArea
+        child: Center(
+          child:Container(
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width *
+                ResponsiveValue(
+                  context,
+                  defaultValue: 1,
+                  conditionalValues: [
+                    Condition.largerThan(
+                      //Tablet
+                      name: MOBILE,
+                      value: 0.5,
                     ),
+                  ],
+                ).value!,
+            child: Padding(
+              padding: EdgeInsets.all(15),
+              child: isStarted
+                  ? CircularProgressIndicator(
+                      color: mainButtonColor,
+                    )
+                  : folderList.isEmpty
+                      ? Center(child: Text("no data found"))
+                      : Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          width: double.infinity,
+                          padding: EdgeInsets.all(10),
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              verticalDirection: VerticalDirection.down,
+                              children: [
+                                for (var item in folderList)
+                                  Column(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          onGotoFileScreen(
+                                              item.id, item.folderName);
+                                        },
+                                        child: CustomDocumentBox(
+                                          Icons.medication_outlined,
+                                          item.folderName,
+                                          item.fileCount,
+                                        ),
+                                      ),
+                                      Divider(
+                                        height: 10,
+                                      )
+                                    ],
+                                  )
+                              ],
+                            ),
+                          ),
+                        ),
+            ),
+          ),
         ),
-      )), // This trailing comma makes auto-formatting nicer for build methods.
+      ), // This trailing comma makes auto-formatting nicer for build methods.
 
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
