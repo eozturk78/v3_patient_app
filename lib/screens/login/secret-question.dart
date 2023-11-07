@@ -185,7 +185,7 @@ class _SecretQuestionPageState extends State<SecretQuestionPage> {
                         onSecretQuestion();
                       },
                       child: !isSendEP
-                          ? const Text("Send")
+                          ? const Text("Senden")
                           : Transform.scale(
                               scale: 0.5,
                               child: CircularProgressIndicator(

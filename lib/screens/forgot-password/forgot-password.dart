@@ -134,7 +134,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             onForgotPassword();
                           },
                           child: !isSendEP
-                              ? const Text("Send")
+                              ? const Text("Senden")
                               : Transform.scale(
                                   scale: 0.5,
                                   child: CircularProgressIndicator(

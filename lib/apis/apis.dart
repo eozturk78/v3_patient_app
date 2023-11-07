@@ -746,7 +746,11 @@ class Apis {
     } else {
       body = jsonDecode(body);
 
-      showToast(AppLocalizations.tr(body['message']));
+      if (body['errors'] == null ||
+          (body['errors'] != null &&
+              (body['errors'] as List).first['error'] != 'expired'))
+        showToast(AppLocalizations.tr(body['message']));
+
       if (body['errors'] != null) {
         var firstError = (body['errors'] as List).first;
         throw (firstError);

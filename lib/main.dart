@@ -34,6 +34,7 @@ import 'package:patient_app/screens/info/libraries.dart';
 import 'package:patient_app/screens/login/change-password.dart';
 import 'package:patient_app/screens/login/login.dart';
 import 'package:patient_app/screens/login/secret-question.dart';
+import 'package:patient_app/screens/login/successfully-changed-password.dart';
 import 'package:patient_app/screens/main-menu/main-menu.dart';
 import 'package:patient_app/screens/main-menu/main-sub-menu.dart';
 import 'package:patient_app/screens/measurement-result/measurement-result-blutdruck.dart';
@@ -337,6 +338,8 @@ class MyApp extends StatelessWidget {
         '/answer-secret-question': (context) => AnswerSecretQuestionPage(),
         '/reset-password': (context) => ResetPasswordPage(),
         '/temporary-password': (context) => TemporaryPasswordPage(),
+        '/successfully-changed-password': (context) =>
+            SuccessfullyChangedPasswordPage(),
       },
     );
   }

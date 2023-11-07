@@ -78,10 +78,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           pref.setString("patientTitle", resp['firstName']);
           pref.setString('token', resp['token']);
 
-          if (resp['isRequiredSecretQuestion'])
+          if (resp['isRequiredSecretQuestion']) {
             Navigator.of(context).pushNamedAndRemoveUntil(
-                "/main-menu", ModalRoute.withName('/main-menu'));
-          else
+                "/successfully-changed-password",
+                ModalRoute.withName('/login'));
+          } else
             Navigator.of(context).pushNamed("/secret-question");
         }
       },
@@ -180,7 +181,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                             onChangePassword();
                           },
                           child: !isSendEP
-                              ? const Text("Send")
+                              ? const Text("Senden")
                               : Transform.scale(
                                   scale: 0.5,
                                   child: CircularProgressIndicator(

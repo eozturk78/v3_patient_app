@@ -380,7 +380,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                             sendValues();
                                           },
                                           child: !isSendEP
-                                              ? const Text("Send")
+                                              ? const Text("Senden")
                                               : Transform.scale(
                                                   scale: 0.5,
                                                   child:
