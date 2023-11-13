@@ -1,20 +1,22 @@
+import 'dart:convert';
+
 class MedicalPlan {
   final String treatmentId;
   String mpName;
+  String versionNumber;
   DateTime? updatedAt;
   final String createdAt;
   DateTime? sendDate;
-  final int rowCount;
   String? updatedBy;
-  bool isExpanded=false;
+  bool isExpanded = false;
   List<MedicalPlanRows> rows;
   MedicalPlan({
     required this.treatmentId,
     required this.mpName,
+    required this.versionNumber,
     this.updatedAt,
     required this.createdAt,
     required this.sendDate,
-    required this.rowCount,
     required this.updatedBy,
     required this.isExpanded,
     required this.rows,
@@ -24,15 +26,15 @@ class MedicalPlan {
     return MedicalPlan(
       treatmentId: json['treatmentid'],
       mpName: json['mpname'] ?? "",
+      versionNumber: json['version_number'] ?? "",
       updatedAt:
           json['updatedat'] != null ? DateTime.parse(json['updatedat']) : null,
-      createdAt: json['createdat'],
+      createdAt: json['archivedat'],
       sendDate:
           json['sendDate'] != null ? DateTime.parse(json['sendDate']) : null,
-      rowCount: json['rowcount'],
       updatedBy: json['updated_by'],
       isExpanded: false,
-      rows: (json['rows'] as List)
+      rows: (jsonDecode(json['medicalplans']) as List)
           .map((e) => MedicalPlanRows.fromJson(e))
           .toList(),
     );

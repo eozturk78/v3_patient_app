@@ -239,7 +239,7 @@ class Apis {
 
   Future getPatientMedicalPlanList() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    String finalUrl = '$baseUrl/getpatientmedicalplan';
+    String finalUrl = '$baseUrl/getpatientmedicalplanarchieve';
     var result = await http.get(Uri.parse(finalUrl), headers: {
       'Content-Type': 'application/text',
       'lang': lang,

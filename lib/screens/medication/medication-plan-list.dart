@@ -90,7 +90,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                         ),
                                         Flexible(
                                           child: Text(
-                                            item.mpName,
+                                            "Medikamentenplan_${item.versionNumber}",
                                             overflow: TextOverflow.ellipsis,
                                             style: item.isExpanded
                                                 ? TextStyle(
@@ -202,7 +202,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                       TextButton(
                                         onPressed: () async {
                                           await launch(
-                                              '${apis.apiPublic}/medicalplan-pdf?treatmentid=${item.treatmentId}');
+                                              '${apis.apiPublic}/medicalplan-pdf-file?treatmentid=${item.treatmentId}&versionno=${item.versionNumber}');
                                         },
                                         child: Row(
                                           children: [
