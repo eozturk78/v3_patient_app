@@ -25,7 +25,7 @@ class _MedicationPageState extends State<MedicationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingWithoutBack('Medikation', context),
+      appBar: leadingSubpage('Medikation', context),
       body: SafeArea(
         // Wrap your body with SafeArea
         child: Center(

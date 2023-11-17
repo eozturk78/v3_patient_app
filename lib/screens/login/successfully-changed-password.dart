@@ -43,7 +43,7 @@ class _SuccessfullyChangedPasswordPageState
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: leadingWithoutBack("Erfolgreich geändert", context),
+      appBar: leadingSubpage("Erfolgreich geändert", context),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -25,7 +25,7 @@ class _InfoPageState extends State<InfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingWithoutBack('Infothek', context),
+      appBar: leadingSubpage('Infothek', context),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(

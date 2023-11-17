@@ -69,7 +69,9 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                     : ExpansionPanelList(
                         expansionCallback: (int index, bool isExpanded) {
                           setState(() {
-                            mpLis[index].isExpanded = !isExpanded;
+                            print(
+                                "======" + mpLis[index].isExpanded.toString());
+                            mpLis[index].isExpanded = !mpLis[index].isExpanded;
                           });
                         },
                         children: [

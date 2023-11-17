@@ -362,7 +362,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = 26;
-				DEVELOPMENT_TEAM = 8288DP5JMC;
+				DEVELOPMENT_TEAM = QGAVXQ338B;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 1.0.26;
 				FLUTTER_BUILD_NUMBER = 26;
@@ -374,7 +374,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.26;
-				PRODUCT_BUNDLE_IDENTIFIER = com.PatientApp.iMedCom;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iMedCom.PatientApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -498,7 +498,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = 26;
-				DEVELOPMENT_TEAM = 8288DP5JMC;
+				DEVELOPMENT_TEAM = QGAVXQ338B;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 1.0.26;
 				FLUTTER_BUILD_NUMBER = 26;
@@ -510,7 +510,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.26;
-				PRODUCT_BUNDLE_IDENTIFIER = com.PatientApp.iMedCom;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iMedCom.PatientApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -528,7 +528,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = 26;
-				DEVELOPMENT_TEAM = 8288DP5JMC;
+				DEVELOPMENT_TEAM = QGAVXQ338B;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 1.0.26;
 				FLUTTER_BUILD_NUMBER = 26;
@@ -540,7 +540,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.26;
-				PRODUCT_BUNDLE_IDENTIFIER = com.PatientApp.iMedCom;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iMedCom.PatientApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
