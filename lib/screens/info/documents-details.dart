@@ -215,8 +215,8 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                               ),
                               for (var item in fileList)
                                 Column(children: [
-                                  GestureDetector(
-                                      onTap: () async {
+                                  TextButton(
+                                      onPressed: () async {
                                         var fileUrl = "";
 
                                         fileUrl =
@@ -594,7 +594,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Folder Name"),
+                      Text("Name des Ordners"),
                       TextFormField(
                         controller: folderNameController,
                         obscureText: false,

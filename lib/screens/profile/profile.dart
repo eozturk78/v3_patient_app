@@ -148,10 +148,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     textScaleFactor: ScaleSize.textScaleFactor(context),
                   ),
                   Divider(),
-                  GestureDetector(
-                    onTap: () {
+                  TextButton(
+                    onPressed: () {
                       Navigator.of(context).pushNamed("/about-me");
                     },
+                    style: profileBtnStyle,
                     child: Row(
                       children: [
                         Text(
@@ -169,10 +170,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Divider(),
-                  GestureDetector(
-                    onTap: () {
+                  TextButton(
+                    onPressed: () {
                       Navigator.of(context).pushNamed("/diagnoses");
                     },
+                    style: profileBtnStyle,
                     child: Row(
                       children: [
                         Text(
@@ -190,10 +192,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Divider(),
-                  GestureDetector(
-                    onTap: () {
+                  TextButton(
+                    onPressed: () {
                       Navigator.of(context).pushNamed("/patient-contacts-list");
                     },
+                    style: profileBtnStyle,
                     child: Row(
                       children: [
                         Text(
@@ -220,10 +223,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     textScaleFactor: ScaleSize.textScaleFactor(context),
                   ),
                   Divider(),
-                  GestureDetector(
-                    onTap: () {
+                  TextButton(
+                    onPressed: () {
                       Navigator.of(context).pushNamed("/edit-agreements");
                     },
+                    style: profileBtnStyle,
                     child: Row(
                       children: [
                         Text(
@@ -241,10 +245,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Divider(),
-                  GestureDetector(
-                    onTap: () {
+                  TextButton(
+                    onPressed: () {
                       Navigator.of(context).pushNamed("/extract-data");
                     },
+                    style: profileBtnStyle,
                     child: Row(
                       children: [
                         Text(
@@ -271,10 +276,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     textScaleFactor: ScaleSize.textScaleFactor(context),
                   ),
                   Divider(),
-                  GestureDetector(
-                    onTap: () {
+                  TextButton(
+                    onPressed: () {
                       Navigator.of(context).pushNamed("/terms-and-conditions");
                     },
+                    style: profileBtnStyle,
                     child: Row(
                       children: [
                         Text(
@@ -292,10 +298,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Divider(),
-                  GestureDetector(
-                    onTap: () {
+                  TextButton(
+                    onPressed: () {
                       Navigator.of(context).pushNamed("/privacy-policy");
                     },
+                    style: profileBtnStyle,
                     child: Row(
                       children: [
                         Text(
@@ -313,10 +320,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Divider(),
-                  GestureDetector(
-                    onTap: () {
+                  TextButton(
+                    onPressed: () {
                       Navigator.of(context).pushNamed("/impresum");
                     },
+                    style: profileBtnStyle,
                     child: Row(
                       children: [
                         Text(
@@ -334,13 +342,15 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Divider(),
-                  GestureDetector(
-                    onTap: () async {
+                  TextButton(
+                    onPressed: () async {
                       SharedPreferences pref =
                           await SharedPreferences.getInstance();
                       pref.remove("token");
-                      Navigator.of(context).pushNamed("/login");
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          "/login", ModalRoute.withName('/login'));
                     },
+                    style: profileBtnStyle,
                     child: Row(
                       children: [
                         Text(

@@ -26,7 +26,8 @@ class CustomDocumentBox extends StatelessWidget {
             children: [
               Text(
                 headText,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
               ),
             ],
           ),

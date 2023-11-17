@@ -138,7 +138,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
       body: SafeArea(
         // Wrap your body with SafeArea
         child: Center(
-          child:Container(
+          child: Container(
             alignment: Alignment.center,
             width: MediaQuery.of(context).size.width *
                 ResponsiveValue(
@@ -176,11 +176,12 @@ class _DocumentListPageState extends State<DocumentListPage> {
                                 for (var item in folderList)
                                   Column(
                                     children: [
-                                      GestureDetector(
-                                        onTap: () {
+                                      TextButton(
+                                        onPressed: () {
                                           onGotoFileScreen(
                                               item.id, item.folderName);
                                         },
+                                        style: profileBtnStyle,
                                         child: CustomDocumentBox(
                                           Icons.medication_outlined,
                                           item.folderName,
@@ -518,7 +519,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Folder Name"),
+                      Text("Name des Ordners"),
                       TextFormField(
                         controller: folderNameController,
                         obscureText: false,

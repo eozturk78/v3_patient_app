@@ -157,37 +157,20 @@ class _ChatPageState extends State<ChatPage> {
                     child: SingleChildScrollView(
                       controller: controller,
                       child: ListView.builder(
-                        itemCount: itemLength,
                         physics: const ScrollPhysics(),
                         shrinkWrap: true,
-                        reverse: true,
                         itemBuilder: (BuildContext context, int index) {
-                          return (listMessages.length - 1) - index > 0
+                          return (listMessages.length - 1) - index > -1
                               ? CustomMessageTextBubble(
-                                  dateTime: listMessages[
-                                          (listMessages.length - 1) - index]
-                                      .dateTime,
-                                  senderTitle: listMessages[
-                                              (listMessages.length - 1) - index]
-                                          .senderTitle ??
-                                      "",
-                                  text: listMessages[
-                                              (listMessages.length - 1) - index]
-                                          .text ??
-                                      "",
-                                  senderType: listMessages[
-                                          (listMessages.length - 1) - index]
-                                      .senderType,
-                                  readAt: listMessages[
-                                          (listMessages.length - 1) - index]
-                                      .readAt,
-                                  image: listMessages[
-                                          (listMessages.length - 1) - index]
-                                      .image,
-                                  messageId: listMessages[
-                                              (listMessages.length - 1) - index]
-                                          .messageId ??
-                                      "",
+                                  dateTime: listMessages[index].dateTime,
+                                  senderTitle:
+                                      listMessages[index].senderTitle ?? "",
+                                  text: listMessages[index].text ?? "",
+                                  senderType: listMessages[index].senderType,
+                                  readAt: listMessages[index].readAt,
+                                  image: listMessages[index].image,
+                                  messageId:
+                                      listMessages[index].messageId ?? "",
                                   messageType: 20,
                                 )
                               : null;
@@ -269,9 +252,6 @@ class _ChatPageState extends State<ChatPage> {
                               senderTitle: resp['sender']['name'],
                               dateTime: sh.formatDateTime(resp['timestamp']),
                               index: index));
-                          listMessages
-                              .sort((a, b) => b.index.compareTo(a.index));
-
                           loaderSendMessage = false;
                           FocusScope.of(context).unfocus();
                           txtMessageController.clear();

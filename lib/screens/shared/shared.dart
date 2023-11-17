@@ -449,5 +449,11 @@ TextStyle agreementHeader = TextStyle(
 TextStyle agreementSubHeader = TextStyle(
     fontSize: 18, fontWeight: FontWeight.bold, color: mainButtonColor);
 
-TextStyle profileMenuItemColor =
-    TextStyle(color: Color.fromARGB(255, 30, 31, 32));
+TextStyle profileMenuItemColor = TextStyle(
+    color: Color.fromARGB(255, 94, 94, 94), fontWeight: FontWeight.normal);
+
+ButtonStyle profileBtnStyle = TextButton.styleFrom(
+    padding: EdgeInsets.zero,
+    minimumSize: Size(50, 30),
+    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    alignment: Alignment.centerLeft);

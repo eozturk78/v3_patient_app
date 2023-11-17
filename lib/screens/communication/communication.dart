@@ -43,7 +43,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingWithoutBack('Nachrichten', context),
+      appBar: leadingWithoutBack('Kommunikation', context),
       body: SafeArea(
         // Wrap your body with SafeArea
         child: Center(

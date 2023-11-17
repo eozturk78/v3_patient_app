@@ -38,7 +38,11 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  int? allQuentionnaireFilled = 0;
   getMainData() {
+    setState(() {
+      allQuentionnaireFilled = 0;
+    });
     apis.getpatientmaindata().then((resp) {
       if (resp != null) {
         print(resp);
@@ -57,6 +61,20 @@ class _HomePageState extends State<HomePage> {
           weightValue = resp['weightValue'] != null
               ? resp['weightValue'].toString()
               : "~";
+
+          if (resp['bloodPressureValue'] != null &&
+              resp['pulseValue'] != null &&
+              resp['saturationValue'] != null &&
+              resp['temperatureValue'] != null &&
+              resp['weightValue'] != null) {
+            setState(() {
+              allQuentionnaireFilled = 10;
+            });
+          } else {
+            setState(() {
+              allQuentionnaireFilled = 20;
+            });
+          }
         });
       }
     });
@@ -172,12 +190,16 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Divider(),
                 GestureDetector(
-                  child: const CustomListComponent(
+                  child: CustomListComponent(
                       Icons.question_mark_outlined,
                       "Fragebögen",
-                      "Heute: - %",
-                      "Bitte Fragebögen beantworten",
-                      10),
+                      null,
+                      allQuentionnaireFilled != 0
+                          ? allQuentionnaireFilled == 20
+                              ? "Bitte Fragebögen beantworten"
+                              : "Fragebögen erfolgreich übermittelt"
+                          : "Lädt...",
+                      allQuentionnaireFilled == 20 ? 10 : 20),
                   onTap: () {
                     Navigator.of(context).pushNamed('/questionnaire-group');
                   },

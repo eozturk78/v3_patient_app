@@ -116,8 +116,8 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
                               for (var item in questionnaireGroups)
                                 Column(
                                   children: [
-                                    GestureDetector(
-                                      onTap: () async {
+                                    TextButton(
+                                      onPressed: () async {
                                         SharedPreferences pref =
                                             await SharedPreferences
                                                 .getInstance();
@@ -134,17 +134,18 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
                                             item.nameShownToPatient ??
                                                 item.name,
                                             style: TextStyle(
+                                                color: Colors.black,
                                                 fontSize: ResponsiveValue(
-                                              context,
-                                              defaultValue: 12.0,
-                                              conditionalValues: [
-                                                Condition.largerThan(
-                                                  //Tablet
-                                                  name: MOBILE,
-                                                  value: 20.0,
-                                                ),
-                                              ],
-                                            ).value!),
+                                                  context,
+                                                  defaultValue: 12.0,
+                                                  conditionalValues: [
+                                                    Condition.largerThan(
+                                                      //Tablet
+                                                      name: MOBILE,
+                                                      value: 20.0,
+                                                    ),
+                                                  ],
+                                                ).value!),
                                           ),
                                           Spacer(),
                                           Icon(

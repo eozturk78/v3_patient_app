@@ -59,7 +59,6 @@ class Shared {
   };
 
   getTranslation(String field) {
-    print(field);
     return translations[field] != null ? translations[field] : field;
   }
 

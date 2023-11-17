@@ -41,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
   bool proceedLoginWithTouchId = false;
   bool _isRequiredSecretQuestion = false;
   String? deviceToken;
+  bool hasInternelConnection = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -51,7 +52,8 @@ class _LoginPageState extends State<LoginPage> {
     });
     checkRememberMe();
     _getAvailableBiometrics();
-    _authenticateWithBiometrics();
+    //_authenticateWithBiometrics();
+
     super.initState();
     auth.isDeviceSupported().then(
           (bool isSupported) => setState(() => _supportState = isSupported
@@ -216,8 +218,8 @@ class _LoginPageState extends State<LoginPage> {
       isSendEP = true;
     });
     bool isConnected = false;
-    final result = await InternetAddress.lookup('imedcom.de');
-    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+    bool result = await InternetConnectionChecker().hasConnection;
+    if (result == true) {
       isConnected = true;
     }
     if (isConnected) {

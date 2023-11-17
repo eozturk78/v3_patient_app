@@ -70,10 +70,11 @@ dependencies:
   intl: ^0.18.1
   intl_phone_number_input: any
   internet_connection_checker: ^0.0.1+3
-
   flutter_svg: any
   responsive_grid: ^2.4.4
   responsive_framework: ^1.1.1 
+  webview_flutter: ^2.0.7
+
   
 
 

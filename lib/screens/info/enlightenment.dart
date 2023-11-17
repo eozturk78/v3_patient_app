@@ -76,13 +76,55 @@ class _EnlightenmentPageState extends State<EnlightenmentPage> {
 
   Widget onOpenImage(BuildContext context, String imageText) {
     return AlertDialog(
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: 0,
+        vertical: 0,
+      ),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 0,
+        vertical: 0,
+      ),
       content: StatefulBuilder(
         builder: (BuildContext context, setState) {
-          return Container(
-            width: MediaQuery.of(context).size.width * 1,
-            height: 300,
-            child: PhotoView(
-              imageProvider: AssetImage(imageText),
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: double.infinity,
+            child: Column(
+              children: [
+                Container(
+                  child: Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Icon(Icons.close),
+                      ),
+                      Spacer(),
+                    ],
+                  ),
+                  height: 40,
+                  padding: EdgeInsets.only(right: 10, left: 10),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 5,
+                        color: Colors.black.withOpacity(0.3),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                  child: PhotoView(
+                    imageProvider: AssetImage(imageText),
+                  ),
+                )
+              ],
             ),
           );
         },

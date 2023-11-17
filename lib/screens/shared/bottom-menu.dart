@@ -53,10 +53,10 @@ class _CustomMenuButtonState extends State<BottomNavigatorBar> {
         BottomNavigationBarItem(
           icon: _buildNavItem(
             'assets/images/messenger_outline.svg',
-            'Nachrichten',
+            'Kommunikation',
             3,
           ),
-          label: 'Nachrichten',
+          label: 'Kommunikation',
         ),
         BottomNavigationBarItem(
           icon: _buildNavItem(

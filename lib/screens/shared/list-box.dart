@@ -52,18 +52,19 @@ class CustomListComponent extends StatelessWidget {
               SizedBox(
                 height: 5,
               ),
-              SizedBox(
-                child: Text(
-                  warningText!,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: colorState == 10
-                        ? mainButtonColor
-                        : Color.fromARGB(255, 1, 68, 59),
+              if (warningText != null)
+                SizedBox(
+                  child: Text(
+                    warningText!,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: colorState == 10
+                          ? mainButtonColor
+                          : Color.fromARGB(255, 1, 68, 59),
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ],

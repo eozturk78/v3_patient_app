@@ -64,8 +64,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var qid = pref.getString('questionnaireId');
     _qid = qid!;
-    print(DateTime.now().toUtc());
-    print(_qid);
     setState(() {
       title = pref.getString('questionnaireName')!;
     });
@@ -143,6 +141,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
               setState(() {
                 _controllers.add(TextEditingController());
               });
+
               var params = {
                 'name': outputVar['name'],
                 'type': outputVar['type'],
@@ -181,11 +180,14 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                 choices = enumObj['values'] as List<dynamic>;
               } else {
                 try {
-                  if (question[key]['type'] == 'Integer' ||
-                      question[key]['type'] == 'String' ||
-                      question[key]['type'] == 'Float') {
+                  if ((question[key]['type'] == 'Integer' ||
+                          question[key]['type'] == 'String' ||
+                          question[key]['type'] == 'Float') &&
+                      question[key]['name'] !=
+                          '5909.BP#MEAN_ARTERIAL_PRESSURE') {
                     _controllers.add(TextEditingController());
 
+                    print(question[key]);
                     inputList.add(question[key]);
                     inputList[inputList.length - 1]['title'] =
                         question['existsKeys'][i];
@@ -228,8 +230,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   }
 
   prepareOutputs() {
-    print(question['Object[]']);
-
     if (question['deviceNode'] == 'BloodSugarManualDeviceNode') {
       var measurements = null;
       var dt = DateTime.now().toUtc().toString().replaceAll(" ", "T");
@@ -303,7 +303,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
       });
       Navigator.of(context).pushNamed('/home');
     }, onError: (err) {
-      print(err);
       setState(() {
         isSendEP = false;
       });
@@ -601,7 +600,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                       });
                       prepareOutputs();
                       if (item['next'] == endNode) {
-                        print(outPuts);
                         setState(() {
                           isLast = true;
                         });
