@@ -65,7 +65,7 @@ class _NotificationHistoryPage extends State<NotificationHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leading('Erinnerungen', context),
+      appBar: leadingSubpage('Erinnerungen', context),
       body: Padding(
         padding: EdgeInsets.all(30),
         child: Center(
