@@ -34,7 +34,7 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingWithoutBack('Daten', context),
+      appBar: leadingSubpage('Daten', context),
       body: SafeArea(
           // Wrap your body with SafeArea
           child: Center(
