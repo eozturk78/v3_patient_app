@@ -87,7 +87,7 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                           if (states.contains(MaterialState.selected)) {
                             return mainButtonColor; // Set to your login button color
                           }
-                          return Colors.white70; // Change to your desired unselected color
+                          return Colors.black54; // Change to your desired unselected color
                         },),
                       onChanged: (value) {
                         setState(() {
@@ -121,7 +121,7 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                           if (states.contains(MaterialState.selected)) {
                             return mainButtonColor; // Set to your login button color
                           }
-                          return Colors.white70; // Change to your desired unselected color
+                          return Colors.black54; // Change to your desired unselected color
                         },),
                       onChanged: (value) {
                         setState(() {
@@ -158,7 +158,7 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                           if (states.contains(MaterialState.selected)) {
                             return mainButtonColor; // Set to your login button color
                           }
-                          return Colors.white70; // Change to your desired unselected color
+                          return Colors.black54; // Change to your desired unselected color
                         },),
                       onChanged: (value) {
                         setState(() {

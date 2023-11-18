@@ -180,11 +180,13 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                 choices = enumObj['values'] as List<dynamic>;
               } else {
                 try {
+                  print(question[key]['name']);
                   if ((question[key]['type'] == 'Integer' ||
                           question[key]['type'] == 'String' ||
                           question[key]['type'] == 'Float') &&
-                      question[key]['name'] !=
-                          '5909.BP#MEAN_ARTERIAL_PRESSURE') {
+                      !question[key]['name']
+                          .toString()
+                          .contains('MEAN_ARTERIAL_PRESSURE')) {
                     _controllers.add(TextEditingController());
 
                     print(question[key]);

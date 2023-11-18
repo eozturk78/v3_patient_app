@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/library-box.dart';
 import '../shared/medication-plan-box.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
 class EnlightenmentPage extends StatefulWidget {
   const EnlightenmentPage({super.key});
@@ -119,9 +120,17 @@ class _EnlightenmentPageState extends State<EnlightenmentPage> {
                 SizedBox(
                   height: 10,
                 ),
-                Expanded(
-                  child: PhotoView(
-                    imageProvider: AssetImage(imageText),
+                AspectRatio(
+                  aspectRatio: 0.7,
+                  child: PhotoViewGallery.builder(
+                    backgroundDecoration: BoxDecoration(color: Colors.white),
+                    scrollPhysics: BouncingScrollPhysics(),
+                    builder: (BuildContext context, int index) {
+                      return PhotoViewGalleryPageOptions(
+                        imageProvider: AssetImage(imageText),
+                      );
+                    },
+                    itemCount: 1,
                   ),
                 )
               ],

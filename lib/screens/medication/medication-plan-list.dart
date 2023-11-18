@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/model/medical-plan.dart';
@@ -24,6 +25,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
   Shared sh = Shared();
   List<MedicalPlan> mpLis = [];
 
+  PDFDocument? document;
   bool isStarted = true;
   @override
   void initState() {
@@ -203,8 +205,21 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                         ),
                                       TextButton(
                                         onPressed: () async {
-                                          await launch(
-                                              '${apis.apiPublic}/medicalplan-pdf-file?treatmentid=${item.treatmentId}&versionno=${item.versionNumber}');
+                                          var url =
+                                              '${apis.apiPublic}/medicalplan-pdf-file?treatmentid=${item.treatmentId}&versionno=${item.versionNumber}';
+
+                                          PDFDocument.fromURL(url)
+                                              .then((value) {
+                                            setState(() {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) => onOpenImage2(
+                                                    context,
+                                                    value,
+                                                    "Medikamentenplan_${item.versionNumber}"),
+                                              );
+                                            });
+                                          });
                                         },
                                         child: Row(
                                           children: [
@@ -236,4 +251,66 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: 2),
     );
   }
+}
+
+Widget onOpenImage2(BuildContext context, PDFDocument document, String name) {
+  return AlertDialog(
+    insetPadding: EdgeInsets.symmetric(
+      horizontal: 0,
+      vertical: 0,
+    ),
+    contentPadding: EdgeInsets.symmetric(
+      horizontal: 0,
+      vertical: 0,
+    ),
+    content: StatefulBuilder(
+      builder: (BuildContext context, setState) {
+        return SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: double.infinity,
+          child: Column(
+            children: [
+              Container(
+                child: Row(
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Icon(Icons.close),
+                    ),
+                    Spacer(),
+                    Text(name),
+                    Spacer(),
+                  ],
+                ),
+                height: 40,
+                padding: EdgeInsets.only(right: 10, left: 10),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 5,
+                      color: Colors.black.withOpacity(0.3),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.84,
+                width: double.infinity,
+                child: PDFViewer(
+                  document: document!,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    ),
+  );
 }

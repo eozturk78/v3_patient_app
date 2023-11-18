@@ -11,6 +11,7 @@ import 'package:patient_app/main.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -224,8 +225,16 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
 
                                         if (item.fileUrl
                                             .contains('treatmentid')) {
-                                          await launch(
-                                              '${apis.apiPublic}/${item.fileUrl}');
+                                          var url =
+                                              '${apis.apiPublic}/${item.fileUrl}';
+                                          PDFDocument.fromURL(url)
+                                              .then((value) {
+                                            setState(() {
+                                              isPdf = true;
+                                              document = value;
+                                              openDialog(item);
+                                            });
+                                          });
                                         } else if (fileUrl.contains('pdf')) {
                                           PDFDocument.fromURL(fileUrl)
                                               .then((value) {
@@ -556,7 +565,22 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                   ),
                 ),
               if (!isPdf && imageUrl != null)
-                Flexible(child: Image.network(imageUrl!))
+                Flexible(
+                    child: AspectRatio(
+                  aspectRatio: 0.7,
+                  child: PhotoViewGallery.builder(
+                    backgroundDecoration: BoxDecoration(color: Colors.white),
+                    scrollPhysics: BouncingScrollPhysics(),
+                    builder: (BuildContext context, int index) {
+                      return PhotoViewGalleryPageOptions(
+                        imageProvider: NetworkImage(imageUrl!),
+                        initialScale: PhotoViewComputedScale.contained * 0.8,
+                        minScale: PhotoViewComputedScale.contained * 0.8,
+                      );
+                    },
+                    itemCount: 1,
+                  ),
+                ))
             ]),
           );
         },

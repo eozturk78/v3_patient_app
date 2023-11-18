@@ -394,7 +394,7 @@ class _LoginPageState extends State<LoginPage> {
                                             return mainButtonColor; // Set to your login button color
                                           }
                                           return Colors
-                                              .white70; // Change to your desired unselected color
+                                              .black54; // Change to your desired unselected color
                                         },
                                       ),
                                       value: rememberMeState,
