@@ -75,6 +75,34 @@ class _MedicationPageState extends State<MedicationPage> {
                     ),
                   ],
                 ),
+                ResponsiveGridRow(
+                  children: [
+                    ResponsiveGridCol(
+                      lg: 2,
+                      xs: 6,
+                      md: 4,
+                      child: GestureDetector(
+                        child: CustomSubTotal(
+                            SvgPicture.asset(
+                                'assets/images/menu-icons/medikamentenplan-main.svg'),
+                            "Interactive Mplan",
+                            null,
+                            null,
+                            10),
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed('/interactive-medication-plan');
+                        },
+                      ),
+                    ),
+                    ResponsiveGridCol(
+                      lg: 2,
+                      xs: 6,
+                      md: 4,
+                      child: Text(""),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

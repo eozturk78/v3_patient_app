@@ -42,6 +42,7 @@ import 'package:patient_app/screens/measurement-result/measurement-result-pulse.
 import 'package:patient_app/screens/measurement-result/measurement-result-saturation.dart';
 import 'package:patient_app/screens/measurement-result/measurement-result-temperature.dart';
 import 'package:patient_app/screens/measurement-result/measurement-result-weight.dart';
+import 'package:patient_app/screens/medication/interactive-medication-plan.dart';
 import 'package:patient_app/screens/medication/medication-plan-list.dart';
 import 'package:patient_app/screens/medication/medication.dart';
 import 'package:patient_app/screens/medication/recipes.dart';
@@ -292,6 +293,7 @@ class MyApp extends StatelessWidget {
         "/medical-plan-1": (context) => const MedicalPlan1Page(),
         "/calendar": (context) => CalendarScreen(),
         "/medication-plan-list": (context) => const MedicationPlanListPage(),
+        "/interactive-medication-plan": (context) => InteractiveMedicationPlanPage(),
         "/recipes": (context) => const RecipesPage(),
         "/libraries": (context) => const LibraryListPage(),
         "/enlightenment": (context) => const EnlightenmentPage(),

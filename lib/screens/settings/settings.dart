@@ -136,7 +136,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         border: InputBorder.none,
                         filled: true,
                         fillColor: const Color.fromARGB(255, 244, 246, 246),
-                        hintText: 'Search',
+                        hintText: 'Suchen',
                         hintStyle: TextStyle(
                             fontSize: 16.0,
                             color: Color.fromARGB(255, 69, 81, 84)),
