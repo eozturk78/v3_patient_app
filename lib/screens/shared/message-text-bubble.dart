@@ -50,7 +50,7 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
 
   markAsRead() {
     apis
-        .markAdRead(widget.messageId)
+        .markAsRead(widget.messageId)
         .then((value) {}, onError: (err) => {sh.redirectPatient(err, context)});
   }
 

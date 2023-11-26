@@ -395,11 +395,52 @@ class Apis {
     }
   }
 
+  /*
+  Future<List<Map<String, dynamic>>> fetchMedicationPlansOfDay(DateTime selectedDate) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    // Format the selected date
+    //String formattedDate = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+    String formattedDate = selectedDate.toString().replaceAll(" ", "T").toString();
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/getmedicationplansofday?selecteddate=$formattedDate'),
+      headers: {
+        'Content-Type': 'application/json',
+        'lang': lang,
+        'token': pref.getString('token').toString(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = json.decode(response.body);
+      return jsonData.map((medication) => {
+        'id': medication['id'],
+        'name': medication['medication_name'],
+        'dose': medication['medication_dose'],
+      }).toList();
+    } else {
+      throw Exception('Failed to load medication plan');
+    }
+  }
+*/
+
+  Future fetchMedicationPlansOfDay(String selecteddate) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/getmedicationplansbeforedate?cutoffdate=$selecteddate';
+    var result = await http.get(Uri.parse(finalUrl), headers: {
+      'Content-Type': 'application/text',
+      'lang': lang,
+      'token': pref.getString('token').toString()
+    });
+    return getResponseFromApi(result);
+  }
+
   Future sendMessage(String message, String organization) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/sendmessage';
     var params = {'message': message.toString(), 'organization': organization};
-    print(params);
+    //print(params);
     var result = await http.post(Uri.parse(finalUrl),
         body: params,
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -682,7 +723,7 @@ class Apis {
     }
   }
 
-  Future markAdRead(messageId) async {
+  Future markAsRead(messageId) async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       print(messageId);
@@ -731,36 +772,49 @@ class Apis {
   }
 
   getResponseFromApi(http.Response result) async {
-    if (result.headers['token'] != null) {
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.setString('token', result.headers['token'].toString());
+    try {
+      if (result.headers['token'] != null) {
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        pref.setString('token', result.headers['token'].toString());
+      }
+
+      var body = jsonDecode(result.body);
+      print(body);
+      if (result.statusCode == 200 || result.statusCode == 201) {
+        try {
+          return body;
+        } on Exception catch (err) {
+          showToast(AppLocalizations.tr("Something went wrong"));
+          throw Exception(AppLocalizations.tr("Something went wrong"));
+        }
+      } else {
+        body = jsonDecode(body);
+
+        if (body['errors'] == null ||
+            (body['errors'] != null &&
+                (body['errors'] as List).first['error'] != 'expired'))
+          showToast(AppLocalizations.tr(body['message']));
+
+        if (body['errors'] != null) {
+          var firstError = (body['errors'] as List).first;
+          throw (firstError);
+        }
+        if (body['message'] ==
+            "Need login again") {
+          navigatorKey.currentState?.pushReplacementNamed("/login");
+        }
+
+        throw Exception(body['message']);
+      }
     }
-    var body = jsonDecode(result.body);
-    print(body);
-    if (result.statusCode == 200 || result.statusCode == 201) {
-      try {
-        return body;
-      } on Exception catch (err) {
-        showToast(AppLocalizations.tr("Something went wrong"));
-        throw Exception(AppLocalizations.tr("Something went wrong"));
-      }
-    } else {
-      body = jsonDecode(body);
+    on Exception catch (err) {
+      showToast(result.body);
+      //showToast(AppLocalizations.tr("Something went wrong"));
+      navigatorKey.currentState?.pushReplacementNamed("/login");
+      throw Exception(AppLocalizations.tr("Something went wrong"));
 
-      if (body['errors'] == null ||
-          (body['errors'] != null &&
-              (body['errors'] as List).first['error'] != 'expired'))
-        showToast(AppLocalizations.tr(body['message']));
-
-      if (body['errors'] != null) {
-        var firstError = (body['errors'] as List).first;
-        throw (firstError);
-      }
-      if (body['message'] == "Need to login again") {
-        navigatorKey.currentState?.pushReplacementNamed("/login");
-      }
-
-      throw Exception(body['message']);
     }
+
   }
+
 }
