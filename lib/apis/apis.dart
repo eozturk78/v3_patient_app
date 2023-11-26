@@ -795,20 +795,21 @@ class Apis {
                 (body['errors'] as List).first['error'] != 'expired'))
           showToast(AppLocalizations.tr(body['message']));
 
+        if (body['message'] == "Need login again") {
+          navigatorKey.currentState?.pushReplacementNamed("/login");
+        }
+
         if (body['errors'] != null) {
           var firstError = (body['errors'] as List).first;
           throw (firstError);
         }
-        if (body['message'] ==
-            "Need login again") {
-          navigatorKey.currentState?.pushReplacementNamed("/login");
-        }
+
 
         throw Exception(body['message']);
       }
     }
     on Exception catch (err) {
-      showToast(result.body);
+      showToast(err.toString());
       //showToast(AppLocalizations.tr("Something went wrong"));
       navigatorKey.currentState?.pushReplacementNamed("/login");
       throw Exception(AppLocalizations.tr("Something went wrong"));
