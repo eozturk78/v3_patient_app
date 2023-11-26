@@ -799,6 +799,10 @@ class Apis {
           navigatorKey.currentState?.pushReplacementNamed("/login");
         }
 
+        if (body['errors'][0] == "tokenexpired") {
+          navigatorKey.currentState?.pushReplacementNamed("/login");
+        }
+
         if (body['errors'] != null) {
           var firstError = (body['errors'] as List).first;
           throw (firstError);

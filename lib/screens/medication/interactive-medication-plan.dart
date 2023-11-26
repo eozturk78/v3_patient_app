@@ -209,15 +209,26 @@ class _InteractiveMedicationPlanPageState
                           ),
                         ),
                         children: <Widget>[
-                          ListTile(
-                            title: Text(
-                              doseValue.replaceAll('\\n', '\n'),
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black87,
+                          if (doseValue.trim().isNotEmpty)
+                            ListTile(
+                              title: Text(
+                                doseValue.replaceAll('\\n', '\n'),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            )
+                          else
+                            ListTile(
+                              title: Text(
+                                'Für diese Mahlzeit gibt es kein Medikament',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
                               ),
                             ),
-                          ),
                         ],
                       );
                     } else {
