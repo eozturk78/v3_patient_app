@@ -242,9 +242,9 @@ class _InteractiveMedicationPlanPageState
       case 'Mittags':
         return 'dosenoon';
       case 'Abends':
-        return 'doseevening';
-      case 'Nacht':
         return 'doseafternoon';
+      case 'Nacht':
+        return 'doseevening';
       default:
         return '';
     }
