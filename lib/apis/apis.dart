@@ -395,36 +395,6 @@ class Apis {
     }
   }
 
-  /*
-  Future<List<Map<String, dynamic>>> fetchMedicationPlansOfDay(DateTime selectedDate) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-
-    // Format the selected date
-    //String formattedDate = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
-    String formattedDate = selectedDate.toString().replaceAll(" ", "T").toString();
-
-    final response = await http.get(
-      Uri.parse('$baseUrl/getmedicationplansofday?selecteddate=$formattedDate'),
-      headers: {
-        'Content-Type': 'application/json',
-        'lang': lang,
-        'token': pref.getString('token').toString(),
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonData = json.decode(response.body);
-      return jsonData.map((medication) => {
-        'id': medication['id'],
-        'name': medication['medication_name'],
-        'dose': medication['medication_dose'],
-      }).toList();
-    } else {
-      throw Exception('Failed to load medication plan');
-    }
-  }
-*/
-
   Future fetchMedicationPlansOfDay(String selecteddate) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/getmedicationplansbeforedate?cutoffdate=$selecteddate';
@@ -434,6 +404,35 @@ class Apis {
       'token': pref.getString('token').toString()
     });
     return getResponseFromApi(result);
+  }
+
+
+  Future fetchMedicineIntake(String selecteddate) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/getmedicineintakes?datetaken=$selecteddate';
+      var result = await http.get(Uri.parse(finalUrl), headers: {
+        'Content-Type': 'application/text',
+        'lang': lang,
+        'token': pref.getString('token').toString()
+      });
+      return getResponseFromApi(result);
+    } catch (err) {
+      throw Exception("can't decode");
+    }
+  }
+
+  Future sendMedicineIntake(Map<String, dynamic> intakeData) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/savemedicineintake';
+      var result = await http.post(Uri.parse(finalUrl),
+          body: intakeData,
+          headers: {'lang': lang, 'token': pref.getString('token').toString()});
+      return getResponseFromApi(result);
+    } catch (err) {
+      throw Exception("Can't save medicine intake!" + err.toString());
+    }
   }
 
   Future sendMessage(String message, String organization) async {

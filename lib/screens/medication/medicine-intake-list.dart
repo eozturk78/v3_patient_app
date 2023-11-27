@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 import '../../apis/apis.dart';
+import '../../shared/shared.dart';
+import '../../shared/toast.dart';
 import '../shared/shared.dart';
 
 class MedicineIntakeScreen extends StatefulWidget {
@@ -16,7 +18,9 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
   bool _noonIntake = false;
   bool _eveningIntake = false;
   bool _nightIntake = false;
-
+  Shared sh = Shared();
+  bool _isLoading = false;
+  bool _isSaving = false;
   late Apis api;
 
   @override
@@ -27,28 +31,66 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
   }
 
   Future<void> saveMedicineIntake() async {
-    // API call logic to store the information in the database
-    print('API call to save medicine intake');
+
+    try {
+      setState(() {
+        _isSaving = true;
+      });
+
+      Map<String, dynamic> _intakeData = {
+      'datetaken': DateFormat('yyyy-MM-dd').format(_selectedDate).toString(),
+      'morning': _morningIntake?"1":"0",
+      'noon': _noonIntake?"1":"0",
+      'afternoon': _eveningIntake?"1":"0",
+      'evening': _nightIntake?"1":"0"
+    };
+
+    final data = await api.sendMedicineIntake(_intakeData).onError((error, stackTrace) => sh.redirectPatient(error, context));
+
+    if(data=="ok"){
+      print('Saving medicine intake is OK');
+    }
+    else {
+      //showToast(AppLocalizations.tr("Something went wrong"));
+      print('Saving medicine intake is FAILED');
+    }
+    } catch (error) {
+      print('Error fetching medicine intake: $error');
+    } finally {
+      setState(() {
+        _isSaving = false;
+      });
+    }
   }
 
   Future<void> fetchMedicineIntake() async {
     try {
-      // Call API function to fetch medicine intake information
-      // Example:
-      // final data = await api.fetchMedicineIntake(_selectedDate);
-      // Process the data and update the state
       setState(() {
-        // Update _morningIntake, _noonIntake, _eveningIntake, _nightIntake based on the fetched data
-        // Example:
-        // _morningIntake = data['morningIntake'];
-        // _noonIntake = data['noonIntake'];
-        // _eveningIntake = data['eveningIntake'];
-        // _nightIntake = data['nightIntake'];
+        _isLoading = true;
       });
+
+      final data = await api.fetchMedicineIntake(DateFormat('yyyy-MM-dd').format(_selectedDate)).onError((error, stackTrace) => sh.redirectPatient(error, context));
+
+      if (data != null) {
+        setState(() {
+          _morningIntake = data['morning']?.isOdd ?? false;
+          _noonIntake = data['noon']?.isOdd ?? false;
+          _eveningIntake = data['afternoon']?.isOdd ?? false;
+          _nightIntake = data['evening']?.isOdd ?? false;
+          print('API call to get medicine intake made');
+        });
+      } else {
+        print('Data is null');
+      }
     } catch (error) {
       print('Error fetching medicine intake: $error');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -115,38 +157,45 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
               SizedBox(height: 20),
               Center(child: Text("Bestätigung Medikamenteneinnahme")),
               SizedBox(height: 20),
-              buildCheckbox('Einnahme morgens', _morningIntake, (bool? value) {
-                if (value != null) {
-                  setState(() {
-                    _morningIntake = value;
-                  });
-                  saveMedicineIntake();
-                }
-              }),
-              buildCheckbox('Einnahme mittags', _noonIntake, (bool? value) {
-                if (value != null) {
-                  setState(() {
-                    _noonIntake = value;
-                  });
-                  saveMedicineIntake();
-                }
-              }),
-              buildCheckbox('Einnahme abends', _eveningIntake, (bool? value) {
-                if (value != null) {
-                  setState(() {
-                    _eveningIntake = value;
-                  });
-                  saveMedicineIntake();
-                }
-              }),
-              buildCheckbox('Einnahme nachts', _nightIntake, (bool? value) {
-                if (value != null) {
-                  setState(() {
-                    _nightIntake = value;
-                  });
-                  saveMedicineIntake();
-                }
-              }),
+              if(_isLoading) Center(child: CircularProgressIndicator()) else
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(18, 5, 0, 18),
+                  child:Column(children: [
+                    buildCheckbox('Einnahme morgens', _morningIntake, (bool? value) {
+                      if (value != null) {
+                        setState(() {
+                          _morningIntake = value;
+                        });
+                        saveMedicineIntake();
+                      }
+                    }),
+                    buildCheckbox('Einnahme mittags', _noonIntake, (bool? value) {
+                      if (value != null) {
+                        setState(() {
+                          _noonIntake = value;
+                        });
+                        saveMedicineIntake();
+                      }
+                    }),
+                    buildCheckbox('Einnahme abends', _eveningIntake, (bool? value) {
+                      if (value != null) {
+                        setState(() {
+                          _eveningIntake = value;
+                        });
+                        saveMedicineIntake();
+                      }
+                    }),
+                    buildCheckbox('Einnahme nachts', _nightIntake, (bool? value) {
+                      if (value != null) {
+                        setState(() {
+                          _nightIntake = value;
+                        });
+                        saveMedicineIntake();
+                      }
+                    })
+                  ],),
+                ),
+              if(_isSaving) Center(child: CircularProgressIndicator()),
             ],
           ),
         ),
