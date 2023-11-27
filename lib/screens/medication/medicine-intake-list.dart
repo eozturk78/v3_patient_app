@@ -17,24 +17,23 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
   bool _eveningIntake = false;
   bool _nightIntake = false;
 
-  late Apis api; // Declare an instance of your API class
+  late Apis api;
 
   @override
   void initState() {
     super.initState();
-    api = Apis(); // Initialize your API class instance
+    api = Apis(); // Initialize API class instance
     fetchMedicineIntake(); // Fetch medicine intake information when the screen is initialized
   }
 
-  // Replace this with your API call function
   Future<void> saveMedicineIntake() async {
-    // Your API call logic to store the information in the database
+    // API call logic to store the information in the database
     print('API call to save medicine intake');
   }
 
   Future<void> fetchMedicineIntake() async {
     try {
-      // Call your API function to fetch medicine intake information
+      // Call API function to fetch medicine intake information
       // Example:
       // final data = await api.fetchMedicineIntake(_selectedDate);
       // Process the data and update the state
@@ -47,7 +46,6 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
         // _nightIntake = data['nightIntake'];
       });
     } catch (error) {
-      // Handle the error
       print('Error fetching medicine intake: $error');
     }
   }
