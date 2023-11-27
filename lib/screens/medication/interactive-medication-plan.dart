@@ -60,7 +60,7 @@ class _InteractiveMedicationPlanPageState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.fromLTRB(16, 5, 16, 18),
                     child: _buildDateSelection(),
                   ),
                   DefaultTabController(
