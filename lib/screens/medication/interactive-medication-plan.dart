@@ -200,6 +200,7 @@ class _InteractiveMedicationPlanPageState
       if (doseValue is String) {
         medicationWidgets.add(
           ExpansionTile(
+            backgroundColor: Colors.white,
             initiallyExpanded: true,
             maintainState: true,
             title: Padding(

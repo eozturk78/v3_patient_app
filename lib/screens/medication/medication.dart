@@ -99,7 +99,19 @@ class _MedicationPageState extends State<MedicationPage> {
                       lg: 2,
                       xs: 6,
                       md: 4,
-                      child: Text(""),
+                      child: GestureDetector(
+                        child: CustomSubTotal(
+                            SvgPicture.asset(
+                                'assets/images/menu-icons/medikamentenplan-main.svg'),
+                            "Medicine Intake",
+                            null,
+                            null,
+                            10),
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed('/medicine-intake');
+                        },
+                      ),
                     ),
                   ],
                 ),

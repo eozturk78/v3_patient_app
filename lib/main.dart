@@ -43,6 +43,7 @@ import 'package:patient_app/screens/measurement-result/measurement-result-satura
 import 'package:patient_app/screens/measurement-result/measurement-result-temperature.dart';
 import 'package:patient_app/screens/measurement-result/measurement-result-weight.dart';
 import 'package:patient_app/screens/medication/interactive-medication-plan.dart';
+import 'package:patient_app/screens/medication/medicine-intake-list.dart';
 import 'package:patient_app/screens/medication/medication-plan-list.dart';
 import 'package:patient_app/screens/medication/medication.dart';
 import 'package:patient_app/screens/medication/recipes.dart';
@@ -294,6 +295,7 @@ class MyApp extends StatelessWidget {
         "/calendar": (context) => CalendarScreen(),
         "/medication-plan-list": (context) => const MedicationPlanListPage(),
         "/interactive-medication-plan": (context) => InteractiveMedicationPlanPage(),
+        "/medicine-intake": (context) => MedicineIntakeScreen(),
         "/recipes": (context) => const RecipesPage(),
         "/libraries": (context) => const LibraryListPage(),
         "/enlightenment": (context) => const EnlightenmentPage(),
