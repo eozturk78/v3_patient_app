@@ -146,138 +146,160 @@ class _ChatPageState extends State<ChatPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToEnd());
     return Scaffold(
       appBar: leadingSubpage('Nachrichten', context),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: isStarted
-            ? const Center(
-                child: CircularProgressIndicator(
-                  color: mainButtonColor,
-                ),
-              )
-            : listMessages.isEmpty
-                ? Center(child: Text("no data found"))
-                : Container(
-                    height: MediaQuery.of(context).size.height * 0.7,
-                    child: SingleChildScrollView(
-                      controller: controller,
-                      child: ListView.builder(
-                        physics: const ScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          return (listMessages.length - 1) - index > -1
-                              ? CustomMessageTextBubble(
-                                  dateTime: listMessages[index].dateTime,
-                                  senderTitle:
-                                      listMessages[index].senderTitle ?? "",
-                                  text: listMessages[index].text ?? "",
-                                  senderType: listMessages[index].senderType,
-                                  readAt: listMessages[index].readAt,
-                                  image: listMessages[index].image,
-                                  messageId:
-                                      listMessages[index].messageId ?? "",
-                                  messageType: 20,
-                                )
-                              : null;
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: isStarted
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      color: mainButtonColor,
+                    ),
+                  )
+                : listMessages.isEmpty
+                    ? Center(child: Text("no data found"))
+                    : Container(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: SingleChildScrollView(
+                          controller: controller,
+                          child: ListView.builder(
+                            physics: const ScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              return (listMessages.length - 1) - index > -1
+                                  ? CustomMessageTextBubble(
+                                      dateTime: listMessages[index].dateTime,
+                                      senderTitle:
+                                          listMessages[index].senderTitle ?? "",
+                                      text: listMessages[index].text ?? "",
+                                      senderType:
+                                          listMessages[index].senderType,
+                                      readAt: listMessages[index].readAt,
+                                      image: listMessages[index].image,
+                                      messageId:
+                                          listMessages[index].messageId ?? "",
+                                      messageType: 20,
+                                    )
+                                  : null;
+                            },
+                          ),
+                        ),
+                      ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              color: Colors.white,
+              width: MediaQuery.of(context).size.width * 1,
+              padding: EdgeInsets.only(left: 10),
+              child: TextFormField(
+                controller: txtMessageController,
+                obscureText: false,
+                keyboardType: TextInputType.multiline,
+                minLines: 1, //Normal textInputField will be displayed
+                maxLines: 5,
+                decoration: InputDecoration(
+                  labelText: 'Message',
+                  suffixIcon: Row(
+                    mainAxisSize: MainAxisSize.min, // added line
+                    children: <Widget>[
+                      IconButton(
+                        icon: const Icon(Icons.image_outlined),
+                        onPressed: () async {
+                          showDialog(
+                            context: context,
+                            builder: (context) => onChoosePhotoOption(context),
+                          ).then((resp) {
+                            selectedFile = null;
+                            var index =
+                                listMessages[listMessages.length - 1].index - 1;
+                            setState(() {
+                              listMessages.add(Message(
+                                  image: resp['links'] != null &&
+                                          resp['links']['attachments']?.length >
+                                              0
+                                      ? resp['links']['attachments'][0]['full']
+                                      : null,
+                                  text: resp['body'],
+                                  senderType: 20,
+                                  senderTitle: resp['sender']['name'],
+                                  dateTime:
+                                      sh.formatDateTime(resp['timestamp']),
+                                  messageId: resp['links'] != null
+                                      ? sh.getBaseName(resp['links']['message'])
+                                      : null,
+                                  index: index));
+                            });
+                            listMessages
+                                .sort((a, b) => b.index.compareTo(a.index));
+                            FocusScope.of(context).unfocus();
+                          });
                         },
                       ),
-                    ),
-                  ),
-      ),
-      floatingActionButton: Container(
-        color: Colors.white,
-        padding: EdgeInsets.only(left: 30),
-        child: TextFormField(
-          controller: txtMessageController,
-          obscureText: false,
-          decoration: InputDecoration(
-            labelText: 'Message',
-            suffixIcon: Row(
-              mainAxisSize: MainAxisSize.min, // added line
-              children: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.image_outlined),
-                  onPressed: () async {
-                    showDialog(
-                      context: context,
-                      builder: (context) => onChoosePhotoOption(context),
-                    ).then((resp) {
-                      selectedFile = null;
-                      var index =
-                          listMessages[listMessages.length - 1].index - 1;
-                      setState(() {
-                        listMessages.add(Message(
-                            image: resp['links'] != null &&
-                                    resp['links']['attachments']?.length > 0
-                                ? resp['links']['attachments'][0]['full']
-                                : null,
-                            text: resp['body'],
-                            senderType: 20,
-                            senderTitle: resp['sender']['name'],
-                            dateTime: sh.formatDateTime(resp['timestamp']),
-                            messageId: resp['links'] != null
-                                ? sh.getBaseName(resp['links']['message'])
-                                : null,
-                            index: index));
-                      });
-                      listMessages.sort((a, b) => b.index.compareTo(a.index));
-                      FocusScope.of(context).unfocus();
-                    });
-                  },
-                ),
-                IconButton(
-                  icon: loaderSendMessage == false
-                      ? Icon(Icons.send)
-                      : CircularProgressIndicator(),
-                  onPressed: () {
-                    setState(() {
-                      loaderSendMessage = true;
-                    });
-                    apis
-                        .sendMessage(txtMessageController.text, organization)
-                        .then((resp) {
-                      print(resp);
-                      txtMessageController.text = "";
-                      setState(
-                        () {
-                          var index = 0;
-                          if (listMessages.isNotEmpty)
-                            index =
-                                listMessages[listMessages.length - 1].index - 1;
-                          listMessages.add(Message(
-                              image: resp['links'] != null &&
-                                      resp['links']['attachments']?.length > 0
-                                  ? resp['links']['attachments'][0]['full']
-                                  : null,
-                              messageId: resp['links'] != null
-                                  ? sh.getBaseName(resp['links']['message'])
-                                  : null,
-                              text: resp['body'],
-                              senderType: 20,
-                              senderTitle: resp['sender']['name'],
-                              dateTime: sh.formatDateTime(resp['timestamp']),
-                              index: index));
-                          loaderSendMessage = false;
-                          FocusScope.of(context).unfocus();
-                          txtMessageController.clear();
-                          controller.animateTo(
-                            controller.position.maxScrollExtent,
-                            curve: Curves.easeOut,
-                            duration: const Duration(milliseconds: 1),
-                          );
+                      IconButton(
+                        icon: loaderSendMessage == false
+                            ? Icon(Icons.send)
+                            : CircularProgressIndicator(),
+                        onPressed: () {
+                          setState(() {
+                            loaderSendMessage = true;
+                          });
+                          apis
+                              .sendMessage(
+                                  txtMessageController.text, organization)
+                              .then((resp) {
+                            print(resp);
+                            txtMessageController.text = "";
+                            setState(
+                              () {
+                                var index = 0;
+                                if (listMessages.isNotEmpty)
+                                  index = listMessages[listMessages.length - 1]
+                                          .index -
+                                      1;
+                                listMessages.add(Message(
+                                    image: resp['links'] != null &&
+                                            resp['links']['attachments']
+                                                    ?.length >
+                                                0
+                                        ? resp['links']['attachments'][0]
+                                            ['full']
+                                        : null,
+                                    messageId: resp['links'] != null
+                                        ? sh.getBaseName(
+                                            resp['links']['message'])
+                                        : null,
+                                    text: resp['body'],
+                                    senderType: 20,
+                                    senderTitle: resp['sender']['name'],
+                                    dateTime:
+                                        sh.formatDateTime(resp['timestamp']),
+                                    index: index));
+                                loaderSendMessage = false;
+                                FocusScope.of(context).unfocus();
+                                txtMessageController.clear();
+                                controller.animateTo(
+                                  controller.position.maxScrollExtent,
+                                  curve: Curves.easeOut,
+                                  duration: const Duration(milliseconds: 1),
+                                );
+                              },
+                            );
+                          }, onError: (err) {
+                            sh.redirectPatient(err, context);
+                            setState(() {
+                              loaderSendMessage = false;
+                            });
+                          });
                         },
-                      );
-                    }, onError: (err) {
-                      sh.redirectPatient(err, context);
-                      setState(() {
-                        loaderSendMessage = false;
-                      });
-                    });
-                  },
+                      ),
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: 2),
     );

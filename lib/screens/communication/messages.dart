@@ -6,6 +6,8 @@ import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:patient_app/model/patient-group.dart';
 import 'package:patient_app/screens/shared/message-list-container.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:responsive_framework/responsive_breakpoints.dart';
+import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../apis/apis.dart';
@@ -29,10 +31,12 @@ class _MessagesPageState extends State<MessagesPage> {
   Shared sh = Shared();
   bool isStarted = true;
   List<PatientGroup> patientGroups = [];
+  int fpType = 20;
   @override
   void initState() {
     super.initState();
     setState(() {
+      fpType = 20;
       isStarted = true;
     });
     getNotificationList();
@@ -76,64 +80,141 @@ class _MessagesPageState extends State<MessagesPage> {
     return Scaffold(
       appBar: leadingSubpage('Mitteilungen', context),
       body: Container(
-        alignment: Alignment.center,
+        padding: EdgeInsets.only(top: 30),
         child: isStarted
             ? CircularProgressIndicator(
                 color: mainButtonColor,
               )
             : notificationList.isEmpty
                 ? Center(child: Text("no data found"))
-                : AspectRatio(
-                    aspectRatio: 1,
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Column(
-                          children: [
-                            Text(
-                              "Hier können Sie Ihre Mitteilungen einsehen.",
-                              textScaleFactor:
-                                  ScaleSize.textScaleFactor(context),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(
-                              height: 40,
-                            ),
-                            Column(
-                              children: [
-                                for (var element in notificationList)
-                                  GestureDetector(
-                                    child: CustomMessageListContainer(
-                                        Icons.info,
-                                        element.notificationTitle.length > 22
-                                            ? element.notificationTitle
-                                                .substring(0, 22)
-                                            : element.notificationTitle,
-                                        sh.formatDateTime(element.createdAt)),
-                                    onTap: () async {
-                                      if (element.notificationtype == 10) {
-                                        Navigator.pushNamed(
-                                            context, '/medical-plan-1',
-                                            arguments: element);
-                                      } else {
-                                        SharedPreferences pref =
-                                            await SharedPreferences
-                                                .getInstance();
-                                        pref.setString("organization",
-                                            element.organization ?? "");
-                                        pref.setString(
-                                            "thread", element.thread ?? "");
-                                        Navigator.pushNamed(context, '/chat');
-                                      }
-                                    },
-                                  ),
-                              ],
-                            ),
-                          ],
-                        ),
+                : SingleChildScrollView(
+                    child: Column(
+                    children: [
+                      Text(
+                        "Hier können Sie Ihre Mitteilungen einsehen.",
+                        textScaleFactor: ScaleSize.textScaleFactor(context),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                  ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width *
+                                ResponsiveValue(
+                                  context,
+                                  defaultValue: 0.40,
+                                  conditionalValues: [
+                                    Condition.largerThan(
+                                      //Tablet
+                                      name: MOBILE,
+                                      value: 0.2,
+                                    ),
+                                  ],
+                                ).value!,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: fpType == 20
+                                      ? mainButtonColor
+                                      : mainItemColor,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    fpType = 20;
+                                  });
+                                },
+                                child: Text("Nachrichten")),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width *
+                                ResponsiveValue(
+                                  context,
+                                  defaultValue: 0.40,
+                                  conditionalValues: [
+                                    Condition.largerThan(
+                                      //Tablet
+                                      name: MOBILE,
+                                      value: 0.2,
+                                    ),
+                                  ],
+                                ).value!,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: fpType == 10
+                                      ? mainButtonColor
+                                      : mainItemColor,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    fpType = 10;
+                                  });
+                                },
+                                child: Text("Medikamentenplan")),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SingleChildScrollView(
+                            child: Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 40,
+                                  ),
+                                  Column(
+                                    children: [
+                                      for (var element in notificationList)
+                                        if (element.notificationtype == fpType)
+                                          GestureDetector(
+                                            child: CustomMessageListContainer(
+                                                Icons.info,
+                                                element.notificationTitle
+                                                            .length >
+                                                        22
+                                                    ? element.notificationTitle
+                                                        .substring(0, 22)
+                                                    : element.notificationTitle,
+                                                sh.formatDateTime(
+                                                    element.createdAt)),
+                                            onTap: () async {
+                                              if (element.notificationtype ==
+                                                  10) {
+                                                Navigator.pushNamed(
+                                                    context, '/medical-plan-1',
+                                                    arguments: element);
+                                              } else {
+                                                SharedPreferences pref =
+                                                    await SharedPreferences
+                                                        .getInstance();
+                                                pref.setString("organization",
+                                                    element.organization ?? "");
+                                                pref.setString("thread",
+                                                    element.thread ?? "");
+                                                Navigator.pushNamed(
+                                                    context, '/chat');
+                                              }
+                                            },
+                                          ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )),
       ),
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
