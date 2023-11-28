@@ -214,7 +214,10 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Icon(Icons.close),
+                      child: Icon(
+                        Icons.close,
+                        size: 30,
+                      ),
                     ),
                   ],
                 ),
@@ -366,7 +369,10 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Icon(Icons.close),
+                              Icon(
+                                Icons.close,
+                                size: 30,
+                              ),
                               Text('Schließen'),
                             ],
                           ),

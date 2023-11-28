@@ -24,8 +24,9 @@ class _Questionnaire2PageState extends State<Questionnaire2Page> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingSubpage('HaNeu Fragebögen', context),
-      body: SafeArea( // Wrap your body with SafeArea
-      child:Center(
+      body: SafeArea(
+          // Wrap your body with SafeArea
+          child: Center(
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
@@ -77,7 +78,13 @@ class _Questionnaire2PageState extends State<Questionnaire2Page> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [Text("Überspringen"), Icon(Icons.close)],
+                            children: [
+                              Text("Überspringen"),
+                              Icon(
+                                Icons.close,
+                                size: 30,
+                              )
+                            ],
                           )),
                     ),
                     SizedBox(

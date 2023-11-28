@@ -126,7 +126,7 @@ main() async {
     else if (screenNumber == "30")
       redirectionScreen = '/medication-plan-list';
     else
-      redirectionScreen = '/medication-plan-list';
+      redirectionScreen = '/medicine-intake';
 
     SharedPreferences pref = await SharedPreferences.getInstance();
     apis.patientrenewtoken().then((value) async {
@@ -294,7 +294,8 @@ class MyApp extends StatelessWidget {
         "/medical-plan-1": (context) => const MedicalPlan1Page(),
         "/calendar": (context) => CalendarScreen(),
         "/medication-plan-list": (context) => const MedicationPlanListPage(),
-        "/interactive-medication-plan": (context) => InteractiveMedicationPlanPage(),
+        "/interactive-medication-plan": (context) =>
+            InteractiveMedicationPlanPage(),
         "/medicine-intake": (context) => MedicineIntakeScreen(),
         "/recipes": (context) => const RecipesPage(),
         "/libraries": (context) => const LibraryListPage(),

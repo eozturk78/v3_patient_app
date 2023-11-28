@@ -514,7 +514,10 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Icon(Icons.close),
+                      child: Icon(
+                        Icons.close,
+                        size: 30,
+                      ),
                     ),
                     TextButton(
                         onPressed: () {
@@ -539,7 +542,10 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                           if (resp != null) Navigator.of(context).pop();
                         });
                       },
-                      child: Icon(Icons.delete_outline),
+                      child: Icon(
+                        Icons.delete_outline,
+                        size: 30,
+                      ),
                     ),
                   ],
                 ),
@@ -818,7 +824,10 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: Icon(Icons.close),
+                        child: Icon(
+                          Icons.close,
+                          size: 30,
+                        ),
                       ),
                       Spacer(),
                       TextButton(
@@ -833,7 +842,10 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                               if (resp != null) Navigator.pop(context, resp);
                             });
                           },
-                          child: Icon(Icons.check))
+                          child: Icon(
+                            Icons.check,
+                            size: 30,
+                          ))
                     ],
                   ),
                   height: 40,

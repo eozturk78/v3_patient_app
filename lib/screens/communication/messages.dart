@@ -183,6 +183,7 @@ class _MessagesPageState extends State<MessagesPage> {
                         .first
                     : null;
 
+                print(item.links.organization);
                 if (thread != null)
                   pref.setString('thread', thread.thread.toString());
 

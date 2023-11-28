@@ -132,7 +132,10 @@ Widget onOpenImage2(BuildContext context, String url) {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Icon(Icons.close),
+                      child: Icon(
+                        Icons.close,
+                        size: 30,
+                      ),
                     ),
                     Spacer()
                   ],

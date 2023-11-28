@@ -99,7 +99,10 @@ class _EnlightenmentPageState extends State<EnlightenmentPage> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: Icon(Icons.close),
+                        child: Icon(
+                          Icons.close,
+                          size: 30,
+                        ),
                       ),
                       Spacer(),
                     ],

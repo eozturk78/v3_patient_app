@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/message-list-container.dart';
@@ -49,7 +50,7 @@ class _ChatPageState extends State<ChatPage> {
   List<Message> listMessages = [];
   Apis apis = Apis();
   Shared sh = Shared();
-  bool isStarted = true;
+  bool isStarted = false;
   ScrollController controller = ScrollController();
   TextEditingController txtMessageController = TextEditingController();
   TextEditingController txtHeaderMessageController = TextEditingController();
@@ -64,46 +65,49 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   getThreadMessages() async {
-    setState(() {
-      isStarted = true;
-    });
     SharedPreferences pref = await SharedPreferences.getInstance();
     organization = pref.getString("organization")!;
-    apis.getPatientThreadMessages(pref.getString("thread") ?? "").then((value) {
+    if (pref.getString("thread") != null) {
       setState(() {
-        var i = 0;
-        for (var element in value) {
-          if (element['body'] != null) {
-            listMessages.add(Message(
-                image: element['links'] != null &&
-                        element['links']['attachments']?.length > 0
-                    ? element['links']['attachments'][0]['full']
-                    : null,
-                text: element['body'],
-                senderType:
-                    element['sender']['type'] == "organization" ? 10 : 20,
-                senderTitle: element['sender']['name'],
-                dateTime: sh.formatDateTime(element['timestamp']),
-                readAt: element['readAt'],
-                messageId: element['links'] != null
-                    ? sh.getBaseName(element['links']['message'])
-                    : null,
-                index: i));
-            i++;
+        isStarted = true;
+      });
+      apis.getPatientThreadMessages(pref.getString("thread") ?? "").then(
+          (value) {
+        setState(() {
+          var i = 0;
+          for (var element in value) {
+            if (element['body'] != null) {
+              listMessages.add(Message(
+                  image: element['links'] != null &&
+                          element['links']['attachments']?.length > 0
+                      ? element['links']['attachments'][0]['full']
+                      : null,
+                  text: element['body'],
+                  senderType:
+                      element['sender']['type'] == "organization" ? 10 : 20,
+                  senderTitle: element['sender']['name'],
+                  dateTime: sh.formatDateTime(element['timestamp']),
+                  readAt: element['readAt'],
+                  messageId: element['links'] != null
+                      ? sh.getBaseName(element['links']['message'])
+                      : null,
+                  index: i));
+              i++;
+            }
           }
-        }
 
-        listMessages.sort((a, b) => b.index.compareTo(a.index));
+          listMessages.sort((a, b) => b.index.compareTo(a.index));
+          setState(() {
+            isStarted = false;
+          });
+        });
+      }, onError: (err) {
+        sh.redirectPatient(err, context);
         setState(() {
           isStarted = false;
         });
       });
-    }, onError: (err) {
-      sh.redirectPatient(err, context);
-      setState(() {
-        isStarted = false;
-      });
-    });
+    }
   }
 
   _scrollToEnd() {

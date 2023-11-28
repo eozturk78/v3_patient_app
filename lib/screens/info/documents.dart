@@ -324,7 +324,10 @@ class _DocumentListPageState extends State<DocumentListPage> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: Icon(Icons.close),
+                        child: Icon(
+                          Icons.close,
+                          size: 30,
+                        ),
                       ),
                       Spacer(),
                       TextButton(
@@ -338,7 +341,10 @@ class _DocumentListPageState extends State<DocumentListPage> {
                               if (resp != null) Navigator.pop(context, resp);
                             });
                           },
-                          child: Icon(Icons.check))
+                          child: Icon(
+                            Icons.check,
+                            size: 30,
+                          ))
                     ],
                   ),
                   height: 40,

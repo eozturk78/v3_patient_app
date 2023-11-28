@@ -62,7 +62,21 @@ class _LoginPageState extends State<LoginPage> {
         );
   }
 
+  late final StreamSubscription<InternetConnectionStatus> _listener;
+   InternetConnectionStatus? _internetStatus;
   checkRememberMe() async {
+    _listener = InternetConnectionChecker()
+        .onStatusChange
+        .listen((InternetConnectionStatus status) {
+      setState(() {
+        _internetStatus = status;
+      });
+      print(status == InternetConnectionStatus.connected ? " var" : " yok");
+    });
+    // close listener after 30 seconds, so the program doesn't run forever
+    // await Future<void>.delayed(const Duration(seconds: 30));
+    //  await listener.cancel();
+
     SharedPreferences pref = await SharedPreferences.getInstance();
     if (pref.getString("rememberMe") == true.toString()) {
       rememberMeState = true;
@@ -224,7 +238,7 @@ class _LoginPageState extends State<LoginPage> {
     }
     if (isConnected) {
       //print('Has internet connection!');
-
+      await _listener.cancel();
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setString("userName", userNameController.text);
       if (rememberMeState) {
@@ -247,7 +261,6 @@ class _LoginPageState extends State<LoginPage> {
           });
           pref.setString("patientTitle", value['firstName']);
           pref.setString('token', value['token']);
-          pref.setString('patientGroups', jsonEncode(value['token']));
           _isRequiredSecretQuestion = value['isRequiredSecretQuestion'];
           print(_isRequiredSecretQuestion);
           //isLoggedIn = true;
@@ -339,6 +352,11 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                if (_internetStatus!=null && _internetStatus != InternetConnectionStatus.connected)
+                  Text(
+                    "Bitte überprüfen Sie Ihre Internetverbindung",
+                    style: TextStyle(fontSize: 20, color: Colors.red),
+                  ),
                 Padding(
                   padding: EdgeInsets.all(20),
                   child: SingleChildScrollView(
@@ -462,7 +480,8 @@ class _LoginPageState extends State<LoginPage> {
                               ],
                             ),
                           TextButton(
-                              onPressed: () {
+                              onPressed: () async {
+                                await _listener.cancel();
                                 Navigator.of(context)
                                     .pushNamed("/forgot-password");
                               },
