@@ -3,6 +3,9 @@ PODS:
     - Flutter
   - audio_session (0.0.1):
     - Flutter
+  - connectivity_plus (0.0.1):
+    - Flutter
+    - ReachabilitySwift
   - DKImagePickerController/Core (4.3.4):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
@@ -178,6 +181,7 @@ PODS:
   - PhoneNumberKit/UIKit (3.6.7):
     - PhoneNumberKit/PhoneNumberKitCore
   - PromisesObjC (2.1.1)
+  - ReachabilitySwift (5.0.0)
   - SDWebImage (5.14.2):
     - SDWebImage/Core (= 5.14.2)
   - SDWebImage/Core (5.14.2)
@@ -201,6 +205,7 @@ PODS:
 DEPENDENCIES:
   - advance_pdf_viewer (from `.symlinks/plugins/advance_pdf_viewer/ios`)
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
+  - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -238,6 +243,7 @@ SPEC REPOS:
     - nanopb
     - PhoneNumberKit
     - PromisesObjC
+    - ReachabilitySwift
     - SDWebImage
     - SwiftyGif
     - Toast
@@ -247,6 +253,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/advance_pdf_viewer/ios"
   audio_session:
     :path: ".symlinks/plugins/audio_session/ios"
+  connectivity_plus:
+    :path: ".symlinks/plugins/connectivity_plus/ios"
   file_picker:
     :path: ".symlinks/plugins/file_picker/ios"
   firebase_analytics:
@@ -287,6 +295,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   advance_pdf_viewer: 5c832f382b4ca84fe735f893b7e91aa830c27d7b
   audio_session: 4f3e461722055d21515cf3261b64c973c062f345
+  connectivity_plus: bf0076dd84a130856aa636df1c71ccaff908fa1d
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   file_picker: 817ab1d8cd2da9d2da412a417162deee3500fc95
@@ -315,6 +324,7 @@ SPEC CHECKSUMS:
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
   PhoneNumberKit: 43b5169526cc417398c8f13f77c97552c1c6ed76
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDWebImage: b9a731e1d6307f44ca703b3976d18c24ca561e84
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
@@ -325,6 +335,6 @@ SPEC CHECKSUMS:
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
 
-PODFILE CHECKSUM: e16d3130035e48e03200b3831f53bf0d3b7cebbf
+PODFILE CHECKSUM: 03b17a53a362a1263f865634efdd710e76c923d9
 
 COCOAPODS: 1.12.1

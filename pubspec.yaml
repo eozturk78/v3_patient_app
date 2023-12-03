@@ -74,7 +74,7 @@ dependencies:
   responsive_grid: ^2.4.4
   responsive_framework: ^1.1.1 
   webview_flutter: ^2.0.7
-  connectivity_plus: ^5.0.1
+  connectivity_plus: ^5.0.2
 
   
 
