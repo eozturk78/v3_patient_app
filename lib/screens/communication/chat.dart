@@ -66,6 +66,10 @@ class _ChatPageState extends State<ChatPage> {
 
   getThreadMessages() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+
+    if (pref.getString('defaultMsg') != null)
+      txtMessageController.text = pref.getString('defaultMsg')!;
+    pref.remove('defaultMsg');
     organization = pref.getString("organization")!;
     if (pref.getString("thread") != null) {
       setState(() {
@@ -301,7 +305,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 2),
+      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
     );
   }
 

@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../apis/apis.dart';
 import '../../colors/colors.dart';
 import '../../model/message-notification.dart';
+import '../../model/organization.dart';
 import '../../model/scale-size.dart';
 import '../../shared/shared.dart';
 import '../shared/bottom-menu.dart';
@@ -31,6 +32,7 @@ class _MessagesPageState extends State<MessagesPage> {
   Shared sh = Shared();
   bool isStarted = true;
   List<PatientGroup> patientGroups = [];
+  List<Organization> organizations = [];
   int fpType = 20;
   @override
   void initState() {
@@ -44,9 +46,9 @@ class _MessagesPageState extends State<MessagesPage> {
 
   getNotificationList() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    if (pref.getString('patientGroups') != null) {
-      patientGroups = (jsonDecode(pref.getString('patientGroups')!) as List)
-          .map((e) => PatientGroup.fromJson(e))
+    if (pref.getString('organizations') != null) {
+      organizations = (jsonDecode(pref.getString('organizations')!) as List)
+          .map((e) => Organization.fromJson(e))
           .toList();
     }
     apis.getPatientNotificationList().then(
@@ -82,8 +84,10 @@ class _MessagesPageState extends State<MessagesPage> {
       body: Container(
         padding: EdgeInsets.only(top: 30),
         child: isStarted
-            ? CircularProgressIndicator(
-                color: mainButtonColor,
+            ? Center(
+                child: CircularProgressIndicator(
+                  color: mainButtonColor,
+                ),
               )
             : notificationList.isEmpty
                 ? Center(child: Text("no data found"))
@@ -200,6 +204,8 @@ class _MessagesPageState extends State<MessagesPage> {
                                                     element.organization ?? "");
                                                 pref.setString("thread",
                                                     element.thread ?? "");
+
+                                                print(element.organization);
                                                 Navigator.pushNamed(
                                                     context, '/chat');
                                               }
@@ -240,31 +246,25 @@ class _MessagesPageState extends State<MessagesPage> {
           debugPrint('afterClose');
         },
         children: [
-          for (var item in patientGroups)
+          for (var item in organizations)
             FloatingActionButton.extended(
               onPressed: () async {
                 SharedPreferences pref = await SharedPreferences.getInstance();
 
-                if (item.links != null && item.links.organization != null) {
-                  var org = sh.getBaseName(item.links.organization);
-                  pref.setString("organization", org);
-                }
+                pref.setString("organization", item.organization);
 
                 pref.remove('thread');
                 var thread = threadList
                             .where((element) =>
-                                element.organization ==
-                                sh.getBaseName(item.links.organization))
+                                element.organization == item.organization)
                             .length >
                         0
                     ? threadList
                         .where((element) =>
-                            element.organization ==
-                            sh.getBaseName(item.links.organization))
+                            element.organization == item.organization)
                         .first
                     : null;
 
-                print(item.links.organization);
                 if (thread != null)
                   pref.setString('thread', thread.thread.toString());
 

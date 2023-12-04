@@ -66,7 +66,6 @@ class _TemporaryPasswordPageState extends State<TemporaryPasswordPage> {
             });
             pref.setString("patientTitle", value['firstName']);
             pref.setString('token', value['token']);
-            pref.setString('patientGroups', jsonEncode(value['token']));
             Navigator.of(context).pushNamed('/change-password');
           }
         }, onError: (err) {

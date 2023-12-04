@@ -125,9 +125,10 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
       pref.setString("patientTitle", title);
     });
     await apis.patientInfo().then((value) {
-      //print(value);
+      print(value);
       setState(() {
         pref.setString("patientGroups", jsonEncode(value['patientGroups']));
+        pref.setString("organizations", jsonEncode(value['organizations']));
       });
     }, onError: (err) {
       sh.redirectPatient(err, context);
