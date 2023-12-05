@@ -411,8 +411,7 @@ class _LoginPageState extends State<LoginPage> {
                                               MaterialState.selected)) {
                                             return mainButtonColor; // Set to your login button color
                                           }
-                                          return Colors
-                                              .black54; // Change to your desired unselected color
+                                          return Color.fromARGB(136, 241, 241, 241); // Change to your desired unselected color
                                         },
                                       ),
                                       value: rememberMeState,
