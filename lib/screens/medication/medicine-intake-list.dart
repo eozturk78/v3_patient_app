@@ -295,7 +295,7 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
 
                           Navigator.pushNamed(context, '/chat');
                         } else {
-                          Navigator.pushNamed(context, '/messaegs');
+                          Navigator.pushNamed(context, '/messages');
                         }
                       }),
                     },
