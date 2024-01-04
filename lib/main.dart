@@ -262,7 +262,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'iMedCom Patient App',
       theme: ThemeData(
-        scaffoldBackgroundColor: Color.fromARGB(255, 245, 245, 245),
+        useMaterial3: false,
+        appBarTheme:
+            AppBarTheme(backgroundColor: Color.fromARGB(255, 32, 141, 230)),
+        // is not restarted.
       ),
       navigatorKey: navigatorKey,
       //home: const MyHomePage(title: 'iMedCom App Demo Home Page'),

@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   late final StreamSubscription<InternetConnectionStatus> _listener;
-   InternetConnectionStatus? _internetStatus;
+  InternetConnectionStatus? _internetStatus;
   checkRememberMe() async {
     _listener = InternetConnectionChecker()
         .onStatusChange
@@ -352,7 +352,8 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if (_internetStatus!=null && _internetStatus != InternetConnectionStatus.connected)
+                if (_internetStatus != null &&
+                    _internetStatus != InternetConnectionStatus.connected)
                   Text(
                     "Bitte überprüfen Sie Ihre Internetverbindung",
                     style: TextStyle(fontSize: 20, color: Colors.red),
@@ -411,7 +412,8 @@ class _LoginPageState extends State<LoginPage> {
                                               MaterialState.selected)) {
                                             return mainButtonColor; // Set to your login button color
                                           }
-                                          return Color.fromARGB(136, 241, 241, 241); // Change to your desired unselected color
+                                          return Color.fromARGB(136, 241, 241,
+                                              241); // Change to your desired unselected color
                                         },
                                       ),
                                       value: rememberMeState,
@@ -439,7 +441,10 @@ class _LoginPageState extends State<LoginPage> {
                               onLogin();
                             },
                             child: !isSendEP
-                                ? const Text("Anmelden")
+                                ? const Text(
+                                    "Anmelden",
+                                    style: TextStyle(color: Colors.white),
+                                  )
                                 : Transform.scale(
                                     scale: 0.5,
                                     child: const CircularProgressIndicator(
@@ -484,7 +489,10 @@ class _LoginPageState extends State<LoginPage> {
                                 Navigator.of(context)
                                     .pushNamed("/forgot-password");
                               },
-                              child: Text('Ich habe mein Passwort vergessen'))
+                              child: Text(
+                                'Ich habe mein Passwort vergessen',
+                                style: TextStyle(color: mainButtonColor),
+                              ))
                         ],
                       ),
                     ),

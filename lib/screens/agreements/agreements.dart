@@ -75,31 +75,33 @@ class _AgreementsPageState extends State<AgreementsPage> {
                       check2 = !check2;
                     });
                   },
-                  child:
-                Row(
-                  children: [
-                    Checkbox(
-                      fillColor: MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) {
-                          if (states.contains(MaterialState.selected)) {
-                            return mainButtonColor; // Set to your login button color
-                          }
-                          return Colors.black54; // Change to your desired unselected color
-                        },),
-                      onChanged: (value) {
-                        setState(() {
-                          check2 = !check2;
-                        });
-                      },
-                      value: check2,
-                    ),
-                    const Flexible(
-                        child: Text(
-                      "Ich möchte mit meinem Arzt bzw.  meiner Ärztin über „iMedCom-App“ kommunizieren und willige ein, dass meine personenbezogenen Gesundheitsdaten für den bestimmungsgemäßen Gebrauch verarbeitet werden. Ich kann meine Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen. Bitte beachten Sie jedoch, dass Ihr Benutzerkonto gelöscht wird, wenn Sie Ihre Einwilligung widerrufen, da die App ohne Ihre Einwilligung nicht genutzt werden darf. ",
-                      style: TextStyle(fontSize: 16),
-                    ))
-                  ],
-                ),),
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        fillColor: MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                            if (states.contains(MaterialState.selected)) {
+                              return mainButtonColor; // Set to your login button color
+                            }
+                            return Color.fromARGB(136, 241, 241,
+                                241); // Change to your desired unselected color
+                          },
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            check2 = !check2;
+                          });
+                        },
+                        value: check2,
+                      ),
+                      const Flexible(
+                          child: Text(
+                        "Ich möchte mit meinem Arzt bzw.  meiner Ärztin über „iMedCom-App“ kommunizieren und willige ein, dass meine personenbezogenen Gesundheitsdaten für den bestimmungsgemäßen Gebrauch verarbeitet werden. Ich kann meine Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen. Bitte beachten Sie jedoch, dass Ihr Benutzerkonto gelöscht wird, wenn Sie Ihre Einwilligung widerrufen, da die App ohne Ihre Einwilligung nicht genutzt werden darf. ",
+                        style: TextStyle(fontSize: 16),
+                      ))
+                    ],
+                  ),
+                ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -109,31 +111,33 @@ class _AgreementsPageState extends State<AgreementsPage> {
                       check3 = !check3;
                     });
                   },
-                  child:
-                Row(
-                  children: [
-                    Checkbox(
-                      fillColor: MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) {
-                          if (states.contains(MaterialState.selected)) {
-                            return mainButtonColor; // Set to your login button color
-                          }
-                          return Colors.black54; // Change to your desired unselected color
-                        },),
-                      onChanged: (value) {
-                        setState(() {
-                          check3 = !check3;
-                        });
-                      },
-                      value: check3,
-                    ),
-                    const Flexible(
-                        child: Text(
-                      "Ich willige ein, dass die iMedCom GmbH, Weinbergweg 23, 06120 Halle an der Saale meine Daten verarbeiten darf, um die technische Funktionsfähigkeit und die Nutzerfreundlichkeit der App weiterzuentwickeln. Die Einwilligung ist jederzeit widerrufbar ohne Auswirkungen auf den Funktionsumfang der App. ",
-                      style: TextStyle(fontSize: 16),
-                    ))
-                  ],
-                ),),
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        fillColor: MaterialStateProperty.resolveWith<Color>(
+                          (Set<MaterialState> states) {
+                            if (states.contains(MaterialState.selected)) {
+                              return mainButtonColor; // Set to your login button color
+                            }
+                            return Color.fromARGB(136, 241, 241,
+                                241); // Change to your desired unselected color
+                          },
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            check3 = !check3;
+                          });
+                        },
+                        value: check3,
+                      ),
+                      const Flexible(
+                          child: Text(
+                        "Ich willige ein, dass die iMedCom GmbH, Weinbergweg 23, 06120 Halle an der Saale meine Daten verarbeiten darf, um die technische Funktionsfähigkeit und die Nutzerfreundlichkeit der App weiterzuentwickeln. Die Einwilligung ist jederzeit widerrufbar ohne Auswirkungen auf den Funktionsumfang der App. ",
+                        style: TextStyle(fontSize: 16),
+                      ))
+                    ],
+                  ),
+                ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -151,12 +155,14 @@ class _AgreementsPageState extends State<AgreementsPage> {
                   children: [
                     Checkbox(
                       fillColor: MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) {
+                        (Set<MaterialState> states) {
                           if (states.contains(MaterialState.selected)) {
                             return mainButtonColor; // Set to your login button color
                           }
-                          return Colors.black54; // Change to your desired unselected color
-                        },),
+                          return Color.fromARGB(136, 241, 241,
+                              241); // Change to your desired unselected color
+                        },
+                      ),
                       onChanged: (value) {
                         setState(() {
                           check1 = !check1;
@@ -243,7 +249,10 @@ class _AgreementsPageState extends State<AgreementsPage> {
                       );
                     }
                   },
-                  child: Text("Weiter"),
+                  child: Text(
+                    "Weiter",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 )
               ],
             ),

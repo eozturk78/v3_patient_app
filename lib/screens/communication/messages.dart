@@ -130,7 +130,10 @@ class _MessagesPageState extends State<MessagesPage> {
                                     fpType = 20;
                                   });
                                 },
-                                child: Text("Nachrichten")),
+                                child: Text(
+                                  "Nachrichten",
+                                  style: TextStyle(color: Colors.white),
+                                )),
                           ),
                           SizedBox(
                             width: 5,
