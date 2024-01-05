@@ -39,13 +39,13 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Upload image from camera for screen background</string>
+	<string>Bitte erlauben Sie uns, die Kamera zum Fotografieren zu öffnen</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>$(PRODUCT_NAME) Authentication with TouchId or FaceID</string>
+	<string>$(PRODUCT_NAME) Authentifizierung mit TouchId oder FaceID</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Post videos to profile</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Upload images for screen background</string>
+	<string>Bitte erlauben Sie uns, Ihre Bibliothek zu öffnen, um Anhänge hinzuzufügen</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
