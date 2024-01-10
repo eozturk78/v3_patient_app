@@ -62,6 +62,12 @@ class Shared {
     "fef2575": "FEF25% -75%",
     "meanArterialPressure": "Mittlerer arterieller Blutdruck"
   };
+  String galeryPermissionText =
+      "Sie haben beim ersten Mal keine Genehmigung für die Fotos erteilt, bitte erlauben Sie uns den Zugriff auf die Fotos in den Einstellungen";
+  String cameraPermissionText =
+      "Sie haben beim ersten Mal die Erlaubnis für die Kamera nicht erteilt, bitte erlauben Sie uns in den Einstellungen den Zugriff auf die Kamera";
+  String storagePermissionText =
+      "Sie haben beim ersten Mal keine Genehmigung für die Dokumente erteilt, bitte erlauben Sie uns den Zugriff auf Ihre Dokumente in den Einstellungen";
 
   getTranslation(String field) {
     return translations[field] != null ? translations[field] : field;
@@ -306,22 +312,24 @@ class Shared {
 
   checkPermission(
       BuildContext context, Permission permission, String warningText) async {
-    print(permission);
     SharedPreferences pref = await SharedPreferences.getInstance();
     var listCount = 1;
     var prefText = 'perm${permission.toString()}';
-    if (pref.getString(prefText) != null) listCount = 2;
+    if (pref.getString(prefText) != null) {
+      listCount = int.parse(pref.getString(prefText)!);
+      listCount++;
+    }
 
     pref.setString(prefText, listCount.toString());
     print(await permission.isGranted);
     if (await permission.isGranted == false) {
-      print(listCount.toString() + "permission is demied");
-      if (Platform.isIOS && listCount > 1)
+      if ((Platform.isIOS && listCount > 1) ||
+          (Platform.isAndroid && listCount > 2))
         showDialog(
           context: context,
           builder: (context) => openSettingsDialog(context, warningText),
         ).then((resp) {
-          Navigator.pop(context, resp);
+          //  Navigator.pop(context, resp);
         });
       final result = await permission.request();
 

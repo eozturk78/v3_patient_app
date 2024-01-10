@@ -209,36 +209,35 @@ class _ChatPageState extends State<ChatPage> {
                     mainAxisSize: MainAxisSize.min, // added line
                     children: <Widget>[
                       IconButton(
+                        icon: const Icon(Icons.camera_alt_outlined),
+                        onPressed: () async {
+                          if (await sh.checkPermission(context,
+                                  Permission.camera, sh.cameraPermissionText) ==
+                              true) {
+                            XFile? pickedFile = await ImagePicker().pickImage(
+                              source: ImageSource.camera,
+                            );
+                            if (pickedFile != null) {
+                              uploadFile(pickedFile);
+                            }
+                          }
+                        },
+                      ),
+                      IconButton(
                         icon: const Icon(Icons.image_outlined),
                         onPressed: () async {
-                          showDialog(
-                            context: context,
-                            builder: (context) => onChoosePhotoOption(context),
-                          ).then((resp) {
-                            selectedFile = null;
-                            var index =
-                                listMessages[listMessages.length - 1].index - 1;
-                            setState(() {
-                              listMessages.add(Message(
-                                  image: resp['links'] != null &&
-                                          resp['links']['attachments']?.length >
-                                              0
-                                      ? resp['links']['attachments'][0]['full']
-                                      : null,
-                                  text: resp['body'],
-                                  senderType: 20,
-                                  senderTitle: resp['sender']['name'],
-                                  dateTime:
-                                      sh.formatDateTime(resp['timestamp']),
-                                  messageId: resp['links'] != null
-                                      ? sh.getBaseName(resp['links']['message'])
-                                      : null,
-                                  index: index));
-                            });
-                            listMessages
-                                .sort((a, b) => b.index.compareTo(a.index));
-                            FocusScope.of(context).unfocus();
-                          });
+                          if (await sh.checkPermission(
+                                  context,
+                                  Permission.storage,
+                                  sh.galeryPermissionText) ==
+                              true) {
+                            XFile? pickedFile = await ImagePicker().pickImage(
+                              source: ImageSource.gallery,
+                            );
+                            if (pickedFile != null) {
+                              uploadFile(pickedFile);
+                            }
+                          }
                         },
                       ),
                       IconButton(
@@ -310,119 +309,37 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  XFile? selectedFile;
-
-  Widget onChoosePhotoOption(BuildContext context) {
-    return AlertDialog(
-      backgroundColor: Colors.transparent,
-      insetPadding: const EdgeInsets.all(0),
-      content: StatefulBuilder(
-        builder: (BuildContext context, setState) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              SizedBox(
-                height: 10,
-              ),
-              GestureDetector(
-                child: const Icon(
-                  Icons.close,
-                  color: Colors.white,
-                ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 1,
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        if (await sh.checkPermission(context, Permission.photos,
-                                "Sie haben beim ersten Mal keine Genehmigung für die Fotos erteilt, bitte erlauben Sie uns den Zugriff auf die Fotos in den Einstellungen") ==
-                            true) {
-                          XFile? pickedFile = await ImagePicker().pickImage(
-                            source: ImageSource.gallery,
-                          );
-                          if (pickedFile != null) {
-                            setState(() {
-                              selectedFile = pickedFile;
-                              showDialog(
-                                context: context,
-                                builder: (context) => onChosenPhoto(context),
-                              ).then((resp) {
-                                Navigator.pop(context, resp);
-                              });
-                            });
-                          }
-                        }
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        width: 200,
-                        decoration: const BoxDecoration(
-                          color: Color.fromARGB(183, 255, 255, 255),
-                        ),
-                        child: Column(
-                          children: [
-                            Icon(Icons.image),
-                            Text("Take From Galery")
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        if (await sh.checkPermission(context, Permission.camera,
-                                "Sie haben beim ersten Mal die Erlaubnis für die Kamera nicht erteilt, bitte erlauben Sie uns in den Einstellungen den Zugriff auf die Kamera") ==
-                            true) {
-                          XFile? pickedFile = await ImagePicker().pickImage(
-                            source: ImageSource.camera,
-                          );
-                          if (pickedFile != null) {
-                            setState(() {
-                              selectedFile = pickedFile;
-                              showDialog(
-                                context: context,
-                                builder: (context) => onChosenPhoto(context),
-                              ).then((resp) {
-                                Navigator.pop(context, resp);
-                              });
-                            });
-                          }
-                        }
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        width: 200,
-                        decoration: const BoxDecoration(
-                          color: Color.fromARGB(183, 255, 255, 255),
-                        ),
-                        child: Column(
-                          children: [
-                            Icon(Icons.camera_alt_outlined),
-                            Text("Take a photo"),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
+  uploadFile(XFile pickedFile) {
+    setState(() {
+      selectedFile = pickedFile;
+      showDialog(
+        context: context,
+        builder: (context) => onChosenPhoto(context),
+      ).then((resp) {
+        selectedFile = null;
+        var index = listMessages[listMessages.length - 1].index - 1;
+        setState(() {
+          listMessages.add(Message(
+              image: resp['links'] != null &&
+                      resp['links']['attachments']?.length > 0
+                  ? resp['links']['attachments'][0]['full']
+                  : null,
+              text: resp['body'],
+              senderType: 20,
+              senderTitle: resp['sender']['name'],
+              dateTime: sh.formatDateTime(resp['timestamp']),
+              messageId: resp['links'] != null
+                  ? sh.getBaseName(resp['links']['message'])
+                  : null,
+              index: index));
+        });
+        listMessages.sort((a, b) => b.index.compareTo(a.index));
+        FocusScope.of(context).unfocus();
+      });
+    });
   }
+
+  XFile? selectedFile;
 
   ScrollController controller2 = ScrollController();
 

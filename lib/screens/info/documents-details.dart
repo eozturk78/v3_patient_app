@@ -323,8 +323,8 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
           ),
           FloatingActionButton.extended(
             onPressed: () async {
-              if (await sh.checkPermission(context, Permission.camera,
-                      "Sie haben beim ersten Mal die Erlaubnis für die Kamera nicht erteilt, bitte erlauben Sie uns in den Einstellungen den Zugriff auf die Kamera") ==
+              if (await sh.checkPermission(
+                      context, Permission.camera, sh.cameraPermissionText) ==
                   true) {
                 XFile? pickedFile = await ImagePicker().pickImage(
                   source: ImageSource.camera,
@@ -349,14 +349,14 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
           ),
           FloatingActionButton.extended(
             onPressed: () async {
-              if (await sh.checkPermission(context, Permission.storage,
-                      "Sie haben beim ersten Mal keine Genehmigung für die Dokumente erteilt, bitte erlauben Sie uns den Zugriff auf Ihre Dokumente in den Einstellungen") ==
+              if (await sh.checkPermission(
+                      context, Permission.storage, sh.storagePermissionText) ==
                   true) {
                 FilePickerResult? pickedFile =
                     await FilePicker.platform.pickFiles(
                   type: FileType.custom,
                   allowMultiple: false,
-                  allowedExtensions: ['jpg', 'pdf', 'doc'],
+                  allowedExtensions: ['jpg', 'pdf', 'doc', 'png'],
                 );
                 if (pickedFile != null) {
                   setState(() {

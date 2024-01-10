@@ -480,7 +480,7 @@ Widget openSettingsDialog(BuildContext context, String warningText) {
                   ),
                   TextButton(
                     onPressed: () {
-                      openAppSettings();
+                      openAppSettings().then((value) => null);
                     },
                     child: Text('Einstellungen'),
                   ),
