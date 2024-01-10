@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
@@ -457,3 +458,36 @@ ButtonStyle profileBtnStyle = TextButton.styleFrom(
     minimumSize: Size(50, 30),
     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
     alignment: Alignment.centerLeft);
+
+Widget openSettingsDialog(BuildContext context, String warningText) {
+  return AlertDialog(
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      insetPadding: const EdgeInsets.all(0),
+      actionsPadding: EdgeInsets.all(0),
+      content: StatefulBuilder(builder: (BuildContext context, setState) {
+        return Container(
+          height: 150,
+          child: Column(
+            children: [
+              Text(warningText),
+              Row(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Abbrechen'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      openAppSettings();
+                    },
+                    child: Text('Einstellungen'),
+                  ),
+                ],
+              )
+            ],
+          ),
+        );
+      }));
+}

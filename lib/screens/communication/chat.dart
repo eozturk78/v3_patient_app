@@ -10,6 +10,7 @@ import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/message-list-container.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/shared.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../colors/colors.dart';
@@ -342,19 +343,23 @@ class _ChatPageState extends State<ChatPage> {
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        XFile? pickedFile = await ImagePicker().pickImage(
-                          source: ImageSource.gallery,
-                        );
-                        if (pickedFile != null) {
-                          setState(() {
-                            selectedFile = pickedFile;
-                            showDialog(
-                              context: context,
-                              builder: (context) => onChosenPhoto(context),
-                            ).then((resp) {
-                              Navigator.pop(context, resp);
+                        if (await sh.checkPermission(context, Permission.photos,
+                                "Sie haben beim ersten Mal keine Genehmigung für die Fotos erteilt, bitte erlauben Sie uns den Zugriff auf die Fotos in den Einstellungen") ==
+                            true) {
+                          XFile? pickedFile = await ImagePicker().pickImage(
+                            source: ImageSource.gallery,
+                          );
+                          if (pickedFile != null) {
+                            setState(() {
+                              selectedFile = pickedFile;
+                              showDialog(
+                                context: context,
+                                builder: (context) => onChosenPhoto(context),
+                              ).then((resp) {
+                                Navigator.pop(context, resp);
+                              });
                             });
-                          });
+                          }
                         }
                       },
                       child: Container(
@@ -376,19 +381,23 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        XFile? pickedFile = await ImagePicker().pickImage(
-                          source: ImageSource.camera,
-                        );
-                        if (pickedFile != null) {
-                          setState(() {
-                            selectedFile = pickedFile;
-                            showDialog(
-                              context: context,
-                              builder: (context) => onChosenPhoto(context),
-                            ).then((resp) {
-                              Navigator.pop(context, resp);
+                        if (await sh.checkPermission(context, Permission.camera,
+                                "Sie haben beim ersten Mal die Erlaubnis für die Kamera nicht erteilt, bitte erlauben Sie uns in den Einstellungen den Zugriff auf die Kamera") ==
+                            true) {
+                          XFile? pickedFile = await ImagePicker().pickImage(
+                            source: ImageSource.camera,
+                          );
+                          if (pickedFile != null) {
+                            setState(() {
+                              selectedFile = pickedFile;
+                              showDialog(
+                                context: context,
+                                builder: (context) => onChosenPhoto(context),
+                              ).then((resp) {
+                                Navigator.pop(context, resp);
+                              });
                             });
-                          });
+                          }
                         }
                       },
                       child: Container(

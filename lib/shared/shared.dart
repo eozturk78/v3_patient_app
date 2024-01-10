@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:patient_app/screens/shared/shared.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 bool isLoggedIn = false;
 
@@ -297,5 +302,37 @@ class Shared {
     } else if (errorStatus == 'tokenexpired') {
       Navigator.of(context).pushNamed('/login');
     }
+  }
+
+  checkPermission(
+      BuildContext context, Permission permission, String warningText) async {
+    print(permission);
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var listCount = 1;
+    var prefText = 'perm${permission.toString()}';
+    if (pref.getString(prefText) != null) listCount = 2;
+
+    pref.setString(prefText, listCount.toString());
+    print(await permission.isGranted);
+    if (await permission.isGranted == false) {
+      print(listCount.toString() + "permission is demied");
+      if (Platform.isIOS && listCount > 1)
+        showDialog(
+          context: context,
+          builder: (context) => openSettingsDialog(context, warningText),
+        ).then((resp) {
+          Navigator.pop(context, resp);
+        });
+      final result = await permission.request();
+
+      if (result.isGranted) {
+        return true;
+      } else if (result.isDenied) {
+        return false;
+      } else if (result.isPermanentlyDenied) {
+        return false;
+      }
+    }
+    return true;
   }
 }

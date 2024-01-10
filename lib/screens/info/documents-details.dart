@@ -10,6 +10,7 @@ import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/main.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -322,21 +323,25 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
           ),
           FloatingActionButton.extended(
             onPressed: () async {
-              XFile? pickedFile = await ImagePicker().pickImage(
-                source: ImageSource.camera,
-              );
-              if (pickedFile != null) {
-                setState(() {
-                  selectedPhotoImage = pickedFile;
-                  showDialog(
-                    context: context,
-                    builder: (context) => onOpenImage2(
-                      context,
-                    ),
-                  ).then((resp) {
-                    if (resp != null) Navigator.pop(context, resp);
+              if (await sh.checkPermission(context, Permission.camera,
+                      "Sie haben beim ersten Mal die Erlaubnis für die Kamera nicht erteilt, bitte erlauben Sie uns in den Einstellungen den Zugriff auf die Kamera") ==
+                  true) {
+                XFile? pickedFile = await ImagePicker().pickImage(
+                  source: ImageSource.camera,
+                );
+                if (pickedFile != null) {
+                  setState(() {
+                    selectedPhotoImage = pickedFile;
+                    showDialog(
+                      context: context,
+                      builder: (context) => onOpenImage2(
+                        context,
+                      ),
+                    ).then((resp) {
+                      if (resp != null) Navigator.pop(context, resp);
+                    });
                   });
-                });
+                }
               }
             },
             icon: new Icon(Icons.image_outlined),
@@ -344,27 +349,31 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
           ),
           FloatingActionButton.extended(
             onPressed: () async {
-              FilePickerResult? pickedFile =
-                  await FilePicker.platform.pickFiles(
-                type: FileType.custom,
-                allowMultiple: false,
-                allowedExtensions: ['jpg', 'pdf', 'doc'],
-              );
-              if (pickedFile != null) {
-                setState(() {
-                  selectedFile = pickedFile!.files.first;
-                  if (selectedFile?.extension == 'pdf') {
-                    File file = File(selectedFile!.path!);
-                    PDFDocument.fromFile(file).then((value) {
-                      setState(() {
-                        document = value;
-                        openDialog2();
+              if (await sh.checkPermission(context, Permission.storage,
+                      "Sie haben beim ersten Mal keine Genehmigung für die Dokumente erteilt, bitte erlauben Sie uns den Zugriff auf Ihre Dokumente in den Einstellungen") ==
+                  true) {
+                FilePickerResult? pickedFile =
+                    await FilePicker.platform.pickFiles(
+                  type: FileType.custom,
+                  allowMultiple: false,
+                  allowedExtensions: ['jpg', 'pdf', 'doc'],
+                );
+                if (pickedFile != null) {
+                  setState(() {
+                    selectedFile = pickedFile!.files.first;
+                    if (selectedFile?.extension == 'pdf') {
+                      File file = File(selectedFile!.path!);
+                      PDFDocument.fromFile(file).then((value) {
+                        setState(() {
+                          document = value;
+                          openDialog2();
+                        });
                       });
-                    });
-                  } else {
-                    openDialog2();
-                  }
-                });
+                    } else {
+                      openDialog2();
+                    }
+                  });
+                }
               }
             },
             icon: new Icon(Icons.file_present_outlined),
