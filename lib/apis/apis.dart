@@ -397,7 +397,8 @@ class Apis {
 
   Future fetchMedicationPlansOfDay(String selecteddate) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    String finalUrl = '$baseUrl/getmedicationplansbeforedate?cutoffdate=$selecteddate';
+    String finalUrl =
+        '$baseUrl/getmedicationplansbeforedate?cutoffdate=$selecteddate';
     var result = await http.get(Uri.parse(finalUrl), headers: {
       'Content-Type': 'application/text',
       'lang': lang,
@@ -405,7 +406,6 @@ class Apis {
     });
     return getResponseFromApi(result);
   }
-
 
   Future fetchMedicineIntake(String selecteddate) async {
     try {
@@ -549,7 +549,6 @@ class Apis {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl =
           '$baseUrl/getquestionnairegroupdetails?questionnaireGroupId=$questionnaireGroupId';
-      print(finalUrl);
       var result = await http.get(Uri.parse(finalUrl), headers: {
         'Content-Type': 'application/text',
         'lang': lang,
@@ -778,7 +777,6 @@ class Apis {
       }
 
       var body = jsonDecode(result.body);
-      print(body);
       if (result.statusCode == 200 || result.statusCode == 201) {
         try {
           return body;
@@ -807,18 +805,13 @@ class Apis {
           throw (firstError);
         }
 
-
         throw Exception(body['message']);
       }
-    }
-    on Exception catch (err) {
+    } on Exception catch (err) {
       showToast(err.toString());
       //showToast(AppLocalizations.tr("Something went wrong"));
       navigatorKey.currentState?.pushReplacementNamed("/login");
       throw Exception(AppLocalizations.tr("Something went wrong"));
-
     }
-
   }
-
 }

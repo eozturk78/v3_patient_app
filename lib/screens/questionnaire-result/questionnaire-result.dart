@@ -11,6 +11,7 @@ import 'package:patient_app/shared/toast.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import '../../apis/apis.dart';
 import '../../shared/enums.dart';
@@ -54,6 +55,10 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   int inputType = 0; // 10 input list, 20 multiple, 30 yes/no
   late String _qid;
   bool isValueValid = false;
+  dynamic _next;
+  String? multiChoiseName;
+  String? multiChoiseType;
+  List<String> oldSteps = [];
   @override
   void initState() {
     super.initState();
@@ -96,7 +101,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
       inputList.clear();
       buttons.clear();
       elements.clear();
-      choices.clear();
+      // choices.clear();
       info = "";
       questionText = "";
       isMultiChoice = false;
@@ -110,10 +115,21 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
     setState(() {
       questionText = question['text'] ?? question['question'];
       deviceNode = question['deviceNode'];
+      multiChoiseName = null;
+      multiChoiseType = null;
       if (question['elements'] != null && question['elements'].length > 0) {
         try {
           var elems = question['elements'];
           for (var element in elems) {
+            if (element['TextViewElement'] != null &&
+                element['TextViewElement']['text'] != null) {
+              element['TextViewElement']['text'] =
+                  element['TextViewElement']['text'].replaceAll('\"', '"');
+              element['TextViewElement']['text'] = element['TextViewElement']
+                      ['text']
+                  .replaceAll('font-feature-settings: normal;', '');
+            }
+
             if (element['TextViewElement'] != null) {
               elements.add(element['TextViewElement']);
             } else if (element['ButtonElement'] != null) {
@@ -157,6 +173,8 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                 ? true
                 : false;
         if (isMultiChoice) {
+          multiChoiseName = question['answer']['name'];
+          multiChoiseType = question['answer']['type'];
           choices = question['answer']['choices'];
         } else {
           var originIndex =
@@ -180,7 +198,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                 choices = enumObj['values'] as List<dynamic>;
               } else {
                 try {
-                  print(question[key]['name']);
                   if ((question[key]['type'] == 'Integer' ||
                           question[key]['type'] == 'String' ||
                           question[key]['type'] == 'Float') &&
@@ -188,8 +205,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                           .toString()
                           .contains('MEAN_ARTERIAL_PRESSURE')) {
                     _controllers.add(TextEditingController());
-
-                    print(question[key]);
                     inputList.add(question[key]);
                     inputList[inputList.length - 1]['title'] =
                         question['existsKeys'][i];
@@ -211,7 +226,11 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   }
 
   findQuestionaire(String next) {
+    if (oldSteps.where((element) => element == next).length == 0)
+      oldSteps.add(next);
+
     question = questions.where((x) => x['nodeName'] == next).first;
+    print(question);
     if (question['deviceNode'] == 'EndNode') {
       setState(() {
         isLast = true;
@@ -231,11 +250,12 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
     }
   }
 
+  int stepPage = 0;
   prepareOutputs() {
     if (question['deviceNode'] == 'BloodSugarManualDeviceNode') {
       var measurements = null;
-      var dt = DateTime.now().toUtc().toString().replaceAll(" ", "T");
-      /**/ if (_groupValue == 0) {
+      var dt = DateTime.now().toUtc().toString().replaceAll(" ", "T"); /**/
+      if (_groupValue == 0) {
         measurements = [
           {
             'result': double.parse(controllerBloodSugar.text),
@@ -272,7 +292,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
         'type': 'Object',
         'value': {'measurements': measurements, "transferTime": dt}
       };
+      removeOutputParameter(p['name']);
       outPuts.add(p);
+      stepPage++;
     } else if (inputList.isNotEmpty) {
       for (var i = 0; i < inputList.length; i++) {
         var value = _controllers[i].text;
@@ -283,16 +305,34 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
           'type': inputList[i]['type'],
           'value': value
         };
+        removeOutputParameter(p['name']);
         outPuts.add(p);
       }
+      stepPage++;
     } else if (isMultiChoice && question['origin'] != null) {
       var p = {
         'name': question['origin']['name'],
         'type': question['origin']['type'],
         'value': _groupValue
       };
+      removeOutputParameter(p['name']);
       outPuts.add(p);
+      stepPage++;
+    } else if (isMultiChoice && multiChoiseType != null) {
+      var p = {
+        'name': multiChoiseName,
+        'type': multiChoiseType,
+        'value': _groupValue
+      };
+      removeOutputParameter(p['name']);
+      outPuts.add(p);
+      stepPage++;
     }
+  }
+
+  removeOutputParameter(String name) {
+    var nameIndex = outPuts.indexWhere((element) => element['name'] == name);
+    if (nameIndex > -1) outPuts.removeAt(nameIndex);
   }
 
   sendValues() {
@@ -309,6 +349,16 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
         isSendEP = false;
       });
     });
+  }
+
+  getChoose(dynamic choise, dynamic value) {
+    _groupValue = value;
+    _next = choise['next'];
+  }
+
+  previousQuestion() {
+    stepPage--;
+    findQuestionaire(oldSteps[stepPage]);
   }
 
   @override
@@ -348,10 +398,11 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                               for (int i = 0; i < elements!.length; i++)
                                 Column(
                                   children: [
-                                    Text(
+                                    Html(data: elements[i]['text'])
+                                    /*Text(
                                       elements[i]['text'],
                                       style: i == 0 ? labelText : null,
-                                    )
+                                    )*/
                                   ],
                                 ),
                             Container(
@@ -465,7 +516,8 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                             value: item['value'],
                                             groupValue: _groupValue,
                                             onChanged: (newValue) => setState(
-                                                () => _groupValue = newValue!),
+                                                () =>
+                                                    getChoose(item, newValue)),
                                             title: Text(sh
                                                 .getTranslation(item['text'])),
                                           )
@@ -581,42 +633,55 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
       )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
-        height: 50,
-        margin: const EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: buttons.length > 1
-              ? MainAxisAlignment.spaceBetween
-              : MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            for (var item in buttons)
-              SizedBox(
-                width: 150,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: (item['isNo']) ? confirmButton : mainButtonColor,
+          height: 100,
+          margin: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: buttons.length > 1
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  for (var item in buttons)
+                    SizedBox(
+                      width: 150,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: (item['isNo'])
+                                ? confirmButton
+                                : mainButtonColor,
+                          ),
+                          onPressed: () async {
+                            setState(() {
+                              focusNotToFirst.unfocus();
+                            });
+                            prepareOutputs();
+                            if (item['next'] == endNode) {
+                              setState(() {
+                                isLast = true;
+                              });
+                              clearAll();
+                            } else {
+                              if (item['next'] != null) {
+                                findQuestionaire(item['next']);
+                              } else {
+                                findQuestionaire(_next);
+                              }
+                            }
+                          },
+                          child: Text(item['text'])),
                     ),
-                    onPressed: () async {
-                      setState(() {
-                        focusNotToFirst.unfocus();
-                      });
-                      prepareOutputs();
-                      if (item['next'] == endNode) {
-                        setState(() {
-                          isLast = true;
-                        });
-                        clearAll();
-                      } else {
-                        if (item['next'] != null) {
-                          findQuestionaire(item['next']);
-                        }
-                      }
+                ],
+              ),
+              if (stepPage > 0)
+                TextButton(
+                    onPressed: () {
+                      previousQuestion();
                     },
-                    child: Text(item['text'])),
-              )
-          ],
-        ),
-      ),
+                    child: Text("Vorherige Verbrennung"))
+            ],
+          )),
     );
   }
 }
