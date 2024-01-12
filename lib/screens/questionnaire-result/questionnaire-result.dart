@@ -357,6 +357,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   }
 
   previousQuestion() {
+    isLast = false;
     stepPage--;
     findQuestionaire(oldSteps[stepPage]);
   }
