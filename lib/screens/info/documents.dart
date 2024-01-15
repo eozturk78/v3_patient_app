@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:patient_app/shared/toast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
@@ -481,10 +482,15 @@ class _DocumentListPageState extends State<DocumentListPage> {
                           primary: mainButtonColor,
                         ),
                         onPressed: () {
-                          setState(() {
-                            isSendEP = true;
-                          });
-                          setPatientFile();
+                          if (fileNameController.text != "") {
+                            setState(() {
+                              isSendEP = true;
+                            });
+                            setPatientFile();
+                          } else {
+                            showToast(
+                                "Bitte geben Sie den Namen der Datei ein");
+                          }
                         },
                         child: !isSendEP
                             ? const Text("Senden")
@@ -546,29 +552,33 @@ class _DocumentListPageState extends State<DocumentListPage> {
                           primary: mainButtonColor,
                         ),
                         onPressed: () {
-                          setState(() {
-                            isSendEP = true;
-                          });
-                          apis
-                              .setPatientFolderName(
-                                  null, folderNameController.text)
-                              .then(
-                            (resp) {
-                              setState(() {
-                                isSendEP = false;
-                              });
-                              Navigator.of(context)
-                                  .pop(folderNameController.text);
-                            },
-                            onError: (err) {
-                              sh.redirectPatient(err, context);
-                              setState(
-                                () {
+                          if (folderNameController.text != "") {
+                            setState(() {
+                              isSendEP = true;
+                            });
+                            apis
+                                .setPatientFolderName(
+                                    null, folderNameController.text)
+                                .then(
+                              (resp) {
+                                setState(() {
                                   isSendEP = false;
-                                },
-                              );
-                            },
-                          );
+                                });
+                                Navigator.of(context)
+                                    .pop(folderNameController.text);
+                              },
+                              onError: (err) {
+                                sh.redirectPatient(err, context);
+                                setState(
+                                  () {
+                                    isSendEP = false;
+                                  },
+                                );
+                              },
+                            );
+                          } else {
+                            showToast("bitte Name des Ordners eingeben");
+                          }
                         },
                         child: !isSendEP
                             ? const Text("Senden")

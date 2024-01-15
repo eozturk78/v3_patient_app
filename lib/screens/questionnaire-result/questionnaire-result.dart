@@ -706,57 +706,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
           ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Container(
-        height: 100,
-        margin: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: buttons.length > 1
-                  ? MainAxisAlignment.spaceBetween
-                  : MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                for (var item in buttons)
-                  SizedBox(
-                    width: 150,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary:
-                              (item['isNo']) ? confirmButton : mainButtonColor,
-                        ),
-                        onPressed: () async {
-                          setState(() {
-                            focusNotToFirst.unfocus();
-                          });
-                          prepareOutputs();
-                          if (item['next'] == endNode) {
-                            setState(() {
-                              isLast = true;
-                            });
-                            clearAll();
-                          } else {
-                            if (item['next'] != null) {
-                              findQuestionaire(item['next']);
-                            } else {
-                              findQuestionaire(_next);
-                            }
-                          }
-                        },
-                        child: Text(item['text'])),
-                  ),
-              ],
-            ),
-            if (stepPage > 0)
-              TextButton(
-                  onPressed: () {
-                    previousQuestion();
-                  },
-                  child: Text("Vorherige Frage"))
-          ],
-        ),
-      ),
     );
   }
 }

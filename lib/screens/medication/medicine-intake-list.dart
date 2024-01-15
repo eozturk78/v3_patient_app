@@ -178,7 +178,7 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                           setState(() {
                             _morningIntake = value;
                           });
-                          saveMedicineIntake();
+                          // saveMedicineIntake();
                         }
                       }),
                       buildCheckbox('Einnahme mittags', _noonIntake, 20,
@@ -187,7 +187,7 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                           setState(() {
                             _noonIntake = value;
                           });
-                          saveMedicineIntake();
+                          // saveMedicineIntake();
                         }
                       }),
                       buildCheckbox('Einnahme abends', _eveningIntake, 30,
@@ -196,7 +196,7 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                           setState(() {
                             _eveningIntake = value;
                           });
-                          saveMedicineIntake();
+                          // saveMedicineIntake();
                         }
                       }),
                       buildCheckbox('Einnahme nachts', _nightIntake, 40,
@@ -205,9 +205,27 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                           setState(() {
                             _nightIntake = value;
                           });
-                          saveMedicineIntake();
+                          //saveMedicineIntake();
                         }
-                      })
+                      }),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(30),
+                          primary: mainButtonColor,
+                        ),
+                        onPressed: () async {
+                          saveMedicineIntake();
+                        },
+                        child: !_isLoading
+                            ? const Text("Einnahme bestätigen")
+                            : Transform.scale(
+                                scale: 0.5,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              ),
+                      )
                     ],
                   ),
                 ),

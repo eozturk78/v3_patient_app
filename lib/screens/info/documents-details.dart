@@ -10,6 +10,7 @@ import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/main.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:patient_app/shared/toast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -645,29 +646,33 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                           primary: mainButtonColor,
                         ),
                         onPressed: () {
-                          setState(() {
-                            isSendEP = true;
-                          });
-                          apis
-                              .setPatientFolderName(
-                                  folderId, folderNameController.text)
-                              .then(
-                            (resp) {
-                              setState(() {
-                                isSendEP = false;
-                              });
-                              Navigator.of(context)
-                                  .pop(folderNameController.text);
-                            },
-                            onError: (err) {
-                              sh.redirectPatient(err, context);
-                              setState(
-                                () {
+                          if (folderNameController.text != "") {
+                            setState(() {
+                              isSendEP = true;
+                            });
+                            apis
+                                .setPatientFolderName(
+                                    folderId, folderNameController.text)
+                                .then(
+                              (resp) {
+                                setState(() {
                                   isSendEP = false;
-                                },
-                              );
-                            },
-                          );
+                                });
+                                Navigator.of(context)
+                                    .pop(folderNameController.text);
+                              },
+                              onError: (err) {
+                                sh.redirectPatient(err, context);
+                                setState(
+                                  () {
+                                    isSendEP = false;
+                                  },
+                                );
+                              },
+                            );
+                          } else {
+                            showToast("bitte Name des Ordners eingeben");
+                          }
                         },
                         child: !isSendEP
                             ? const Text("Senden")
@@ -982,10 +987,15 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                           primary: mainButtonColor,
                         ),
                         onPressed: () {
-                          setState(() {
-                            isSendEP = true;
-                          });
-                          setPatientFile();
+                          if (fileNameController.text != "") {
+                            setState(() {
+                              isSendEP = true;
+                            });
+                            setPatientFile();
+                          } else {
+                            showToast(
+                                "Bitte geben Sie den Namen der Datei ein");
+                          }
                         },
                         child: !isSendEP
                             ? const Text("Senden")
