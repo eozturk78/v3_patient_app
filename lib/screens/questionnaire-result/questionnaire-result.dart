@@ -367,183 +367,105 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
     return Scaffold(
       appBar: leadingSubpage(title!, context),
       body: Center(
-          child: SingleChildScrollView(
-        child: Padding(
-            padding: EdgeInsets.all(15),
-            child: isStarted
-                ? CircularProgressIndicator(
-                    color: mainButtonColor,
-                  )
-                : questions.isEmpty
-                    ? Center(child: Text("no data found"))
-                    : Container(
-                        width: MediaQuery.of(context).size.width *
-                            ResponsiveValue(
-                              context,
-                              defaultValue: 1,
-                              conditionalValues: [
-                                Condition.largerThan(
-                                  //Tablet
-                                  name: MOBILE,
-                                  value: 0.5,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(15),
+                child: isStarted
+                    ? CircularProgressIndicator(
+                        color: mainButtonColor,
+                      )
+                    : questions.isEmpty
+                        ? Center(child: Text("no data found"))
+                        : Container(
+                            width: MediaQuery.of(context).size.width *
+                                ResponsiveValue(
+                                  context,
+                                  defaultValue: 1,
+                                  conditionalValues: [
+                                    Condition.largerThan(
+                                      //Tablet
+                                      name: MOBILE,
+                                      value: 0.5,
+                                    ),
+                                  ],
+                                ).value!,
+                            child: Column(
+                              children: [
+                                Text(
+                                  questionText ?? "",
+                                  style: labelText,
                                 ),
-                              ],
-                            ).value!,
-                        child: Column(
-                          children: [
-                            Text(
-                              questionText ?? "",
-                              style: labelText,
-                            ),
-                            if (elements != null)
-                              for (int i = 0; i < elements!.length; i++)
-                                Column(
-                                  children: [
-                                    Html(data: elements[i]['text'])
-                                    /*Text(
+                                if (elements != null)
+                                  for (int i = 0; i < elements!.length; i++)
+                                    Column(
+                                      children: [
+                                        Html(data: elements[i]['text'])
+                                        /*Text(
                                       elements[i]['text'],
                                       style: i == 0 ? labelText : null,
                                     )*/
-                                  ],
-                                ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15))),
-                              margin: EdgeInsets.only(top: 20),
-                              padding: EdgeInsets.all(10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  if (isLast)
-                                    Column(
-                                      children: [
-                                        Text("Möchten Sie Ergebnisse senden?"),
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            minimumSize:
-                                                const Size.fromHeight(30),
-                                            primary: mainButtonColor,
-                                          ),
-                                          onPressed: () async {
-                                            sendValues();
-                                          },
-                                          child: !isSendEP
-                                              ? const Text("Senden")
-                                              : Transform.scale(
-                                                  scale: 0.5,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    strokeWidth: 2,
-                                                    color: Colors.white,
-                                                  )),
-                                        )
                                       ],
                                     ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  if (deviceNode == 'EcgDeviceNode')
-                                    Text("Please connect to device")
-                                  else if (deviceNode ==
-                                      'BloodSugarManualDeviceNode')
-                                    Column(
-                                      children: [
-                                        TextFormField(
-                                          controller: controllerBloodSugar,
-                                          obscureText: false,
-                                          inputFormatters: <TextInputFormatter>[
-                                            FilteringTextInputFormatter.allow(
-                                                RegExp('[0-9.]')),
-                                          ],
-                                          keyboardType: TextInputType.number,
-                                          decoration: InputDecoration(
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                              borderSide: BorderSide(
-                                                color: Color.fromARGB(
-                                                    255, 216, 216, 216),
-                                              ),
-                                            ),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: Color.fromARGB(
-                                                    255, 216, 216, 216),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        RadioListTile(
-                                          value: 0,
-                                          groupValue: _groupValue,
-                                          onChanged: (newValue) => setState(
-                                              () => _groupValue = newValue!),
-                                          title: Text("Vor dem Essen"),
-                                        ),
-                                        RadioListTile(
-                                          value: 1,
-                                          groupValue: _groupValue,
-                                          onChanged: (newValue) => setState(
-                                              () => _groupValue = newValue!),
-                                          title: Text("Nach dem Essen"),
-                                        ),
-                                        RadioListTile(
-                                          value: 2,
-                                          groupValue: _groupValue,
-                                          onChanged: (newValue) => setState(
-                                              () => _groupValue = newValue!),
-                                          title: Text("Fasten"),
-                                        ),
-                                        RadioListTile(
-                                          value: 3,
-                                          groupValue: _groupValue,
-                                          onChanged: (newValue) => setState(
-                                              () => _groupValue = newValue!),
-                                          title:
-                                              Text("Keine der oben genannten"),
-                                        )
-                                      ],
-                                    )
-                                  else if (isMultiChoice == true)
-                                    Column(
-                                      children: [
-                                        for (var item in choices)
-                                          RadioListTile(
-                                            value: item['value'],
-                                            groupValue: _groupValue,
-                                            onChanged: (newValue) => setState(
-                                                () =>
-                                                    getChoose(item, newValue)),
-                                            title: Text(sh
-                                                .getTranslation(item['text'])),
-                                          )
-                                      ],
-                                    )
-                                  else
-                                    for (var i = 0; i < inputList.length; i++)
-                                      Container(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(15))),
+                                  margin: EdgeInsets.only(top: 20),
+                                  padding: EdgeInsets.all(10),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      if (isLast)
+                                        Column(
                                           children: [
                                             Text(
-                                              sh.getTranslation(
-                                                  inputList[i]['title']),
-                                              style: TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 150, 159, 162)),
-                                            ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
+                                                "Möchten Sie Ergebnisse senden?"),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                minimumSize:
+                                                    const Size.fromHeight(30),
+                                                primary: mainButtonColor,
+                                              ),
+                                              onPressed: () async {
+                                                sendValues();
+                                              },
+                                              child: !isSendEP
+                                                  ? const Text("Senden")
+                                                  : Transform.scale(
+                                                      scale: 0.5,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                        color: Colors.white,
+                                                      )),
+                                            )
+                                          ],
+                                        ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      if (deviceNode == 'EcgDeviceNode')
+                                        Text("Please connect to device")
+                                      else if (deviceNode ==
+                                          'BloodSugarManualDeviceNode')
+                                        Column(
+                                          children: [
                                             TextFormField(
+                                              controller: controllerBloodSugar,
+                                              obscureText: false,
+                                              inputFormatters: <TextInputFormatter>[
+                                                FilteringTextInputFormatter
+                                                    .allow(RegExp('[0-9.]')),
+                                              ],
+                                              keyboardType:
+                                                  TextInputType.number,
                                               decoration: InputDecoration(
                                                 focusedBorder:
                                                     OutlineInputBorder(
@@ -556,133 +478,285 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                   ),
                                                 ),
                                                 border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20.0),
                                                   borderSide: BorderSide(
                                                     color: Color.fromARGB(
                                                         255, 216, 216, 216),
                                                   ),
                                                 ),
                                               ),
-                                              controller: _controllers[i],
-                                              obscureText: false,
-                                              focusNode: i == 0
-                                                  ? focusNotToFirst
-                                                  : null,
-                                              autofocus: i == 0 ? true : false,
-                                              onChanged: (value) {
-                                                var checkValue = sh.checkValues(
-                                                    inputList[i]['title'],
-                                                    value);
-                                                setState(() {
-                                                  if (checkValue['state'] ==
-                                                      -10) {
-                                                    inputList[i]
-                                                            ['isValueValid'] =
-                                                        false;
-                                                    inputList[i]
-                                                            ['errorParams'] =
-                                                        checkValue;
-                                                  } else {
-                                                    inputList[i]
-                                                        ['isValueValid'] = true;
-                                                    inputList[i]
-                                                            ['errorParams'] =
-                                                        checkValue;
-                                                  }
-                                                });
-                                              },
-                                              keyboardType: inputList[i]
-                                                          ['type'] !=
-                                                      "String"
-                                                  ? TextInputType.number
-                                                  : TextInputType.text,
-                                              inputFormatters: inputList[i]
-                                                          ['type'] !=
-                                                      "String"
-                                                  ? <TextInputFormatter>[
-                                                      FilteringTextInputFormatter
-                                                          .allow(
-                                                              RegExp('[0-9.]')),
-                                                    ]
-                                                  : null,
                                             ),
-                                            if (inputList[i]['isValueValid'] !=
-                                                    null &&
-                                                !inputList[i]['isValueValid'])
-                                              Text(
-                                                "Für die Eingabe sind Werte von ${inputList[i]['errorParams']['min']} ${inputList[i]['errorParams']['unit']} bis ${inputList[i]['errorParams']['max']} ${inputList[i]['errorParams']['unit']} möglich. Bitte überprüfen Sie die von Ihnen eingegeben Daten.",
-                                                style: TextStyle(
-                                                    color: mainButtonColor),
-                                              ),
-                                            SizedBox(
-                                              height: 10,
+                                            RadioListTile(
+                                              value: 0,
+                                              groupValue: _groupValue,
+                                              onChanged: (newValue) => setState(
+                                                  () =>
+                                                      _groupValue = newValue!),
+                                              title: Text("Vor dem Essen"),
                                             ),
-                                            SizedBox(
-                                              height: 10,
+                                            RadioListTile(
+                                              value: 1,
+                                              groupValue: _groupValue,
+                                              onChanged: (newValue) => setState(
+                                                  () =>
+                                                      _groupValue = newValue!),
+                                              title: Text("Nach dem Essen"),
                                             ),
+                                            RadioListTile(
+                                              value: 2,
+                                              groupValue: _groupValue,
+                                              onChanged: (newValue) => setState(
+                                                  () =>
+                                                      _groupValue = newValue!),
+                                              title: Text("Fasten"),
+                                            ),
+                                            RadioListTile(
+                                              value: 3,
+                                              groupValue: _groupValue,
+                                              onChanged: (newValue) => setState(
+                                                  () =>
+                                                      _groupValue = newValue!),
+                                              title: Text(
+                                                  "Keine der oben genannten"),
+                                            )
                                           ],
-                                        ),
-                                      ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      )),
-      )),
+                                        )
+                                      else if (isMultiChoice == true)
+                                        Column(
+                                          children: [
+                                            for (var item in choices)
+                                              RadioListTile(
+                                                value: item['value'],
+                                                groupValue: _groupValue,
+                                                onChanged: (newValue) =>
+                                                    setState(() => getChoose(
+                                                        item, newValue)),
+                                                title: Text(sh.getTranslation(
+                                                    item['text'])),
+                                              )
+                                          ],
+                                        )
+                                      else
+                                        for (var i = 0;
+                                            i < inputList.length;
+                                            i++)
+                                          Container(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  sh.getTranslation(
+                                                      inputList[i]['title']),
+                                                  style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 150, 159, 162)),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                TextFormField(
+                                                  decoration: InputDecoration(
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10.0),
+                                                      borderSide: BorderSide(
+                                                        color: Color.fromARGB(
+                                                            255, 216, 216, 216),
+                                                      ),
+                                                    ),
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20.0),
+                                                      borderSide: BorderSide(
+                                                        color: Color.fromARGB(
+                                                            255, 216, 216, 216),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  controller: _controllers[i],
+                                                  obscureText: false,
+                                                  focusNode: i == 0
+                                                      ? focusNotToFirst
+                                                      : null,
+                                                  autofocus:
+                                                      i == 0 ? true : false,
+                                                  onChanged: (value) {
+                                                    var checkValue =
+                                                        sh.checkValues(
+                                                            inputList[i]
+                                                                ['title'],
+                                                            value);
+                                                    setState(() {
+                                                      if (checkValue['state'] ==
+                                                          -10) {
+                                                        inputList[i][
+                                                                'isValueValid'] =
+                                                            false;
+                                                        inputList[i][
+                                                                'errorParams'] =
+                                                            checkValue;
+                                                      } else {
+                                                        inputList[i][
+                                                                'isValueValid'] =
+                                                            true;
+                                                        inputList[i][
+                                                                'errorParams'] =
+                                                            checkValue;
+                                                      }
+                                                    });
+                                                  },
+                                                  keyboardType: inputList[i]
+                                                              ['type'] !=
+                                                          "String"
+                                                      ? TextInputType.number
+                                                      : TextInputType.text,
+                                                  inputFormatters: inputList[i]
+                                                              ['type'] !=
+                                                          "String"
+                                                      ? <TextInputFormatter>[
+                                                          FilteringTextInputFormatter
+                                                              .allow(RegExp(
+                                                                  '[0-9.]')),
+                                                        ]
+                                                      : null,
+                                                ),
+                                                if (inputList[i]
+                                                            ['isValueValid'] !=
+                                                        null &&
+                                                    !inputList[i]
+                                                        ['isValueValid'])
+                                                  Text(
+                                                    "Für die Eingabe sind Werte von ${inputList[i]['errorParams']['min']} ${inputList[i]['errorParams']['unit']} bis ${inputList[i]['errorParams']['max']} ${inputList[i]['errorParams']['unit']} möglich. Bitte überprüfen Sie die von Ihnen eingegeben Daten.",
+                                                    style: TextStyle(
+                                                        color: mainButtonColor),
+                                                  ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+              ),
+              Container(
+                height: 100,
+                margin: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: buttons.length > 1
+                          ? MainAxisAlignment.spaceBetween
+                          : MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        for (var item in buttons)
+                          SizedBox(
+                            width: 150,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: (item['isNo'])
+                                      ? confirmButton
+                                      : mainButtonColor,
+                                ),
+                                onPressed: () async {
+                                  setState(() {
+                                    focusNotToFirst.unfocus();
+                                  });
+                                  prepareOutputs();
+                                  if (item['next'] == endNode) {
+                                    setState(() {
+                                      isLast = true;
+                                    });
+                                    clearAll();
+                                  } else {
+                                    if (item['next'] != null) {
+                                      findQuestionaire(item['next']);
+                                    } else {
+                                      findQuestionaire(_next);
+                                    }
+                                  }
+                                },
+                                child: Text(item['text'])),
+                          ),
+                      ],
+                    ),
+                    if (stepPage > 0)
+                      TextButton(
+                          onPressed: () {
+                            previousQuestion();
+                          },
+                          child: Text("Vorherige Frage"))
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
-          height: 100,
-          margin: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: buttons.length > 1
-                    ? MainAxisAlignment.spaceBetween
-                    : MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  for (var item in buttons)
-                    SizedBox(
-                      width: 150,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: (item['isNo'])
-                                ? confirmButton
-                                : mainButtonColor,
-                          ),
-                          onPressed: () async {
+        height: 100,
+        margin: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: buttons.length > 1
+                  ? MainAxisAlignment.spaceBetween
+                  : MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                for (var item in buttons)
+                  SizedBox(
+                    width: 150,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary:
+                              (item['isNo']) ? confirmButton : mainButtonColor,
+                        ),
+                        onPressed: () async {
+                          setState(() {
+                            focusNotToFirst.unfocus();
+                          });
+                          prepareOutputs();
+                          if (item['next'] == endNode) {
                             setState(() {
-                              focusNotToFirst.unfocus();
+                              isLast = true;
                             });
-                            prepareOutputs();
-                            if (item['next'] == endNode) {
-                              setState(() {
-                                isLast = true;
-                              });
-                              clearAll();
+                            clearAll();
+                          } else {
+                            if (item['next'] != null) {
+                              findQuestionaire(item['next']);
                             } else {
-                              if (item['next'] != null) {
-                                findQuestionaire(item['next']);
-                              } else {
-                                findQuestionaire(_next);
-                              }
+                              findQuestionaire(_next);
                             }
-                          },
-                          child: Text(item['text'])),
-                    ),
-                ],
-              ),
-              if (stepPage > 0)
-                TextButton(
-                    onPressed: () {
-                      previousQuestion();
-                    },
-                    child: Text("Vorherige Verbrennung"))
-            ],
-          )),
+                          }
+                        },
+                        child: Text(item['text'])),
+                  ),
+              ],
+            ),
+            if (stepPage > 0)
+              TextButton(
+                  onPressed: () {
+                    previousQuestion();
+                  },
+                  child: Text("Vorherige Frage"))
+          ],
+        ),
+      ),
     );
   }
 }

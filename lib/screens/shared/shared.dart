@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -458,31 +459,41 @@ ButtonStyle profileBtnStyle = TextButton.styleFrom(
     minimumSize: Size(50, 30),
     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
     alignment: Alignment.centerLeft);
-
-Widget openSettingsDialog(BuildContext context, String warningText) {
-  return AlertDialog(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+openSettingsDialog(BuildContext context, String warningText) {
+  /**/ return AlertDialog(
+      backgroundColor: Color.fromARGB(232, 255, 255, 255),
       insetPadding: const EdgeInsets.all(0),
       actionsPadding: EdgeInsets.all(0),
       content: StatefulBuilder(builder: (BuildContext context, setState) {
         return Container(
-          height: 150,
+          height: 140,
+          width: MediaQuery.of(context).size.width * 0.5,
           child: Column(
             children: [
               Text(warningText),
-              Row(
+              Column(
                 children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('Abbrechen'),
+                  SizedBox(
+                    height: 30,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Abbrechen',
+                        style: TextStyle(color: Color.fromARGB(173, 33, 149, 243)),
+                      ),
+                    ),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      openAppSettings().then((value) => null);
-                    },
-                    child: Text('Einstellungen'),
+                  Divider(),
+                  SizedBox(
+                    height: 30,
+                    child: TextButton(
+                      onPressed: () {
+                        openAppSettings().then((value) => null);
+                      },
+                      child: Text('Einstellungen'),
+                    ),
                   ),
                 ],
               )
@@ -490,4 +501,31 @@ Widget openSettingsDialog(BuildContext context, String warningText) {
           ),
         );
       }));
+}
+
+@pragma('vm:entry-point')
+Route<Object?> _dialogBuilder(BuildContext context, Object? arguments) {
+  return CupertinoDialogRoute<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return CupertinoAlertDialog(
+        title: const Text('Title'),
+        content: const Text('Content'),
+        actions: <Widget>[
+          CupertinoDialogAction(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Yes'),
+          ),
+          CupertinoDialogAction(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('No'),
+          ),
+        ],
+      );
+    },
+  );
 }

@@ -792,7 +792,7 @@ class Apis {
                 (body['errors'] as List).first['error'] != 'expired'))
           showToast(AppLocalizations.tr(body['message']));
 
-        if (body['message'] == "Need login again") {
+        if (body['message'] == "Bitte melden Sie sich erneut an.") {
           navigatorKey.currentState?.pushReplacementNamed("/login");
         }
 

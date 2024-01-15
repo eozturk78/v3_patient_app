@@ -226,10 +226,8 @@ class _ChatPageState extends State<ChatPage> {
                       IconButton(
                         icon: const Icon(Icons.image_outlined),
                         onPressed: () async {
-                          if (await sh.checkPermission(
-                                  context,
-                                  Permission.storage,
-                                  sh.galeryPermissionText) ==
+                          if (await sh.checkPermission(context,
+                                  Permission.photos, sh.galeryPermissionText) ==
                               true) {
                             XFile? pickedFile = await ImagePicker().pickImage(
                               source: ImageSource.gallery,
