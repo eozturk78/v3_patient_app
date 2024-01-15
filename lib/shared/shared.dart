@@ -63,11 +63,11 @@ class Shared {
     "meanArterialPressure": "Mittlerer arterieller Blutdruck"
   };
   String galeryPermissionText =
-      "Sie haben beim ersten Mal keine Genehmigung für die Fotos erteilt, bitte erlauben Sie uns den Zugriff auf die Fotos in den Einstellungen";
+      "Um fortzufahren ändern Sie die Einstellungen zum Zugriff auf Bilder.";
   String cameraPermissionText =
-      "Sie haben beim ersten Mal die Erlaubnis für die Kamera nicht erteilt, bitte erlauben Sie uns in den Einstellungen den Zugriff auf die Kamera";
+      "Um fortzufahren ändern Sie die Einstellungen zum Zugriff auf die Kamera.";
   String storagePermissionText =
-      "Sie haben beim ersten Mal keine Genehmigung für die Dokumente erteilt, bitte erlauben Sie uns den Zugriff auf Ihre Dokumente in den Einstellungen";
+      "Um fortzufahren ändern Sie die Einstellungen zum Zugriff auf Dokumente.";
 
   getTranslation(String field) {
     return translations[field] != null ? translations[field] : field;
