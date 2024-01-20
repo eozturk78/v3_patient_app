@@ -537,6 +537,7 @@ class Apis {
   Future setMeasurementValues(dynamic outPuts, String qid) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/setmeasurementvalues?qid=$qid';
+    print(outPuts);
     var result = await http.post(Uri.parse(finalUrl),
         body: jsonEncode(outPuts),
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -548,6 +549,7 @@ class Apis {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl =
           '$baseUrl/getquestionnairegroupdetails?questionnaireGroupId=$questionnaireGroupId';
+      print(finalUrl);
       var result = await http.get(Uri.parse(finalUrl), headers: {
         'Content-Type': 'application/text',
         'lang': lang,
