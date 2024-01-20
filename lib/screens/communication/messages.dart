@@ -89,141 +89,149 @@ class _MessagesPageState extends State<MessagesPage> {
                   color: mainButtonColor,
                 ),
               )
-            : notificationList.isEmpty
-                ? Center(child: Text("no data found"))
-                : SingleChildScrollView(
-                    child: Column(
+            : SingleChildScrollView(
+                child: Column(
+                children: [
+                  Text(
+                    "Hier können Sie Ihre Mitteilungen einsehen.",
+                    textScaleFactor: ScaleSize.textScaleFactor(context),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        "Hier können Sie Ihre Mitteilungen einsehen.",
-                        textScaleFactor: ScaleSize.textScaleFactor(context),
-                        textAlign: TextAlign.center,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width *
+                            ResponsiveValue(
+                              context,
+                              defaultValue: 0.40,
+                              conditionalValues: [
+                                Condition.largerThan(
+                                  //Tablet
+                                  name: MOBILE,
+                                  value: 0.3,
+                                ),
+                              ],
+                            ).value!,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: fpType == 20
+                                  ? mainButtonColor
+                                  : mainItemColor,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                fpType = 20;
+                              });
+                            },
+                            child: Text(
+                              "Nachrichten",
+                              style: TextStyle(color: Colors.white),
+                            )),
                       ),
                       SizedBox(
-                        height: 15,
+                        width: 5,
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width *
-                                ResponsiveValue(
-                                  context,
-                                  defaultValue: 0.40,
-                                  conditionalValues: [
-                                    Condition.largerThan(
-                                      //Tablet
-                                      name: MOBILE,
-                                      value: 0.2,
-                                    ),
-                                  ],
-                                ).value!,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: fpType == 20
-                                      ? mainButtonColor
-                                      : mainItemColor,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width *
+                            ResponsiveValue(
+                              context,
+                              defaultValue: 0.40,
+                              conditionalValues: [
+                                Condition.largerThan(
+                                  //Tablet
+                                  name: MOBILE,
+                                  value: 0.3,
                                 ),
-                                onPressed: () {
-                                  setState(() {
-                                    fpType = 20;
-                                  });
-                                },
-                                child: Text(
-                                  "Nachrichten",
-                                  style: TextStyle(color: Colors.white),
-                                )),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width *
-                                ResponsiveValue(
-                                  context,
-                                  defaultValue: 0.40,
-                                  conditionalValues: [
-                                    Condition.largerThan(
-                                      //Tablet
-                                      name: MOBILE,
-                                      value: 0.2,
-                                    ),
-                                  ],
-                                ).value!,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: fpType == 10
-                                      ? mainButtonColor
-                                      : mainItemColor,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    fpType = 10;
-                                  });
-                                },
-                                child: Text("Medikamentenplan")),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SingleChildScrollView(
-                            child: Padding(
-                              padding: const EdgeInsets.all(15),
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: 40,
-                                  ),
-                                  Column(
-                                    children: [
-                                      for (var element in notificationList)
-                                        if (element.notificationtype == fpType)
-                                          GestureDetector(
-                                            child: CustomMessageListContainer(
-                                                Icons.info,
-                                                element.notificationTitle
-                                                            .length >
-                                                        22
-                                                    ? element.notificationTitle
-                                                        .substring(0, 22)
-                                                    : element.notificationTitle,
-                                                sh.formatDateTime(
-                                                    element.createdAt)),
-                                            onTap: () async {
-                                              if (element.notificationtype ==
-                                                  10) {
-                                                Navigator.pushNamed(
-                                                    context, '/medical-plan-1',
-                                                    arguments: element);
-                                              } else {
-                                                SharedPreferences pref =
-                                                    await SharedPreferences
-                                                        .getInstance();
-                                                pref.setString("organization",
-                                                    element.organization ?? "");
-                                                pref.setString("thread",
-                                                    element.thread ?? "");
-
-                                                print(element.organization);
-                                                Navigator.pushNamed(
-                                                    context, '/chat');
-                                              }
-                                            },
-                                          ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                              ],
+                            ).value!,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: fpType == 10
+                                  ? mainButtonColor
+                                  : mainItemColor,
                             ),
-                          ),
-                        ],
+                            onPressed: () {
+                              setState(() {
+                                fpType = 10;
+                              });
+                            },
+                            child: Text("Medikamentenplan")),
                       ),
                     ],
-                  )),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: notificationList
+                                  .where((element) =>
+                                      element.notificationtype == fpType)
+                                  .isEmpty
+                              ? Center(child: Text("Keine Daten gefunden"))
+                              : Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 40,
+                                    ),
+                                    Column(
+                                      children: [
+                                        for (var element in notificationList)
+                                          if (element.notificationtype ==
+                                              fpType)
+                                            GestureDetector(
+                                              child: CustomMessageListContainer(
+                                                  Icons.info,
+                                                  element.notificationTitle
+                                                              .length >
+                                                          22
+                                                      ? element
+                                                          .notificationTitle
+                                                          .substring(0, 22)
+                                                      : element
+                                                          .notificationTitle,
+                                                  sh.formatDateTime(
+                                                      element.createdAt)),
+                                              onTap: () async {
+                                                if (element.notificationtype ==
+                                                    10) {
+                                                  Navigator.pushNamed(context,
+                                                      '/medical-plan-1',
+                                                      arguments: element);
+                                                } else {
+                                                  SharedPreferences pref =
+                                                      await SharedPreferences
+                                                          .getInstance();
+                                                  pref.setString(
+                                                      "organization",
+                                                      element.organization ??
+                                                          "");
+                                                  pref.setString("thread",
+                                                      element.thread ?? "");
+
+                                                  print(element.organization);
+                                                  Navigator.pushNamed(
+                                                      context, '/chat');
+                                                }
+                                              },
+                                            ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )),
       ),
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(

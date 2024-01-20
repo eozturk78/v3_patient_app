@@ -107,7 +107,7 @@ class _RecipesPageState extends State<RecipesPage> {
                                     isExpanded: item.isExpanded,
                                   )
                               ])
-                        : Text("no data found"))),
+                        : Text("Keine Daten gefunden"))),
       )),
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: 2),
     );

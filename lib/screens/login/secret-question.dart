@@ -103,7 +103,7 @@ class _SecretQuestionPageState extends State<SecretQuestionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: leadingWithoutProfile("Geheime Frage / Antwort", context),
+      appBar: leadingWithoutProfile("Sicherheitsfragen", context),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -118,14 +118,14 @@ class _SecretQuestionPageState extends State<SecretQuestionPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Bitte definieren Sie Ihre geheime Frage/Antwort",
+                      "Bitte erstellen Sie eine Sicherheitsfrage",
                       style: labelText,
                     ),
                     const SizedBox(
                       height: 50,
                     ),
                     Text(
-                      "Geheime Fragen",
+                      "Sicherheitsfragen",
                       style: labelText,
                     ),
                     SizedBox(

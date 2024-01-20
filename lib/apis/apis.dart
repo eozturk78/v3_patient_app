@@ -30,7 +30,6 @@ class Apis {
       'password': password.toString(),
       'deviceToken': deviceToken
     };
-    print(params);
     //TODO: try-catch
     var result = await http.post(Uri.parse(finalUrl),
         body: jsonEncode(params),
@@ -775,18 +774,23 @@ class Apis {
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('token', result.headers['token'].toString());
       }
-
+      //  print(result.body);
       var body = jsonDecode(result.body);
+      print(body);
+      //  print(result.statusCode);
       if (result.statusCode == 200 || result.statusCode == 201) {
         try {
           return body;
         } on Exception catch (err) {
-          showToast(AppLocalizations.tr("Something went wrong"));
-          throw Exception(AppLocalizations.tr("Something went wrong"));
+          showToast(AppLocalizations.tr(
+              "Fehler bitte kontaktieren Sie den IT - Support"));
+          throw Exception(AppLocalizations.tr(
+              "Fehler bitte kontaktieren Sie den IT - Support"));
         }
       } else {
         body = jsonDecode(body);
-
+        print("===================");
+        //print(body['errors']);
         if (body['errors'] == null ||
             (body['errors'] != null &&
                 (body['errors'] as List).first['error'] != 'expired'))
@@ -808,10 +812,12 @@ class Apis {
         throw Exception(body['message']);
       }
     } on Exception catch (err) {
+      print(err.toString());
       showToast(err.toString());
       //showToast(AppLocalizations.tr("Something went wrong"));
       navigatorKey.currentState?.pushReplacementNamed("/login");
-      throw Exception(AppLocalizations.tr("Something went wrong"));
+      throw Exception(AppLocalizations.tr(
+          "Fehler bitte kontaktieren Sie den IT - Support"));
     }
   }
 }

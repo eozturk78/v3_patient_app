@@ -375,7 +375,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const Center(
               child: Text(
-                "Version 1.2.4",
+                "Version 1.0.43",
               ),
             ),
             SizedBox(

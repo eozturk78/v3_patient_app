@@ -95,7 +95,7 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
                     ),
                   )
                 : questionnaireGroups.isEmpty
-                    ? Center(child: Text("no data found"))
+                    ? Center(child: Text("Keine Daten gefunden"))
                     : Center(
                         child: Container(
                           decoration: BoxDecoration(

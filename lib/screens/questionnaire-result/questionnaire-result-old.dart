@@ -148,7 +148,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                   color: mainButtonColor,
                 )
               : questions.isEmpty
-                  ? Center(child: Text("no data found"))
+                  ? Center(child: Text("Keine Daten gefunden"))
                   : SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -166,7 +166,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                             height: 15,
                           ),
                           if (deviceNode == 'EcgDeviceNode')
-                            Text("Please connect to device")
+                            Text(" Bitte schließen Sie Ihr EKG - Gerät an")
                           else if (isMultiChoice == true)
                             Column(
                               children: [

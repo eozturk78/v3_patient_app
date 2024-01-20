@@ -75,7 +75,7 @@ class _NotificationHistoryPage extends State<NotificationHistoryPage> {
                   color: mainButtonColor,
                 )
               : listMessages!.isEmpty
-                  ? Center(child: Text("no data found"))
+                  ? Center(child: Text("Keine Daten gefunden"))
                   : ExpansionPanelList(
                       expansionCallback: (int index, bool isExpanded) {
                         setState(() {

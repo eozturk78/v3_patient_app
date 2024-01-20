@@ -18,9 +18,14 @@ class MedicineIntakeScreen extends StatefulWidget {
 class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
   DateTime _selectedDate = DateTime.now();
   bool _morningIntake = false;
+
+  bool _savedMorningIntake = false;
   bool _noonIntake = false;
+  bool _savedNoonIntake = false;
   bool _eveningIntake = false;
+  bool _savedEveningIntake = false;
   bool _nightIntake = false;
+  bool _savedNightIntake = false;
   Shared sh = Shared();
   bool _isLoading = false;
   bool _isSaving = false;
@@ -30,7 +35,8 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
   void initState() {
     super.initState();
     api = Apis(); // Initialize API class instance
-    fetchMedicineIntake(); // Fetch medicine intake information when the screen is initialized
+    fetchMedicineIntake(
+        true); // Fetch medicine intake information when the screen is initialized
   }
 
   Future<void> saveMedicineIntake() async {
@@ -47,9 +53,11 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
         'evening': _nightIntake ? "1" : "0"
       };
 
-      final data = await api
-          .sendMedicineIntake(_intakeData)
-          .onError((error, stackTrace) => sh.redirectPatient(error, context));
+      final data = await api.sendMedicineIntake(_intakeData).then((value) {
+        setState(() {
+          fetchMedicineIntake(false);
+        });
+      }).onError((error, stackTrace) => sh.redirectPatient(error, context));
 
       if (data == "ok") {
         print('Saving medicine intake is OK');
@@ -66,10 +74,18 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
     }
   }
 
-  Future<void> fetchMedicineIntake() async {
+  Future<void> fetchMedicineIntake(bool isLoading) async {
     try {
+      if (isLoading)
+        setState(() {
+          _savedMorningIntake = false;
+          _savedNoonIntake = false;
+          _savedEveningIntake = false;
+          _savedNightIntake = false;
+        });
+
       setState(() {
-        _isLoading = true;
+        _isLoading = isLoading;
       });
 
       final data = await api
@@ -79,9 +95,13 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
       if (data != null) {
         setState(() {
           _morningIntake = data['morning']?.isOdd ?? false;
+          if (_morningIntake) _savedMorningIntake = true;
           _noonIntake = data['noon']?.isOdd ?? false;
+          if (_noonIntake) _savedNoonIntake = true;
           _eveningIntake = data['afternoon']?.isOdd ?? false;
+          if (_eveningIntake) _savedEveningIntake = true;
           _nightIntake = data['evening']?.isOdd ?? false;
+          if (_nightIntake) _savedNightIntake = true;
           print('API call to get medicine intake made');
         });
       } else {
@@ -155,7 +175,7 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                           setState(() {
                             _selectedDate = picked;
                           });
-                          fetchMedicineIntake();
+                          fetchMedicineIntake(true);
                         }
                       },
                     ),
@@ -172,8 +192,8 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                   padding: const EdgeInsets.fromLTRB(18, 5, 0, 18),
                   child: Column(
                     children: [
-                      buildCheckbox('Einnahme morgens', _morningIntake, 10,
-                          (bool? value) {
+                      buildCheckbox('Einnahme morgens', _morningIntake,
+                          _savedMorningIntake, 10, (bool? value) {
                         if (value != null) {
                           setState(() {
                             _morningIntake = value;
@@ -181,7 +201,8 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                           // saveMedicineIntake();
                         }
                       }),
-                      buildCheckbox('Einnahme mittags', _noonIntake, 20,
+                      buildCheckbox(
+                          'Einnahme mittags', _noonIntake, _savedNoonIntake, 20,
                           (bool? value) {
                         if (value != null) {
                           setState(() {
@@ -190,8 +211,8 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                           // saveMedicineIntake();
                         }
                       }),
-                      buildCheckbox('Einnahme abends', _eveningIntake, 30,
-                          (bool? value) {
+                      buildCheckbox('Einnahme abends', _eveningIntake,
+                          _savedEveningIntake, 30, (bool? value) {
                         if (value != null) {
                           setState(() {
                             _eveningIntake = value;
@@ -199,8 +220,8 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                           // saveMedicineIntake();
                         }
                       }),
-                      buildCheckbox('Einnahme nachts', _nightIntake, 40,
-                          (bool? value) {
+                      buildCheckbox('Einnahme nachts', _nightIntake,
+                          _savedNightIntake, 40, (bool? value) {
                         if (value != null) {
                           setState(() {
                             _nightIntake = value;
@@ -237,7 +258,7 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
     );
   }
 
-  Widget buildCheckbox(String label, bool value, int typeOfValue,
+  Widget buildCheckbox(String label, bool value, savedValue, int typeOfValue,
       ValueChanged<bool?> onChanged) {
     return GestureDetector(
       onTap: () {
@@ -252,16 +273,20 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
               height: 24,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: value
-                    ? Color.fromARGB(255, 162, 28, 52)
-                    : Colors.transparent,
+                color: (savedValue)
+                    ? Colors.green
+                    : (value)
+                        ? Color.fromARGB(255, 162, 28, 52)
+                        : Colors.transparent,
                 border: Border.all(
-                  color: Color.fromARGB(255, 162, 28, 52),
+                  color: (savedValue)
+                      ? Colors.green
+                      : Color.fromARGB(255, 162, 28, 52),
                 ),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(2.0),
-                child: value
+                child: value || savedValue
                     ? Icon(
                         Icons.check,
                         size: 18,

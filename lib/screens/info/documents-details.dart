@@ -350,8 +350,12 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
           ),
           FloatingActionButton.extended(
             onPressed: () async {
-              if (await sh.checkPermission(
-                      context, Permission.storage, sh.storagePermissionText) ==
+              if ((Platform.isIOS &&
+                          await sh.checkPermission(context, Permission.photos,
+                              sh.galeryPermissionText) ||
+                      (Platform.isAndroid &&
+                          await sh.checkPermission(context, Permission.storage,
+                              sh.galeryPermissionText))) ==
                   true) {
                 FilePickerResult? pickedFile =
                     await FilePicker.platform.pickFiles(
@@ -671,7 +675,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                               },
                             );
                           } else {
-                            showToast("bitte Name des Ordners eingeben");
+                            showToast("Bitte Name des Ordners eingeben");
                           }
                         },
                         child: !isSendEP

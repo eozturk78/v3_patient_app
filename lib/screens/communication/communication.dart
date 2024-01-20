@@ -104,7 +104,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
                               await launch(videoUrl!);
                             } else {
                               showToast(
-                                  "Derzeit ist kein Treffen verfügbar. Bitte versuchen Sie es noch einmal mit der Besprechungszeit!");
+                                  "Momentan ist keine Videosprechstunde geplant. Bei Unklarheiten nehmen Sie gerne Kontakt zu uns via Nachricht auf.");
                             }
                           },
                         ),

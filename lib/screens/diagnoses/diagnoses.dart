@@ -65,7 +65,7 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
                 color: mainButtonColor,
               )
             : diagnoseList!.isEmpty
-                ? Center(child: Text("no data found"))
+                ? Center(child: Text("Keine Daten gefunden"))
                 : ExpansionPanelList(
                     expansionCallback: (int index, bool isExpanded) {
                       setState(() {

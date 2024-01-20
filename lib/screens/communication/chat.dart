@@ -10,6 +10,7 @@ import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/message-list-container.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/shared.dart';
+import 'package:patient_app/shared/toast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -162,7 +163,7 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                   )
                 : listMessages.isEmpty
-                    ? Center(child: Text("no data found"))
+                    ? Center(child: Text("Keine Daten gefunden"))
                     : Container(
                         height: MediaQuery.of(context).size.height * 0.7,
                         child: SingleChildScrollView(
@@ -204,7 +205,7 @@ class _ChatPageState extends State<ChatPage> {
                 minLines: 1, //Normal textInputField will be displayed
                 maxLines: 5,
                 decoration: InputDecoration(
-                  labelText: 'Message',
+                  labelText: 'Nachrichten',
                   suffixIcon: Row(
                     mainAxisSize: MainAxisSize.min, // added line
                     children: <Widget>[
@@ -226,8 +227,16 @@ class _ChatPageState extends State<ChatPage> {
                       IconButton(
                         icon: const Icon(Icons.image_outlined),
                         onPressed: () async {
-                          if (await sh.checkPermission(context,
-                                  Permission.photos, sh.galeryPermissionText) ==
+                          if ((Platform.isIOS &&
+                                      await sh.checkPermission(
+                                          context,
+                                          Permission.photos,
+                                          sh.galeryPermissionText) ||
+                                  (Platform.isAndroid &&
+                                      await sh.checkPermission(
+                                          context,
+                                          Permission.storage,
+                                          sh.galeryPermissionText))) ==
                               true) {
                             XFile? pickedFile = await ImagePicker().pickImage(
                               source: ImageSource.gallery,
@@ -243,56 +252,62 @@ class _ChatPageState extends State<ChatPage> {
                             ? Icon(Icons.send)
                             : CircularProgressIndicator(),
                         onPressed: () {
-                          setState(() {
-                            loaderSendMessage = true;
-                          });
-                          apis
-                              .sendMessage(
-                                  txtMessageController.text, organization)
-                              .then((resp) {
-                            print(resp);
-                            txtMessageController.text = "";
-                            setState(
-                              () {
-                                var index = 0;
-                                if (listMessages.isNotEmpty)
-                                  index = listMessages[listMessages.length - 1]
-                                          .index -
-                                      1;
-                                listMessages.add(Message(
-                                    image: resp['links'] != null &&
-                                            resp['links']['attachments']
-                                                    ?.length >
-                                                0
-                                        ? resp['links']['attachments'][0]
-                                            ['full']
-                                        : null,
-                                    messageId: resp['links'] != null
-                                        ? sh.getBaseName(
-                                            resp['links']['message'])
-                                        : null,
-                                    text: resp['body'],
-                                    senderType: 20,
-                                    senderTitle: resp['sender']['name'],
-                                    dateTime:
-                                        sh.formatDateTime(resp['timestamp']),
-                                    index: index));
-                                loaderSendMessage = false;
-                                FocusScope.of(context).unfocus();
-                                txtMessageController.clear();
-                                controller.animateTo(
-                                  controller.position.maxScrollExtent,
-                                  curve: Curves.easeOut,
-                                  duration: const Duration(milliseconds: 1),
-                                );
-                              },
-                            );
-                          }, onError: (err) {
-                            sh.redirectPatient(err, context);
+                          if (txtMessageController.text != "") {
                             setState(() {
-                              loaderSendMessage = false;
+                              loaderSendMessage = true;
                             });
-                          });
+                            apis
+                                .sendMessage(
+                                    txtMessageController.text, organization)
+                                .then((resp) {
+                              print(resp);
+                              txtMessageController.text = "";
+                              setState(
+                                () {
+                                  var index = 0;
+                                  if (listMessages.isNotEmpty)
+                                    index =
+                                        listMessages[listMessages.length - 1]
+                                                .index -
+                                            1;
+                                  listMessages.add(Message(
+                                      image: resp['links'] != null &&
+                                              resp['links']['attachments']
+                                                      ?.length >
+                                                  0
+                                          ? resp['links']['attachments'][0]
+                                              ['full']
+                                          : null,
+                                      messageId: resp['links'] != null
+                                          ? sh.getBaseName(
+                                              resp['links']['message'])
+                                          : null,
+                                      text: resp['body'],
+                                      senderType: 20,
+                                      senderTitle: resp['sender']['name'],
+                                      dateTime:
+                                          sh.formatDateTime(resp['timestamp']),
+                                      index: index));
+                                  loaderSendMessage = false;
+                                  FocusScope.of(context).unfocus();
+                                  txtMessageController.clear();
+                                  controller.animateTo(
+                                    controller.position.maxScrollExtent,
+                                    curve: Curves.easeOut,
+                                    duration: const Duration(milliseconds: 1),
+                                  );
+                                },
+                              );
+                            }, onError: (err) {
+                              sh.redirectPatient(err, context);
+                              setState(() {
+                                loaderSendMessage = false;
+                              });
+                            });
+                          } else {
+                            showToast(
+                                "Bitte Text einfügen um Nachricht zu senden");
+                          }
                         },
                       ),
                     ],
@@ -352,74 +367,76 @@ class _ChatPageState extends State<ChatPage> {
   Widget onChosenPhoto(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToEnd2());
     return AlertDialog(
-      backgroundColor: Colors.black,
+      backgroundColor: Color.fromARGB(171, 131, 131, 131),
       insetPadding: const EdgeInsets.all(0),
       actionsPadding: EdgeInsets.all(0),
       content: StatefulBuilder(
         builder: (BuildContext context, setState) {
-          return Container(
-            height: double.infinity,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(0),
-              controller: controller2,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.15,
-                    child: GestureDetector(
-                      child: const Icon(
-                        Icons.close,
-                        color: Colors.white,
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
+          return SingleChildScrollView(
+              child: Stack(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.15,
+                child: GestureDetector(
+                  child: const Icon(
+                    Icons.close,
+                    color: Colors.white,
                   ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    child: Center(
-                      child: Image.file(
-                        File(selectedFile!.path),
-                        width: MediaQuery.of(context).size.width * 1,
-                        height: 400,
-                        errorBuilder: (BuildContext context, Object error,
-                            StackTrace? stackTrace) {
-                          return const Center(
-                              child: Text('This image type is not supported'));
-                        },
-                      ),
-                    ),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.9,
+                child: Center(
+                  child: Image.file(
+                    File(selectedFile!.path),
+                    width: MediaQuery.of(context).size.width * 1,
+                    height: 400,
+                    errorBuilder: (BuildContext context, Object error,
+                        StackTrace? stackTrace) {
+                      return const Center(
+                          child: Text('This image type is not supported'));
+                    },
                   ),
-                  TextFormField(
-                    controller: txtHeaderMessageController,
-                    style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
-                    decoration: InputDecoration(
-                      fillColor: Color.fromARGB(255, 42, 43, 44),
-                      hintText: 'Header of your attachment',
-                      filled: true,
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.7),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.7),
-                      ),
-                      suffixIcon: Row(
-                        mainAxisSize: MainAxisSize.min, // added line
-                        children: <Widget>[
-                          IconButton(
-                            icon: loaderSendMessage == false
-                                ? Icon(Icons.send)
-                                : CircularProgressIndicator(),
-                            onPressed: () {
+                ),
+              ),
+              Positioned(
+                bottom: 15.0,
+                left: 0,
+                right: 0,
+                child: TextFormField(
+                  controller: txtHeaderMessageController,
+                  style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                  decoration: InputDecoration(
+                    fillColor: Color.fromARGB(255, 230, 230, 230),
+                    hintText: 'Nachricht',
+                    filled: true,
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: const BorderSide(width: 0.0),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: const BorderSide(width: 0.0),
+                    ),
+                    suffixIcon: Row(
+                      mainAxisSize: MainAxisSize.min, // added line
+                      children: <Widget>[
+                        IconButton(
+                          icon: loaderSendMessage == false
+                              ? Icon(Icons.send)
+                              : CircularProgressIndicator(),
+                          onPressed: () {
+                            if (txtMessageController.text != "" &&
+                                selectedFile != null) {
+                              setState(
+                                () {
+                                  loaderSendMessage = true;
+                                },
+                              );
                               selectedFile!.readAsBytes().then((value) {
-                                setState(
-                                  () {
-                                    loaderSendMessage = true;
-                                  },
-                                );
                                 apis
                                     .sendMessageWithAttachment(
                                         txtHeaderMessageController.text,
@@ -439,27 +456,30 @@ class _ChatPageState extends State<ChatPage> {
                                   );
                                 });
                               });
-                            },
-                          ),
-                        ],
-                      ),
+                            } else {
+                              showToast(
+                                  "Bitte fügen Sie eine Nachricht hinzu und fügen eine Datei an.");
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                    onTap: () {
-                      Timer(
-                        Duration(milliseconds: 200),
-                        () {
-                          controller2.animateTo(controller2.position.pixels,
-                              duration: const Duration(milliseconds: 200),
-                              curve: Curves.easeInOut);
-                        },
-                      );
-                    },
-                    obscureText: false,
                   ),
-                ],
+                  onTap: () {
+                    Timer(
+                      Duration(milliseconds: 200),
+                      () {
+                        controller2.animateTo(controller2.position.pixels,
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.easeInOut);
+                      },
+                    );
+                  },
+                  obscureText: false,
+                ),
               ),
-            ),
-          );
+            ],
+          ));
         },
       ),
     );

@@ -44,43 +44,45 @@ class _SuccessfullyChangedPasswordPageState
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: leadingSubpage("Erfolgreich geändert", context),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.verified,
-                      size: 70,
-                      color: const Color.fromARGB(255, 0, 58, 30),
-                    ),
-                    Text(
-                      "Ihr Passwort wurde erfolgreich geändert",
-                      style: labelText,
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              "/login", ModalRoute.withName('/login'));
-                        },
-                        child: Text('Zur Anmeldung gehen'))
-                  ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.verified,
+                        size: 70,
+                        color: const Color.fromARGB(255, 0, 58, 30),
+                      ),
+                      Text(
+                        "Ihr Passwort wurde erfolgreich geändert",
+                        style: labelText,
+                      ),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                "/login", ModalRoute.withName('/login'));
+                          },
+                          child: Text('Zur Anmeldung gehen'))
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

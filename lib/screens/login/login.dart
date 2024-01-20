@@ -250,7 +250,6 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         pref.remove("rememberMe");
       }
-
       await apis
           .login(userNameController.text, passwordController.text, deviceToken)
           .then((value) async {
@@ -328,6 +327,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  bool obSecuredText = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -343,21 +343,13 @@ class _LoginPageState extends State<LoginPage> {
                   Condition.largerThan(
                     //Tablet
                     name: MOBILE,
-                    value: 0.5,
+                    value: 0.65,
                   ),
                 ],
               ).value!,
           child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if (_internetStatus != null &&
-                    _internetStatus != InternetConnectionStatus.connected)
-                  Text(
-                    "Bitte überprüfen Sie Ihre Internetverbindung",
-                    style: TextStyle(fontSize: 20, color: Colors.red),
-                  ),
                 Padding(
                   padding: EdgeInsets.all(20),
                   child: SingleChildScrollView(
@@ -367,6 +359,14 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          if (_internetStatus != null &&
+                              _internetStatus !=
+                                  InternetConnectionStatus.connected)
+                            Text(
+                              "Bitte überprüfen Sie Ihre Internetverbindung",
+                              style: TextStyle(
+                                  fontSize: 18, color: mainButtonColor),
+                            ),
                           const SizedBox(
                             height: 5,
                           ),
@@ -388,9 +388,19 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           TextFormField(
                             controller: passwordController,
-                            obscureText: true,
-                            decoration: const InputDecoration(
+                            obscureText: !obSecuredText,
+                            decoration: InputDecoration(
                               labelText: 'Passwort',
+                              suffixIcon: IconButton(
+                                icon: obSecuredText == true
+                                    ? const Icon(Icons.visibility)
+                                    : const Icon(Icons.visibility_off),
+                                onPressed: () {
+                                  setState(() {
+                                    obSecuredText = !obSecuredText;
+                                  });
+                                },
+                              ),
                             ),
                             validator: (text) => sh.textValidator(text),
                           ),

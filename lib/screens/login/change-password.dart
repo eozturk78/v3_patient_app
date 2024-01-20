@@ -97,6 +97,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     );
   }
 
+  bool obSecuredText1 = false;
+  bool obSecuredText2 = false;
+  bool obSecuredText3 = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,27 +147,57 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         if (!fromForgotPassword)
                           TextFormField(
                             controller: passwordController,
-                            obscureText: true,
-                            decoration: const InputDecoration(
+                            obscureText: !obSecuredText1,
+                            decoration: InputDecoration(
                               labelText: 'Aktuelles Passwort',
+                              suffixIcon: IconButton(
+                                icon: obSecuredText1 == true
+                                    ? const Icon(Icons.visibility)
+                                    : const Icon(Icons.visibility_off),
+                                onPressed: () {
+                                  setState(() {
+                                    obSecuredText1 = !obSecuredText1;
+                                  });
+                                },
+                              ),
                             ),
                             validator: (text) => sh.textValidator(text),
                           ),
                         TextFormField(
                           controller: newPasswordController,
-                          obscureText: true,
-                          decoration: const InputDecoration(
+                          obscureText: !obSecuredText2,
+                          decoration: InputDecoration(
                             labelText: 'Neues Passwort',
+                            suffixIcon: IconButton(
+                              icon: obSecuredText2 == true
+                                  ? const Icon(Icons.visibility)
+                                  : const Icon(Icons.visibility_off),
+                              onPressed: () {
+                                setState(() {
+                                  obSecuredText2 = !obSecuredText2;
+                                });
+                              },
+                            ),
                           ),
                           validator: (text) => sh.textValidator(text),
                         ),
                         TextFormField(
                           controller: repeatNewPasswordController,
-                          obscureText: true,
+                          obscureText: !obSecuredText3,
                           validator: (text) => sh.textRepeatPassword(
                               text, newPasswordController.text),
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             labelText: 'Wiederhole das neue Passwort',
+                            suffixIcon: IconButton(
+                              icon: obSecuredText3 == true
+                                  ? const Icon(Icons.visibility)
+                                  : const Icon(Icons.visibility_off),
+                              onPressed: () {
+                                setState(() {
+                                  obSecuredText3 = !obSecuredText3;
+                                });
+                              },
+                            ),
                           ),
                         ),
                         const SizedBox(

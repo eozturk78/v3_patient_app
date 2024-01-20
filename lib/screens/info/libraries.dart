@@ -79,7 +79,7 @@ class _LibraryListPageState extends State<LibraryListPage> {
                     color: mainButtonColor,
                   )
                 : list.isEmpty
-                    ? Center(child: Text("no data found"))
+                    ? Center(child: Text("Keine Daten gefunden"))
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         verticalDirection: VerticalDirection.down,

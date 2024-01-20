@@ -60,7 +60,7 @@ class _AboutMeState extends State<AboutMe> {
                       color: mainButtonColor,
                     ))
                   : aboutPatient == null
-                      ? Center(child: Text("no data found"))
+                      ? Center(child: Text("Keine Daten gefunden"))
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,

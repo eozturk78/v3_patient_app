@@ -161,7 +161,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                       color: mainButtonColor,
                     )
                   : folderList.isEmpty
-                      ? Center(child: Text("no data found"))
+                      ? Center(child: Text("Keine Daten gefunden"))
                       : Container(
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -577,7 +577,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                               },
                             );
                           } else {
-                            showToast("bitte Name des Ordners eingeben");
+                            showToast("Bitte Name des Ordners eingeben");
                           }
                         },
                         child: !isSendEP
