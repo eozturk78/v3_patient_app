@@ -264,7 +264,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
       removeOutputParameter(p['name']);
       print(p);
       outPuts.add(p);
-      stepPage++;
     } else if (question['deviceNode'] == 'BloodSugarManualDeviceNode') {
       var measurements = null;
       var dt = DateTime.now().toUtc().toString().replaceAll(" ", "T"); /**/
@@ -307,7 +306,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
       };
       removeOutputParameter(p['name']);
       outPuts.add(p);
-      stepPage++;
+      //stepPage++;
     } else if (inputList.isNotEmpty) {
       for (var i = 0; i < inputList.length; i++) {
         var value = _controllers[i].text;
@@ -320,7 +319,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
           'value': value
         };
         removeOutputParameter(p['name']);
-        outPuts.add(p);
+        //  outPuts.add(p);
       }
       stepPage++;
     } else if (isMultiChoice && question['origin'] != null) {
@@ -331,7 +330,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
       };
       removeOutputParameter(p['name']);
       outPuts.add(p);
-      stepPage++;
+      // stepPage++;
     } else if (isMultiChoice && multiChoiseType != null) {
       var p = {
         'name': multiChoiseName,
@@ -340,8 +339,10 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
       };
       removeOutputParameter(p['name']);
       outPuts.add(p);
-      stepPage++;
+      //  stepPage++;
     }
+
+    stepPage++;
   }
 
   removeOutputParameter(String name) {

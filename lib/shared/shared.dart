@@ -75,7 +75,7 @@ class Shared {
 
   emailValidator(text) {
     if (text == null || text.isEmpty) {
-      return 'This field is required';
+      return '* Pflichfeld';
     } else if (!(text.contains('@')) && text.isNotEmpty) {
       return "Enter valid email.";
     }
@@ -84,14 +84,14 @@ class Shared {
 
   textValidator(text) {
     if (text == null || text?.isEmpty) {
-      return 'This field is required';
+      return '* Pflichfeld';
     }
     return null;
   }
 
   textRepeatPassword(pass1, pass2) {
     if (pass2 == null || pass2?.isEmpty) {
-      return 'This field is required';
+      return '* Pflichfeld';
     }
     if (pass1 != pass2) {
       return 'Passwords dont match';

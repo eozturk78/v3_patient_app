@@ -577,7 +577,8 @@ class _DocumentListPageState extends State<DocumentListPage> {
                               },
                             );
                           } else {
-                            showToast("Bitte Name des Ordners eingeben");
+                            showToast(
+                                "Ordner muss beschriftet werden um diesen zu erstellen");
                           }
                         },
                         child: !isSendEP
