@@ -8,6 +8,7 @@ import '../../model/scale-size.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/custom_menu.dart';
 import '../shared/profile-menu.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -20,6 +21,17 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+    getInfoVersion();
+  }
+
+  String? version;
+  getInfoVersion() {
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      setState(() {
+        version = packageInfo.version;
+      });
+      print(version);
+    });
   }
 
   @override
@@ -373,10 +385,12 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(
               height: 20,
             ),
-            const Center(
-              child: Text(
-                "Version 1.0.43",
-              ),
+            Center(
+              child: version != null
+                  ? Text(
+                      "Version ${version}",
+                    )
+                  : Text(""),
             ),
             SizedBox(
               height: 20,

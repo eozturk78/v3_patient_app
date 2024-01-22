@@ -233,28 +233,33 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
       oldSteps.add(next);
 
     question = questions.where((x) => x['nodeName'] == next).first;
+    print(question);
     if (question['deviceNode'] == 'EndNode') {
       setState(() {
         isLast = true;
       });
       clearAll();
-    } else {
-      if (question['variable'] == null) getResult();
-      if (question['variable'] != null) {
-        var p = {
-          'name': question['variable']['name'],
-          'type': question['variable']['type'],
-          'value': question['expression']['value']
-        };
-        outPuts.add(p);
-        findQuestionaire(question['next']);
-      }
+    } else if (question['deviceNode'] == 'MultipleChoiceSummationNode') {
+      var intervals = question['intervals'][0];
+      findQuestionaire(intervals['next']);
+    } else if (question['deviceNode'] == 'DecisionNode') {
+      findQuestionaire(question['next']);
+    } else if (question['variable'] == null)
+      getResult();
+    else if (question['variable'] != null) {
+      print("========1=========");
+      var p = {
+        'name': question['variable']['name'],
+        'type': question['variable']['type'],
+        'value': question['expression']['value']
+      };
+      outPuts.add(p);
+      findQuestionaire(question['next']);
     }
   }
 
   int stepPage = 0;
   prepareOutputs() {
-    print(question['deviceNode']);
     if (question['deviceNode'] == 'PainScaleManualDeviceNode') {
       var p = {
         'name': question['painScale']['name'],
@@ -262,7 +267,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
         'value': values[selectedIndex]
       };
       removeOutputParameter(p['name']);
-      print(p);
       outPuts.add(p);
     } else if (question['deviceNode'] == 'BloodSugarManualDeviceNode') {
       var measurements = null;
@@ -319,7 +323,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
           'value': value
         };
         removeOutputParameter(p['name']);
-        //  outPuts.add(p);
+        outPuts.add(p);
       }
       stepPage++;
     } else if (isMultiChoice && question['origin'] != null) {
@@ -786,24 +790,30 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
             ),
           ),
           if (isLast)
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(30),
-                  primary: mainButtonColor,
+            Center(
+              child: Container(
+                width: 150,
+                margin: EdgeInsets.only(right: 2),
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(30),
+                      primary: mainButtonColor,
+                    ),
+                    onPressed: () async {
+                      sendValues();
+                    },
+                    child: !isSendEP
+                        ? const Text("SENDEN")
+                        : Transform.scale(
+                            scale: 0.5,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            )),
+                  ),
                 ),
-                onPressed: () async {
-                  sendValues();
-                },
-                child: !isSendEP
-                    ? const Text("Senden")
-                    : Transform.scale(
-                        scale: 0.5,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        )),
               ),
             ),
           Row(
@@ -831,7 +841,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                       } else {
                         if (item['next'] != null) {
                           findQuestionaire(item['next']);
-                        } else {
+                        } else if (_next != null) {
                           findQuestionaire(_next);
                         }
                       }
