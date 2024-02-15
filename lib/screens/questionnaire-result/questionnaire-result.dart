@@ -392,12 +392,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (stepPage > 0)
-            TextButton(
-                onPressed: () {
-                  previousQuestion();
-                },
-                child: Text("Vorherige Frage")),
           Expanded(
             child: SingleChildScrollView(
               child: Center(
@@ -784,6 +778,43 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                   ),
                                 ),
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        for (var item in buttons)
+                          Container(
+                            width: 150,
+                            margin: EdgeInsets.only(right: 2),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: (item['isNo'])
+                                    ? confirmButton
+                                    : mainButtonColor,
+                              ),
+                              onPressed: () async {
+                                setState(() {
+                                  focusNotToFirst.unfocus();
+                                });
+                                prepareOutputs();
+                                if (item['next'] == endNode) {
+                                  setState(() {
+                                    isLast = true;
+                                  });
+                                  clearAll();
+                                } else {
+                                  if (item['next'] != null) {
+                                    findQuestionaire(item['next']);
+                                  } else if (_next != null) {
+                                    findQuestionaire(_next);
+                                  }
+                                }
+                              },
+                              child: Text(item['text']),
+                            ),
+                          ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -793,7 +824,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
             Center(
               child: Container(
                 width: 150,
-                margin: EdgeInsets.only(right: 2),
+                margin: EdgeInsets.only(right: 2, bottom: 30),
                 child: Padding(
                   padding: EdgeInsets.all(10),
                   child: ElevatedButton(
@@ -816,41 +847,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                 ),
               ),
             ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              for (var item in buttons)
-                Container(
-                  width: 150,
-                  margin: EdgeInsets.only(right: 2),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: (item['isNo']) ? confirmButton : mainButtonColor,
-                    ),
-                    onPressed: () async {
-                      setState(() {
-                        focusNotToFirst.unfocus();
-                      });
-                      prepareOutputs();
-                      if (item['next'] == endNode) {
-                        setState(() {
-                          isLast = true;
-                        });
-                        clearAll();
-                      } else {
-                        if (item['next'] != null) {
-                          findQuestionaire(item['next']);
-                        } else if (_next != null) {
-                          findQuestionaire(_next);
-                        }
-                      }
-                    },
-                    child: Text(item['text']),
-                  ),
-                ),
-            ],
-          ),
           SizedBox(
             height: 20,
           ),

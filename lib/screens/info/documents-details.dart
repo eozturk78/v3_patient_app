@@ -675,11 +675,12 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                               },
                             );
                           } else {
-                            showToast("Ordner muss beschriftet werden um diesen zu erstellen");
+                            showToast(
+                                "Ordner muss beschriftet werden um diesen zu erstellen");
                           }
                         },
                         child: !isSendEP
-                            ? const Text("Senden")
+                            ? const Text("Umbenennen")
                             : Transform.scale(
                                 scale: 0.5,
                                 child: CircularProgressIndicator(

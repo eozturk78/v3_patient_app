@@ -582,7 +582,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                           }
                         },
                         child: !isSendEP
-                            ? const Text("Senden")
+                            ? const Text("Erstellen")
                             : Transform.scale(
                                 scale: 0.5,
                                 child: CircularProgressIndicator(

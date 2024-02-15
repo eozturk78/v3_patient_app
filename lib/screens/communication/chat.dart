@@ -367,7 +367,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget onChosenPhoto(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToEnd2());
     return AlertDialog(
-      backgroundColor: Color.fromARGB(171, 131, 131, 131),
+      backgroundColor: Color.fromARGB(171, 53, 52, 52),
       insetPadding: const EdgeInsets.all(0),
       actionsPadding: EdgeInsets.all(0),
       content: StatefulBuilder(
@@ -408,7 +408,7 @@ class _ChatPageState extends State<ChatPage> {
                 right: 0,
                 child: TextFormField(
                   controller: txtHeaderMessageController,
-                  style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                  style: TextStyle(color: Color.fromARGB(255, 8, 8, 8)),
                   decoration: InputDecoration(
                     fillColor: Color.fromARGB(255, 230, 230, 230),
                     hintText: 'Nachricht',
@@ -429,37 +429,37 @@ class _ChatPageState extends State<ChatPage> {
                               ? Icon(Icons.send)
                               : CircularProgressIndicator(),
                           onPressed: () {
-                            if (txtMessageController.text != "" &&
-                                selectedFile != null) {
-                              setState(
-                                () {
-                                  loaderSendMessage = true;
-                                },
-                              );
-                              selectedFile!.readAsBytes().then((value) {
-                                apis
-                                    .sendMessageWithAttachment(
-                                        txtHeaderMessageController.text,
-                                        base64Encode(value),
-                                        organization)
-                                    .then((resp) {
-                                  selectedFile = null;
-                                  loaderSendMessage = false;
-                                  txtHeaderMessageController.clear();
-                                  Navigator.pop(context, resp);
-                                }, onError: (err) {
-                                  sh.redirectPatient(err, context);
-                                  setState(
-                                    () {
-                                      loaderSendMessage = true;
-                                    },
-                                  );
-                                });
+                            /*if (txtMessageController.text != "" &&
+                              selectedFile != null) {*/
+                            setState(
+                              () {
+                                loaderSendMessage = true;
+                              },
+                            );
+                            selectedFile!.readAsBytes().then((value) {
+                              apis
+                                  .sendMessageWithAttachment(
+                                      txtHeaderMessageController.text,
+                                      base64Encode(value),
+                                      organization)
+                                  .then((resp) {
+                                selectedFile = null;
+                                loaderSendMessage = false;
+                                txtHeaderMessageController.clear();
+                                Navigator.pop(context, resp);
+                              }, onError: (err) {
+                                sh.redirectPatient(err, context);
+                                setState(
+                                  () {
+                                    loaderSendMessage = true;
+                                  },
+                                );
                               });
-                            } else {
+                            });
+                            /* } else {
                               showToast(
                                   "Bitte fügen Sie eine Nachricht hinzu und fügen eine Datei an.");
-                            }
+                            }*/
                           },
                         ),
                       ],
