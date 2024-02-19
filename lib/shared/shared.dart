@@ -188,7 +188,6 @@ class Shared {
     try {
       var dontAllowSend = false;
       value = double.parse(value);
-      print(question);
       if (question == "weight" && (value < 35 || value > 300)) {
         var p = measurementType
             .where((element) => element['name'] == 'weight')

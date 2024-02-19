@@ -698,7 +698,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                           ),
                                                           controller:
                                                               _controllers[i],
-                                                          obscureText: false,
+                                                              
                                                           focusNode: i == 0
                                                               ? focusNotToFirst
                                                               : null,
@@ -706,6 +706,13 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                               ? true
                                                               : false,
                                                           onChanged: (value) {
+
+                                                            if(inputList[
+                                                                          i][
+                                                                      'type'] !=
+                                                                  "String"){
+                                                            _controllers[i].text = _controllers[i].text.replaceAll(',','.');
+                                                            }
                                                             var checkValue =
                                                                 sh.checkValues(
                                                                     inputList[i]
@@ -736,8 +743,10 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                                           i][
                                                                       'type'] !=
                                                                   "String"
-                                                              ? TextInputType
-                                                                  .number
+                                                              ? TextInputType.numberWithOptions(
+                                                                  decimal: true,
+                                                                  signed: false,
+                                                                )
                                                               : TextInputType
                                                                   .text,
                                                           inputFormatters: inputList[
@@ -747,7 +756,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                               ? <TextInputFormatter>[
                                                                   FilteringTextInputFormatter
                                                                       .allow(RegExp(
-                                                                          '[0-9.]')),
+                                                                          '[0-9.,]')),
                                                                 ]
                                                               : null,
                                                         ),
