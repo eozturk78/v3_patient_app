@@ -2,11 +2,11 @@ import 'package:patient_app/shared/shared.dart';
 
 class QuestionnaireGroup {
   final String name;
-  String? nameShownToPatient;
+  final String nameShownToPatient;
   final String questionnaireId;
   QuestionnaireGroup(
       {required this.name,
-      this.nameShownToPatient,
+      required this.nameShownToPatient,
       required this.questionnaireId});
 
   factory QuestionnaireGroup.fromJson(Map<String, dynamic> json) {
