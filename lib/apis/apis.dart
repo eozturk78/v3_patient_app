@@ -339,6 +339,18 @@ class Apis {
     }
   }
 
+  Future deletePatientProfilePhoto() async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$baseUrl/deletepatientprofilephoto';
+      var result = await http.delete(Uri.parse(finalUrl),
+          headers: {'lang': lang, 'token': pref.getString('token').toString()});
+      return getResponseFromApi(result);
+    } catch (err) {
+      throw Exception("can't decode");
+    }
+  }
+
   Future getPatientFiles(int folderId) async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
@@ -469,6 +481,20 @@ class Apis {
     request.files.add(http.MultipartFile.fromBytes(
         'file', await file.readAsBytes(),
         filename: '$fileName.pdf'));
+    request.headers
+        .addAll({'lang': lang, 'token': pref.getString('token').toString()});
+    var response = await request.send();
+    var result = await http.Response.fromStream(response);
+    return getResponseFromApi(result);
+  }
+
+  Future setPatientProfilePhoto(File file) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/setpatientprofilephoto';
+    var request = http.MultipartRequest("POST", Uri.parse(finalUrl));
+    request.files.add(http.MultipartFile.fromBytes(
+        'file', await file.readAsBytes(),
+        filename: 'test.jpg'));
     request.headers
         .addAll({'lang': lang, 'token': pref.getString('token').toString()});
     var response = await request.send();
@@ -778,7 +804,6 @@ class Apis {
       }
       //  print(result.body);
       var body = jsonDecode(result.body);
-      print(body);
       //  print(result.statusCode);
       if (result.statusCode == 200 || result.statusCode == 201) {
         try {

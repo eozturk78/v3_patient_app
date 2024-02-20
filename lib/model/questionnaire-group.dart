@@ -13,7 +13,9 @@ class QuestionnaireGroup {
     Shared sh = Shared();
     return QuestionnaireGroup(
       name: json['name'],
-      nameShownToPatient: json['nameShownToPatient'],
+      nameShownToPatient: json['nameShownToPatient'] != null
+          ? json['nameShownToPatient']
+          : json['name'],
       questionnaireId: sh.getBaseName(json['links']['questionnaire']),
     );
   }

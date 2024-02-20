@@ -1,26 +1,14 @@
-import 'dart:async';
-
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/model/questionnaire-group.dart';
-import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../../apis/apis.dart';
-import '../../model/patient-file.dart';
 import '../../shared/shared.dart';
-import '../shared/bottom-menu.dart';
-import '../shared/document-box.dart';
-import '../shared/library-box.dart';
-import '../shared/medication-plan-box.dart';
-import '../shared/profile-menu.dart';
 
 class QuestionnaireGroupPage extends StatefulWidget {
   const QuestionnaireGroupPage({super.key});

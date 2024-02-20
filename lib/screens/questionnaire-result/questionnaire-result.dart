@@ -253,8 +253,34 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
         'type': question['variable']['type'],
         'value': question['expression']['value']
       };
+      removeOutputParameter(p['name']);
       outPuts.add(p);
       findQuestionaire(question['next']);
+    }
+  }
+
+  findQuestionaireBack(String next) {
+    if (oldSteps.where((element) => element == next).length == 0)
+      oldSteps.add(next);
+
+    question = questions.where((x) => x['nodeName'] == next).first;
+    print(question);
+    if (question['deviceNode'] == 'EndNode') {
+      setState(() {
+        isLast = true;
+      });
+      clearAll();
+    } else if (question['deviceNode'] == 'MultipleChoiceSummationNode') {
+      stepPage--;
+      findQuestionaireBack(oldSteps[stepPage]);
+    } else if (question['deviceNode'] == 'DecisionNode') {
+      stepPage--;
+      findQuestionaireBack(oldSteps[stepPage]);
+    } else if (question['variable'] == null)
+      getResult();
+    else if (question['variable'] != null) {
+      stepPage--;
+      findQuestionaireBack(oldSteps[stepPage]);
     }
   }
 
@@ -378,7 +404,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   previousQuestion() {
     isLast = false;
     stepPage--;
-    findQuestionaire(oldSteps[stepPage]);
+    findQuestionaireBack(oldSteps[stepPage]);
   }
 
   final List<double> values = [];
@@ -778,6 +804,17 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                   ),
                                 ),
                     ),
+                    if (stepPage > 0)
+                      Center(
+                        child: TextButton(
+                            onPressed: () {
+                              previousQuestion();
+                            },
+                            child: Text("Vorherige Frage")),
+                      ),
+                    SizedBox(
+                      height: 50,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -850,14 +887,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
           SizedBox(
             height: 20,
           ),
-          if (!keyboardIsOpened && stepPage > 0)
-            Center(
-              child: TextButton(
-                  onPressed: () {
-                    previousQuestion();
-                  },
-                  child: Text("Vorherige Frage")),
-            ),
         ],
       ),
     );
