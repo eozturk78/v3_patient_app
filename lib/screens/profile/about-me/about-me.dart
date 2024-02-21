@@ -47,7 +47,9 @@ class _AboutMeState extends State<AboutMe> {
       print(value);
       setState(() {
         aboutPatient = value;
-        if (aboutPatient["profilephoto"] != null)
+        if (aboutPatient["profilephoto"] != null &&
+            aboutPatient["profilephoto"] != 'null' &&
+            aboutPatient["profilephoto"] != '')
           imageUrl =
               '${apis.apiPublic}/patient_files/${aboutPatient["profilephoto"]}';
         isStarted = false;
@@ -363,10 +365,9 @@ class _AboutMeState extends State<AboutMe> {
                           await sh.checkPermission(context, Permission.storage,
                               sh.galeryPermissionText))) ==
                   true) {
-      
-                  XFile? pickedFile = await ImagePicker().pickImage(
-                    source: ImageSource.gallery,
-                  );
+                XFile? pickedFile = await ImagePicker().pickImage(
+                  source: ImageSource.gallery,
+                );
                 if (pickedFile != null) {
                   setState(() {
                     selectedFile = pickedFile!;
