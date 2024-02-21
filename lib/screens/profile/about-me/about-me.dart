@@ -331,9 +331,17 @@ class _AboutMeState extends State<AboutMe> {
         children: [
           FloatingActionButton.extended(
             onPressed: () async {
-              if (await sh.checkPermission(
-                      context, Permission.camera, sh.cameraPermissionText) ==
-                  true) {
+              if ((Platform.isIOS &&
+                                      await sh.checkPermission(
+                                          context,
+                                          Permission.photos,
+                                          sh.galeryPermissionText) ||
+                                  (Platform.isAndroid &&
+                                      await sh.checkPermission(
+                                          context,
+                                          Permission.storage,
+                                          sh.galeryPermissionText))) ==
+                              true) {
                 XFile? pickedFile = await ImagePicker().pickImage(
                   source: ImageSource.camera,
                 );

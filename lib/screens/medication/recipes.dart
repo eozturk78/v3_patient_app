@@ -5,6 +5,7 @@ import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/shared.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../apis/apis.dart';
 import '../../model/recipe.dart';
@@ -92,8 +93,13 @@ class _RecipesPageState extends State<RecipesPage> {
                                     },
                                     body: Column(
                                       children: [
-                                        Image.network(
-                                            '${apis.apiPublic}/patient_files/${item.qrCodeImage}'),
+                                        if(!item.qrCodeImage.toString().contains('svg'))
+                                          Image.network(
+                                              '${apis.apiPublic}/patient_files/${item.qrCodeImage}'),
+                                        if(item.qrCodeImage.toString().contains('svg'))
+                                            SvgPicture.network(
+                                            '${apis.apiPublic}/patient_files/${item.qrCodeImage}'
+                                            ),
                                         ListTile(
                                           subtitle: Column(
                                             children: [
