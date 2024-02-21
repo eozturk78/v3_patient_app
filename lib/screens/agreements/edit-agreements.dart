@@ -209,7 +209,8 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                     if (check1 && check2 && check3) {
                       SharedPreferences pref =
                           await SharedPreferences.getInstance();
-                      pref.setBool("isAgreementRead", true);
+                                  var user =   pref.getString("userName");
+                                  pref.setBool("${user}_isAgreementRead", true);
                       Navigator.of(context).pop();
                     } else {
                       await showDialog(
@@ -226,7 +227,10 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                                 onPressed: () async {
                                   SharedPreferences pref =
                                       await SharedPreferences.getInstance();
-                                  pref.setBool("isAgreementRead", false);
+
+
+                                  var user =   pref.getString("userName");
+                                  pref.setBool("${user}_isAgreementRead", false);
                                   apis
                                       .deleteRequestByPatient()
                                       .then((resp) => {});

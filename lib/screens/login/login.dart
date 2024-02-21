@@ -314,8 +314,9 @@ class _LoginPageState extends State<LoginPage> {
 
   checkRedirection() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-
-    if (pref.getBool('isAgreementRead') == true) {
+     var user =   pref.getString("userName");
+    print(pref.getBool('${user}_isAgreementRead'));
+    if (pref.getBool('${user}_isAgreementRead') == true) {
       isLoggedIn = true;
       if (_isRequiredSecretQuestion)
         Navigator.of(context).pushNamedAndRemoveUntil(

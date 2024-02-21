@@ -69,7 +69,7 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
                 : ExpansionPanelList(
                     expansionCallback: (int index, bool isExpanded) {
                       setState(() {
-                        diagnoseList![index].isExpanded = !isExpanded;
+                        diagnoseList![index].isExpanded = !diagnoseList![index].isExpanded!;
                       });
                     },
                     children: [
@@ -95,14 +95,16 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
                                     ))
                                   ],
                                 ),
-                                subtitle: Row(
+                                subtitle: Column(
+                                  mainAxisAlignment:MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(item.doctor ?? ""),
-                                    Spacer(),
+                                    SizedBox(height:5),
+                                     Text(item.doctor ?? ""),
+                                    SizedBox(height:5),
                                     Text(sh.formatDateTime(
-                                        item.createdAt.toString())),
-                                  ],
-                                ),
+                                        item.createdAt.toString())),]
+                                ) 
                               );
                             },
                             body: Padding(

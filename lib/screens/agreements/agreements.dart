@@ -206,10 +206,12 @@ class _AgreementsPageState extends State<AgreementsPage> {
                     if (check1 && check2 && check3) {
                       SharedPreferences pref =
                           await SharedPreferences.getInstance();
-                      pref.setBool("isAgreementRead", true);
+                          
+                                  var user =   pref.getString("userName");
+                                  pref.setBool("${user}_isAgreementRead", true);
                       //Navigator.of(context).pop();
                       Navigator.of(context).pushNamedAndRemoveUntil(
-                          '/login', ModalRoute.withName("/"));
+                          '/main-menu', ModalRoute.withName("/main-menu"));
                     } else {
                       await showDialog(
                         context: context,
@@ -223,7 +225,9 @@ class _AgreementsPageState extends State<AgreementsPage> {
                                 onPressed: () async {
                                   SharedPreferences pref =
                                       await SharedPreferences.getInstance();
-                                  pref.setBool("isAgreementRead", false);
+                                      
+                                  var user =   pref.getString("userName");
+                                  pref.setBool("${user}_isAgreementRead", false);
                                   /*
                                   apis.deleteRequestByPatient().then((resp) => {
 

@@ -27,7 +27,7 @@ class _AboutMeState extends State<AboutMe> {
   Shared sh = Shared();
   bool isStarted = true;
   XFile? selectedPhotoImage;
-  PlatformFile? selectedFile;
+  XFile? selectedFile;
   var aboutPatient;
   String? imageUrl;
   @override
@@ -363,15 +363,13 @@ class _AboutMeState extends State<AboutMe> {
                           await sh.checkPermission(context, Permission.storage,
                               sh.galeryPermissionText))) ==
                   true) {
-                FilePickerResult? pickedFile =
-                    await FilePicker.platform.pickFiles(
-                  type: FileType.custom,
-                  allowMultiple: false,
-                  allowedExtensions: ['jpg', 'png'],
-                );
+      
+                  XFile? pickedFile = await ImagePicker().pickImage(
+                    source: ImageSource.gallery,
+                  );
                 if (pickedFile != null) {
                   setState(() {
-                    selectedFile = pickedFile!.files.first;
+                    selectedFile = pickedFile!;
                     showDialog(
                       context: context,
                       builder: (context) => onOpenImage2(
