@@ -100,10 +100,10 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     SizedBox(height:5),
-                                     Text(item.doctor ?? ""),
-                                    SizedBox(height:5),
                                     Text(sh.formatDateTime(
-                                        item.createdAt.toString())),]
+                                        item.createdAt.toString())),
+                                    SizedBox(height:5),
+                                     Text(item.doctor ?? ""),]
                                 ) 
                               );
                             },

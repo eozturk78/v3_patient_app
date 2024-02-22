@@ -560,11 +560,16 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                     TextFormField(
                                                       controller:
                                                           controllerBloodSugar,
+
+                                                          onChanged: (value) {
+
+                                                            //controllerBloodSugar.text = controllerBloodSugar.text.replaceAll(',','.');
+                                                          },
                                                       obscureText: false,
                                                       inputFormatters: <TextInputFormatter>[
                                                         FilteringTextInputFormatter
                                                             .allow(RegExp(
-                                                                '[0-9.]')),
+                                                                '[0-9]')),
                                                       ],
                                                       keyboardType:
                                                           TextInputType.number,
@@ -732,6 +737,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                               ? true
                                                               : false,
                                                           onChanged: (value) {
+
+                                                            _controllers[i].text = _controllers[i].text.replaceAll(',','.');
+
                                                             var checkValue =
                                                                 sh.checkValues(
                                                                     inputList[i]
@@ -762,20 +770,34 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                                           i][
                                                                       'type'] !=
                                                                   "String"
-                                                              ? TextInputType
-                                                                  .number
-                                                              : TextInputType
-                                                                  .text,
+                                                            &&   inputList[
+                                                                          i][
+                                                                      'type'] !=
+                                                                  "Integer" ? TextInputType.numberWithOptions(decimal: true, signed: false) :
+
+                                                            inputList[i][
+                                                                      'type'] ==
+                                                                  "Integer" ? TextInputType.number : TextInputType.text,
                                                           inputFormatters: inputList[
                                                                           i][
                                                                       'type'] !=
-                                                                  "String"
+                                                                  "String" && inputList[
+                                                                          i][
+                                                                      'type'] !=
+                                                                  "Integer" 
                                                               ? <TextInputFormatter>[
                                                                   FilteringTextInputFormatter
                                                                       .allow(RegExp(
-                                                                          '[0-9.]')),
-                                                                ]
-                                                              : null,
+                                                                          '[0-9.,]')),
+                                                                ] 
+                                                              : inputList[
+                                                                          i][
+                                                                      'type'] ==
+                                                                  "Integer" ? <TextInputFormatter>[
+                                                                  FilteringTextInputFormatter
+                                                                      .allow(RegExp(
+                                                                          '[0-9]')),
+                                                                ]  : null,
                                                         ),
                                                         if (inputList[i][
                                                                     'isValueValid'] !=

@@ -393,7 +393,7 @@ class _AboutMeState extends State<AboutMe> {
               }
             },
             icon: new Icon(Icons.file_present_outlined),
-            label: Text("Foto hinzufügen"),
+            label: Text("Bild auswählen"),
           ),
         ],
       ),
