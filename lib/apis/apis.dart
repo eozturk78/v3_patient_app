@@ -272,13 +272,35 @@ class Apis {
   Future getAttachmentDataUrl(imageUrl) async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
+      print("=================");
       String finalUrl = '$baseUrl/getattachmentdataurl?url=$imageUrl';
       var result = await http.get(Uri.parse(finalUrl),
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
       final data = result.bodyBytes;
+      // print(result);
       // and encode them to base64
       final base64data = base64Encode(data);
       Uint8List _bytesImage = Base64Decoder().convert(base64data);
+      return _bytesImage;
+    } catch (err) {
+      throw Exception("can't decode");
+    }
+  }
+
+  Future getImageUrl(imageUrl) async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String finalUrl = '$imageUrl';
+      var result = await http.get(Uri.parse(finalUrl), headers: {
+        'lang': lang,
+        'Authorization': 'Bearer ' + pref.getString('token').toString()
+      });
+      final data = result.bodyBytes;
+      // and encode them to base64
+      final base64data = base64Encode(data);
+
+      Uint8List _bytesImage = Base64Decoder().convert(result.body);
+      print(_bytesImage);
       return _bytesImage;
     } catch (err) {
       throw Exception("can't decode");

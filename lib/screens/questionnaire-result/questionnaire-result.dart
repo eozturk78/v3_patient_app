@@ -1,22 +1,17 @@
-import 'dart:convert';
-
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:patient_app/colors/colors.dart';
-import 'package:patient_app/screens/shared/question-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
-import 'package:patient_app/shared/toast.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_html/flutter_html.dart';
 
+import 'package:photo_view/photo_view.dart';
 import '../../apis/apis.dart';
 import '../../shared/enums.dart';
 import '../../shared/shared.dart';
-import '../shared/document-box.dart';
 
 class QuestionnaireResultPage extends StatefulWidget {
   const QuestionnaireResultPage({super.key});
@@ -59,6 +54,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   String? multiChoiseName;
   String? multiChoiseType;
   List<String> oldSteps = [];
+  dynamic _helpText;
+  String? _helpImageStr;
+  bool loaderImage = false;
   @override
   void initState() {
     super.initState();
@@ -167,6 +165,16 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                 "title": ""
               };
               inputList.add(params);
+            } else if (element['HelpTextElement'] != null) {
+              _helpText =
+                  element['HelpTextElement']['text'].replaceAll('\"', '"');
+              _helpText =
+                  _helpText.replaceAll('font-feature-settings: normal;', '');
+
+              if (element['HelpTextElement']['image'] != null) {
+                _helpImageStr = element['HelpTextElement']['image'];
+              }
+              print(_helpText);
             }
           }
         } catch (err) {}
@@ -232,6 +240,8 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
     if (oldSteps.where((element) => element == next).length == 0)
       oldSteps.add(next);
 
+    _helpImageStr = null;
+    _helpText = null;
     question = questions.where((x) => x['nodeName'] == next).first;
     print(question);
     if (question['deviceNode'] == 'EndNode') {
@@ -263,6 +273,10 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
     if (oldSteps.where((element) => element == next).length == 0)
       oldSteps.add(next);
 
+    setState(() {
+      _helpImageStr = null;
+      _helpText = null;
+    });
     question = questions.where((x) => x['nodeName'] == next).first;
     print(question);
     if (question['deviceNode'] == 'EndNode') {
@@ -388,7 +402,14 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
       setState(() {
         isSendEP = false;
       });
-      Navigator.of(context).pushNamed('/home');
+
+      showDialog(
+        context: context,
+        builder: (context) => savedSuccessFully(context),
+      ).then((value) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/home', ModalRoute.withName("/questionnaire-group"));
+      });
     }, onError: (err) {
       setState(() {
         isSendEP = false;
@@ -466,6 +487,59 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                               Html(data: elements[i]['text'])
                                             ],
                                           ),
+                                      if (_helpText != null)
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                if (!loaderImage) {
+                                                  setState(() {
+                                                    loaderImage = true;
+                                                  });
+                                                  apis
+                                                      .getImageUrl(
+                                                          _helpImageStr)
+                                                      .then(
+                                                    (value) {
+                                                      setState(() {
+                                                        loaderImage = false;
+                                                      });
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            onOpenImage(
+                                                                context, value),
+                                                      ).then((value) {});
+                                                    },
+                                                    onError: (err) => setState(
+                                                      () {
+                                                        setState(() {
+                                                          loaderImage = false;
+                                                        });
+                                                        sh.redirectPatient(
+                                                            err, context);
+                                                      },
+                                                    ),
+                                                  );
+                                                }
+                                              },
+                                              child: !loaderImage
+                                                  ? Icon(Icons.help)
+                                                  : Transform.scale(
+                                                      scale: 0.5,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                            ),
+                                          ],
+                                        ),
                                       if (isLast ||
                                           question['deviceNode'] ==
                                               'PainScaleManualDeviceNode' ||
@@ -560,11 +634,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                     TextFormField(
                                                       controller:
                                                           controllerBloodSugar,
-
-                                                          onChanged: (value) {
-
-                                                            //controllerBloodSugar.text = controllerBloodSugar.text.replaceAll(',','.');
-                                                          },
+                                                      onChanged: (value) {
+                                                        //controllerBloodSugar.text = controllerBloodSugar.text.replaceAll(',','.');
+                                                      },
                                                       obscureText: false,
                                                       inputFormatters: <TextInputFormatter>[
                                                         FilteringTextInputFormatter
@@ -737,8 +809,13 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                               ? true
                                                               : false,
                                                           onChanged: (value) {
-
-                                                            _controllers[i].text = _controllers[i].text.replaceAll(',','.');
+                                                            _controllers[i]
+                                                                    .text =
+                                                                _controllers[i]
+                                                                    .text
+                                                                    .replaceAll(
+                                                                        ',',
+                                                                        '.');
 
                                                             var checkValue =
                                                                 sh.checkValues(
@@ -767,37 +844,48 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                             });
                                                           },
                                                           keyboardType: inputList[
-                                                                          i][
-                                                                      'type'] !=
-                                                                  "String"
-                                                            &&   inputList[
-                                                                          i][
-                                                                      'type'] !=
-                                                                  "Integer" ? TextInputType.numberWithOptions(decimal: true, signed: false) :
-
-                                                            inputList[i][
-                                                                      'type'] ==
-                                                                  "Integer" ? TextInputType.number : TextInputType.text,
+                                                                              i]
+                                                                          [
+                                                                          'type'] !=
+                                                                      "String" &&
+                                                                  inputList[i][
+                                                                          'type'] !=
+                                                                      "Integer"
+                                                              ? TextInputType
+                                                                  .numberWithOptions(
+                                                                      decimal:
+                                                                          true,
+                                                                      signed:
+                                                                          false)
+                                                              : inputList[i][
+                                                                          'type'] ==
+                                                                      "Integer"
+                                                                  ? TextInputType
+                                                                      .number
+                                                                  : TextInputType
+                                                                      .text,
                                                           inputFormatters: inputList[
-                                                                          i][
-                                                                      'type'] !=
-                                                                  "String" && inputList[
-                                                                          i][
-                                                                      'type'] !=
-                                                                  "Integer" 
+                                                                              i]
+                                                                          [
+                                                                          'type'] !=
+                                                                      "String" &&
+                                                                  inputList[i][
+                                                                          'type'] !=
+                                                                      "Integer"
                                                               ? <TextInputFormatter>[
                                                                   FilteringTextInputFormatter
                                                                       .allow(RegExp(
                                                                           '[0-9.,]')),
-                                                                ] 
-                                                              : inputList[
-                                                                          i][
-                                                                      'type'] ==
-                                                                  "Integer" ? <TextInputFormatter>[
-                                                                  FilteringTextInputFormatter
-                                                                      .allow(RegExp(
-                                                                          '[0-9]')),
-                                                                ]  : null,
+                                                                ]
+                                                              : inputList[i][
+                                                                          'type'] ==
+                                                                      "Integer"
+                                                                  ? <TextInputFormatter>[
+                                                                      FilteringTextInputFormatter
+                                                                          .allow(
+                                                                              RegExp('[0-9]')),
+                                                                    ]
+                                                                  : null,
                                                         ),
                                                         if (inputList[i][
                                                                     'isValueValid'] !=
@@ -912,340 +1000,138 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
         ],
       ),
     );
-    /*Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(15),
-                child: isStarted
-                    ? CircularProgressIndicator(
-                        color: mainButtonColor,
-                      )
-                    : questions.isEmpty
-                        ? Center(child: Text("Keine Daten gefunden"))
-                        : Container(
-                            width: MediaQuery.of(context).size.width *
-                                ResponsiveValue(
-                                  context,
-                                  defaultValue: 1,
-                                  conditionalValues: [
-                                    Condition.largerThan(
-                                      //Tablet
-                                      name: MOBILE,
-                                      value: 0.5,
-                                    ),
-                                  ],
-                                ).value!,
-                            child: Column(
-                              children: [
-                                Text(
-                                  questionText ?? "",
-                                  style: labelText,
-                                ),
-                                if (elements != null)
-                                  for (int i = 0; i < elements!.length; i++)
-                                    Column(
-                                      children: [
-                                        Html(data: elements[i]['text'])
-                                        /*Text(
-                                      elements[i]['text'],
-                                      style: i == 0 ? labelText : null,
-                                    )*/
-                                      ],
-                                    ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(15))),
-                                  margin: EdgeInsets.only(top: 20),
-                                  padding: EdgeInsets.all(10),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      if (isLast)
-                                        Column(
-                                          children: [
-                                            Text(
-                                                "Möchten Sie Ergebnisse senden?"),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                minimumSize:
-                                                    const Size.fromHeight(30),
-                                                primary: mainButtonColor,
-                                              ),
-                                              onPressed: () async {
-                                                sendValues();
-                                              },
-                                              child: !isSendEP
-                                                  ? const Text("Senden")
-                                                  : Transform.scale(
-                                                      scale: 0.5,
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                        strokeWidth: 2,
-                                                        color: Colors.white,
-                                                      )),
-                                            )
-                                          ],
-                                        ),
-                                      SizedBox(
-                                        height: 15,
-                                      ),
-                                      if (deviceNode == 'EcgDeviceNode')
-                                        Text(
-                                            " Bitte schließen Sie Ihr EKG - Gerät an")
-                                      else if (deviceNode ==
-                                          'BloodSugarManualDeviceNode')
-                                        Column(
-                                          children: [
-                                            TextFormField(
-                                              controller: controllerBloodSugar,
-                                              obscureText: false,
-                                              inputFormatters: <TextInputFormatter>[
-                                                FilteringTextInputFormatter
-                                                    .allow(RegExp('[0-9.]')),
-                                              ],
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              decoration: InputDecoration(
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.0),
-                                                  borderSide: BorderSide(
-                                                    color: Color.fromARGB(
-                                                        255, 216, 216, 216),
-                                                  ),
-                                                ),
-                                                border: OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    color: Color.fromARGB(
-                                                        255, 216, 216, 216),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            RadioListTile(
-                                              value: 0,
-                                              groupValue: _groupValue,
-                                              onChanged: (newValue) => setState(
-                                                  () =>
-                                                      _groupValue = newValue!),
-                                              title: Text("Vor dem Essen"),
-                                            ),
-                                            RadioListTile(
-                                              value: 1,
-                                              groupValue: _groupValue,
-                                              onChanged: (newValue) => setState(
-                                                  () =>
-                                                      _groupValue = newValue!),
-                                              title: Text("Nach dem Essen"),
-                                            ),
-                                            RadioListTile(
-                                              value: 2,
-                                              groupValue: _groupValue,
-                                              onChanged: (newValue) => setState(
-                                                  () =>
-                                                      _groupValue = newValue!),
-                                              title: Text("Fasten"),
-                                            ),
-                                            RadioListTile(
-                                              value: 3,
-                                              groupValue: _groupValue,
-                                              onChanged: (newValue) => setState(
-                                                  () =>
-                                                      _groupValue = newValue!),
-                                              title: Text(
-                                                  "Keine der oben genannten"),
-                                            )
-                                          ],
-                                        )
-                                      else if (isMultiChoice == true)
-                                        Column(
-                                          children: [
-                                            for (var item in choices)
-                                              RadioListTile(
-                                                value: item['value'],
-                                                groupValue: _groupValue,
-                                                onChanged: (newValue) =>
-                                                    setState(() => getChoose(
-                                                        item, newValue)),
-                                                title: Text(sh.getTranslation(
-                                                    item['text'])),
-                                              )
-                                          ],
-                                        )
-                                      else
-                                        for (var i = 0;
-                                            i < inputList.length;
-                                            i++)
-                                          Container(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  sh.getTranslation(
-                                                      inputList[i]['title']),
-                                                  style: TextStyle(
-                                                      color: Color.fromARGB(
-                                                          255, 150, 159, 162)),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                TextFormField(
-                                                  decoration: InputDecoration(
-                                                    focusedBorder:
-                                                        OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10.0),
-                                                      borderSide: BorderSide(
-                                                        color: Color.fromARGB(
-                                                            255, 216, 216, 216),
-                                                      ),
-                                                    ),
-                                                    border: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20.0),
-                                                      borderSide: BorderSide(
-                                                        color: Color.fromARGB(
-                                                            255, 216, 216, 216),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  controller: _controllers[i],
-                                                  obscureText: false,
-                                                  focusNode: i == 0
-                                                      ? focusNotToFirst
-                                                      : null,
-                                                  autofocus:
-                                                      i == 0 ? true : false,
-                                                  onChanged: (value) {
-                                                    var checkValue =
-                                                        sh.checkValues(
-                                                            inputList[i]
-                                                                ['title'],
-                                                            value);
-                                                    setState(() {
-                                                      if (checkValue['state'] ==
-                                                          -10) {
-                                                        inputList[i][
-                                                                'isValueValid'] =
-                                                            false;
-                                                        inputList[i][
-                                                                'errorParams'] =
-                                                            checkValue;
-                                                      } else {
-                                                        inputList[i][
-                                                                'isValueValid'] =
-                                                            true;
-                                                        inputList[i][
-                                                                'errorParams'] =
-                                                            checkValue;
-                                                      }
-                                                    });
-                                                  },
-                                                  keyboardType: inputList[i]
-                                                              ['type'] !=
-                                                          "String"
-                                                      ? TextInputType.number
-                                                      : TextInputType.text,
-                                                  inputFormatters: inputList[i]
-                                                              ['type'] !=
-                                                          "String"
-                                                      ? <TextInputFormatter>[
-                                                          FilteringTextInputFormatter
-                                                              .allow(RegExp(
-                                                                  '[0-9.]')),
-                                                        ]
-                                                      : null,
-                                                ),
-                                                if (inputList[i]
-                                                            ['isValueValid'] !=
-                                                        null &&
-                                                    !inputList[i]
-                                                        ['isValueValid'])
-                                                  Text(
-                                                    "Für die Eingabe sind Werte von ${inputList[i]['errorParams']['min']} ${inputList[i]['errorParams']['unit']} bis ${inputList[i]['errorParams']['max']} ${inputList[i]['errorParams']['unit']} möglich. Bitte überprüfen Sie die von Ihnen eingegeben Daten.",
-                                                    style: TextStyle(
-                                                        color: mainButtonColor),
-                                                  ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
+  }
+
+  Widget savedSuccessFully(BuildContext context) {
+    return AlertDialog(
+      content: StatefulBuilder(
+        builder: (BuildContext context, setState) {
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.2,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.check_circle,
+                    size: 80,
+                    color: Color.fromARGB(255, 0, 73, 3),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text("Your results are successfully sent",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(30),
+                      primary: mainButtonColor,
+                    ),
+                    onPressed: () async {
+                      Navigator.pop(context);
+                    },
+                    child: !isSendEP
+                        ? const Text("OK")
+                        : Transform.scale(
+                            scale: 0.5,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            )),
+                  ),
+                ],
               ),
-              Container(
-                height: 100,
-                margin: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: buttons.length > 1
-                          ? MainAxisAlignment.spaceBetween
-                          : MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget onOpenImage(BuildContext context, Uint8List? imageText) {
+    Widget? image;
+    if (imageText != null)
+      image = Image.memory(
+        imageText!,
+      );
+
+    return AlertDialog(
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: 0,
+        vertical: 0,
+      ),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 0,
+        vertical: 0,
+      ),
+      content: StatefulBuilder(
+        builder: (BuildContext context, setState) {
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: double.infinity,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    child: Row(
                       children: [
-                        for (var item in buttons)
-                          SizedBox(
-                            width: 150,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: (item['isNo'])
-                                      ? confirmButton
-                                      : mainButtonColor,
-                                ),
-                                onPressed: () async {
-                                  setState(() {
-                                    focusNotToFirst.unfocus();
-                                  });
-                                  prepareOutputs();
-                                  if (item['next'] == endNode) {
-                                    setState(() {
-                                      isLast = true;
-                                    });
-                                    clearAll();
-                                  } else {
-                                    if (item['next'] != null) {
-                                      findQuestionaire(item['next']);
-                                    } else {
-                                      findQuestionaire(_next);
-                                    }
-                                  }
-                                },
-                                child: Text(item['text'])),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Icon(
+                            Icons.close,
+                            size: 30,
                           ),
+                        ),
+                        Spacer(),
                       ],
                     ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),*/
+                    height: 40,
+                    padding: EdgeInsets.only(right: 10, left: 10),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 5,
+                          color: Colors.black.withOpacity(0.3),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (_helpText != null)
+                    Html(
+                      shrinkWrap: true,
+                      data: _helpText,
+                      style: {
+                        '#': Style(
+                          fontSize: FontSize(18),
+                          maxLines: 10,
+                          textOverflow: TextOverflow.ellipsis,
+                        ),
+                      },
+                    ),
+                  if (image != null)
+                    AspectRatio(
+                      aspectRatio: 2,
+                      child: PhotoView.customChild(
+                        backgroundDecoration:
+                            BoxDecoration(color: Colors.transparent),
+                        child: image,
+                        minScale: PhotoViewComputedScale.contained * 1,
+                        initialScale: PhotoViewComputedScale.contained,
+                        basePosition: Alignment.topCenter,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }

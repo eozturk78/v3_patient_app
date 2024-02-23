@@ -63,6 +63,7 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
         setState(
           () {
             imageText = value;
+            print(value);
             widget.startedLoadImage = false;
           },
         );
