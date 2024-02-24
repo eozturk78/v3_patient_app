@@ -1022,7 +1022,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text("Your results are successfully sent",
+                  const Text("Fragebogen wurde erfolgreich übermittelt",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
