@@ -356,7 +356,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
         var value = _controllers[i].text;
 
         if (inputList[i]['type'] == "Integer") value = int.parse(value);
-        if (inputList[i]['type'] == "Float") value = double.parse(value);
+        if (inputList[i]['type'] == "Float")  {value = value.toString().replaceAll(",","."); value = double.parse(value);}
         var p = {
           'name': inputList[i]['name'],
           'type': inputList[i]['type'],
@@ -809,13 +809,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                               ? true
                                                               : false,
                                                           onChanged: (value) {
-                                                            _controllers[i]
-                                                                    .text =
-                                                                _controllers[i]
-                                                                    .text
-                                                                    .replaceAll(
-                                                                        ',',
-                                                                        '.');
+                                                          
 
                                                             var checkValue =
                                                                 sh.checkValues(
