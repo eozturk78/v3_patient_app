@@ -52,12 +52,12 @@ class _DocumentListPageState extends State<DocumentListPage> {
   @override
   void initState() {
     super.initState();
-    getPatientFolders();
+    getPatientFolders(true);
   }
 
-  getPatientFolders() async {
+  getPatientFolders(bool loader) async {
     setState(() {
-      isStarted = true;
+      isStarted = loader;
     });
     apis.getPatientFolders().then(
       (value) {
@@ -128,7 +128,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
         isSendEP = false;
       });
     }).then((value) {
-      getPatientFolders();
+      getPatientFolders(false);
     });
   }
 
@@ -154,58 +154,140 @@ class _DocumentListPageState extends State<DocumentListPage> {
                     ),
                   ],
                 ).value!,
-            child: Padding(
-              padding: EdgeInsets.all(15),
-              child: isStarted
-                  ? CircularProgressIndicator(
-                      color: mainButtonColor,
-                    )
-                  : folderList.isEmpty
-                      ? Center(child: Text("Keine Daten gefunden"))
-                      : Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15))),
-                          width: double.infinity,
-                          padding: EdgeInsets.all(10),
-                          margin: EdgeInsets.only(left: 20, right: 20),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              verticalDirection: VerticalDirection.down,
-                              children: [
-                                for (var item in folderList)
-                                  Column(
-                                    children: [
-                                      TextButton(
-                                        onPressed: () {
-                                          onGotoFileScreen(
-                                              item.id, item.folderName);
-                                        },
-                                        style: profileBtnStyle,
-                                        child: CustomDocumentBox(
-                                          Icons.medication_outlined,
-                                          item.folderName,
-                                          item.fileCount,
-                                        ),
+            child: isStarted
+                ? CircularProgressIndicator(
+                    color: mainButtonColor,
+                  )
+                : folderList.isEmpty
+                    ? Center(child: Text("Keine Daten gefunden"))
+                    : Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15))),
+                        width: double.infinity,
+                        padding: EdgeInsets.all(5),
+                        margin: EdgeInsets.only(left: 20, right: 20),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            verticalDirection: VerticalDirection.down,
+                            children: [
+                              for (var item in folderList)
+                                Column(
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        onGotoFileScreen(
+                                            item.id, item.folderName);
+                                      },
+                                      style: profileBtnStyle,
+                                      child: CustomDocumentBox(
+                                        Icons.medication_outlined,
+                                        item.folderName,
+                                        item.fileCount,
                                       ),
-                                      Divider(
-                                        height: 10,
-                                      )
-                                    ],
-                                  )
-                              ],
-                            ),
+                                    ),
+                                    Divider(
+                                      height: 10,
+                                    )
+                                  ],
+                                )
+                            ],
                           ),
                         ),
-            ),
+                      ),
           ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
 
-      floatingActionButtonLocation: ExpandableFab.location,
-      floatingActionButton: ExpandableFab(
+      //floatingActionButtonLocation: ExpandableFab.location,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return Wrap(
+                children: [
+                  ListTile(
+                    onTap: () async {
+                      setState(() {
+                        showDialog(
+                          context: context,
+                          builder: (context) => onOpenFolderInfo(context),
+                        ).then((resp) {
+                          getPatientFolders(false);
+                        });
+                      });
+                    },
+                    leading: new Icon(Icons.file_present_outlined),
+                    title: Text("neuer Ordner"),
+                  ),
+                  ListTile(
+                    onTap: () async {
+                      if (await sh.checkPermission(context, Permission.camera,
+                              sh.cameraPermissionText) ==
+                          true) {
+                        XFile? pickedFile = await ImagePicker().pickImage(
+                          source: ImageSource.camera,
+                        );
+                        if (pickedFile != null) {
+                          setState(() {
+                            selectedPhotoImage = pickedFile;
+                            showDialog(
+                              context: context,
+                              builder: (context) => onOpenImage(context),
+                            ).then((resp) {
+                              if (resp != null) Navigator.pop(context, resp);
+                            });
+                          });
+                        }
+                      }
+                    },
+                    leading: new Icon(Icons.image_outlined),
+                    title: Text("Foto aufnehmen"),
+                  ),
+                  ListTile(
+                    onTap: () async {
+                      if (await sh.checkPermission(context, Permission.storage,
+                              sh.storagePermissionText) ==
+                          true) {
+                        FilePickerResult? pickedFile =
+                            await FilePicker.platform.pickFiles(
+                          type: FileType.custom,
+                          allowMultiple: false,
+                          allowedExtensions: ['jpg', 'pdf', 'doc', 'png'],
+                        );
+                        if (pickedFile != null) {
+                          setState(() {
+                            selectedFile = pickedFile!.files.first;
+                            if (selectedFile?.extension == 'pdf') {
+                              File file = File(selectedFile!.path!);
+                              PDFDocument.fromFile(file).then((value) {
+                                setState(() {
+                                  document = value;
+                                  openDialog();
+                                });
+                              });
+                            } else {
+                              openDialog();
+                            }
+                          });
+                        }
+                      }
+                    },
+                    leading: new Icon(Icons.file_present_outlined),
+                    title: Text("Dokument / Foto hinzufügen"),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        child: Icon(Icons.add),
+      ),
+
+      /*ExpandableFab(
         key: key,
         distance: 60.0,
         type: ExpandableFabType.up,
@@ -305,7 +387,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
             label: Text("Dokument / Foto hinzufügen"),
           ),
         ],
-      ),
+      ),*/
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: 4),
     );
   }
@@ -374,6 +456,9 @@ class _DocumentListPageState extends State<DocumentListPage> {
                   height: 10,
                 ),
                 if (selectedFile?.extension == 'jpg' ||
+                    selectedFile?.extension == 'jpeg' ||
+                    selectedFile?.extension == 'png' ||
+                    selectedFile?.extension == 'Webp' ||
                     selectedPhotoImage != null)
                   Flexible(
                     flex: 2,
@@ -392,6 +477,9 @@ class _DocumentListPageState extends State<DocumentListPage> {
                   ),
                 if (selectedPhotoImage == null &&
                     selectedFile?.extension != 'jpg' &&
+                    selectedFile?.extension != 'jpeg' &&
+                    selectedFile?.extension != 'png' &&
+                    selectedFile?.extension != 'Webp' &&
                     document != null)
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.84,

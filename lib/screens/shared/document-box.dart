@@ -11,23 +11,18 @@ class CustomDocumentBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50.0,
-      margin: EdgeInsets.only(bottom: 10),
-      padding: EdgeInsets.only(right: 3),
+      height: 20.0,
+      margin: EdgeInsets.only(bottom: 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 10,
-          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 headText,
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                style: TextStyle(color: Colors.black),
               ),
             ],
           ),

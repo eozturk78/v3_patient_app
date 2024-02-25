@@ -60,7 +60,14 @@ class Shared {
     "fev6": "FEV6",
     "fev1Fev6Ratio": "FEV1/FEV6",
     "fef2575": "FEF25% -75%",
-    "meanArterialPressure": "Mittlerer arterieller Blutdruck"
+    "meanArterialPressure": "Mittlerer arterieller Blutdruck",
+    "yes": "Ja",
+    "no": "Nein",
+    "next": "Weiter",
+    "send": "Senden",
+    "skip": "Überspringen",
+    "ok": "OK",
+    "continue": "Weiter"
   };
   String galeryPermissionText =
       "Um fortzufahren ändern Sie die Einstellungen zum Zugriff auf Bilder.";
@@ -70,6 +77,7 @@ class Shared {
       "Um fortzufahren ändern Sie die Einstellungen zum Zugriff auf Dokumente.";
 
   getTranslation(String field) {
+    field = field.toString().toLowerCase();
     return translations[field] != null ? translations[field] : field;
   }
 
@@ -187,8 +195,9 @@ class Shared {
   checkValues(question, value) {
     try {
       var dontAllowSend = false;
+      if (value.toString().contains(','))
+        value = value.toString().replaceAll(",", '.');
       value = double.parse(value);
-      print(question);
       if (question == "weight" && (value < 35 || value > 300)) {
         var p = measurementType
             .where((element) => element['name'] == 'weight')

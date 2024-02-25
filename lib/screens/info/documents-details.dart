@@ -54,15 +54,16 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
   @override
   void initState() {
     super.initState();
-    getFiles();
+    getFiles(true);
+    getPatientFolders();
   }
 
-  getFiles() async {
+  getFiles(bool loader) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
       screenTitle = pref.getString("folderName")!;
       folderId = int.parse(pref.getString("folderId")!);
-      isStarted = true;
+      isStarted = loader;
       Apis apis = Apis();
       apis.getPatientFiles(folderId).then(
             (value) => {
@@ -94,7 +95,6 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
           isStarted = false;
           folderList = (value as List).map((e) => Folder.fromJson(e)).toList();
           //print(folderList);
-          folderId = folderId;
         });
       },
       onError: (err) => setState(
@@ -124,7 +124,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
             isSendEP = false;
           });
           Navigator.of(context).pop('ok');
-          getFiles();
+          getFiles(false);
         },
         onError: (err) {
           sh.redirectPatient(err, context);
@@ -146,7 +146,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
       context: context,
       builder: (context) => onOpenImage(context, file?.fileName),
     ).then((value) {
-      getFiles();
+      getFiles(false);
     });
   }
 
@@ -180,95 +180,235 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                   ),
                 ],
               ).value!,
-          child: Padding(
-            padding: EdgeInsets.all(15),
-            child: isStarted
-                ? CircularProgressIndicator(
-                    color: mainButtonColor,
-                  )
-                : fileList.isEmpty
-                    ? Center(
+          child: isStarted
+              ? CircularProgressIndicator(
+                  color: mainButtonColor,
+                )
+              : fileList.isEmpty
+                  ? Center(
+                      child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/images/empty-folder.png",
+                          width: 200,
+                          height: 100,
+                        ),
+                        Text("Ordner ist leer")
+                      ],
+                    ))
+                  : SingleChildScrollView(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15))),
+                        width: double.infinity,
+                        padding: EdgeInsets.all(5),
+                        margin: EdgeInsets.only(left: 20, right: 20),
                         child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/images/empty-folder.png",
-                            width: 200,
-                            height: 100,
-                          ),
-                          Text("Ordner ist leer")
-                        ],
-                      ))
-                    : SingleChildScrollView(
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15))),
-                          width: double.infinity,
-                          padding: EdgeInsets.all(20),
-                          margin: EdgeInsets.only(left: 20, right: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            verticalDirection: VerticalDirection.down,
-                            children: [
-                              SizedBox(
-                                height: 15,
-                              ),
-                              for (var item in fileList)
-                                Column(children: [
-                                  TextButton(
-                                      onPressed: () async {
-                                        var fileUrl = "";
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          verticalDirection: VerticalDirection.down,
+                          children: [
+                            for (var item in fileList)
+                              Column(children: [
+                                TextButton(
+                                  onPressed: () async {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) {
+                                        return Wrap(
+                                          children: [
+                                            ListTile(
+                                              leading: Icon(
+                                                  Icons.remove_red_eye_rounded),
+                                              title: Text('Datei zeigen'),
+                                              onTap: () {
+                                                var fileUrl = "";
 
-                                        fileUrl =
-                                            '${apis.apiPublic}/patient_files/${item.fileUrl}';
+                                                fileUrl =
+                                                    '${apis.apiPublic}/patient_files/${item.fileUrl}';
 
-                                        if (item.fileUrl
-                                            .contains('treatmentid')) {
-                                          var url =
-                                              '${apis.apiPublic}/${item.fileUrl}';
-                                          PDFDocument.fromURL(url)
-                                              .then((value) {
-                                            setState(() {
-                                              isPdf = true;
-                                              document = value;
-                                              openDialog(item);
-                                            });
-                                          });
-                                        } else if (fileUrl.contains('pdf')) {
-                                          PDFDocument.fromURL(fileUrl)
-                                              .then((value) {
-                                            setState(() {
-                                              isPdf = true;
-                                              document = value;
-                                              openDialog(item);
-                                            });
-                                          });
-                                        } else {
-                                          setState(() {
-                                            isPdf = false;
-                                            imageUrl = fileUrl;
-                                            openDialog(item);
-                                          });
-                                        }
+                                                if (item.fileUrl
+                                                    .contains('treatmentid')) {
+                                                  var url =
+                                                      '${apis.apiPublic}/${item.fileUrl}';
+                                                  PDFDocument.fromURL(url)
+                                                      .then((value) {
+                                                    setState(() {
+                                                      isPdf = true;
+                                                      document = value;
+                                                      openDialog(item);
+                                                    });
+                                                  });
+                                                } else if (fileUrl
+                                                    .contains('pdf')) {
+                                                  PDFDocument.fromURL(fileUrl)
+                                                      .then((value) {
+                                                    setState(() {
+                                                      isPdf = true;
+                                                      document = value;
+                                                      openDialog(item);
+                                                    });
+                                                  });
+                                                } else {
+                                                  setState(() {
+                                                    isPdf = false;
+                                                    imageUrl = fileUrl;
+                                                    openDialog(item);
+                                                  });
+                                                }
+                                              },
+                                            ),
+                                            ListTile(
+                                              leading: Icon(Icons.edit),
+                                              title: Text(
+                                                  'Bearbeiten von Dateinamen und Ordnern'),
+                                              onTap: () {
+                                                fileId = item.id;
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      onOpenFileInfo(context,
+                                                          item.fileName),
+                                                ).then((resp) {
+                                                  setState(() {
+                                                    getFiles(false);
+                                                    screenTitle = resp;
+                                                  });
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        );
                                       },
-                                      child: CustomDocumentBox(
-                                          Icons.file_copy_rounded,
-                                          item.fileName,
-                                          null)),
-                                  Divider()
-                                ])
-                            ],
-                          ),
+                                    );
+                                  },
+                                  child: CustomDocumentBox(
+                                      Icons.file_copy_rounded,
+                                      item.fileName,
+                                      null),
+                                ),
+                                Divider(
+                                  height: 10,
+                                )
+                              ])
+                          ],
                         ),
                       ),
-          ),
+                    ),
         ),
       ),
-      floatingActionButtonLocation: ExpandableFab.location,
-      floatingActionButton: ExpandableFab(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return Wrap(
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.file_present_outlined),
+                    title: Text('Dokument / Foto hinzufügen'),
+                    onTap: () async {
+                      if ((Platform.isIOS &&
+                                  await sh.checkPermission(
+                                      context,
+                                      Permission.photos,
+                                      sh.galeryPermissionText) ||
+                              (Platform.isAndroid &&
+                                  await sh.checkPermission(
+                                      context,
+                                      Permission.storage,
+                                      sh.galeryPermissionText))) ==
+                          true) {
+                        FilePickerResult? pickedFile =
+                            await FilePicker.platform.pickFiles(
+                          type: FileType.custom,
+                          allowMultiple: false,
+                          allowedExtensions: ['jpg', 'pdf', 'doc', 'png'],
+                        );
+                        if (pickedFile != null) {
+                          setState(() {
+                            selectedFile = pickedFile!.files.first;
+                            if (selectedFile?.extension == 'pdf') {
+                              File file = File(selectedFile!.path!);
+                              PDFDocument.fromFile(file).then((value) {
+                                setState(() {
+                                  document = value;
+                                  openDialog2();
+                                });
+                              });
+                            } else {
+                              openDialog2();
+                            }
+                          });
+                        }
+                      }
+                    },
+                  ),
+                  ListTile(
+                    onTap: () async {
+                      if (await sh.checkPermission(context, Permission.camera,
+                              sh.cameraPermissionText) ==
+                          true) {
+                        XFile? pickedFile = await ImagePicker().pickImage(
+                          source: ImageSource.camera,
+                        );
+                        if (pickedFile != null) {
+                          setState(() {
+                            selectedPhotoImage = pickedFile;
+                            showDialog(
+                              context: context,
+                              builder: (context) => onOpenImage2(
+                                context,
+                              ),
+                            ).then((resp) {
+                              if (resp != null) Navigator.pop(context, resp);
+                            });
+                          });
+                        }
+                      }
+                    },
+                    leading: new Icon(Icons.image_outlined),
+                    title: Text("Foto aufnehmen"),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => onOpenFolderInfo(
+                            context, screenTitle, folderId.toString()),
+                      ).then((resp) {
+                        setState(() {
+                          screenTitle = resp;
+                        });
+                      });
+                    },
+                    leading: new Icon(Icons.edit),
+                    title: Text("Ordner umbenennen"),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) =>
+                            onAreYouSureDeleteFolder(context, folderId),
+                      ).then((resp) {
+                        if (resp != null) Navigator.of(context).pop();
+                      });
+                    },
+                    leading: new Icon(Icons.delete),
+                    title: Text("Ordner löschen"),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      ),
+      /* floatingActionButton: ExpandableFab(
         key: key,
         distance: 60.0,
         type: ExpandableFabType.up,
@@ -385,7 +525,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
             label: Text("Dokument / Foto hinzufügen"),
           ),
         ],
-      ),
+      ),*/
     );
   }
 
@@ -581,6 +721,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                   height: MediaQuery.of(context).size.height * 0.84,
                   width: double.infinity,
                   child: PDFViewer(
+                    tooltip: PDFViewerTooltip(pick: 'Wählen Sie eine Seite'),
                     document: document!,
                   ),
                 ),
@@ -778,6 +919,9 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                           setState(() {
                             isSendEP = true;
                           });
+                          print(fileId);
+                          print(fileNameController.text);
+                          print(folderId);
                           apis
                               .movePatientFile(
                                   fileId, fileNameController.text, folderId)
@@ -884,6 +1028,9 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                   height: 10,
                 ),
                 if (selectedFile?.extension == 'jpg' ||
+                    selectedFile?.extension == 'jpeg' ||
+                    selectedFile?.extension == 'png' ||
+                    selectedFile?.extension == 'Webp' ||
                     selectedPhotoImage != null)
                   Flexible(
                     flex: 2,
@@ -902,6 +1049,9 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                   ),
                 if (selectedPhotoImage == null &&
                     selectedFile?.extension != 'jpg' &&
+                    selectedFile?.extension != 'jpeg' &&
+                    selectedFile?.extension != 'png' &&
+                    selectedFile?.extension != 'Webp' &&
                     document != null)
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.84,

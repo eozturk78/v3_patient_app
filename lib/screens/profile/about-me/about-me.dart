@@ -33,14 +33,14 @@ class _AboutMeState extends State<AboutMe> {
   @override
   void initState() {
     super.initState();
-    getAboutMe();
+    getAboutMe(true);
   }
 
-  getAboutMe() async {
+  getAboutMe(bool loader) async {
     selectedFile = null;
     selectedPhotoImage = null;
     setState(() {
-      isStarted = true;
+      isStarted = loader;
     });
     SharedPreferences pref = await SharedPreferences.getInstance();
     await apis.patientInfo().then((value) {
@@ -67,7 +67,7 @@ class _AboutMeState extends State<AboutMe> {
       context: context,
       builder: (context) => onOpenImage(context, imageUrl),
     ).then((value) {
-      getAboutMe();
+      getAboutMe(false);
     });
   }
 
@@ -112,6 +112,114 @@ class _AboutMeState extends State<AboutMe> {
                                       minRadius: 40,
                                       maxRadius: 50,
                                     ),
+                            ),
+                            Center(
+                              child: TextButton(
+                                child: Text(
+                                  'Bearbeiten',
+                                  style: TextStyle(color: Colors.blue),
+                                ),
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return Wrap(
+                                        children: [
+                                          ListTile(
+                                            onTap: () async {
+                                              if ((Platform.isIOS &&
+                                                          await sh.checkPermission(
+                                                              context,
+                                                              Permission.photos,
+                                                              sh
+                                                                  .galeryPermissionText) ||
+                                                      (Platform.isAndroid &&
+                                                          await sh.checkPermission(
+                                                              context,
+                                                              Permission
+                                                                  .storage,
+                                                              sh.galeryPermissionText))) ==
+                                                  true) {
+                                                XFile? pickedFile =
+                                                    await ImagePicker()
+                                                        .pickImage(
+                                                  source: ImageSource.camera,
+                                                );
+                                                if (pickedFile != null) {
+                                                  setState(() {
+                                                    selectedPhotoImage =
+                                                        pickedFile;
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          onOpenImage2(
+                                                        context,
+                                                      ),
+                                                    ).then((resp) {
+                                                      if (resp != null)
+                                                        Navigator.pop(
+                                                            context, resp);
+                                                      getAboutMe(false);
+                                                    });
+                                                  });
+                                                }
+                                              }
+                                            },
+                                            leading: new Icon(Icons.camera_alt),
+                                            title: Text("Foto aufnehmen"),
+                                          ),
+                                          ListTile(
+                                            onTap: () async {
+                                              if ((Platform.isIOS &&
+                                                          await sh.checkPermission(
+                                                              context,
+                                                              Permission.photos,
+                                                              sh
+                                                                  .galeryPermissionText) ||
+                                                      (Platform.isAndroid &&
+                                                          await sh.checkPermission(
+                                                              context,
+                                                              Permission
+                                                                  .storage,
+                                                              sh.galeryPermissionText))) ==
+                                                  true) {
+                                                XFile? pickedFile =
+                                                    await ImagePicker()
+                                                        .pickImage(
+                                                  source: ImageSource.gallery,
+                                                );
+                                                if (pickedFile != null) {
+                                                  setState(() {
+                                                    selectedFile = pickedFile!;
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          onOpenImage2(
+                                                        context,
+                                                      ),
+                                                    ).then((resp) {
+                                                      if (resp != null)
+                                                        Navigator.pop(
+                                                            context, resp);
+                                                      getAboutMe(false);
+                                                    });
+                                                  });
+                                                }
+                                              }
+                                            },
+                                            leading: new Icon(
+                                                Icons.file_present_outlined),
+                                            title: Text("Bild auswählen"),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
                             ),
                             Center(
                               child: Text(
@@ -302,7 +410,7 @@ class _AboutMeState extends State<AboutMe> {
         ),
       ),
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
-      floatingActionButtonLocation: ExpandableFab.location,
+      /* floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
         key: key,
         distance: 60.0,
@@ -329,74 +437,9 @@ class _AboutMeState extends State<AboutMe> {
           debugPrint('afterClose');
         },
         children: [
-          FloatingActionButton.extended(
-            onPressed: () async {
-              if ((Platform.isIOS &&
-                                      await sh.checkPermission(
-                                          context,
-                                          Permission.photos,
-                                          sh.galeryPermissionText) ||
-                                  (Platform.isAndroid &&
-                                      await sh.checkPermission(
-                                          context,
-                                          Permission.storage,
-                                          sh.galeryPermissionText))) ==
-                              true) {
-                XFile? pickedFile = await ImagePicker().pickImage(
-                  source: ImageSource.camera,
-                );
-                if (pickedFile != null) {
-                  setState(() {
-                    selectedPhotoImage = pickedFile;
-                    showDialog(
-                      context: context,
-                      builder: (context) => onOpenImage2(
-                        context,
-                      ),
-                    ).then((resp) {
-                      if (resp != null) Navigator.pop(context, resp);
-                      getAboutMe();
-                    });
-                  });
-                }
-              }
-            },
-            icon: new Icon(Icons.camera_alt),
-            label: Text("Foto aufnehmen"),
-          ),
-          FloatingActionButton.extended(
-            onPressed: () async {
-              if ((Platform.isIOS &&
-                          await sh.checkPermission(context, Permission.photos,
-                              sh.galeryPermissionText) ||
-                      (Platform.isAndroid &&
-                          await sh.checkPermission(context, Permission.storage,
-                              sh.galeryPermissionText))) ==
-                  true) {
-                XFile? pickedFile = await ImagePicker().pickImage(
-                  source: ImageSource.gallery,
-                );
-                if (pickedFile != null) {
-                  setState(() {
-                    selectedFile = pickedFile!;
-                    showDialog(
-                      context: context,
-                      builder: (context) => onOpenImage2(
-                        context,
-                      ),
-                    ).then((resp) {
-                      if (resp != null) Navigator.pop(context, resp);
-                      getAboutMe();
-                    });
-                  });
-                }
-              }
-            },
-            icon: new Icon(Icons.file_present_outlined),
-            label: Text("Bild auswählen"),
-          ),
+         
         ],
-      ),
+      ),*/
     );
   }
 
