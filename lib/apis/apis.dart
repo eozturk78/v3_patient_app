@@ -818,6 +818,16 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+
+  Future getUnReadMessageCount() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/unreadmessagecount';
+    var result = await http.get(Uri.parse(finalUrl),
+        headers: {'lang': lang, 'token': pref.getString('token').toString()});
+    return getResponseFromApi(result);
+  }
+  
+
   getResponseFromApi(http.Response result) async {
     try {
       if (result.headers['token'] != null) {

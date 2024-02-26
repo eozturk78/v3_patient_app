@@ -8,13 +8,15 @@ class CustomMessageListContainer extends StatelessWidget {
   final IconData? iconData;
   final String headText;
   final String dateTime;
-  const CustomMessageListContainer(this.iconData, this.headText, this.dateTime,
+  final int? messageCount;
+  const CustomMessageListContainer(
+      this.iconData, this.headText, this.dateTime, this.messageCount,
       {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 75.0,
+      height: 50.0,
       width: MediaQuery.of(context).size.width * 0.90,
       padding: EdgeInsets.only(left: 5, right: 5),
       decoration: BoxDecoration(
@@ -31,7 +33,7 @@ class CustomMessageListContainer extends StatelessWidget {
             children: [
               Icon(
                 iconData,
-                size: 40,
+                size: 20,
                 color: iconColor,
               ),
               SizedBox(
@@ -42,8 +44,17 @@ class CustomMessageListContainer extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 textScaleFactor: ScaleSize.textScaleFactor(context),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
               ),
+              if (messageCount != null && messageCount! > 0)
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text('(${messageCount.toString()})')
+                  ],
+                )
             ],
           ),
           Text(

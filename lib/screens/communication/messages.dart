@@ -198,7 +198,8 @@ class _MessagesPageState extends State<MessagesPage> {
                                                       : element
                                                           .notificationTitle,
                                                   sh.formatDateTime(
-                                                      element.createdAt)),
+                                                      element.createdAt),
+                                                      element.isRead),
                                               onTap: () async {
                                                 if (element.notificationtype ==
                                                     10) {
