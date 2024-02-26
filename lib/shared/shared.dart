@@ -65,7 +65,7 @@ class Shared {
     "no": "Nein",
     "next": "Weiter",
     "send": "Senden",
-    "sendend": "Senden",
+    "senden": "Senden",
     "skip": "Überspringen",
     "ok": "OK",
     "continue": "Weiter"

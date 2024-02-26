@@ -395,13 +395,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   checkRedirection() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+
+    var user = pref.getString("userName");
     pref.remove("token");
     var isAgreementRead = Timer(
       Duration(seconds: 3),
       (() {
         if (pref.getString("token") != null && pref.getString("token") != "") {
           redirectToInside();
-        } else if (pref.getBool('isAgreementRead') == true)
+        } else if (pref.getBool('${user}_isAgreementRead') == true)
           Navigator.of(context).pushReplacementNamed("/login");
         else
           Navigator.of(context).pushReplacementNamed("/agreements");
