@@ -258,14 +258,15 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
     } else if (question['variable'] == null)
       getResult();
     else if (question['variable'] != null) {
-      print("========1=========");
-      var p = {
-        'name': question['variable']['name'],
-        'type': question['variable']['type'],
-        'value': question['expression']['value']
-      };
-      removeOutputParameter(p['name']);
-      outPuts.add(p);
+      if (!question['variable']['name'].toString().contains("ECG")) {
+        var p = {
+          'name': question['variable']['name'],
+          'type': question['variable']['type'],
+          'value': question['expression']['value']
+        };
+        removeOutputParameter(p['name']);
+        outPuts.add(p);
+      }
       findQuestionaire(question['next']);
     }
   }
@@ -371,8 +372,12 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
       }
       stepPage++;
     } else if (isMultiChoice && question['origin'] != null) {
+      var name = question['origin']['name'].toString();
+
+      if (name.contains("#")) name = name.substring(0, name.indexOf("#"));
+
       var p = {
-        'name': question['origin']['name'],
+        'name': name, //question['origin']['name'],
         'type': question['origin']['type'],
         'value': _groupValue
       };
