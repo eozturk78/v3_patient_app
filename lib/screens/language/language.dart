@@ -64,8 +64,10 @@ class _LanguagePageState extends State<LanguagePage> {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: isStarted
-              ? CircularProgressIndicator(
-                  color: mainButtonColor,
+              ? Center(
+                  child: CircularProgressIndicator(
+                    color: mainButtonColor,
+                  ),
                 )
               : list.isEmpty
                   ? Center(child: Text("Keine Daten gefunden"))
