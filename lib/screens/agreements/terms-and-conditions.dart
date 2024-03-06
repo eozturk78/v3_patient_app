@@ -106,13 +106,6 @@ class _TermsAndConditionsState extends State<TermsAndConditionsPage> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Bearbeitungsart & Änderungen",
-                  style: TextStyle(fontSize: 16),
-                ),
-                SizedBox(
                   height: 20,
                 ),
                 Text(

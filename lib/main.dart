@@ -31,6 +31,7 @@ import 'package:patient_app/screens/info/documents.dart';
 import 'package:patient_app/screens/info/enlightenment.dart';
 import 'package:patient_app/screens/info/info.dart';
 import 'package:patient_app/screens/info/libraries.dart';
+import 'package:patient_app/screens/language/language.dart';
 import 'package:patient_app/screens/login/change-password.dart';
 import 'package:patient_app/screens/login/login.dart';
 import 'package:patient_app/screens/login/secret-question.dart';
@@ -75,12 +76,11 @@ import 'package:patient_app/screens/shared/shared.dart';
 import 'package:responsive_framework/breakpoint.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../shared/shared.dart';
-import '../screens/main-menu/route_util.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:intl/intl.dart';
-import '/generated/l10n.dart';
 
+import 'package:http/http.dart' as http;
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -98,6 +98,7 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 String? redirectionScreen;
+dynamic languageResource;
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize the plugin
@@ -154,9 +155,6 @@ main() async {
   );
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-  // Request permission to receive notifications (optional)
-  NotificationSettings settings = await messaging.requestPermission();
 
   // If permission is granted, get the FCM token
   String? token = await messaging.getToken();
@@ -339,6 +337,7 @@ class MyApp extends StatelessWidget {
         "/terms-and-conditions": (context) => const TermsAndConditionsPage(),
         "/patient-contacts-list": (context) => ContactsListingPage(),
         "/impresum": (context) => ImpresumPage(),
+        "/language": (context) => LanguagePage(),
         "/extract-data": (context) => ExtractDataPage(),
         "/notification-history": (context) => NotificationHistoryPage(),
         '/secret-question': (context) => SecretQuestionPage(),
@@ -396,19 +395,34 @@ class _MyHomePageState extends State<MyHomePage> {
   checkRedirection() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
 
-    var user = pref.getString("userName");
+    var lang = "de-DE";
+    if (pref.getString("language") != null) {
+      lang = pref.getString("language")!;
+    } else {
+      pref.setString("language", lang);
+    }
+
+    var url = '${apis.apiPublic}/resources/$lang.json';
+    print(url);
+    http.get(Uri.parse(url)).then((result) {
+      languageResource = result.body;
+      print(jsonEncode(languageResource));
+      var user = pref.getString("userName");
+      if (pref.getString("token") != null && pref.getString("token") != "") {
+        redirectToInside();
+      } else if (pref.getBool('${user}_isAgreementRead') == true)
+        Navigator.of(context).pushReplacementNamed("/login");
+      else
+        Navigator.of(context).pushReplacementNamed("/agreements");
+    });
+
+    /*
     pref.remove("token");
     var isAgreementRead = Timer(
       Duration(seconds: 3),
       (() {
-        if (pref.getString("token") != null && pref.getString("token") != "") {
-          redirectToInside();
-        } else if (pref.getBool('${user}_isAgreementRead') == true)
-          Navigator.of(context).pushReplacementNamed("/login");
-        else
-          Navigator.of(context).pushReplacementNamed("/agreements");
       }),
-    );
+    );*/
   }
 
   @override

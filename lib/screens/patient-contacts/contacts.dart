@@ -106,7 +106,7 @@ class _ContactsListingPageState extends State<ContactsListingPage>
 
   Widget _buildContactList(int category) {
     return _contacts.isEmpty
-        ? const Center(child: Text('Keine Kontakte verfügbar.'))
+        ? const Center(child: Text('  '))
         : ListView.builder(
             itemCount: _contacts.length,
             itemBuilder: (context, index) {

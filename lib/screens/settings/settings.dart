@@ -67,7 +67,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pushReplacementNamed("/profile");
+                              Navigator.of(context)
+                                  .pushReplacementNamed("/profile");
                             },
                             child: Container(
                               decoration: BoxDecoration(

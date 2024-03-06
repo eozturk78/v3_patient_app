@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:patient_app/main.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -352,5 +354,10 @@ class Shared {
       }
     }
     return true;
+  }
+
+  getLanguageResource(String? resourceName) {
+    //return "test";
+    return jsonDecode(languageResource)[resourceName];
   }
 }

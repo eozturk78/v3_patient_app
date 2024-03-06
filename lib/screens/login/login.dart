@@ -14,6 +14,7 @@ import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:local_auth/local_auth.dart';
 import '../../apis/apis.dart';
+import '../../main.dart';
 import '../../shared/shared.dart';
 
 class LoginPage extends StatefulWidget {
@@ -71,7 +72,6 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _internetStatus = status;
       });
-      print(status == InternetConnectionStatus.connected ? " var" : " yok");
     });
     // close listener after 30 seconds, so the program doesn't run forever
     // await Future<void>.delayed(const Duration(seconds: 30));
@@ -314,7 +314,7 @@ class _LoginPageState extends State<LoginPage> {
 
   checkRedirection() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-     var user =   pref.getString("userName");
+    var user = pref.getString("userName");
     print(pref.getBool('${user}_isAgreementRead'));
     if (pref.getBool('${user}_isAgreementRead') == true) {
       isLoggedIn = true;
@@ -382,8 +382,8 @@ class _LoginPageState extends State<LoginPage> {
                           TextFormField(
                             controller: userNameController,
                             obscureText: false,
-                            decoration: const InputDecoration(
-                              labelText: 'Benutzername',
+                            decoration: InputDecoration(
+                              labelText: sh.getLanguageResource("user_name"),
                             ),
                             validator: (text) => sh.textValidator(text),
                           ),
@@ -391,7 +391,7 @@ class _LoginPageState extends State<LoginPage> {
                             controller: passwordController,
                             obscureText: !obSecuredText,
                             decoration: InputDecoration(
-                              labelText: 'Passwort',
+                              labelText: sh.getLanguageResource("password"),
                               suffixIcon: IconButton(
                                 icon: obSecuredText == true
                                     ? const Icon(Icons.visibility)
@@ -432,7 +432,7 @@ class _LoginPageState extends State<LoginPage> {
                                             rememberMeState = !rememberMeState;
                                           })),
                                     ),
-                                    Text("Anmeldedaten speichern"),
+                                    Text(sh.getLanguageResource("remember_me")),
                                   ],
                                 ),
                               ),

@@ -818,7 +818,6 @@ class Apis {
     return getResponseFromApi(result);
   }
 
-
   Future getUnReadMessageCount() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/unreadmessagecount';
@@ -826,7 +825,22 @@ class Apis {
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
     return getResponseFromApi(result);
   }
-  
+
+  Future getLanguageList() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/getlanguagelist';
+    var result = await http.get(Uri.parse(finalUrl),
+        headers: {'lang': lang, 'token': pref.getString('token').toString()});
+    return getResponseFromApi(result);
+  }
+
+  Future setPatientLanguage(String language) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/setpatientlanguage?language=$language';
+    var result = await http.post(Uri.parse(finalUrl),
+        headers: {'lang': lang, 'token': pref.getString('token').toString()});
+    return getResponseFromApi(result);
+  }
 
   getResponseFromApi(http.Response result) async {
     try {

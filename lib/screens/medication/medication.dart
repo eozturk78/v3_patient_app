@@ -64,7 +64,7 @@ class _MedicationPageState extends State<MedicationPage> {
                         child: CustomSubTotal(
                             SvgPicture.asset(
                                 'assets/images/menu-icons/rezept-main.svg'),
-                            "Rezept",
+                            " ",
                             null,
                             null,
                             20),
@@ -108,8 +108,7 @@ class _MedicationPageState extends State<MedicationPage> {
                             null,
                             10),
                         onTap: () {
-                          Navigator.of(context)
-                              .pushNamed('/medicine-intake');
+                          Navigator.of(context).pushNamed('/medicine-intake');
                         },
                       ),
                     ),

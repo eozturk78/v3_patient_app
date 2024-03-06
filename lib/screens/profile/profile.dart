@@ -356,6 +356,28 @@ class _ProfilePageState extends State<ProfilePage> {
                   Divider(),
                   TextButton(
                     onPressed: () async {
+                      Navigator.of(context).pushNamed("/language");
+                    },
+                    style: profileBtnStyle,
+                    child: Row(
+                      children: [
+                        Text(
+                          "Sprache",
+                          style: profileMenuItemColor,
+                          textScaleFactor: ScaleSize.textScaleFactor(context),
+                        ),
+                        Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: mainButtonColor,
+                          size: 20,
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(),
+                  TextButton(
+                    onPressed: () async {
                       SharedPreferences pref =
                           await SharedPreferences.getInstance();
                       pref.remove("token");
