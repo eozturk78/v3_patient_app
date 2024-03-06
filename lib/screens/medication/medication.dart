@@ -85,7 +85,7 @@ class _MedicationPageState extends State<MedicationPage> {
                         child: CustomSubTotal(
                             SvgPicture.asset(
                                 'assets/images/menu-icons/medikamentenplan-main.svg'),
-                            "Interactive Mplan",
+                            "interaktiver Medikamentenplan",
                             null,
                             null,
                             10),
@@ -103,7 +103,7 @@ class _MedicationPageState extends State<MedicationPage> {
                         child: CustomSubTotal(
                             SvgPicture.asset(
                                 'assets/images/menu-icons/medikamentenplan-main.svg'),
-                            "Medicine Intake",
+                            "Medikamenteneinahme",
                             null,
                             null,
                             10),
