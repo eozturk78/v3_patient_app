@@ -2,6 +2,7 @@ import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:patient_app/colors/colors.dart';
+import 'package:patient_app/model/scale-size.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
@@ -442,335 +443,310 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage(title!, context),
-      resizeToAvoidBottomInset: true,
-      body: Center(
-        child: Container(
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width *
-              ResponsiveValue(
-                context,
-                defaultValue: 1,
-                conditionalValues: [
-                  Condition.largerThan(
-                    //Tablet
-                    name: MOBILE,
-                    value: 0.65,
-                  ),
-                ],
-              ).value!,
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(15),
-                    child: isStarted
-                        ? Container(
-                            height: MediaQuery.of(context).size.height * 0.9,
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                color: mainButtonColor,
+      appBar: AppBar(
+        leading: stepPage > 0
+            ? TextButton(
+                onPressed: () => previousQuestion(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(Icons.arrow_back_ios, color: mainButtonColor),
+                    Text(
+                      "Vorherige Frage",
+                      style: TextStyle(
+                          color: mainButtonColor,
+                          fontSize: ResponsiveValue(
+                            context,
+                            defaultValue: 10.0,
+                            conditionalValues: [
+                              Condition.largerThan(
+                                //Tablet
+                                name: MOBILE,
+                                value: 16.0,
                               ),
-                            ),
-                          )
-                        : questions.isEmpty
-                            ? Center(child: Text("Keine Daten gefunden"))
-                            : Container(
-                                width: MediaQuery.of(context).size.width *
-                                    ResponsiveValue(
-                                      context,
-                                      defaultValue: 1,
-                                      conditionalValues: [
-                                        Condition.largerThan(
-                                          //Tablet
-                                          name: MOBILE,
-                                          value: 0.5,
-                                        ),
-                                      ],
-                                    ).value!,
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      questionText ?? "",
-                                      style: labelText,
-                                    ),
-                                    if (elements != null)
-                                      for (int i = 0; i < elements!.length; i++)
-                                        Column(
-                                          children: [
-                                            Html(data: elements[i]['text'])
+                            ],
+                          ).value!),
+                    )
+                  ],
+                ),
+              )
+            : null,
+        leadingWidth: 120,
+        title: FittedBox(
+          child: Text(
+            title!,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                color: Color.fromARGB(255, 69, 81, 84),
+                fontSize: ResponsiveValue(
+                  context,
+                  defaultValue: 16.0,
+                  conditionalValues: [
+                    Condition.largerThan(
+                      //Tablet
+                      name: MOBILE,
+                      value: 25.0,
+                    ),
+                  ],
+                ).value!),
+            textScaleFactor: ScaleSize.textScaleFactor(context),
+          ),
+        ),
+        shadowColor: null,
+        elevation: 0.0,
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+      ),
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 10,
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Container(
+                margin: EdgeInsets.only(right: 10),
+                child: TextButton(
+                    child: Text("Exit"),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => exitQuestionnaire(context),
+                      ).then((value) {
+                        if (value == 1)
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/questionnaire-group',
+                              ModalRoute.withName("/main"));
+                      });
+                    }),
+              ),
+            ),
+            Center(
+              child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(top: 50),
+                width: MediaQuery.of(context).size.width *
+                    ResponsiveValue(
+                      context,
+                      defaultValue: 1,
+                      conditionalValues: [
+                        Condition.largerThan(
+                          //Tablet
+                          name: MOBILE,
+                          value: 0.65,
+                        ),
+                      ],
+                    ).value!,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(15),
+                        child: isStarted
+                            ? Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.9,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: mainButtonColor,
+                                  ),
+                                ),
+                              )
+                            : questions.isEmpty
+                                ? Center(child: Text("Keine Daten gefunden"))
+                                : Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        ResponsiveValue(
+                                          context,
+                                          defaultValue: 1,
+                                          conditionalValues: [
+                                            Condition.largerThan(
+                                              //Tablet
+                                              name: MOBILE,
+                                              value: 0.5,
+                                            ),
                                           ],
+                                        ).value!,
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          questionText ?? "",
+                                          style: labelText,
                                         ),
-                                    if (_helpText != null)
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              if (!loaderImage) {
-                                                setState(() {
-                                                  loaderImage = true;
-                                                });
-                                                apis
-                                                    .getImageUrl(_helpImageStr)
-                                                    .then(
-                                                  (value) {
+                                        if (elements != null)
+                                          for (int i = 0;
+                                              i < elements!.length;
+                                              i++)
+                                            Column(
+                                              children: [
+                                                Html(data: elements[i]['text'])
+                                              ],
+                                            ),
+                                        if (_helpText != null)
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  if (!loaderImage) {
                                                     setState(() {
-                                                      loaderImage = false;
+                                                      loaderImage = true;
                                                     });
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (context) =>
-                                                          onOpenImage(
-                                                              context, value),
-                                                    ).then((value) {});
-                                                  },
-                                                  onError: (err) => setState(
-                                                    () {
-                                                      setState(() {
-                                                        loaderImage = false;
-                                                      });
-                                                      sh.redirectPatient(
-                                                          err, context);
-                                                    },
-                                                  ),
-                                                );
-                                              }
-                                            },
-                                            child: !loaderImage
-                                                ? Icon(Icons.help)
-                                                : Transform.scale(
-                                                    scale: 0.5,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      strokeWidth: 2,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                          ),
-                                        ],
-                                      ),
-                                    if (isLast ||
-                                        question['deviceNode'] ==
-                                            'PainScaleManualDeviceNode' ||
-                                        deviceNode == 'EcgDeviceNode' ||
-                                        deviceNode == 'EcgDeviceNode' ||
-                                        deviceNode ==
-                                            'BloodSugarManualDeviceNode' ||
-                                        isMultiChoice ||
-                                        inputList.length > 0)
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: Color.fromARGB(
-                                                255, 255, 255, 255),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(15))),
-                                        margin: EdgeInsets.only(top: 20),
-                                        padding: EdgeInsets.all(10),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              height: 15,
-                                            ),
-                                            if (isLast)
-                                              Column(
-                                                children: [
-                                                  Text(
-                                                      "Möchten Sie Ergebnisse senden?"),
-                                                ],
+                                                    apis
+                                                        .getImageUrl(
+                                                            _helpImageStr)
+                                                        .then(
+                                                      (value) {
+                                                        setState(() {
+                                                          loaderImage = false;
+                                                        });
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (context) =>
+                                                              onOpenImage(
+                                                                  context,
+                                                                  value),
+                                                        ).then((value) {});
+                                                      },
+                                                      onError: (err) =>
+                                                          setState(
+                                                        () {
+                                                          setState(() {
+                                                            loaderImage = false;
+                                                          });
+                                                          sh.redirectPatient(
+                                                              err, context);
+                                                        },
+                                                      ),
+                                                    );
+                                                  }
+                                                },
+                                                child: !loaderImage
+                                                    ? Icon(Icons.help)
+                                                    : Transform.scale(
+                                                        scale: 0.5,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          strokeWidth: 2,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
                                               ),
-                                            SizedBox(
-                                              height: 15,
-                                            ),
-                                            if (question['deviceNode'] ==
-                                                'PainScaleManualDeviceNode')
-                                              Column(
-                                                children: [
-                                                  Image.asset(
-                                                    "assets/images/vas-score.png",
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width,
-                                                    height: 127,
-                                                  ),
-                                                  Slider(
-                                                    value: selectedIndex
-                                                        .toDouble(),
-                                                    min: 0,
-                                                    max: values.length - 1,
-                                                    divisions:
-                                                        values.length - 1,
-                                                    label: values[selectedIndex]
-                                                        .toString(),
-                                                    onChanged: (double value) {
-                                                      setState(() {
-                                                        selectedIndex =
-                                                            value.toInt();
-                                                      });
-                                                    },
-                                                  ),
-                                                  Center(
-                                                    child: Text(
-                                                      "ausgewählter Wert",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Center(
-                                                    child: Text(
-                                                        values[selectedIndex]
-                                                            .toString()),
-                                                  )
-                                                ],
-                                              )
-                                            else if (deviceNode ==
-                                                'EcgDeviceNode')
-                                              Text(
-                                                  " Bitte schließen Sie Ihr EKG - Gerät an")
-                                            else if (deviceNode ==
-                                                'BloodSugarManualDeviceNode')
-                                              Column(
-                                                children: [
-                                                  TextFormField(
-                                                    controller:
-                                                        controllerBloodSugar,
-                                                    onChanged: (value) {
-                                                      //controllerBloodSugar.text = controllerBloodSugar.text.replaceAll(',','.');
-                                                    },
-                                                    obscureText: false,
-                                                    inputFormatters: <TextInputFormatter>[
-                                                      FilteringTextInputFormatter
-                                                          .allow(
-                                                              RegExp('[0-9]')),
-                                                    ],
-                                                    keyboardType:
-                                                        TextInputType.number,
-                                                    decoration: InputDecoration(
-                                                      focusedBorder:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10.0),
-                                                        borderSide: BorderSide(
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              216,
-                                                              216,
-                                                              216),
-                                                        ),
-                                                      ),
-                                                      border:
-                                                          OutlineInputBorder(
-                                                        borderSide: BorderSide(
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              216,
-                                                              216,
-                                                              216),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  RadioListTile(
-                                                    value: 0,
-                                                    groupValue: _groupValue,
-                                                    onChanged: (newValue) =>
-                                                        setState(() =>
-                                                            _groupValue =
-                                                                newValue!),
-                                                    title:
-                                                        Text("Vor dem Essen"),
-                                                  ),
-                                                  RadioListTile(
-                                                    value: 1,
-                                                    groupValue: _groupValue,
-                                                    onChanged: (newValue) =>
-                                                        setState(() =>
-                                                            _groupValue =
-                                                                newValue!),
-                                                    title:
-                                                        Text("Nach dem Essen"),
-                                                  ),
-                                                  RadioListTile(
-                                                    value: 2,
-                                                    groupValue: _groupValue,
-                                                    onChanged: (newValue) =>
-                                                        setState(() =>
-                                                            _groupValue =
-                                                                newValue!),
-                                                    title: Text("Fasten"),
-                                                  ),
-                                                  RadioListTile(
-                                                    value: 3,
-                                                    groupValue: _groupValue,
-                                                    onChanged: (newValue) =>
-                                                        setState(() =>
-                                                            _groupValue =
-                                                                newValue!),
-                                                    title: Text(
-                                                        "Keine der oben genannten"),
-                                                  )
-                                                ],
-                                              )
-                                            else if (isMultiChoice == true)
-                                              Column(
-                                                children: [
-                                                  for (var item in choices)
-                                                    RadioListTile(
-                                                      value: item['value'],
-                                                      groupValue: _groupValue,
-                                                      onChanged: (newValue) =>
-                                                          setState(() =>
-                                                              getChoose(item,
-                                                                  newValue)),
-                                                      title: Text(
-                                                          sh.getTranslation(
-                                                              item['text'])),
-                                                    )
-                                                ],
-                                              )
-                                            else
-                                              for (var i = 0;
-                                                  i < inputList.length;
-                                                  i++)
-                                                Container(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                            ],
+                                          ),
+                                        if (isLast ||
+                                            question['deviceNode'] ==
+                                                'PainScaleManualDeviceNode' ||
+                                            deviceNode == 'EcgDeviceNode' ||
+                                            deviceNode == 'EcgDeviceNode' ||
+                                            deviceNode ==
+                                                'BloodSugarManualDeviceNode' ||
+                                            isMultiChoice ||
+                                            inputList.length > 0)
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                color: Color.fromARGB(
+                                                    255, 255, 255, 255),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(15))),
+                                            margin: EdgeInsets.only(top: 20),
+                                            padding: EdgeInsets.all(10),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  height: 15,
+                                                ),
+                                                if (isLast)
+                                                  Column(
                                                     children: [
                                                       Text(
-                                                        sh.getTranslation(
-                                                            inputList[i]
-                                                                ['title']),
-                                                        style: TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    150,
-                                                                    159,
-                                                                    162)),
+                                                          "Möchten Sie Ergebnisse senden?"),
+                                                    ],
+                                                  ),
+                                                SizedBox(
+                                                  height: 15,
+                                                ),
+                                                if (question['deviceNode'] ==
+                                                    'PainScaleManualDeviceNode')
+                                                  Column(
+                                                    children: [
+                                                      Image.asset(
+                                                        "assets/images/vas-score.png",
+                                                        width: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .width,
+                                                        height: 127,
+                                                      ),
+                                                      Slider(
+                                                        value: selectedIndex
+                                                            .toDouble(),
+                                                        min: 0,
+                                                        max: values.length - 1,
+                                                        divisions:
+                                                            values.length - 1,
+                                                        label: values[
+                                                                selectedIndex]
+                                                            .toString(),
+                                                        onChanged:
+                                                            (double value) {
+                                                          setState(() {
+                                                            selectedIndex =
+                                                                value.toInt();
+                                                          });
+                                                        },
+                                                      ),
+                                                      Center(
+                                                        child: Text(
+                                                          "ausgewählter Wert",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
                                                       ),
                                                       SizedBox(
                                                         height: 10,
                                                       ),
+                                                      Center(
+                                                        child: Text(values[
+                                                                selectedIndex]
+                                                            .toString()),
+                                                      )
+                                                    ],
+                                                  )
+                                                else if (deviceNode ==
+                                                    'EcgDeviceNode')
+                                                  Text(
+                                                      " Bitte schließen Sie Ihr EKG - Gerät an")
+                                                else if (deviceNode ==
+                                                    'BloodSugarManualDeviceNode')
+                                                  Column(
+                                                    children: [
                                                       TextFormField(
-                                                        scrollPadding:
-                                                            EdgeInsets.all(120),
+                                                        controller:
+                                                            controllerBloodSugar,
+                                                        onChanged: (value) {
+                                                          //controllerBloodSugar.text = controllerBloodSugar.text.replaceAll(',','.');
+                                                        },
+                                                        obscureText: false,
+                                                        inputFormatters: <TextInputFormatter>[
+                                                          FilteringTextInputFormatter
+                                                              .allow(RegExp(
+                                                                  '[0-9]')),
+                                                        ],
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
                                                         decoration:
                                                             InputDecoration(
                                                           focusedBorder:
@@ -791,10 +767,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                           ),
                                                           border:
                                                               OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20.0),
                                                             borderSide:
                                                                 BorderSide(
                                                               color: Color
@@ -806,188 +778,372 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                             ),
                                                           ),
                                                         ),
-                                                        controller:
-                                                            _controllers[i],
-                                                        obscureText: false,
-                                                        focusNode: i == 0
-                                                            ? focusNotToFirst
-                                                            : null,
-                                                        autofocus: i == 0
-                                                            ? true
-                                                            : false,
-                                                        onChanged: (value) {
-                                                          var checkValue =
-                                                              sh.checkValues(
-                                                                  inputList[i]
-                                                                      ['title'],
-                                                                  value);
-                                                          setState(() {
-                                                            if (checkValue[
-                                                                    'state'] ==
-                                                                -10) {
-                                                              inputList[i][
-                                                                      'isValueValid'] =
-                                                                  false;
-                                                              inputList[i][
-                                                                      'errorParams'] =
-                                                                  checkValue;
-                                                            } else {
-                                                              inputList[i][
-                                                                      'isValueValid'] =
-                                                                  true;
-                                                              inputList[i][
-                                                                      'errorParams'] =
-                                                                  checkValue;
-                                                            }
-                                                          });
-                                                        },
-                                                        keyboardType: inputList[
-                                                                            i][
-                                                                        'type'] !=
-                                                                    "String" &&
-                                                                inputList[i][
-                                                                        'type'] !=
-                                                                    "Integer"
-                                                            ? TextInputType
-                                                                .numberWithOptions(
-                                                                    decimal:
-                                                                        true,
-                                                                    signed:
-                                                                        false)
-                                                            : inputList[i][
-                                                                        'type'] ==
-                                                                    "Integer"
+                                                      ),
+                                                      RadioListTile(
+                                                        value: 0,
+                                                        groupValue: _groupValue,
+                                                        onChanged: (newValue) =>
+                                                            setState(() =>
+                                                                _groupValue =
+                                                                    newValue!),
+                                                        title: Text(
+                                                            "Vor dem Essen"),
+                                                      ),
+                                                      RadioListTile(
+                                                        value: 1,
+                                                        groupValue: _groupValue,
+                                                        onChanged: (newValue) =>
+                                                            setState(() =>
+                                                                _groupValue =
+                                                                    newValue!),
+                                                        title: Text(
+                                                            "Nach dem Essen"),
+                                                      ),
+                                                      RadioListTile(
+                                                        value: 2,
+                                                        groupValue: _groupValue,
+                                                        onChanged: (newValue) =>
+                                                            setState(() =>
+                                                                _groupValue =
+                                                                    newValue!),
+                                                        title: Text("Fasten"),
+                                                      ),
+                                                      RadioListTile(
+                                                        value: 3,
+                                                        groupValue: _groupValue,
+                                                        onChanged: (newValue) =>
+                                                            setState(() =>
+                                                                _groupValue =
+                                                                    newValue!),
+                                                        title: Text(
+                                                            "Keine der oben genannten"),
+                                                      )
+                                                    ],
+                                                  )
+                                                else if (isMultiChoice == true)
+                                                  Column(
+                                                    children: [
+                                                      for (var item in choices)
+                                                        RadioListTile(
+                                                          value: item['value'],
+                                                          groupValue:
+                                                              _groupValue,
+                                                          onChanged: (newValue) =>
+                                                              setState(() =>
+                                                                  getChoose(
+                                                                      item,
+                                                                      newValue)),
+                                                          title: Text(
+                                                              sh.getTranslation(
+                                                                  item[
+                                                                      'text'])),
+                                                        )
+                                                    ],
+                                                  )
+                                                else
+                                                  for (var i = 0;
+                                                      i < inputList.length;
+                                                      i++)
+                                                    Container(
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            sh.getTranslation(
+                                                                inputList[i]
+                                                                    ['title']),
+                                                            style: TextStyle(
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        150,
+                                                                        159,
+                                                                        162)),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          TextFormField(
+                                                            scrollPadding:
+                                                                EdgeInsets.all(
+                                                                    120),
+                                                            decoration:
+                                                                InputDecoration(
+                                                              focusedBorder:
+                                                                  OutlineInputBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10.0),
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          216,
+                                                                          216,
+                                                                          216),
+                                                                ),
+                                                              ),
+                                                              border:
+                                                                  OutlineInputBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20.0),
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          216,
+                                                                          216,
+                                                                          216),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            controller:
+                                                                _controllers[i],
+                                                            obscureText: false,
+                                                            focusNode: i == 0
+                                                                ? focusNotToFirst
+                                                                : null,
+                                                            autofocus: i == 0
+                                                                ? true
+                                                                : false,
+                                                            onChanged: (value) {
+                                                              var checkValue =
+                                                                  sh.checkValues(
+                                                                      inputList[
+                                                                              i]
+                                                                          [
+                                                                          'title'],
+                                                                      value);
+                                                              setState(() {
+                                                                if (checkValue[
+                                                                        'state'] ==
+                                                                    -10) {
+                                                                  inputList[i][
+                                                                          'isValueValid'] =
+                                                                      false;
+                                                                  inputList[i][
+                                                                          'errorParams'] =
+                                                                      checkValue;
+                                                                } else {
+                                                                  inputList[i][
+                                                                          'isValueValid'] =
+                                                                      true;
+                                                                  inputList[i][
+                                                                          'errorParams'] =
+                                                                      checkValue;
+                                                                }
+                                                              });
+                                                            },
+                                                            keyboardType: inputList[i]
+                                                                            [
+                                                                            'type'] !=
+                                                                        "String" &&
+                                                                    inputList[i]
+                                                                            [
+                                                                            'type'] !=
+                                                                        "Integer"
                                                                 ? TextInputType
-                                                                    .number
-                                                                : TextInputType
-                                                                    .text,
-                                                        inputFormatters: inputList[
-                                                                            i][
-                                                                        'type'] !=
-                                                                    "String" &&
-                                                                inputList[i][
-                                                                        'type'] !=
-                                                                    "Integer"
-                                                            ? <TextInputFormatter>[
-                                                                FilteringTextInputFormatter
-                                                                    .allow(RegExp(
-                                                                        '[0-9.,]')),
-                                                              ]
-                                                            : inputList[i][
-                                                                        'type'] ==
-                                                                    "Integer"
+                                                                    .numberWithOptions(
+                                                                        decimal:
+                                                                            true,
+                                                                        signed:
+                                                                            false)
+                                                                : inputList[i][
+                                                                            'type'] ==
+                                                                        "Integer"
+                                                                    ? TextInputType
+                                                                        .number
+                                                                    : TextInputType
+                                                                        .text,
+                                                            inputFormatters: inputList[i]
+                                                                            [
+                                                                            'type'] !=
+                                                                        "String" &&
+                                                                    inputList[i]
+                                                                            [
+                                                                            'type'] !=
+                                                                        "Integer"
                                                                 ? <TextInputFormatter>[
                                                                     FilteringTextInputFormatter
                                                                         .allow(RegExp(
-                                                                            '[0-9]')),
+                                                                            '[0-9.,]')),
                                                                   ]
-                                                                : null,
+                                                                : inputList[i][
+                                                                            'type'] ==
+                                                                        "Integer"
+                                                                    ? <TextInputFormatter>[
+                                                                        FilteringTextInputFormatter.allow(
+                                                                            RegExp('[0-9]')),
+                                                                      ]
+                                                                    : null,
+                                                          ),
+                                                          if (inputList[i][
+                                                                      'isValueValid'] !=
+                                                                  null &&
+                                                              !inputList[i][
+                                                                  'isValueValid'])
+                                                            Text(
+                                                              "Für die Eingabe sind Werte von ${inputList[i]['errorParams']['min']} ${inputList[i]['errorParams']['unit']} bis ${inputList[i]['errorParams']['max']} ${inputList[i]['errorParams']['unit']} möglich. Bitte überprüfen Sie die von Ihnen eingegeben Daten.",
+                                                              style: TextStyle(
+                                                                  color:
+                                                                      mainButtonColor),
+                                                            ),
+                                                          SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                        ],
                                                       ),
-                                                      if (inputList[i][
-                                                                  'isValueValid'] !=
-                                                              null &&
-                                                          !inputList[i]
-                                                              ['isValueValid'])
-                                                        Text(
-                                                          "Für die Eingabe sind Werte von ${inputList[i]['errorParams']['min']} ${inputList[i]['errorParams']['unit']} bis ${inputList[i]['errorParams']['max']} ${inputList[i]['errorParams']['unit']} möglich. Bitte überprüfen Sie die von Ihnen eingegeben Daten.",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  mainButtonColor),
-                                                        ),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                          ],
-                                        ),
-                                      )
-                                  ],
+                                                    ),
+                                              ],
+                                            ),
+                                          )
+                                      ],
+                                    ),
+                                  ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      if (isLast)
+                        Center(
+                          child: Container(
+                            width: 150,
+                            margin: EdgeInsets.only(right: 2, bottom: 30),
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: const Size.fromHeight(30),
+                                  primary: mainButtonColor,
                                 ),
+                                onPressed: () async {
+                                  sendValues();
+                                },
+                                child: !isSendEP
+                                    ? const Text("Senden")
+                                    : Transform.scale(
+                                        scale: 0.5,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: Colors.white,
+                                        )),
                               ),
-                  ),
-                  if (stepPage > 0)
-                    Center(
-                      child: TextButton(
-                          onPressed: () {
-                            previousQuestion();
-                          },
-                          child: Text("Vorherige Frage")),
-                    ),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  if (isLast)
-                    Center(
-                      child: Container(
-                        width: 150,
-                        margin: EdgeInsets.only(right: 2, bottom: 30),
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: const Size.fromHeight(30),
-                              primary: mainButtonColor,
                             ),
-                            onPressed: () async {
-                              sendValues();
-                            },
-                            child: !isSendEP
-                                ? const Text("Senden")
-                                : Transform.scale(
-                                    scale: 0.5,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: Colors.white,
-                                    )),
                           ),
                         ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          for (var item in buttons)
+                            Container(
+                              width: 150,
+                              margin: EdgeInsets.only(left: 10, bottom: 10),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: (item['isNo'])
+                                      ? confirmButton
+                                      : mainButtonColor,
+                                ),
+                                onPressed: () async {
+                                  setState(() {
+                                    focusNotToFirst.unfocus();
+                                  });
+                                  prepareOutputs();
+                                  if (item['next'] == endNode) {
+                                    setState(() {
+                                      isLast = true;
+                                    });
+                                    clearAll();
+                                  } else {
+                                    if (item['next'] != null) {
+                                      findQuestionaire(item['next']);
+                                    } else if (_next != null) {
+                                      findQuestionaire(_next);
+                                    }
+                                  }
+                                },
+                                child: Text(sh.getTranslation(item['text'])),
+                              ),
+                            ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget exitQuestionnaire(BuildContext context) {
+    return AlertDialog(
+      content: StatefulBuilder(
+        builder: (BuildContext context, setState) {
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.2,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.question_mark,
+                    size: 80,
+                    color: mainButtonColor,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text("Are you sure exit questionnaire?",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: const Color.fromARGB(255, 158, 158, 158)),
+                        onPressed: () async {
+                          Navigator.of(context).pop(1);
+                        },
+                        child: const Text("Ja"),
                       ),
-                    ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: mainButtonColor,
+                        ),
+                        onPressed: () async {
+                          Navigator.of(context).pop(0);
+                        },
+                        child: const Text("Nein"),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
-          ),
-        ),
-      ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          for (var item in buttons)
-            Container(
-              width: 150,
-              margin: EdgeInsets.only(left: 40),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: (item['isNo']) ? confirmButton : mainButtonColor,
-                ),
-                onPressed: () async {
-                  setState(() {
-                    focusNotToFirst.unfocus();
-                  });
-                  prepareOutputs();
-                  if (item['next'] == endNode) {
-                    setState(() {
-                      isLast = true;
-                    });
-                    clearAll();
-                  } else {
-                    if (item['next'] != null) {
-                      findQuestionaire(item['next']);
-                    } else if (_next != null) {
-                      findQuestionaire(_next);
-                    }
-                  }
-                },
-                child: Text(sh.getTranslation(item['text'])),
-              ),
-            ),
-        ],
+          );
+        },
       ),
     );
   }

@@ -261,9 +261,7 @@ class _LoginPageState extends State<LoginPage> {
           pref.setString("patientTitle", value['firstName']);
           pref.setString('token', value['token']);
           _isRequiredSecretQuestion = value['isRequiredSecretQuestion'];
-          print(_isRequiredSecretQuestion);
-          //isLoggedIn = true;
-          //Navigator.of(context).pushReplacementNamed("/main-menu");
+
           checkRedirection();
         }
       }, onError: (err) {
@@ -315,8 +313,11 @@ class _LoginPageState extends State<LoginPage> {
   checkRedirection() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var user = pref.getString("userName");
-    print(pref.getBool('${user}_isAgreementRead'));
-    if (pref.getBool('${user}_isAgreementRead') == true) {
+
+    if (pref.getBool("agreementAccepted") == true) {
+      pref.remove("agreementAccepted");
+      pref.setBool("${userNameController.text}_isAgreementRead", true);
+    } else if (pref.getBool('${user}_isAgreementRead') == true) {
       isLoggedIn = true;
       if (_isRequiredSecretQuestion)
         Navigator.of(context).pushNamedAndRemoveUntil(

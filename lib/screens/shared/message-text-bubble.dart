@@ -108,8 +108,8 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
               Text(
                 widget.text,
                 softWrap: true,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: widget.senderType == 20 ? Colors.white : Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -158,7 +158,9 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
                   Text(
                     '${widget.senderTitle} - ${widget.dateTime}',
                     style: TextStyle(
-                        color: Color.fromARGB(255, 245, 245, 245),
+                        color: widget.senderType == 20
+                            ? Colors.white
+                            : Colors.black,
                         fontSize: 11),
                   ),
                   Spacer(),

@@ -403,18 +403,22 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     var url = '${apis.apiPublic}/resources/$lang.json';
-    print(url);
+    /**/
     http.get(Uri.parse(url)).then((result) {
       languageResource = result.body;
-      print(jsonEncode(languageResource));
       var user = pref.getString("userName");
-      if (pref.getString("token") != null && pref.getString("token") != "") {
+      if (pref.getString("token") != null &&
+          pref.getString("token") != "" &&
+          pref.getString("token") != "null") {
         redirectToInside();
       } else if (pref.getBool('${user}_isAgreementRead') == true)
         Navigator.of(context).pushReplacementNamed("/login");
-      else
+      else {
         Navigator.of(context).pushReplacementNamed("/agreements");
+      }
     });
+
+//    Navigator.of(context).pushReplacementNamed("/agreements");
 
     /*
     pref.remove("token");

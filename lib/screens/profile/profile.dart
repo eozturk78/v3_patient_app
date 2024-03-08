@@ -381,6 +381,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       SharedPreferences pref =
                           await SharedPreferences.getInstance();
                       pref.remove("token");
+                      //pref.remove("userName");
                       Navigator.of(context).pushNamedAndRemoveUntil(
                           "/login", ModalRoute.withName('/login'));
                     },

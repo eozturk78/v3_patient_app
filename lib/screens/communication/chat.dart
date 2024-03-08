@@ -367,59 +367,78 @@ class _ChatPageState extends State<ChatPage> {
   Widget onChosenPhoto(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToEnd2());
     return AlertDialog(
-      backgroundColor: Color.fromARGB(171, 53, 52, 52),
-      insetPadding: const EdgeInsets.all(0),
-      actionsPadding: EdgeInsets.all(0),
+      backgroundColor: Color.fromARGB(255, 0, 0, 0),
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: 0,
+        vertical: 0,
+      ),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 0,
+        vertical: 0,
+      ),
       content: StatefulBuilder(
         builder: (BuildContext context, setState) {
-          return SingleChildScrollView(
-              child: Stack(
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.15,
-                child: GestureDetector(
-                  child: const Icon(
-                    Icons.close,
-                    color: Colors.white,
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: double.infinity,
+            child: Scaffold(
+              backgroundColor: Colors.black,
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        child: const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.81,
+                      child: Image.file(
+                        File(selectedFile!.path),
+                        fit: BoxFit.contain,
+                        errorBuilder: (BuildContext context, Object error,
+                            StackTrace? stackTrace) {
+                          return const Center(
+                              child: Text('This image type is not supported'));
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.9,
-                child: Center(
-                  child: Image.file(
-                    File(selectedFile!.path),
-                    width: MediaQuery.of(context).size.width * 1,
-                    height: 400,
-                    errorBuilder: (BuildContext context, Object error,
-                        StackTrace? stackTrace) {
-                      return const Center(
-                          child: Text('This image type is not supported'));
-                    },
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 15.0,
-                left: 0,
-                right: 0,
+              floatingActionButton: Container(
+                margin: EdgeInsets.only(left: 30),
                 child: TextFormField(
                   controller: txtHeaderMessageController,
-                  style: TextStyle(color: Color.fromARGB(255, 8, 8, 8)),
+                  style: TextStyle(
+                      color: const Color.fromARGB(255, 255, 255, 255)),
                   decoration: InputDecoration(
-                    fillColor: Color.fromARGB(255, 230, 230, 230),
+                    fillColor: Color.fromARGB(255, 0, 0, 0),
                     hintText: 'Nachricht',
+                    hintStyle: TextStyle(
+                      color: const Color.fromARGB(255, 207, 207, 207),
+                    ),
                     filled: true,
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: const BorderSide(width: 0.0),
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(255, 158, 158, 158),
+                        width: 0.3,
+                      ),
                     ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: const BorderSide(width: 0.0),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(255, 158, 158, 158),
+                        width: 0.3,
+                      ),
                     ),
                     suffixIcon: Row(
                       mainAxisSize: MainAxisSize.min, // added line
@@ -427,10 +446,11 @@ class _ChatPageState extends State<ChatPage> {
                         IconButton(
                           icon: loaderSendMessage == false
                               ? Icon(Icons.send)
-                              : CircularProgressIndicator(),
+                              : CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                          color: Colors.white,
                           onPressed: () {
-                            /*if (txtMessageController.text != "" &&
-                              selectedFile != null) {*/
                             setState(
                               () {
                                 loaderSendMessage = true;
@@ -456,30 +476,16 @@ class _ChatPageState extends State<ChatPage> {
                                 );
                               });
                             });
-                            /* } else {
-                              showToast(
-                                  "Bitte fügen Sie eine Nachricht hinzu und fügen eine Datei an.");
-                            }*/
                           },
                         ),
                       ],
                     ),
                   ),
-                  onTap: () {
-                    Timer(
-                      Duration(milliseconds: 200),
-                      () {
-                        controller2.animateTo(controller2.position.pixels,
-                            duration: const Duration(milliseconds: 200),
-                            curve: Curves.easeInOut);
-                      },
-                    );
-                  },
                   obscureText: false,
                 ),
               ),
-            ],
-          ));
+            ),
+          );
         },
       ),
     );

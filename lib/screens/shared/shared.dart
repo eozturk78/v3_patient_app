@@ -303,17 +303,6 @@ leadingSubpage(String title, BuildContext context) {
     centerTitle: true,
     automaticallyImplyLeading: false,
     backgroundColor: Colors.white,
-    /*actions: <Widget>[
-      IconButton(
-        icon: const Icon(
-          Icons.person_outline,
-          color: Colors.black,
-        ),
-        onPressed: () {
-          Navigator.of(context).pushNamed("/profile");
-        },
-      )
-    ],*/
   );
 }
 
@@ -481,7 +470,8 @@ openSettingsDialog(BuildContext context, String warningText) {
                       },
                       child: Text(
                         'Abbrechen',
-                        style: TextStyle(color: Color.fromARGB(173, 33, 149, 243)),
+                        style:
+                            TextStyle(color: Color.fromARGB(173, 33, 149, 243)),
                       ),
                     ),
                   ),

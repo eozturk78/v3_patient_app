@@ -850,7 +850,6 @@ class Apis {
       }
       //  print(result.body);
       var body = jsonDecode(result.body);
-      print(body);
       //  print(result.statusCode);
       if (result.statusCode == 200 || result.statusCode == 201) {
         try {
