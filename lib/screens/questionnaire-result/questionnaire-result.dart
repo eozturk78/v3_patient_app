@@ -510,7 +510,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
               child: Container(
                 margin: EdgeInsets.only(right: 10),
                 child: TextButton(
-                    child: Text("Exit"),
+                    child: Text("Schließen"),
                     onPressed: () {
                       showDialog(
                         context: context,
@@ -1112,7 +1112,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text("Are you sure exit questionnaire?",
+                  const Text("Sind Sie sicher den Fragebogen zu verlassen?",
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
