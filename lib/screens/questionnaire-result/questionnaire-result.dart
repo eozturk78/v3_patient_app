@@ -510,7 +510,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
               child: Container(
                 margin: EdgeInsets.only(right: 10),
                 child: TextButton(
-                    child: Text("Schließen"),
+                    child: Text("Fragebogen verlassen"),
                     onPressed: () {
                       showDialog(
                         context: context,
