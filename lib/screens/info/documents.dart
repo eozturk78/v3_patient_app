@@ -485,6 +485,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                     height: MediaQuery.of(context).size.height * 0.84,
                     width: double.infinity,
                     child: PDFViewer(
+                      scrollDirection: Axis.vertical,
                       document: document!,
                     ),
                   ),

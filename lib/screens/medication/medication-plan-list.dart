@@ -307,6 +307,7 @@ Widget onOpenImage2(BuildContext context, PDFDocument document, String name) {
                 height: MediaQuery.of(context).size.height * 0.84,
                 width: double.infinity,
                 child: PDFViewer(
+                  scrollDirection: Axis.vertical,
                   document: document!,
                 ),
               ),

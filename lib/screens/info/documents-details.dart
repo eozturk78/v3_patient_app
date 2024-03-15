@@ -722,6 +722,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                   width: double.infinity,
                   child: PDFViewer(
                     tooltip: PDFViewerTooltip(pick: 'Wählen Sie eine Seite'),
+                    scrollDirection: Axis.vertical,
                     document: document!,
                   ),
                 ),
@@ -1057,6 +1058,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                     height: MediaQuery.of(context).size.height * 0.84,
                     width: double.infinity,
                     child: PDFViewer(
+                      scrollDirection: Axis.vertical,
                       document: document!,
                     ),
                   ),
