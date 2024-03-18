@@ -519,7 +519,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                         if (value == 1)
                           Navigator.of(context).pushNamedAndRemoveUntil(
                               '/questionnaire-group',
-                              ModalRoute.withName("/main"));
+                              ModalRoute.withName("/main-menu"));
                       });
                     }),
               ),
