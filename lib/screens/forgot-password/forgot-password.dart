@@ -39,7 +39,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     setState(() {
       isSendEP = true;
     });
-    pref.remove("answer");
+    // pref.remove("answer");
     pref.remove("question");
     pref.remove("supportPhoneNumber");
     pref.remove("supportEmail");
@@ -51,7 +51,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           setState(() {
             isSendEP = false;
           });
-          if (resp['answer'] != null) pref.setString("answer", resp['answer']);
+          // if (resp['answer'] != null) pref.setString("answer", resp['answer']);
           if (resp['question'] != null)
             pref.setString('question', resp['question']);
           if (resp['supportphonenumber'] != null)

@@ -665,8 +665,8 @@ class Apis {
     return getResponseFromApi(result);
   }
 
-  Future resetPasswordRequestEmail() async {
-    String finalUrl = '$baseUrl/resetpasswordrequestemail';
+  Future resetPasswordRequestEmail(String userName) async {
+    String finalUrl = '$baseUrl/resetpasswordrequestemail?username=$userName';
     var result =
         await http.get(Uri.parse(finalUrl), headers: {'lang': lang}); /**/
     return getResponseFromApi(result);

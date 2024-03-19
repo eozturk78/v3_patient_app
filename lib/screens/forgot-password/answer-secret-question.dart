@@ -54,11 +54,14 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
   }
 
   bool isEmailSent = false;
-  resetPasswordRequestEmail() {
+  resetPasswordRequestEmail() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
       isSendEP = true;
     });
-    apis.resetPasswordRequestEmail().then(
+    var userName = pref.getString('userName')!;
+
+    apis.resetPasswordRequestEmail(userName).then(
       (resp) {
         setState(() {
           isEmailSent = true;
@@ -78,25 +81,25 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
 
   onCheckAnswer() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    var answer = pref.getString('answer')!;
+    //var answer = pref.getString('answer')!;
     var userName = pref.getString('userName')!;
-    if (answer == answerController.text) {
-      apis.onCheckAnswer(answerController.text, userName).then(
-        (resp) {
-          Navigator.of(context).pushReplacementNamed("/temporary-password");
-        },
-        onError: (err) {
-          sh.redirectPatient(err, context);
-          setState(
-            () {
-              isSendEP = false;
-            },
-          );
-        },
-      );
-    } else {
+    // if (answer == answerController.text) {
+    apis.onCheckAnswer(answerController.text, userName).then(
+      (resp) {
+        Navigator.of(context).pushReplacementNamed("/temporary-password");
+      },
+      onError: (err) {
+        sh.redirectPatient(err, context);
+        setState(
+          () {
+            isSendEP = false;
+          },
+        );
+      },
+    );
+    /*} else {
       showToast("Bitte überprüfen Sie Ihre Antwort");
-    }
+    }*/
   }
 
   @override
