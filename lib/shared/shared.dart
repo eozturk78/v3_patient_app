@@ -357,7 +357,10 @@ class Shared {
   }
 
   getLanguageResource(String? resourceName) {
-    //return "test";
-    return jsonDecode(languageResource)[resourceName];
+    print(resourceName);
+    var translation = jsonDecode(languageResource)[resourceName];
+    print(translation);
+    if (translation != null) return translation;
+    return resourceName;
   }
 }

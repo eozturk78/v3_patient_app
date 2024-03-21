@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -102,7 +104,6 @@ class _AgreementsPageState extends State<AgreementsPage> {
                               context, list, selectedLanguage?.cultureName),
                         ).then((resp) async {
                           setState(() {
-                            print(resp);
                             if (resp != null &&
                                 resp?.id != selectedLanguage?.id) {
                               selectedLanguage = resp;
@@ -114,13 +115,13 @@ class _AgreementsPageState extends State<AgreementsPage> {
                           pref.setString(
                               "language", selectedLanguage!.cultureName);
 
-                          var url =
-                              '${apis.apiPublic}/resources/${selectedLanguage!.cultureName}.json';
-                          http.get(Uri.parse(url)).then((result) {
+                          apis
+                              .getLanguageResources(
+                                  selectedLanguage!.cultureName)
+                              .then((resp) {
                             setState(() {
-                              languageResource = result.body;
+                              languageResource = jsonEncode(resp);
                             });
-                            print(languageResource);
                           });
                         });
                       },
@@ -134,15 +135,15 @@ class _AgreementsPageState extends State<AgreementsPage> {
                   width: 160,
                   height: 70,
                 ),
-                const Text(
-                  "Willkomen bei iMedCom",
+                Text(
+                  sh.getLanguageResource("welcome_to_imedcom"),
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                const Text(
-                  "Im Rahmen der iMedCom-App-Nutzung werden personenbezogene Daten  verarbeitet:",
+                Text(
+                  sh.getLanguageResource("agreement_1"),
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -176,9 +177,9 @@ class _AgreementsPageState extends State<AgreementsPage> {
                         },
                         value: check2,
                       ),
-                      const Flexible(
+                      Flexible(
                           child: Text(
-                        "Ich möchte mit meinem Arzt bzw.  meiner Ärztin über „iMedCom-App“ kommunizieren und willige ein, dass meine personenbezogenen Gesundheitsdaten für den bestimmungsgemäßen Gebrauch verarbeitet werden. Ich kann meine Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen. Bitte beachten Sie jedoch, dass Ihr Benutzerkonto gelöscht wird, wenn Sie Ihre Einwilligung widerrufen, da die App ohne Ihre Einwilligung nicht genutzt werden darf. ",
+                        sh.getLanguageResource("agreement_2"),
                         style: TextStyle(fontSize: 16),
                       ))
                     ],
@@ -212,9 +213,9 @@ class _AgreementsPageState extends State<AgreementsPage> {
                         },
                         value: check3,
                       ),
-                      const Flexible(
+                      Flexible(
                           child: Text(
-                        "Ich willige ein, dass die iMedCom GmbH, Weinbergweg 23, 06120 Halle an der Saale meine Daten verarbeiten darf, um die technische Funktionsfähigkeit und die Nutzerfreundlichkeit der App weiterzuentwickeln. Die Einwilligung ist jederzeit widerrufbar ohne Auswirkungen auf den Funktionsumfang der App. ",
+                        sh.getLanguageResource("agreement_3"),
                         style: TextStyle(fontSize: 16),
                       ))
                     ],
@@ -223,14 +224,14 @@ class _AgreementsPageState extends State<AgreementsPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text(
-                  "Damit Sie iMedCom verwenden dürfen , müssen folgende Voraussetzungen erfüllt sein:",
+                Text(
+                  sh.getLanguageResource("agreement_4"),
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: mainButtonColor),
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 20,
                 ),
                 Row(
@@ -258,8 +259,8 @@ class _AgreementsPageState extends State<AgreementsPage> {
                             Navigator.of(context)
                                 .pushNamed('/terms-and-conditions');
                           },
-                          child: const Text(
-                            "Ich stimme den Nutzungsbedingungen zu.",
+                          child: Text(
+                            sh.getLanguageResource("agreement_5"),
                             style: TextStyle(fontSize: 16, color: Colors.black),
                           )),
                     )
@@ -272,8 +273,8 @@ class _AgreementsPageState extends State<AgreementsPage> {
                     onPressed: () {
                       Navigator.of(context).pushNamed('/privacy-policy');
                     },
-                    child: const Text(
-                      "Weitere Hinweise zur Datenverarbeitung finden Sie in unserer Datenschutzinformation.",
+                    child: Text(
+                      sh.getLanguageResource("agreement_6"),
                       style: TextStyle(fontSize: 16, color: Colors.black),
                     )),
                 const SizedBox(
@@ -342,7 +343,7 @@ class _AgreementsPageState extends State<AgreementsPage> {
                     }
                   },
                   child: Text(
-                    "Weiter",
+                    sh.getLanguageResource("further"),
                     style: TextStyle(color: Colors.white),
                   ),
                 )

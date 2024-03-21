@@ -286,8 +286,8 @@ class _LoginPageState extends State<LoginPage> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text("Fehler"),
-                content: const Text("Keine Internetverbindung!"),
+                title: Text(sh.getLanguageResource("error")),
+                content: Text(sh.getLanguageResource("no_internet_connection")),
                 actions: <Widget>[
                   TextButton(
                     style: TextButton.styleFrom(
@@ -453,8 +453,8 @@ class _LoginPageState extends State<LoginPage> {
                               onLogin();
                             },
                             child: !isSendEP
-                                ? const Text(
-                                    "Anmelden",
+                                ? Text(
+                                    sh.getLanguageResource("log_in"),
                                     style: TextStyle(color: Colors.white),
                                   )
                                 : Transform.scale(
@@ -474,11 +474,12 @@ class _LoginPageState extends State<LoginPage> {
                                 primary: mainButtonColor,
                               ),
                               onPressed: _authenticateWithBiometrics,
-                              child: const Row(
+                              child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   Text(
-                                    "Anmelden mit Touch ID / Face ID",
+                                    sh.getLanguageResource(
+                                        "log_in_with_touch_id"),
                                     style: TextStyle(color: mainButtonColor),
                                   ),
                                   Icon(
@@ -489,10 +490,11 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           if (proceedLoginWithTouchId)
-                            const Column(
+                            Column(
                               children: [
-                                Text(
-                                    "Bitte melden Sie sich zum ersten Mal an, um die Touch-ID/Face-ID-Anmeldung zu aktivieren")
+                                Text(sh.getLanguageResource(
+                                    "please_login_for_touch_id"))
+                                // Text("Bitte melden Sie sich zum ersten Mal an, um die Touch-ID/Face-ID-Anmeldung zu aktivieren")
                               ],
                             ),
                           TextButton(
@@ -502,7 +504,9 @@ class _LoginPageState extends State<LoginPage> {
                                     .pushNamed("/forgot-password");
                               },
                               child: Text(
-                                'Ich habe mein Passwort vergessen',
+                                sh.getLanguageResource(
+                                    "i_have_forgotten_my_password"),
+                                //Text('Ich habe mein Passwort vergessen',
                                 style: TextStyle(color: mainButtonColor),
                               ))
                         ],

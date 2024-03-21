@@ -42,7 +42,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: leadingWithoutProfile("Passwort vergessen", context),
+        appBar: leadingWithoutProfile(
+            sh.getLanguageResource("forgetten_password"), context),
         body: Center(
           child: Container(
             alignment: Alignment.center,
@@ -80,8 +81,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                           TextFormField(
                             controller: newPasswordController,
                             obscureText: true,
-                            decoration: const InputDecoration(
-                              labelText: 'Neues Passwort',
+                            decoration: InputDecoration(
+                              labelText: sh.getLanguageResource("new_password"),
                             ),
                             validator: (text) => sh.textValidator(text),
                           ),
@@ -90,8 +91,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                             obscureText: true,
                             validator: (text) => sh.textRepeatPassword(
                                 text, newPasswordController.text),
-                            decoration: const InputDecoration(
-                              labelText: 'Wiederhole das neue Passwort',
+                            decoration: InputDecoration(
+                              labelText:
+                                  sh.getLanguageResource("repeat_new_password"),
                             ),
                           ),
                           const SizedBox(
@@ -108,7 +110,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               onChangePassword();
                             },
                             child: !isSendEP
-                                ? const Text("Senden")
+                                ? Text(sh.getLanguageResource("send"))
                                 : Transform.scale(
                                     scale: 0.5,
                                     child: CircularProgressIndicator(

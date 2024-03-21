@@ -106,7 +106,8 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: leadingWithoutProfile("Passwort vergessen", context),
+      appBar: leadingWithoutProfile(
+          sh.getLanguageResource("forgetten_password"), context),
       body: Center(
         child: Container(
           alignment: Alignment.center,
@@ -166,7 +167,8 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
                                         fpType = 10;
                                       });
                                     },
-                                    child: Text("Security Question")),
+                                    child: Text(sh.getLanguageResource(
+                                        "security_question"))),
                               ),
                             SizedBox(
                               width: 5,
@@ -198,7 +200,8 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
                                         fpType = 20;
                                       });
                                     },
-                                    child: Text("Contact to klinik")),
+                                    child: Text(sh.getLanguageResource(
+                                        "contact_to_clinic"))),
                               ),
                           ],
                         ),
@@ -218,8 +221,8 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
                               TextFormField(
                                 controller: answerController,
                                 obscureText: false,
-                                decoration: const InputDecoration(
-                                  labelText: 'Antwort',
+                                decoration: InputDecoration(
+                                  labelText: sh.getLanguageResource("answer"),
                                 ),
                                 validator: (text) => sh.textValidator(text),
                               ),
@@ -238,7 +241,9 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
                                   onCheckAnswer();
                                 },
                                 child: !isSendEP
-                                    ? const Text("Senden")
+                                    ? Text(
+                                        sh.getLanguageResource("send"),
+                                      )
                                     : Transform.scale(
                                         scale: 0.5,
                                         child: CircularProgressIndicator(
@@ -255,7 +260,8 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
                               if (supportEmail != null ||
                                   supportPhoneNumber != null)
                                 Text(
-                                  "Bitte wählen Sie unten Ihre Kontaktmethode",
+                                  sh.getLanguageResource(
+                                      "select_contact_method"),
                                   style: labelText,
                                 ),
                               const SizedBox(
@@ -271,7 +277,10 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
                                       child: ElevatedButton(
                                           onPressed: () => launch(
                                               "tel://$supportPhoneNumber"),
-                                          child: Text("Den Kliniker anrufen")),
+                                          child: Text(
+                                            sh.getLanguageResource(
+                                                "call_clinician"),
+                                          )),
                                     ),
                                   ],
                                 ),
@@ -287,8 +296,10 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
                                             resetPasswordRequestEmail();
                                           },
                                           child: !isSendEP
-                                              ? const Text(
-                                                  "E-Mail an Kliniker senden")
+                                              ? Text(
+                                                  sh.getLanguageResource(
+                                                      "send_email_to_clinician"),
+                                                )
                                               : Transform.scale(
                                                   scale: 0.5,
                                                   child:
@@ -302,12 +313,16 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
                               if (supportEmail == null &&
                                   supportPhoneNumber == null)
                                 Text(
-                                    "Bitte kontaktieren Sie den iMedCom Support")
+                                  sh.getLanguageResource(
+                                      "contact_imedcom_support"),
+                                )
                             ],
                           ),
                         if (isEmailSent)
                           Text(
-                              "Wir haben eine E-Mail an Ihre Klinik geschickt, die sich bald mit Ihnen in Verbindung setzen wird.")
+                            sh.getLanguageResource(
+                                "send_email_to_clinician_desc"),
+                          )
                       ],
                     ),
                   ),

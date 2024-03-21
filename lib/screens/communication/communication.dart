@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:patient_app/shared/shared.dart';
 import 'package:patient_app/shared/toast.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -23,6 +24,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
   Apis apis = Apis();
   DateTime today = DateTime.now();
   String? videoUrl;
+  Shared sh = Shared();
   @override
   void initState() {
     super.initState();
@@ -65,7 +67,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
                           child: CustomSubTotal(
                               SvgPicture.asset(
                                   'assets/images/menu-icons/mitteilungen-main.svg'),
-                              "Mitteilungen",
+                              sh.getLanguageResource("notifications"),
                               null,
                               null,
                               10),
@@ -82,7 +84,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
                           child: CustomSubTotal(
                               SvgPicture.asset(
                                   'assets/images/menu-icons/erinnerungen-main.svg'),
-                              "Erinnerungen",
+                              sh.getLanguageResource("memories"),
                               null,
                               null,
                               10),
@@ -97,14 +99,18 @@ class _CommunicationPageState extends State<CommunicationPage> {
                         xs: 6,
                         md: 3,
                         child: GestureDetector(
-                          child: CustomSubTotal(Icons.video_call,
-                              "Videosprechstunde", null, null, 20),
+                          child: CustomSubTotal(
+                              Icons.video_call,
+                              sh.getLanguageResource("video_consultation"),
+                              null,
+                              null,
+                              20),
                           onTap: () async {
                             if (videoUrl != null) {
                               await launch(videoUrl!);
                             } else {
-                              showToast(
-                                  "Momentan ist keine Videosprechstunde geplant. Bei Unklarheiten nehmen Sie gerne Kontakt zu uns via Nachricht auf.");
+                              showToast(sh.getLanguageResource(
+                                  "no_video_consultation_event"));
                             }
                           },
                         ),
@@ -114,8 +120,12 @@ class _CommunicationPageState extends State<CommunicationPage> {
                         xs: 6,
                         md: 3,
                         child: GestureDetector(
-                          child: CustomSubTotal(Icons.calendar_month_outlined,
-                              "Kalender", null, null, 10),
+                          child: CustomSubTotal(
+                              Icons.calendar_month_outlined,
+                              sh.getLanguageResource("calender"),
+                              null,
+                              null,
+                              10),
                           onTap: () {
                             Navigator.of(context).pushNamed('/calendar');
                           },

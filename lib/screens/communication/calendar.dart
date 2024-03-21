@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:patient_app/shared/shared.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -44,24 +46,25 @@ class CalendarEvent {
   }
 }
 
+Shared sh = Shared();
 // Map event titles to their corresponding EventType
 final Map<String, EventType> eventTypeMap = {
   'Sprechstunde vor Ort': EventType(
-      'Sprechstunde vor Ort',
+      sh.getLanguageResource("consultation"),
       Colors.pink,
       SvgPicture.asset(
         "assets/images/calendar_sprech_vor_ort.svg",
         height: 40,
       )),
   'Videosprechstunde': EventType(
-      'Videosprechstunde',
+      sh.getLanguageResource("video_consultation"),
       Colors.lightBlueAccent,
       SvgPicture.asset(
         "assets/images/calendar_video.svg",
         height: 40,
       )),
   'Dokumente': EventType(
-      'Dokumente',
+      sh.getLanguageResource("document_info"),
       Colors.orange,
       SvgPicture.asset(
         "assets/images/calendar_dokumente.svg",
@@ -79,7 +82,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Map<DateTime, List<CalendarEvent>> _events = {};
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _selectedDay = DateTime.now();
-
+  String lang = "de-DE";
   @override
   void initState() {
     super.initState();
@@ -108,7 +111,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Future<void> _fetchPatientOnlineMeetingEventsFromBackend() async {
     //final apiUrl = '$apis.baseUrl/getPatientCalendarEvents';
     final response = await apis.getPatientOnlineMeetingEvents();
-
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    lang = pref.getString("language")!;
     if (response.statusCode == 200) {
       final eventsData = json.decode(response.body);
       final events = List<Map<String, dynamic>>.from(eventsData);
@@ -176,7 +180,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
-      appBar: leadingSubpage('Kalender', context),
+      appBar: leadingSubpage(sh.getLanguageResource("calendar"), context),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -197,9 +201,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       ),
                       firstDay: DateTime.now().subtract(Duration(days: 365)),
                       lastDay: DateTime.now().add(Duration(days: 365)),
-                      locale: 'DE',
-                      availableCalendarFormats: const {
-                        CalendarFormat.month: 'Monat',
+                      locale: lang,
+                      availableCalendarFormats: {
+                        CalendarFormat.month: sh.getLanguageResource("month"),
                       },
                       pageJumpingEnabled: true,
                       startingDayOfWeek: StartingDayOfWeek.monday,
@@ -316,21 +320,21 @@ class _CalendarScreenState extends State<CalendarScreen> {
   List<EventType> _getEventTypes() {
     return [
       EventType(
-          'Sprechstunde vor Ort',
+          sh.getLanguageResource("consultation"),
           Colors.pink,
           SvgPicture.asset(
             "assets/images/calendar_sprech_vor_ort.svg",
             height: 40,
           )),
       EventType(
-          'Videosprechstunde',
+          sh.getLanguageResource("video_consultation"),
           Colors.lightBlueAccent,
           SvgPicture.asset(
             "assets/images/calendar_video.svg",
             height: 40,
           )),
       EventType(
-          'Dokumente',
+          sh.getLanguageResource("document_info"),
           Colors.orange,
           SvgPicture.asset(
             "assets/images/calendar_dokumente.svg",
@@ -392,7 +396,7 @@ class EventList extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'Veranstaltungen am ${selectedDay.day.toString().padLeft(2, "0")}.${selectedDay.month.toString().padLeft(2, "0")}.${selectedDay.year}',
+              '${sh.getLanguageResource("events_on")} ${selectedDay.day.toString().padLeft(2, "0")}.${selectedDay.month.toString().padLeft(2, "0")}.${selectedDay.year}',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),

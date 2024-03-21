@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:patient_app/shared/shared.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../shared/bottom-menu.dart';
@@ -16,6 +17,7 @@ class PulseDescriptionPage extends StatefulWidget {
 }
 
 class _PulseDescriptionPageState extends State<PulseDescriptionPage> {
+  Shared sh = Shared();
   @override
   void initState() {
     super.initState();
@@ -24,9 +26,11 @@ class _PulseDescriptionPageState extends State<PulseDescriptionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingDescSubpage('Vitalwerte', context),
-      body: SafeArea( // Wrap your body with SafeArea
-      child: Padding(
+      appBar:
+          leadingDescSubpage(sh.getLanguageResource("vital_signs"), context),
+      body: SafeArea(
+          // Wrap your body with SafeArea
+          child: Padding(
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(
           child: Column(
@@ -34,14 +38,16 @@ class _PulseDescriptionPageState extends State<PulseDescriptionPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                "Vitalwerte - Einteilung und Aussagekraft",
+                sh.getLanguageResource("vital_signs_categorisation"),
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: 15,
               ),
               Text(
-                  "Wir möchten Ihnen wichtige Informationen über die Einstufungen von Vitalwerten bereitstellen. Diese helfen Ihnen bei der Interpretation Ihrer gemessenen Werte und unterstützen Sie ein besseres Verständnis für Ihren Gesundheitszustand zu entwickeln. Weiterhin spielen die tabellarisch aufgeführten Grenzwerte  eine wesentliche Rolle in den Standardeinstellungen des Algorithmus unserer Gesundheit-App. Betreuende Ärzte haben zudem die Möglichkeit, die Grenzwerte individuell auf einzelne Patienten anzupassen."),
+                sh.getLanguageResource("vital_signs_desc"),
+                //"Wir möchten Ihnen wichtige Informationen über die Einstufungen von Vitalwerten bereitstellen. Diese helfen Ihnen bei der Interpretation Ihrer gemessenen Werte und unterstützen Sie ein besseres Verständnis für Ihren Gesundheitszustand zu entwickeln. Weiterhin spielen die tabellarisch aufgeführten Grenzwerte  eine wesentliche Rolle in den Standardeinstellungen des Algorithmus unserer Gesundheit-App. Betreuende Ärzte haben zudem die Möglichkeit, die Grenzwerte individuell auf einzelne Patienten anzupassen.",
+              ),
               SizedBox(
                 height: 10,
               ),
@@ -56,7 +62,9 @@ class _PulseDescriptionPageState extends State<PulseDescriptionPage> {
                               .pushNamed('/blutdruck-description');
                         },
                         style: descriptionNotStyle,
-                        child: Text('Blutdruck')),
+                        child: Text(
+                          sh.getLanguageResource("blood_pressure"),
+                        )),
                     const SizedBox(
                       width: 3,
                     ),
@@ -66,7 +74,9 @@ class _PulseDescriptionPageState extends State<PulseDescriptionPage> {
                               .pushNamed('/weight-description');
                         },
                         style: descriptionNotStyle,
-                        child: Text('Gewicht')),
+                        child: Text(
+                          sh.getLanguageResource("weight"),
+                        )),
                     const SizedBox(
                       width: 3,
                     ),
@@ -76,7 +86,10 @@ class _PulseDescriptionPageState extends State<PulseDescriptionPage> {
                               .pushNamed('/saturation-description');
                         },
                         style: descriptionNotStyle,
-                        child: Text('Sauerstoffsättigung')),
+                        child: Text(
+                          //'Sauerstoffsättigung',
+                          sh.getLanguageResource("oxygen_saturation"),
+                        )),
                     const SizedBox(
                       width: 3,
                     ),
@@ -84,7 +97,10 @@ class _PulseDescriptionPageState extends State<PulseDescriptionPage> {
                         onPressed: () {
                           Navigator.of(context).pushNamed('/pulse-description');
                         },
-                        child: Text('Herzfrequenz')),
+                        child: Text(
+                          //  'Herzfrequenz',
+                          sh.getLanguageResource("pulse"),
+                        )),
                     SizedBox(
                       width: 3,
                     ),
@@ -94,7 +110,10 @@ class _PulseDescriptionPageState extends State<PulseDescriptionPage> {
                               .pushNamed('/temperature-description');
                         },
                         style: descriptionNotStyle,
-                        child: Text('Temperatur'))
+                        child: Text(
+                          //'Temperatur',
+                          sh.getLanguageResource("tempreture"),
+                        ))
                   ],
                 ),
               ),
@@ -106,41 +125,51 @@ class _PulseDescriptionPageState extends State<PulseDescriptionPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text("Was ist die Herzfrequenz?", style: articleTitle),
                     Text(
-                        "Die Herzfrequenz ist ein wichtiger Indikator für die Aktivität des Herzens und spielt eine zentrale Rolle bei der Beurteilung der kardiovaskulären Gesundheit. Die Herzfrequenz bezieht sich auf die Anzahl der Herzschläge pro Minute. Sie gibt an, wie oft sich das Herz zusammenzieht und Blut durch den Körper pumpt. Die Herzfrequenz kann variieren und wird von verschiedenen Faktoren beeinflusst, einschließlich körperlicher Aktivität, emotionaler Zustand, Alter und allgemeiner Gesundheitszustand."),
+                      sh.getLanguageResource("heart_pressure_desc_1"),
+                      style: articleTitle,
+                    ),
+                    Text(
+                      sh.getLanguageResource("heart_pressure_desc_2"),
+                      //"Die Herzfrequenz ist ein wichtiger Indikator für die Aktivität des Herzens und spielt eine zentrale Rolle bei der Beurteilung der kardiovaskulären Gesundheit. Die Herzfrequenz bezieht sich auf die Anzahl der Herzschläge pro Minute. Sie gibt an, wie oft sich das Herz zusammenzieht und Blut durch den Körper pumpt. Die Herzfrequenz kann variieren und wird von verschiedenen Faktoren beeinflusst, einschließlich körperlicher Aktivität, emotionaler Zustand, Alter und allgemeiner Gesundheitszustand.",
+                    ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text("Wie wird die Herzfrequenz gemessen?",
+                    Text(sh.getLanguageResource("heart_pressure_desc_3"),
                         style: articleTitle),
                     Text(
-                        "Die Herzfrequenz kann auf verschiedene Arten gemessen werden. Die gängigste Methode ist die Pulsmessung, bei der der Puls an einer Stelle mit einem Finger oder einem Pulsmesser gefühlt wird. Eine andere Methode ist die Verwendung eines EKG (Elektrokardiogramm), das die elektrischen Aktivitäten des Herzens aufzeichnet und die Herzfrequenz genau bestimmen kann."),
+                      sh.getLanguageResource("heart_pressure_desc_4"),
+                    ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text("Wie schnell schlägt ein gesundes Herz?",
+                    Text(sh.getLanguageResource("heart_pressure_desc_5"),
                         style: articleTitle),
                     SizedBox(
                       height: 10,
                     ),
                     Text(
-                        "Je nachdem ob die Herzfrequenz niedrig, normal oder erhöht ist, unterscheidet man zwischen:"),
+                      sh.getLanguageResource("heart_pressure_desc_6"),
+                    ),
                     SizedBox(
                       height: 10,
                     ),
                     Text(
-                        "\t•	Bradykardie: niedrige Herzfrequenz\t•	Normofrequenz: normale Herzfrequenz\t•	Tachykardie: erhöhte Herzfrequenz"),
+                      sh.getLanguageResource("heart_pressure_desc_7"),
+                    ),
                     SizedBox(
                       height: 10,
                     ),
                     Text(
-                        "Die Herzfrequenz ist von unterschiedlichen Faktoren abhängig, dazu zählen das Alter und die körperliche Verfassung."),
+                      sh.getLanguageResource("heart_pressure_desc_8"),
+                    ),
                     SizedBox(
                       height: 10,
                     ),
                     Text(
-                        "Bei körperlicher Ruhe wird die Frequenz auch Ruhepuls oder Ruhefrequenz genannt und gibt Auskunft über den Herzzustand. In der unteren Tabelle werden grobe Richtwerte für den Ruhepuls nach Geschlecht, Alter und körperlicher Fitness aufgezeigt. Liegt der gemessene Wert nicht im Normbereich empfehlen wir weitere Untersuchungen bei einem Arzt."),
+                      sh.getLanguageResource("heart_pressure_desc_9"),
+                    ),
                     SizedBox(
                       height: 10,
                     ),
@@ -150,19 +179,19 @@ class _PulseDescriptionPageState extends State<PulseDescriptionPage> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                        "Mögliche Anzeichen für krankhafte Veränderungen der Herzfrequenz",
+                    Text(sh.getLanguageResource("heart_pressure_desc_10"),
                         style: articleTitle),
                     Text(
-                        "Krankhafte Veränderungen der Herzfrequenz können mit verschiedenen Symptomen einhergehen, darunter Schwindel, Kurzatmigkeit, Brustschmerzen, Ohnmacht oder Herzrhythmusstörungen wie Vorhofflimmern. Eine ärztliche Untersuchung ist erforderlich, um die genaue Ursache abzuklären."),
+                      sh.getLanguageResource("heart_pressure_desc_11"),
+                    ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                        "In welchem Zusammenhang steht die Herzfrequenz mit einem gesunden Lebensstil?",
+                    Text(sh.getLanguageResource("heart_pressure_desc_12"),
                         style: articleTitle),
                     Text(
-                        "Liegt die Herzfrequenz über den Richtwerten des Ruhepulses, sollte der Herzmuskel trainiert werden. Eine hohe Herzfrequenz kann ein Zeichen für Stress oder eine schlechte körperliche Verfassung sein. Mit Hilfe von Sport, viel Bewegung und einer gesunden Ernährung kann der Kreislauf und damit der Herzmuskel trainiert werden. Bei anhaltender zu hoher Herzfrequenz kann es sich in wenigen Fällen um eine Herzrhythmusstörung, z. B. Vorhofflimmern handeln. Wird diese nicht behandelt, kann dies einen Schlaganfall begünstigen. Beginnen Sie mit Sport, kann mit Hilfe der Herzfrequenz die gewünschte Intensität bzw. Herzbelastung bezüglich eines Trainingsziels kontrolliert werden. Ein Trainingsziel kann die Stärkung des Herzmuskels und des gesamten Körpers sein, zum Beispiel nach einer Operation. Dabei hilft eine medizinische Pulsuhr beim Sport zur Kontrolle der Herzfrequenz, um die Belastung des Herzens besonders bei Einsteigern nicht zu überschreiten. Denn es gilt: Je höher die körperliche Belastung ist, desto mehr Sauerstoff benötigt der Körper. Das Herz muss nun die Frequenz erhöhen, um genug sauerstoffreiches Blut in den Körper zu pumpen. Bei einem trainierten Sportler benötigt das Herz weniger Schläge, um die gleiche Menge Blut durch den Kreislauf zu pumpen, als bei einem untrainierten Menschen."),
+                      sh.getLanguageResource("heart_pressure_desc_13"),
+                    ),
                   ],
                 ),
               )

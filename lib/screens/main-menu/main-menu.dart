@@ -277,7 +277,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
               child: CustomSubTotal(
                 key: UniqueKey(), // UniqueKey for CustomSubTotal
                 menuItem.icon,
-                menuItem.displayName!,
+                sh.getLanguageResource(menuItem.displayName!)!,
                 null,
                 null,
                 10,
@@ -288,33 +288,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
             ),
           ),
       ],
-    ); /*GridView.builder(
-      key: _refreshKey,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 15,
-      ),
-      physics: const ScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: _menuItems.length,
-      itemBuilder: (context, index) {
-        final menuItem = _menuItems[index];
-        return GestureDetector(
-          child: CustomSubTotal(
-            key: UniqueKey(), // UniqueKey for CustomSubTotal
-            menuItem.icon,
-            menuItem.displayName!,
-            null,
-            null,
-            10,
-          ),
-          onTap: () {
-            Navigator.of(context).pushNamed(menuItem.routerName!);
-          },
-        );
-      },
-    );*/
+    );
   }
 
   @override
@@ -322,7 +296,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
     TextEditingController tec = TextEditingController();
     return Scaffold(
       appBar: isFocusedSearch == false
-          ? leadingWithoutBack('Dashboard', context)
+          ? leadingWithoutBack(sh.getLanguageResource("dashboard"), context)
           : null,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -340,7 +314,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                     children: [
                       if (isFocusedSearch == false)
                         Text(
-                          "Hallo ${title}!",
+                          "${sh.getLanguageResource("hello")} ${title}!",
                           style: TextStyle(
                               fontSize: ResponsiveValue(
                                 context,
@@ -375,7 +349,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                                 Icons.close,
                                 size: 30,
                               ),
-                              Text('Schließen'),
+                              Text(sh.getLanguageResource("close")),
                             ],
                           ),
                         ),
@@ -433,7 +407,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                                   filled: true,
                                   fillColor:
                                       const Color.fromARGB(255, 244, 246, 246),
-                                  hintText: 'Suchen',
+                                  hintText: sh.getLanguageResource("search"),
                                   hintStyle: TextStyle(
                                       fontSize: 16.0,
                                       color: Color.fromARGB(255, 69, 81, 84)),

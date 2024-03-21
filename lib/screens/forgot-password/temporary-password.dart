@@ -95,7 +95,8 @@ class _TemporaryPasswordPageState extends State<TemporaryPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: leadingWithoutProfile("Passwort vergessen", context),
+      appBar: leadingWithoutProfile(
+          sh.getLanguageResource("forgetten_password"), context),
       body: Center(
         child: Container(
           alignment: Alignment.center,
@@ -127,8 +128,7 @@ class _TemporaryPasswordPageState extends State<TemporaryPasswordPage> {
                         const SizedBox(
                           height: 5,
                         ),
-                        Text(
-                            "Möchten Sie fortfahren, Ihr Passwort zurückzusetzen?"),
+                        Text(sh.getLanguageResource("continue_reset_password")),
                         const SizedBox(
                           height: 5,
                         ),
@@ -141,7 +141,7 @@ class _TemporaryPasswordPageState extends State<TemporaryPasswordPage> {
                                 onResetPassword();
                               },
                               child: !isSendEP
-                                  ? const Text("Ja")
+                                  ? Text(sh.getLanguageResource("yes"))
                                   : Transform.scale(
                                       scale: 0.5,
                                       child: CircularProgressIndicator(
@@ -161,7 +161,7 @@ class _TemporaryPasswordPageState extends State<TemporaryPasswordPage> {
                                 Navigator.of(context)
                                     .pushReplacementNamed('/login');
                               },
-                              child: Text('Nein'),
+                              child: Text(sh.getLanguageResource("no")),
                               style: ElevatedButton.styleFrom(
                                 primary: mainItemColor,
                               ),

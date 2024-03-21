@@ -9,7 +9,7 @@ import '../../model/scale-size.dart';
 
 class CustomSubTotal extends StatelessWidget {
   dynamic iconData;
-  String headText;
+  String? headText;
   String? subText;
   final String? warningText;
   final int? colorState;
@@ -46,27 +46,28 @@ class CustomSubTotal extends StatelessWidget {
           SizedBox(
             height: 15,
           ),
-          Text(
-            headText,
-            overflow: TextOverflow.visible,
-            style: TextStyle(
-              fontWeight: FontWeight.normal,
-              fontSize: ResponsiveValue(
-                context,
-                defaultValue: 12.0,
-                conditionalValues: [
-                  Condition.largerThan(
-                    //Tablet
-                    name: MOBILE,
-                    value: 16.0,
-                  ),
-                ],
-              ).value!,
-              color: menuTextColor,
+          if (headText != null)
+            Text(
+              headText!,
+              overflow: TextOverflow.visible,
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: ResponsiveValue(
+                  context,
+                  defaultValue: 12.0,
+                  conditionalValues: [
+                    Condition.largerThan(
+                      //Tablet
+                      name: MOBILE,
+                      value: 16.0,
+                    ),
+                  ],
+                ).value!,
+                color: menuTextColor,
+              ),
+              textAlign: TextAlign.center,
+              textScaleFactor: ScaleSize.textScaleFactor(context),
             ),
-            textAlign: TextAlign.center,
-            textScaleFactor: ScaleSize.textScaleFactor(context),
-          ),
           SizedBox(
             height: 5,
           ),

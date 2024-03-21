@@ -56,7 +56,7 @@ class _ExtractDataPageState extends State<ExtractDataPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leading('Auszug meiner Daten', context),
+      appBar: leading(sh.getLanguageResource("extract_my_data"), context),
       body: SafeArea(
           // Wrap your body with SafeArea
           child: SingleChildScrollView(
@@ -67,7 +67,7 @@ class _ExtractDataPageState extends State<ExtractDataPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Bitte verwenden Sie die Schaltfläche unten, um Daten zu extrahieren. Die Vorbereitung der gesamten Daten kann einige Zeit in Anspruch nehmen",
+                sh.getLanguageResource("extract_my_data_desc"),
                 style: TextStyle(fontSize: 14),
               ),
             ],
@@ -80,7 +80,9 @@ class _ExtractDataPageState extends State<ExtractDataPage> {
             await launch(
                 '${apis.apiPublic}/extractdata?token=${pref.getString('token')}');
           },
-          child: Text("Daten extrahieren")),
+          child: Text(
+            sh.getLanguageResource("extract_data"),
+          )),
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
     );
   }

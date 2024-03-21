@@ -53,7 +53,7 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leading('Meine Diagnosen', context),
+      appBar: leading(sh.getLanguageResource('my_diagnoses'), context),
       body: SafeArea(
           // Wrap your body with SafeArea
           child: SingleChildScrollView(
@@ -65,11 +65,12 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
                 color: mainButtonColor,
               )
             : diagnoseList!.isEmpty
-                ? Center(child: Text("Keine Daten gefunden"))
+                ? Center(child: Text(sh.getLanguageResource('no_data_found')))
                 : ExpansionPanelList(
                     expansionCallback: (int index, bool isExpanded) {
                       setState(() {
-                        diagnoseList![index].isExpanded = !diagnoseList![index].isExpanded!;
+                        diagnoseList![index].isExpanded =
+                            !diagnoseList![index].isExpanded!;
                       });
                     },
                     children: [
@@ -78,34 +79,35 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
                             headerBuilder:
                                 (BuildContext context, bool isExpanded) {
                               return ListTile(
-                                title: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.medical_services_outlined,
-                                      color: iconColor,
-                                      size: 30,
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Flexible(
-                                        child: Text(
-                                      item.diagnoseName,
-                                      overflow: TextOverflow.ellipsis,
-                                    ))
-                                  ],
-                                ),
-                                subtitle: Column(
-                                  mainAxisAlignment:MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(height:5),
-                                    Text(sh.formatDateTime(
-                                        item.createdAt.toString())),
-                                    SizedBox(height:5),
-                                     Text(item.doctor ?? ""),]
-                                ) 
-                              );
+                                  title: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.medical_services_outlined,
+                                        color: iconColor,
+                                        size: 30,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Flexible(
+                                          child: Text(
+                                        item.diagnoseName,
+                                        overflow: TextOverflow.ellipsis,
+                                      ))
+                                    ],
+                                  ),
+                                  subtitle: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(height: 5),
+                                        Text(sh.formatDateTime(
+                                            item.createdAt.toString())),
+                                        SizedBox(height: 5),
+                                        Text(item.doctor ?? ""),
+                                      ]));
                             },
                             body: Padding(
                               padding: EdgeInsets.all(10),
@@ -126,22 +128,31 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
                                     spacing: 5.0,
                                     children: [
                                       if (item.securedDiagnoseG == 1)
-                                        Text("gesicherte Diagnose (G)",
+                                        Text(
+                                            sh.getLanguageResource(
+                                                "confirmed_diagnosis"),
+                                            //"gesicherte Diagnose (G)",
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.grey)),
                                       if (item.suspicionV == 1)
-                                        Text("Verdacht (V)",
+                                        Text(
+                                            sh.getLanguageResource(
+                                                "suspicion_v"),
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.grey)),
                                       if (item.exclusionA == 1)
-                                        Text("Ausschluss (A)",
+                                        Text(
+                                            sh.getLanguageResource(
+                                                "exlusion_a"),
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.grey)),
                                       if (item.stateAfter == 1)
-                                        Text("Zustand nach (Z.n)",
+                                        Text(
+                                            sh.getLanguageResource(
+                                                "condition_after_a"),
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.grey))

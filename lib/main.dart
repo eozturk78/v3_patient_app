@@ -404,8 +404,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
     var url = '${apis.apiPublic}/resources/$lang.json';
     /**/
-    http.get(Uri.parse(url)).then((result) {
-      languageResource = result.body;
+
+    apis.getLanguageResources(lang).then((resp) {
+      languageResource = jsonEncode(resp);
       var user = pref.getString("userName");
       if (pref.getString("token") != null &&
           pref.getString("token") != "" &&

@@ -80,7 +80,7 @@ class _MessagesPageState extends State<MessagesPage> {
   Widget build(BuildContext context) {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
-      appBar: leadingSubpage('Mitteilungen', context),
+      appBar: leadingSubpage(sh.getLanguageResource("notifications"), context),
       body: Container(
         padding: EdgeInsets.only(top: 30),
         child: isStarted
@@ -93,7 +93,7 @@ class _MessagesPageState extends State<MessagesPage> {
                 child: Column(
                 children: [
                   Text(
-                    "Hier können Sie Ihre Mitteilungen einsehen.",
+                    sh.getLanguageResource("view_your_message"),
                     textScaleFactor: ScaleSize.textScaleFactor(context),
                     textAlign: TextAlign.center,
                   ),
@@ -129,7 +129,7 @@ class _MessagesPageState extends State<MessagesPage> {
                               });
                             },
                             child: Text(
-                              "Nachrichten",
+                              sh.getLanguageResource("messages"),
                               style: TextStyle(color: Colors.white),
                             )),
                       ),
@@ -160,7 +160,9 @@ class _MessagesPageState extends State<MessagesPage> {
                                 fpType = 10;
                               });
                             },
-                            child: Text("Medikamentenplan")),
+                            child: Text(
+                              sh.getLanguageResource("medical_plan_list"),
+                            )),
                       ),
                     ],
                   ),
@@ -175,7 +177,10 @@ class _MessagesPageState extends State<MessagesPage> {
                                   .where((element) =>
                                       element.notificationtype == fpType)
                                   .isEmpty
-                              ? Center(child: Text("Keine Daten gefunden"))
+                              ? Center(
+                                  child: Text(
+                                  sh.getLanguageResource("no_data_found"),
+                                ))
                               : Column(
                                   children: [
                                     SizedBox(
@@ -199,7 +204,7 @@ class _MessagesPageState extends State<MessagesPage> {
                                                           .notificationTitle,
                                                   sh.formatDateTime(
                                                       element.createdAt),
-                                                      element.isRead),
+                                                  element.isRead),
                                               onTap: () async {
                                                 if (element.notificationtype ==
                                                     10) {

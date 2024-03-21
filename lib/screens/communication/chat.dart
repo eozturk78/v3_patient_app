@@ -151,7 +151,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToEnd());
     return Scaffold(
-      appBar: leadingSubpage('Nachrichten', context),
+      appBar: leadingSubpage(sh.getLanguageResource("messages"), context),
       body: Stack(
         children: [
           Padding(
@@ -163,7 +163,8 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                   )
                 : listMessages.isEmpty
-                    ? Center(child: Text("Keine Daten gefunden"))
+                    ? Center(
+                        child: Text(sh.getLanguageResource("no_data_found")))
                     : Container(
                         height: MediaQuery.of(context).size.height * 0.7,
                         child: SingleChildScrollView(
@@ -205,7 +206,7 @@ class _ChatPageState extends State<ChatPage> {
                 minLines: 1, //Normal textInputField will be displayed
                 maxLines: 5,
                 decoration: InputDecoration(
-                  labelText: 'Nachrichten',
+                  labelText: sh.getLanguageResource("type_your_message"),
                   suffixIcon: Row(
                     mainAxisSize: MainAxisSize.min, // added line
                     children: <Widget>[
@@ -305,8 +306,8 @@ class _ChatPageState extends State<ChatPage> {
                               });
                             });
                           } else {
-                            showToast(
-                                "Bitte Text einfügen um Nachricht zu senden");
+                            showToast(sh.getLanguageResource(
+                                "please_enter_message_text"));
                           }
                         },
                       ),
@@ -421,7 +422,7 @@ class _ChatPageState extends State<ChatPage> {
                       color: const Color.fromARGB(255, 255, 255, 255)),
                   decoration: InputDecoration(
                     fillColor: Color.fromARGB(255, 0, 0, 0),
-                    hintText: 'Nachricht',
+                    hintText: sh.getLanguageResource("message"),
                     hintStyle: TextStyle(
                       color: const Color.fromARGB(255, 207, 207, 207),
                     ),

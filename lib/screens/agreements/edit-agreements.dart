@@ -209,17 +209,18 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                     if (check1 && check2 && check3) {
                       SharedPreferences pref =
                           await SharedPreferences.getInstance();
-                                  var user =   pref.getString("userName");
-                                  pref.setBool("${user}_isAgreementRead", true);
+                      var user = pref.getString("userName");
+                      pref.setBool("${user}_isAgreementRead", true);
                       Navigator.of(context).pop();
                     } else {
                       await showDialog(
                         context: context,
                         builder: (BuildContext dialogContext) {
                           return AlertDialog(
-                            title: Text("Hinweis"),
+                            title: Text(sh.getLanguageResource("notice")),
                             content: Text(
-                              "Ihre Einwilligung ist eine Voraussetzung für die nutzung der App.\nWenn Sie diese Einwilligung widerrufen, wird die Löschung Ihres\nBenutzerkontos veranlasst.",
+                              //"Ihre Einwilligung ist eine Voraussetzung für die nutzung der App.\nWenn Sie diese Einwilligung widerrufen, wird die Löschung Ihres\nBenutzerkontos veranlasst.",
+                              sh.getLanguageResource("agreement_9"),
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             actions: <Widget>[
@@ -228,16 +229,16 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                                   SharedPreferences pref =
                                       await SharedPreferences.getInstance();
 
-
-                                  var user =   pref.getString("userName");
-                                  pref.setBool("${user}_isAgreementRead", false);
+                                  var user = pref.getString("userName");
+                                  pref.setBool(
+                                      "${user}_isAgreementRead", false);
                                   apis
                                       .deleteRequestByPatient()
                                       .then((resp) => {});
                                   Navigator.of(context).pushNamedAndRemoveUntil(
                                       '/login', ModalRoute.withName("/"));
                                 },
-                                child: Text("Ja"),
+                                child: Text(sh.getLanguageResource("yes")),
                               ),
                               TextButton(
                                 onPressed: () {
@@ -249,7 +250,7 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                                         MaterialStateProperty.all(Colors.green),
                                     foregroundColor: MaterialStateProperty.all(
                                         Colors.white)),
-                                child: Text("Nein"),
+                                child: Text(sh.getLanguageResource("no")),
                               ),
                             ],
                           );
@@ -257,8 +258,8 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                       );
                     }
                   },
-                  child: const Text(
-                    "Weiter",
+                  child: Text(
+                    sh.getLanguageResource("further"),
                     style: TextStyle(color: Colors.white),
                   ),
                 )

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:patient_app/shared/shared.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../shared/bottom-menu.dart';
@@ -18,6 +19,8 @@ class TemperatureDescriptionPage extends StatefulWidget {
 
 class _TemperatureDescriptionPageState
     extends State<TemperatureDescriptionPage> {
+  Shared sh = Shared();
+
   @override
   void initState() {
     super.initState();
@@ -27,8 +30,9 @@ class _TemperatureDescriptionPageState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingDescSubpage('Vitalwerte', context),
-      body: SafeArea( // Wrap your body with SafeArea
-      child: Padding(
+      body: SafeArea(
+          // Wrap your body with SafeArea
+          child: Padding(
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(
           child: Column(
@@ -36,14 +40,16 @@ class _TemperatureDescriptionPageState
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                "Vitalwerte - Einteilung und Aussagekraft",
+                sh.getLanguageResource("vital_signs_categorisation"),
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: 15,
               ),
               Text(
-                  "Wir möchten Ihnen wichtige Informationen über die Einstufungen von Vitalwerten bereitstellen. Diese helfen Ihnen bei der Interpretation Ihrer gemessenen Werte und unterstützen Sie ein besseres Verständnis für Ihren Gesundheitszustand zu entwickeln. Weiterhin spielen die tabellarisch aufgeführten Grenzwerte  eine wesentliche Rolle in den Standardeinstellungen des Algorithmus unserer Gesundheit-App. Betreuende Ärzte haben zudem die Möglichkeit, die Grenzwerte individuell auf einzelne Patienten anzupassen."),
+                sh.getLanguageResource("vital_signs_desc"),
+                //"Wir möchten Ihnen wichtige Informationen über die Einstufungen von Vitalwerten bereitstellen. Diese helfen Ihnen bei der Interpretation Ihrer gemessenen Werte und unterstützen Sie ein besseres Verständnis für Ihren Gesundheitszustand zu entwickeln. Weiterhin spielen die tabellarisch aufgeführten Grenzwerte  eine wesentliche Rolle in den Standardeinstellungen des Algorithmus unserer Gesundheit-App. Betreuende Ärzte haben zudem die Möglichkeit, die Grenzwerte individuell auf einzelne Patienten anzupassen.",
+              ),
               SizedBox(
                 height: 10,
               ),
@@ -58,7 +64,9 @@ class _TemperatureDescriptionPageState
                               .pushNamed('/blutdruck-description');
                         },
                         style: descriptionNotStyle,
-                        child: Text('Blutdruck')),
+                        child: Text(
+                          sh.getLanguageResource("blood_pressure"),
+                        )),
                     const SizedBox(
                       width: 3,
                     ),
@@ -68,17 +76,22 @@ class _TemperatureDescriptionPageState
                               .pushNamed('/weight-description');
                         },
                         style: descriptionNotStyle,
-                        child: Text('Gewicht')),
+                        child: Text(
+                          sh.getLanguageResource("weight"),
+                        )),
                     const SizedBox(
                       width: 3,
                     ),
                     ElevatedButton(
                         onPressed: () {
                           Navigator.of(context)
-                              .pushNamed('/Temperature-description');
+                              .pushNamed('/saturation-description');
                         },
                         style: descriptionNotStyle,
-                        child: Text('Sauerstoffsättigung')),
+                        child: Text(
+                          //'Sauerstoffsättigung',
+                          sh.getLanguageResource("oxygen_saturation"),
+                        )),
                     const SizedBox(
                       width: 3,
                     ),
@@ -87,7 +100,10 @@ class _TemperatureDescriptionPageState
                           Navigator.of(context).pushNamed('/pulse-description');
                         },
                         style: descriptionNotStyle,
-                        child: Text('Herzfrequenz')),
+                        child: Text(
+                          //  'Herzfrequenz',
+                          sh.getLanguageResource("pulse"),
+                        )),
                     SizedBox(
                       width: 3,
                     ),
@@ -96,7 +112,10 @@ class _TemperatureDescriptionPageState
                           Navigator.of(context)
                               .pushNamed('/temperature-description');
                         },
-                        child: Text('Temperatur'))
+                        child: Text(
+                          //'Temperatur',
+                          sh.getLanguageResource("tempreture"),
+                        ))
                   ],
                 ),
               ),
@@ -108,28 +127,33 @@ class _TemperatureDescriptionPageState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text("Temperatur - Bedeutung, Messung und Auswirkungen",
+                    Text(sh.getLanguageResource("tempreture_desc_1"),
+                        //"Temperatur - Bedeutung, Messung und Auswirkungen",
                         style: articleTitle),
                     Text(
-                        "Die Körpertemperatur ist ein wichtiger Parameter zur Beurteilung des Gesundheitszustands eines Menschen. In diesem Artikel werden wir die Bedeutung der Körpertemperatur erklären, verschiedene Messmethoden diskutieren und die Auswirkungen von abnormalen Körpertemperaturen auf den Körper betrachten."),
+                      sh.getLanguageResource("tempreture_desc_2"),
+                    ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text("Wie wird die Temperatur gemessen?",
+                    Text(sh.getLanguageResource("tempreture_desc_3"),
                         style: articleTitle),
                     Text(
-                        "Die Körpertemperatur kann auf verschiedene Arten gemessen werden. Die gängigste Methode ist die Verwendung eines Thermometers, das unter der Zunge, in der Achselhöhle oder im Rektum platziert wird. Es gibt auch berührungslose Infrarotthermometer, die die Temperatur an der Stirn oder am Ohr messen können."),
+                      sh.getLanguageResource("tempreture_desc_4"),
+                    ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text("Temperatur Messwerte verstehen", style: articleTitle),
-                    Text(
-                        "Die normale Körpertemperatur bei Erwachsenen liegt normalerweise zwischen 36,5°C und 37,5°C. Es kann jedoch individuelle Unterschiede geben, und die Temperatur kann je nach Tageszeit, körperlicher Aktivität und anderen Faktoren leicht variieren."),
-                    Text(
-                        "Welche Körpertemperaturen sind normal, krankhaft und kritisch?",
+                    Text(sh.getLanguageResource("tempreture_desc_5"),
                         style: articleTitle),
                     Text(
-                        "Eine Körpertemperatur unter 36°C wird als Unterkühlung bezeichnet und kann lebensbedrohlich sein. Eine Körpertemperatur über 38°C wird als Fieber bezeichnet und kann auf eine Infektion oder eine andere Erkrankung hinweisen. Eine Körpertemperatur über 40°C gilt als hoch und erfordert medizinische Aufmerksamkeit."),
+                      sh.getLanguageResource("tempreture_desc_6"),
+                    ),
+                    Text(sh.getLanguageResource("tempreture_desc_6_1"),
+                        style: articleTitle),
+                    Text(
+                      sh.getLanguageResource("tempreture_desc_7"),
+                    ),
                     SizedBox(
                       height: 10,
                     ),
@@ -139,33 +163,35 @@ class _TemperatureDescriptionPageState
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                        "Woher kommt die Körpertemperatur und wie wird sie reguliert?",
+                    Text(sh.getLanguageResource("tempreture_desc_8"),
                         style: articleTitle),
                     Text(
-                        "Die Körpertemperatur wird durch den Stoffwechsel und die Wärmeerzeugung im Körper, insbesondere durch den Energieverbrauch der Zellen, beeinflusst. Der Körper reguliert seine Temperatur durch den Wärmeverlust über die Haut, die Schweißproduktion und die Kontraktion der Blutgefäße."),
+                      sh.getLanguageResource("tempreture_desc_9"),
+                    ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                        "Mögliche Anzeichen für erhöhte und zu niedrige Körpertemperatur?",
+                    Text(sh.getLanguageResource("tempreture_desc_10"),
                         style: articleTitle),
                     Text(
-                        "Erhöhte Körpertemperatur kann mit Symptomen wie Schüttelfrost, Schweißausbrüchen, Kopfschmerzen, Müdigkeit und Muskelschmerzen einhergehen. Eine zu niedrige Körpertemperatur kann zu Schüttelfrost, Verwirrung, Schwäche, Bewusstseinsverlust und langsamer Herzfrequenz führen."),
+                      sh.getLanguageResource("tempreture_desc_11"),
+                    ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                        "Krankheitsbilder einer erhöhten und einer zu niedrigen Körpertemperatur inklusive der Langzeitfolgen",
+                    Text(sh.getLanguageResource("tempreture_desc_12"),
                         style: articleTitle),
                     Text(
-                        "Erhöhte Körpertemperatur kann auf Infektionen, Entzündungen oder andere Erkrankungen wie Grippe, Lungenentzündung oder Hitzschlag hinweisen. Langfristige Auswirkungen können von der zugrunde liegenden Ursache abhängen und reichen von Komplikationen bis hin zu Organversagen. Eine zu niedrige Körpertemperatur kann auf Hypothermie, Schilddrüsenprobleme oder Nebenniereninsuffizienz hinweisen und kann zu Erfrierungen, Gewebeschäden oder sogar zum Tod führen."),
+                      sh.getLanguageResource("tempreture_desc_13"),
+                    ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text("Therapieoptionen", style: articleTitle),
+                    Text(sh.getLanguageResource("tempreture_desc_14"),
+                        style: articleTitle),
                     Text(
-                        "Die Behandlung von abnormalen Körpertemperaturen hängt von der zugrunde liegenden Ursache ab. Bei Fieber können Medikamente eingenommen werden, um die Temperatur zu senken. Bei Unterkühlung ist es wichtig, den Körper langsam wieder aufzuwärmen und medizinische Hilfe zu suchen. Die genaue Therapie richtet sich nach der individuellen Situation und sollte in Absprache mit einem medizinischen Fachpersonal erfolgen. Es ist wichtig, Veränderungen der Körpertemperatur zu beachten und bei anhaltenden oder schwerwiegenden Symptomen ärztlichen Rat einzuholen, um eine genaue Diagnose und geeignete Behandlung zu erhalten.")
+                      sh.getLanguageResource("tempreture_desc_15"),
+                    )
                   ],
                 ),
               )

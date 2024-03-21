@@ -414,7 +414,7 @@ TextStyle selectedPeriod = const TextStyle(
 );
 
 TextStyle articleTitle = const TextStyle(
-    fontWeight: FontWeight.bold, color: mainItemColor, fontSize: 15);
+    fontWeight: FontWeight.bold, color: Colors.black, fontSize: 15);
 
 ButtonStyle descriptionNotStyle = ElevatedButton.styleFrom(
   primary: descriptionNotSelectedButton,

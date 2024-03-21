@@ -48,6 +48,17 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future getLanguageResources(String lang) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/getlanguageresources?lang=$lang';
+    var result = await http.get(Uri.parse(finalUrl), headers: {
+      'Content-Type': 'application/text',
+      'lang': lang,
+      'token': pref.getString('token').toString()
+    });
+    return getResponseFromApi(result);
+  }
+
   Future getPatientContactsByCategory(String category) async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();

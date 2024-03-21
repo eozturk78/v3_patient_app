@@ -78,7 +78,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: leadingWithoutProfile("Passwort vergessen", context),
+      appBar: leadingWithoutProfile(
+          sh.getLanguageResource("forgetten_password"), context),
       body: Center(
         child: Container(
           alignment: Alignment.center,
@@ -110,16 +111,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         const SizedBox(
                           height: 5,
                         ),
-                        Text(
-                            "Bitte geben Sie Ihren Benutzernamen ein, um das Passwort zurückzusetzen"),
+                        Text(sh.getLanguageResource(
+                            "enter_user_name_reset_password")),
                         const SizedBox(
                           height: 5,
                         ),
                         TextFormField(
                           controller: userNameController,
                           obscureText: false,
-                          decoration: const InputDecoration(
-                            labelText: 'Benutzername',
+                          decoration: InputDecoration(
+                            labelText: sh.getLanguageResource("username"),
                           ),
                           validator: (text) => sh.textValidator(text),
                         ),
@@ -134,7 +135,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             onForgotPassword();
                           },
                           child: !isSendEP
-                              ? const Text("Senden")
+                              ? Text(sh.getLanguageResource("send"))
                               : Transform.scale(
                                   scale: 0.5,
                                   child: CircularProgressIndicator(

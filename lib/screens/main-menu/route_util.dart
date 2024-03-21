@@ -45,29 +45,28 @@ final defaultMenuList = [
 ];
 
 final Map<String, MenuSet> routeDisplayNames = {
-  "/home": MenuSet('Grafische Darstellungen',
+  "/home": MenuSet('graph_representation',
       SvgPicture.asset('assets/images/menu-icons/graphische-main.svg')),
-  "/questionnaire-group": MenuSet('Fragebögen',
+  "/questionnaire-group": MenuSet('questionnaires',
       SvgPicture.asset('assets/images/menu-icons/tagliche-main.svg')),
-  "/communication": MenuSet('Kommunikation',
+  "/communication": MenuSet('communication',
       SvgPicture.asset('assets/images/menu-icons/nachrichten-main.svg')),
-  "/info": MenuSet('Infothek',
+  "/info": MenuSet('info_tech',
       SvgPicture.asset('assets/images/menu-icons/infothek-main.svg')),
-  "/medication-plan-list": MenuSet('Medikamentenplan',
+  "/medication-plan-list": MenuSet('medical_plan_list',
       SvgPicture.asset('assets/images/menu-icons/medikation-main.svg')),
-  "/messages": MenuSet('Mitteilungen',
+  "/messages": MenuSet('notifications',
       SvgPicture.asset('assets/images/menu-icons/mitteilungen-main.svg')),
   "/recipes": MenuSet(
       'Rezepte', SvgPicture.asset('assets/images/menu-icons/rezept-main.svg')),
-  "/libraries": MenuSet('Bibliotheken',
+  "/libraries": MenuSet('libraries',
       SvgPicture.asset('assets/images/menu-icons/bibliothek-main.svg')),
-  "/enlightenment": MenuSet('Aufklärung',
+  "/enlightenment": MenuSet('clarification',
       SvgPicture.asset('assets/images/menu-icons/aufklarung-main.svg')),
-  "/documents": MenuSet('Dokumente',
+  "/documents": MenuSet('document_info',
       SvgPicture.asset('assets/images/menu-icons/dokumente-main.svg')),
-  "/patient-contacts-list":
-      MenuSet('Meine medizinischen Kontakte', Icons.contact_page),
-  "/notification-history": MenuSet('Erinnerungen',
+  "/patient-contacts-list": MenuSet('my_medical_contacts', Icons.contact_page),
+  "/notification-history": MenuSet('memories',
       SvgPicture.asset('assets/images/menu-icons/erinnerungen-main.svg')),
 };
 
