@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:patient_app/shared/shared.dart';
 import 'package:patient_app/shared/toast.dart';
 import '../../apis/apis.dart';
 import '../shared/bottom-menu.dart';
@@ -19,6 +20,7 @@ class _ContactsListingPageState extends State<ContactsListingPage>
   List<dynamic> _contacts = []; // To store fetched contacts
   int _selectedCategory = 0; // Default category index
   int _tmpSelectedCategory = 0;
+  Shared sh = Shared();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>(); // Add this line
 
   late TabController _tabController;
@@ -55,7 +57,8 @@ class _ContactsListingPageState extends State<ContactsListingPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Meine medizinischen Kontakte', context),
+      appBar: leadingSubpage(
+          sh.getLanguageResource("my_medical_contacts"), context),
       body: SafeArea(
         // Wrap your body with SafeArea
         child: Column(
@@ -69,15 +72,17 @@ class _ContactsListingPageState extends State<ContactsListingPage>
                   _fetchContactsByCategory(_selectedCategory + 1);
                 });
               },
-              tabs: const [
+              tabs: [
                 Tab(
                     child: FittedBox(
                         fit: BoxFit.contain,
-                        child: Text("Ansprechpartner",
+                        child: Text(sh.getLanguageResource("contact_person"),
                             textAlign: TextAlign.center))),
-                Tab(child: Text("Ärzte", textAlign: TextAlign.center)),
                 Tab(
-                    child: Text("Medizinische Einrichtungen",
+                    child: Text(sh.getLanguageResource("doctors"),
+                        textAlign: TextAlign.center)),
+                Tab(
+                    child: Text(sh.getLanguageResource("medical_facilities"),
                         textAlign: TextAlign.center)),
               ],
             ),
@@ -113,8 +118,12 @@ class _ContactsListingPageState extends State<ContactsListingPage>
               var contact = _contacts[index];
               return ExpansionTile(
                 leading: Icon(Icons.phone),
-                title: Text(contact['first_name'] ?? ""),
-                subtitle: Text(contact['last_name'] ?? ""),
+                title: Text(
+                  sh.getLanguageResource("first_name"),
+                ),
+                subtitle: Text(
+                  sh.getLanguageResource("last_name"),
+                ),
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -122,17 +131,15 @@ class _ContactsListingPageState extends State<ContactsListingPage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         //_buildContactDetailRow("ID", contact['id'].toString()??""),
-                        _buildContactDetailRow(
-                            AppLocalizations.tr('Phone') ?? 'Phone',
+                        _buildContactDetailRow(sh.getLanguageResource("phone"),
                             contact['phone_number'] ?? ""),
-                        _buildContactDetailRow("Email", contact['email'] ?? ""),
+                        _buildContactDetailRow(sh.getLanguageResource("email"),
+                            contact['email'] ?? ""),
                         _buildContactDetailRow(
-                            AppLocalizations.tr('Institution Name') ??
-                                'Institution Name',
+                            sh.getLanguageResource("institution_name"),
                             contact['institution_name'] ?? ""),
                         _buildContactDetailRow(
-                            AppLocalizations.tr('Institution Address') ??
-                                'Institution Address',
+                            sh.getLanguageResource("institution_address"),
                             contact['institution_address'] ?? ""),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -220,22 +227,24 @@ class _ContactsListingPageState extends State<ContactsListingPage>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(AppLocalizations.tr("Confirmation")),
-          content: Text(
-              'Möchten Sie die Mail-App öffnen, um eine E-Mail an $email zu senden?'),
+          title: Text(sh.getLanguageResource("confirmation")),
+          content: Text(sh
+              .getLanguageResource("do_you_want_open_email")
+              .toString()
+              .replaceAll("@email@", email)),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context); // Close the confirmation dialog
                 _sendEmail(email); // Open the mail app
               },
-              child: Text('Ja'),
+              child: Text(sh.getLanguageResource("yes")),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context); // Close the confirmation dialog
               },
-              child: Text('Nein'),
+              child: Text(sh.getLanguageResource("no")),
             ),
           ],
         );
@@ -248,9 +257,8 @@ class _ContactsListingPageState extends State<ContactsListingPage>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Kontakt löschen'),
-          content:
-              Text('Sind Sie sicher, dass Sie diesen Kontakt löschen möchten?'),
+          title: Text(sh.getLanguageResource("delete_contact")),
+          content: Text(sh.getLanguageResource("are_you_sure_delete_contact")),
           actions: [
             TextButton(
               onPressed: () async {
@@ -260,13 +268,13 @@ class _ContactsListingPageState extends State<ContactsListingPage>
                     .deletePatientContact(contact)
                     .then((value) => Navigator.pop(context));
               },
-              child: Text('Ja'),
+              child: Text(sh.getLanguageResource("yes")),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Nein'),
+              child: Text(sh.getLanguageResource("no")),
             ),
           ],
         );
@@ -295,7 +303,7 @@ class _ContactsListingPageState extends State<ContactsListingPage>
       context: context,
       builder: (BuildContext context) => StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) => AlertDialog(
-          title: Text('Neuen Kontakt hinzufügen'),
+          title: Text(sh.getLanguageResource("add_new_contact")),
           content: Form(
             key: _formKey,
             child: SingleChildScrollView(
@@ -309,60 +317,59 @@ class _ContactsListingPageState extends State<ContactsListingPage>
                         _tmpSelectedCategory = newValue!;
                       });
                     },
-                    items: const [
+                    items: [
                       DropdownMenuItem<int>(
                         value: 1,
-                        child: Text('Ansprechpartner'),
+                        child: Text(sh.getLanguageResource("contact_person")),
                       ),
                       DropdownMenuItem<int>(
                         value: 2,
-                        child: Text('Ärzte'),
+                        child: Text(sh.getLanguageResource("doctors")),
                       ),
                       DropdownMenuItem<int>(
                         value: 3,
-                        child: Text('Medizinische Einrichtungen'),
+                        child:
+                            Text(sh.getLanguageResource("medical_facilities")),
                       ),
                     ],
                   ),
                   TextFormField(
                     controller: firstNameController,
                     decoration: InputDecoration(
-                        labelText:
-                            AppLocalizations.tr('First Name') ?? 'First Name'),
+                        labelText: sh.getLanguageResource("first_name")),
                   ),
                   TextFormField(
                     controller: lastNameController,
                     decoration: InputDecoration(
-                        labelText:
-                            AppLocalizations.tr('Last Name') ?? 'Last Name'),
+                        labelText: sh.getLanguageResource("last_name")),
                   ),
                   TextFormField(
                     keyboardType: TextInputType.phone,
                     controller: phoneController,
                     decoration: InputDecoration(
-                        labelText: AppLocalizations.tr('Phone') ?? 'Phone'),
+                        labelText: sh.getLanguageResource("phone")),
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
-                        return 'Notwendig';
+                        return sh.getLanguageResource("neccassary");
                       }
                       return null;
                     },
                   ),
                   TextFormField(
                     controller: emailController,
-                    decoration: InputDecoration(labelText: 'Email'),
+                    decoration: InputDecoration(
+                        labelText: sh.getLanguageResource("email")),
                   ),
                   TextFormField(
                     controller: institutionNameController,
                     decoration: InputDecoration(
-                        labelText: AppLocalizations.tr('Institution Name') ??
-                            'Institution Name'),
+                        labelText: sh.getLanguageResource("institution_name")),
                   ),
                   TextFormField(
                     controller: institutionAddressController,
                     decoration: InputDecoration(
-                        labelText: AppLocalizations.tr('Institution Address') ??
-                            'Institution Address'),
+                        labelText:
+                            sh.getLanguageResource("institution_address")),
                   ),
                 ],
               ),
@@ -390,14 +397,14 @@ class _ContactsListingPageState extends State<ContactsListingPage>
                   _fetchContactsByCategory(_selectedCategory + 1);
                 }
               },
-              child: Text('Speichern'),
+              child: Text(sh.getLanguageResource("save")),
             ),
             TextButton(
               onPressed: () {
                 // Close the dialog without saving
                 Navigator.pop(context);
               },
-              child: Text('Abbrechen'),
+              child: Text(sh.getLanguageResource("cancel")),
             ),
           ],
         ),
@@ -413,8 +420,7 @@ class _ContactsListingPageState extends State<ContactsListingPage>
           contact: contact,
           onUpdate: () {
             setState(() {
-              showToast(AppLocalizations.tr('Contact updated.') ??
-                  'Contact updated.');
+              showToast(sh.getLanguageResource("contact_update"));
               _fetchContactsByCategory(_selectedCategory + 1);
             });
           },
@@ -428,7 +434,10 @@ class _ContactsListingPageState extends State<ContactsListingPage>
     if (await canLaunchUrl(Uri(scheme: 'tel', path: phoneNumber))) {
       await launchUrl(Uri(scheme: 'tel', path: phoneNumber));
     } else {
-      throw '$url konnte nicht gestartet werden'; //Could not launch URL
+      throw sh
+          .getLanguageResource("url_could_not_started")
+          .toString()
+          .replaceAll("@url@", url); //Could not launch URL
     }
   }
 
@@ -437,7 +446,10 @@ class _ContactsListingPageState extends State<ContactsListingPage>
     if (await canLaunchUrl(Uri(scheme: 'mailto', path: email))) {
       await launchUrl(Uri(scheme: 'mailto', path: email));
     } else {
-      throw '$url konnte nicht gestartet werden'; //Could not launch URL
+      throw sh
+          .getLanguageResource("url_could_not_started")
+          .toString()
+          .replaceAll("@url@", url); //Could not launch URL
     }
   }
 }
@@ -455,7 +467,7 @@ class EditContactDialog extends StatefulWidget {
 
 class _EditContactDialogState extends State<EditContactDialog> {
   final Apis _apis = Apis();
-
+  Shared sh = Shared();
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -483,7 +495,7 @@ class _EditContactDialogState extends State<EditContactDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.tr('Edit Contact') ?? 'Edit Contact'),
+      title: Text(sh.getLanguageResource("edit_contact")),
       content: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -496,59 +508,58 @@ class _EditContactDialogState extends State<EditContactDialog> {
                     selectedCategory = newValue!;
                   });
                 },
-                items: const [
+                items: [
                   DropdownMenuItem<int>(
                     value: 1,
-                    child: Text('Ansprechpartner'),
+                    child: Text(sh.getLanguageResource("contact_person")),
                   ),
                   DropdownMenuItem<int>(
                     value: 2,
-                    child: Text('Ärzte'),
+                    child: Text(sh.getLanguageResource("doctors")),
                   ),
                   DropdownMenuItem<int>(
                     value: 3,
-                    child: Text('Medizinische Einrichtungen'),
+                    child: Text(sh.getLanguageResource("medical_facilities")),
                   ),
                 ],
               ),
               TextFormField(
                 controller: firstNameController,
                 decoration: InputDecoration(
-                    labelText:
-                        AppLocalizations.tr('First Name') ?? 'First Name'),
+                    labelText: sh.getLanguageResource("first_name")),
               ),
               TextFormField(
                 controller: lastNameController,
                 decoration: InputDecoration(
-                    labelText: AppLocalizations.tr('Last Name') ?? 'Last Name'),
+                    labelText: sh.getLanguageResource("last_name")),
               ),
               TextFormField(
                 keyboardType: TextInputType.phone,
                 controller: phoneController,
-                decoration: InputDecoration(
-                    labelText: AppLocalizations.tr('Phone') ?? 'Phone'),
+                decoration:
+                    InputDecoration(labelText: sh.getLanguageResource("phone")),
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
-                    return 'Notwendig'; //Required field warning
+                    return sh.getLanguageResource(
+                        "neccassary"); //Required field warning
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: emailController,
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration:
+                    InputDecoration(labelText: sh.getLanguageResource("email")),
               ),
               TextFormField(
                 controller: institutionNameController,
                 decoration: InputDecoration(
-                    labelText: AppLocalizations.tr('Institution Name') ??
-                        'Institution Name'),
+                    labelText: sh.getLanguageResource("institation_name")),
               ),
               TextFormField(
                 controller: institutionAddressController,
                 decoration: InputDecoration(
-                    labelText: AppLocalizations.tr('Institution Address') ??
-                        'Institution Address'),
+                    labelText: sh.getLanguageResource("institation_address")),
               ),
             ],
           ),
@@ -575,14 +586,14 @@ class _EditContactDialogState extends State<EditContactDialog> {
               Navigator.pop(context);
             }
           },
-          child: Text('Speichern'),
+          child: Text(sh.getLanguageResource("save")),
         ),
         TextButton(
           onPressed: () {
             // Close the dialog without saving
             Navigator.pop(context);
           },
-          child: Text('Abbrechen'),
+          child: Text(sh.getLanguageResource("cancel")),
         ),
       ],
     );

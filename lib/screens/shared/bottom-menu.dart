@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/medication/interactive-medication-plan.dart';
+import 'package:patient_app/shared/shared.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 
@@ -39,29 +40,32 @@ class _CustomMenuButtonState extends State<BottomNavigatorBar> {
 
   @override
   Widget build(BuildContext context) {
+    Shared sh = Shared();
     return BottomNavigationBar(
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: _buildNavItem('assets/images/home.svg', 'Home', 0, null),
-          label: 'Home',
+          icon: _buildNavItem('assets/images/home.svg',
+              sh.getLanguageResource("home"), 0, null),
+          label: sh.getLanguageResource("home"),
         ),
         BottomNavigationBarItem(
-          icon: _buildNavItem('assets/images/daten.svg', 'Daten', 1, null),
-          label: 'Daten',
+          icon: _buildNavItem('assets/images/daten.svg',
+              sh.getLanguageResource("data"), 1, null),
+          label: sh.getLanguageResource("data"),
         ),
         BottomNavigationBarItem(
-          icon: _buildNavItem(
-              'assets/images/medikation.svg', 'Medikation', 2, null),
-          label: 'Medikation',
-        ),
+            icon: _buildNavItem('assets/images/medikation.svg',
+                sh.getLanguageResource("medication"), 2, null),
+            label: sh.getLanguageResource("medication")),
         BottomNavigationBarItem(
           icon: _buildNavItem('assets/images/messenger_outline.svg',
-              'Kommunikation', 3, unreadMessageCount),
-          label: 'Kommunikation',
+              sh.getLanguageResource("communication"), 3, unreadMessageCount),
+          label: sh.getLanguageResource("communication"),
         ),
         BottomNavigationBarItem(
-          icon: _buildNavItem('assets/images/info.svg', 'Infothek', 4, null),
-          label: 'Infothek',
+          icon: _buildNavItem('assets/images/info.svg',
+              sh.getLanguageResource("info_tech"), 4, null),
+          label: sh.getLanguageResource("info_tech"),
         ),
       ],
       type: BottomNavigationBarType.fixed,

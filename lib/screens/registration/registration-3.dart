@@ -46,7 +46,8 @@ class _Registration3PageState extends State<Registration3Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingWithoutProfile('Registration 3!', context),
+      appBar: leadingWithoutProfile(
+          sh.getLanguageResource("registration_3"), context),
       body: Padding(
         padding: EdgeInsets.all(30),
         child: SingleChildScrollView(
@@ -59,7 +60,7 @@ class _Registration3PageState extends State<Registration3Page> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Personalisierung",
+                        sh.getLanguageResource("personalisation"),
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -69,7 +70,8 @@ class _Registration3PageState extends State<Registration3Page> {
                         height: 10,
                       ),
                       Text(
-                          'Lassen Sie uns iMedCom individuell an Sie anpassen.'),
+                        sh.getLanguageResource("let_us_customise"),
+                      ),
                       SizedBox(
                         height: 40,
                       ),
@@ -79,7 +81,7 @@ class _Registration3PageState extends State<Registration3Page> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Geburtsdatum",
+                                sh.getLanguageResource("date_of_birth"),
                                 style: labelText,
                               ),
                               SizedBox(
@@ -172,7 +174,7 @@ class _Registration3PageState extends State<Registration3Page> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Geschlecht",
+                                sh.getLanguageResource("sex"),
                                 style: labelText,
                               ),
                               SizedBox(
@@ -212,7 +214,7 @@ class _Registration3PageState extends State<Registration3Page> {
                                               });
                                             },
                                             child: Text(
-                                              'Unbekannt',
+                                              sh.getLanguageResource("unknowm"),
                                               style: selectionLabel,
                                             )),
                                         Divider(
@@ -222,13 +224,15 @@ class _Registration3PageState extends State<Registration3Page> {
                                         TextButton(
                                             onPressed: () {
                                               setState(() {
-                                                _selectedGender = 'Weiblich';
+                                                _selectedGender =
+                                                    sh.getLanguageResource(
+                                                        "female");
                                                 _selectedSex = 'female';
                                                 Navigator.of(context).pop();
                                               });
                                             },
                                             child: Text(
-                                              'Weiblich',
+                                              sh.getLanguageResource("female"),
                                               style: selectionLabel,
                                             )),
                                         Divider(
@@ -238,13 +242,15 @@ class _Registration3PageState extends State<Registration3Page> {
                                         TextButton(
                                             onPressed: () {
                                               setState(() {
-                                                _selectedGender = 'Männlich';
+                                                _selectedGender =
+                                                    sh.getLanguageResource(
+                                                        "male");
                                                 _selectedSex = 'male';
                                                 Navigator.of(context).pop();
                                               });
                                             },
                                             child: Text(
-                                              'Männlich',
+                                              sh.getLanguageResource("male"),
                                               style: selectionLabel,
                                             )),
                                       ],
@@ -286,7 +292,7 @@ class _Registration3PageState extends State<Registration3Page> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Größe",
+                                sh.getLanguageResource("size"),
                                 style: labelText,
                               ),
                               SizedBox(
@@ -375,7 +381,7 @@ class _Registration3PageState extends State<Registration3Page> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Normalgewicht",
+                                sh.getLanguageResource("normal_weight"),
                                 style: labelText,
                               ),
                               SizedBox(
@@ -464,8 +470,12 @@ class _Registration3PageState extends State<Registration3Page> {
                           primary: mainButtonColor,
                         ),
                         onPressed: () async {
-                          if (_selectedDate == 'Geburtsdatum auswählen' ||
-                              _selectedGender == "Wähle Geschlecht") return;
+                          if (_selectedDate ==
+                                  sh.getLanguageResource(
+                                      "select_date_of_birth") ||
+                              _selectedGender ==
+                                  sh.getLanguageResource("select_gender"))
+                            return;
                           SharedPreferences pref =
                               await SharedPreferences.getInstance();
                           pref.setString("birthDate", _selectedDate.toString());
@@ -483,7 +493,7 @@ class _Registration3PageState extends State<Registration3Page> {
                           // final isValid = _formKey.currentState?.validate();
                           Navigator.of(context).pushNamed('/registration-4');
                         },
-                        child: Text("Weiter"),
+                        child: Text(sh.getLanguageResource("further")),
                       )
                     ],
                   ),

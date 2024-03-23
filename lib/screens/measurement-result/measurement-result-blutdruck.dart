@@ -80,7 +80,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Blutdruck', context),
+      appBar: leadingSubpage(sh.getLanguageResource("blood_pressure"), context),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -118,7 +118,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                           height: 35,
                           child: Center(
                             child: Text(
-                              "1 Woche",
+                              sh.getLanguageResource("one_week"),
                               style: TextStyle(
                                   color: periodType == 10
                                       ? Colors.white
@@ -159,7 +159,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                           height: 35,
                           child: Center(
                             child: Text(
-                              "3 Monate",
+                              sh.getLanguageResource("three_months"),
                               style: TextStyle(
                                   color: periodType == 20
                                       ? Colors.white
@@ -197,7 +197,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                           height: 35,
                           child: Center(
                             child: Text(
-                              "1 Jahr",
+                              sh.getLanguageResource("one_year"),
                               style: TextStyle(
                                   color: periodType == 30
                                       ? Colors.white
@@ -232,7 +232,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                           xValueMapper: (_SalesData sales, _) =>
                               sales.date.toString(),
                           yValueMapper: (_SalesData sales, _) => sales.sales,
-                          name: 'Systolischer',
+                          name: sh.getLanguageResource("systolic"),
                           // Enable data label
                           dataLabelSettings:
                               const DataLabelSettings(isVisible: false)),
@@ -241,7 +241,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                           xValueMapper: (_SalesData sales, _) =>
                               sales.date.toString(),
                           yValueMapper: (_SalesData sales, _) => sales.sales,
-                          name: 'Diastolischer',
+                          name: sh.getLanguageResource("diastolic"),
                           // Enable data label
                           dataLabelSettings:
                               const DataLabelSettings(isVisible: false)),
@@ -250,7 +250,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                           xValueMapper: (_SalesData sales, _) =>
                               sales.date.toString(),
                           yValueMapper: (_SalesData sales, _) => sales.sales,
-                          name: 'Pulse',
+                          name: sh.getLanguageResource("pulse"),
                           // Enable data label
                           dataLabelSettings:
                               const DataLabelSettings(isVisible: false))
@@ -271,7 +271,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Gestern",
+                                  sh.getLanguageResource("yesterday"),
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 Text(
@@ -296,7 +296,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Heute",
+                                  sh.getLanguageResource("today"),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white),
@@ -316,7 +316,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                     height: 20,
                   ),
                   Text(
-                    "Blutdruck",
+                    sh.getLanguageResource("blood_pressure"),
                     style: TextStyle(
                       fontSize: 24,
                       color: mainButtonColor,
@@ -327,31 +327,26 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                     height: 20,
                   ),
                   Text(
-                      "Der Blutdruck ist der messbare Druck des Blutes in den Arterien, während es vom Herzen durch den Körper gepumpt wird. Ein gesunder Blutdruck ist ein wichtiger Teil der Gesundheitsvorsorge. Denn Bluthochdruck (Hypertonie) erhöht nachweislich das Risiko für ernsthafte Erkrankungen wie Herzinfarkt, Herzversagen, Schlaganfall und Nierenschäden."),
+                    sh.getLanguageResource("blood_pressure_desc"),
+                  ),
                   SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.info,
-                        color: Color.fromARGB(255, 0, 90, 47),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed('/blutdruck-description');
-                        },
-                        child: Text(
-                          "Mehr Informationen über die Einstufung Ihrer Messwerte",
-                          style: TextStyle(
-                              overflow: TextOverflow.ellipsis,
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue),
-                        ),
-                      )
-                    ],
+
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/blutdruck-description');
+                    },
+                    child: Text(
+                      sh.getLanguageResource("more_info"),
+                      softWrap: false,
+                      maxLines: 2,
+                      style: TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue),
+                    ),
                   )
                 ],
               ),

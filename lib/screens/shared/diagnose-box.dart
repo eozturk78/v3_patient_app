@@ -77,19 +77,19 @@ class CustomDiagnoseBox extends StatelessWidget {
                   spacing: 5.0,
                   children: [
                     if (this.securedDiagnoseG == 1)
-                      Text("gesicherte Diagnose (G)",
+                      Text(sh.getLanguageResource("secured_diagnose_g"),
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.grey)),
                     if (this.suspicionV == 1)
-                      Text("Verdacht (V)",
+                      Text(sh.getLanguageResource("susp_v"),
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.grey)),
                     if (this.exclusionA == 1)
-                      Text("Ausschluss (A)",
+                      Text(sh.getLanguageResource("exlusion_a"),
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.grey)),
                     if (this.stateAfter == 1)
-                      Text("Zustand nach (Z.n)",
+                      Text(sh.getLanguageResource("condition_after_a"),
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.grey))
                   ],
@@ -102,15 +102,15 @@ class CustomDiagnoseBox extends StatelessWidget {
                   spacing: 5.0,
                   children: [
                     if (this.diaLeft == 1)
-                      Text("links",
+                      Text(sh.getLanguageResource("left"),
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.grey)),
                     if (this.diaRight == 1)
-                      Text("rechts",
+                      Text(sh.getLanguageResource("right"),
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.grey)),
                     if (this.bothSide == 1)
-                      Text("beidseitig",
+                      Text(sh.getLanguageResource("on_both_sides"),
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.grey)),
                   ],

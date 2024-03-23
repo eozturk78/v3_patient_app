@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:patient_app/shared/shared.dart';
 
 import '../shared/bottom-menu.dart';
 
@@ -15,6 +16,7 @@ class QuickAccessPage extends StatefulWidget {
 }
 
 class _QuickAccessPageState extends State<QuickAccessPage> {
+  Shared sh = Shared();
   @override
   void initState() {
     super.initState();
@@ -24,9 +26,10 @@ class _QuickAccessPageState extends State<QuickAccessPage> {
   Widget build(BuildContext context) {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
-      appBar: leading('Schnellzugriff', context),
-      body: SafeArea( // Wrap your body with SafeArea
-      child:Center(
+      appBar: leading(sh.getLanguageResource("quick_access"), context),
+      body: SafeArea(
+          // Wrap your body with SafeArea
+          child: Center(
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
@@ -61,17 +64,17 @@ class _QuickAccessPageState extends State<QuickAccessPage> {
           FloatingActionButton.extended(
             onPressed: () => {},
             icon: new Icon(Icons.dock_outlined),
-            label: Text("Videosprechstunde"),
+            label: Text( sh.getLanguageResource("video_consultation")),
           ),
           FloatingActionButton.extended(
             onPressed: () => {},
             icon: new Icon(Icons.dock_outlined),
-            label: Text("Medikamentenplan"),
+            label: Text(sh.getLanguageResource("medical_plan")),
           ),
           FloatingActionButton.extended(
             onPressed: () => {},
             icon: new Icon(Icons.dock_outlined),
-            label: Text("Blutdruckmessung"),
+            label: Text(sh.getLanguageResource("blood_pressure_measurement") ),
           ),
         ],
       ),

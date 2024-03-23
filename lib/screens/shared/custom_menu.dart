@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/main.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:patient_app/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../colors/colors.dart';
@@ -29,7 +30,7 @@ class CustomMenuPage extends StatefulWidget {
 
 class _CustomMenuPageState extends State<CustomMenuPage> {
   late List<CustomMenuItem> _selectedMenuItems;
-
+  Shared sh = Shared();
   @override
   void initState() {
     super.initState();
@@ -78,7 +79,8 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
             entry.value.displayName!, // Use the route name from the map
             !selectedMenuItemsData
                 .where((element) =>
-                    element['routeName'].toString().contains(entry.key) && element['isSelected'] == true)
+                    element['routeName'].toString().contains(entry.key) &&
+                    element['isSelected'] == true)
                 .isEmpty,
             _selectedMenuItems.length,
           );
@@ -125,7 +127,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
     }
 
     return Scaffold(
-      appBar: leadingSubpage('Einstellungen', context),
+      appBar: leadingSubpage(sh.getLanguageResource("settings"), context),
       body: _selectedMenuItems.isEmpty
           ? _buildDefaultMenuItems()
           : Column(
@@ -152,7 +154,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                                   height: 35,
                                   child: Center(
                                     child: Text(
-                                      "Benutzer",
+                                      sh.getLanguageResource("users"),
                                       style: TextStyle(color: mainButtonColor),
                                     ),
                                   ),
@@ -170,7 +172,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                                   height: 35,
                                   child: Center(
                                     child: Text(
-                                      "Dashboard",
+                                      sh.getLanguageResource("dashboard"),
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),
@@ -191,7 +193,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                                   height: 35,
                                   child: Center(
                                     child: Text(
-                                      "Erinnerungen",
+                                      sh.getLanguageResource("memories"),
                                       style: TextStyle(color: mainButtonColor),
                                     ),
                                   ),
@@ -208,7 +210,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                             border: InputBorder.none,
                             filled: true,
                             fillColor: const Color.fromARGB(255, 244, 246, 246),
-                            hintText: 'Search',
+                            hintText: sh.getLanguageResource("search"),
                             hintStyle: TextStyle(
                                 fontSize: 16.0,
                                 color: Color.fromARGB(255, 69, 81, 84)),
@@ -239,7 +241,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                               padding:
                                   EdgeInsets.only(top: 20, bottom: 5, left: 15),
                               child: Text(
-                                'DASHBOARD FELDER',
+                                sh.getLanguageResource("dashboard_fields"),
                                 style: TextStyle(
                                     color: Color.fromARGB(255, 150, 159, 162)),
                                 textAlign: TextAlign.left,

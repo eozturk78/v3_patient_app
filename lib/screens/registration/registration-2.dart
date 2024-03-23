@@ -34,7 +34,8 @@ class _Registration2PageState extends State<Registration2Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingWithoutProfile('Registration 2!', context),
+      appBar: leadingWithoutProfile(
+          sh.getLanguageResource("registration_2"), context),
       body: Padding(
         padding: EdgeInsets.all(30),
         child: SingleChildScrollView(
@@ -47,7 +48,7 @@ class _Registration2PageState extends State<Registration2Page> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Personalisierung",
+                        sh.getLanguageResource("personalisation"),
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -56,22 +57,22 @@ class _Registration2PageState extends State<Registration2Page> {
                       SizedBox(
                         height: 10,
                       ),
-                      Text(
-                          'Lassen Sie uns iMedCom individuell an Sie anpassen.',
+                      Text(sh.getLanguageResource("let_us_customise"),
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       SizedBox(
                         height: 60,
                       ),
                       Text(
-                        "Vorname",
+                        sh.getLanguageResource("first_name"),
                         style: labelText,
                       ),
                       TextFormField(
                         controller: firstNameController,
                         obscureText: false,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Bitte geben Sie Ihren Vornamen ein.',
+                          hintText:
+                              sh.getLanguageResource("please_enter_your_name"),
                         ),
                         validator: (text) => sh.textValidator(text),
                       ),
@@ -83,15 +84,16 @@ class _Registration2PageState extends State<Registration2Page> {
                         height: 10,
                       ),
                       Text(
-                        "Nachname",
+                        sh.getLanguageResource("last_name"),
                         style: labelText,
                       ),
                       TextFormField(
                         controller: lastNameController,
                         obscureText: false,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Bitte geben Sie Ihren Nachnamen ein.',
+                          hintText:
+                              sh.getLanguageResource("pleae_enter_surname"),
                         ),
                         validator: (text) => sh.textValidator(text),
                       ),
@@ -116,7 +118,9 @@ class _Registration2PageState extends State<Registration2Page> {
                           pref.setString('lastName', lastNameController.text);
                           Navigator.of(context).pushNamed('/registration-3');
                         },
-                        child: Text("Weiter"),
+                        child: Text(
+                          sh.getLanguageResource("further"),
+                        ),
                       )
                     ],
                   ),

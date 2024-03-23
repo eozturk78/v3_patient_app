@@ -54,7 +54,7 @@ class _SecretQuestionPageState extends State<SecretQuestionPage> {
 
             questionList.add(SecretQuestion(
                 id: null,
-                question: 'Ich möchte meine eigene Frage definieren'));
+                question: sh.getLanguageResource("define_own_question")));
           });
         }
       },
@@ -103,7 +103,8 @@ class _SecretQuestionPageState extends State<SecretQuestionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: leadingWithoutProfile("Sicherheitsfragen", context),
+      appBar: leadingWithoutProfile(
+          sh.getLanguageResource("security_issues"), context),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -118,14 +119,14 @@ class _SecretQuestionPageState extends State<SecretQuestionPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Bitte erstellen Sie eine Sicherheitsfrage",
+                      sh.getLanguageResource("pleae_create_security_question"),
                       style: labelText,
                     ),
                     const SizedBox(
                       height: 50,
                     ),
                     Text(
-                      "Sicherheitsfragen",
+                      sh.getLanguageResource("security_issues"),
                       style: labelText,
                     ),
                     SizedBox(
@@ -159,15 +160,16 @@ class _SecretQuestionPageState extends State<SecretQuestionPage> {
                       TextFormField(
                         controller: questionController,
                         obscureText: false,
-                        decoration: const InputDecoration(
-                          labelText: 'Bitte eigene Frage schreiben',
+                        decoration: InputDecoration(
+                          labelText: sh.getLanguageResource(
+                              "please_write_your_own_question"),
                         ),
                         validator: (text) => sh.textValidator(text),
                       ),
                     TextFormField(
                       controller: answerController,
-                      decoration: const InputDecoration(
-                        labelText: 'Antwort',
+                      decoration: InputDecoration(
+                        labelText: sh.getLanguageResource("answer"),
                       ),
                       validator: (text) => sh.textValidator(text),
                     ),
@@ -185,7 +187,7 @@ class _SecretQuestionPageState extends State<SecretQuestionPage> {
                         onSecretQuestion();
                       },
                       child: !isSendEP
-                          ? const Text("Senden")
+                          ? Text(sh.getLanguageResource("send"))
                           : Transform.scale(
                               scale: 0.5,
                               child: CircularProgressIndicator(

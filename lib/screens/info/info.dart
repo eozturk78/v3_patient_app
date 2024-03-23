@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:patient_app/shared/shared.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
 import '../shared/bottom-menu.dart';
@@ -17,6 +18,7 @@ class InfoPage extends StatefulWidget {
 }
 
 class _InfoPageState extends State<InfoPage> {
+  Shared sh = Shared();
   @override
   void initState() {
     super.initState();
@@ -25,7 +27,7 @@ class _InfoPageState extends State<InfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Infothek', context),
+      appBar: leadingSubpage(sh.getLanguageResource('info_tech'), context),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -45,7 +47,7 @@ class _InfoPageState extends State<InfoPage> {
                           child: CustomSubTotal(
                               SvgPicture.asset(
                                   'assets/images/menu-icons/bibliothek-main.svg'),
-                              "Bibliothek",
+                              sh.getLanguageResource('library'),
                               null,
                               null,
                               10),
@@ -62,7 +64,7 @@ class _InfoPageState extends State<InfoPage> {
                           child: CustomSubTotal(
                               SvgPicture.asset(
                                   'assets/images/menu-icons/dokumente-main.svg'),
-                              "Meine Dokumente",
+                              sh.getLanguageResource('my_documents'),
                               null,
                               null,
                               10),
@@ -79,7 +81,7 @@ class _InfoPageState extends State<InfoPage> {
                           child: CustomSubTotal(
                               SvgPicture.asset(
                                   'assets/images/menu-icons/aufklarung-main.svg'),
-                              "Aufklärung",
+                              sh.getLanguageResource('clarification'),
                               null,
                               null,
                               10),

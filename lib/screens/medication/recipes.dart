@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
-import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/shared.dart';
 import 'package:flutter_svg/svg.dart';
@@ -49,7 +46,7 @@ class _RecipesPageState extends State<RecipesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Rezept', context),
+      appBar: leadingSubpage(sh.getLanguageResource("recipe"), context),
       body: SafeArea(
           // Wrap your body with SafeArea
           child: Padding(
@@ -64,7 +61,8 @@ class _RecipesPageState extends State<RecipesPage> {
                         ? ExpansionPanelList(
                             expansionCallback: (int index, bool isExpanded) {
                               setState(() {
-                                recipeList![index].isExpanded = !recipeList![index].isExpanded;
+                                recipeList![index].isExpanded =
+                                    !recipeList![index].isExpanded;
                                 print(recipeList![index].isExpanded);
                               });
                             },
@@ -93,13 +91,16 @@ class _RecipesPageState extends State<RecipesPage> {
                                     },
                                     body: Column(
                                       children: [
-                                        if(!item.qrCodeImage.toString().contains('svg'))
+                                        if (!item.qrCodeImage
+                                            .toString()
+                                            .contains('svg'))
                                           Image.network(
                                               '${apis.apiPublic}/patient_files/${item.qrCodeImage}'),
-                                        if(item.qrCodeImage.toString().contains('svg'))
-                                            SvgPicture.network(
-                                            '${apis.apiPublic}/patient_files/${item.qrCodeImage}'
-                                            ),
+                                        if (item.qrCodeImage
+                                            .toString()
+                                            .contains('svg'))
+                                          SvgPicture.network(
+                                              '${apis.apiPublic}/patient_files/${item.qrCodeImage}'),
                                         ListTile(
                                           subtitle: Column(
                                             children: [
@@ -114,7 +115,7 @@ class _RecipesPageState extends State<RecipesPage> {
                                     isExpanded: item.isExpanded,
                                   )
                               ])
-                        : Text("Keine Daten gefunden"))),
+                        : Text(sh.getLanguageResource("no_data_found")))),
       )),
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: 2),
     );

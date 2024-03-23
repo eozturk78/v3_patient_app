@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:patient_app/shared/shared.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -80,6 +81,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _selectedDay = DateTime.now();
 
+  Shared sh = Shared();
   @override
   void initState() {
     super.initState();
@@ -155,7 +157,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   List<CalendarEvent> _getEventsForSelectedDay(
       DateTime selectedDay, Map<DateTime, List<CalendarEvent>> events) {
     final eventsForSelectedDay = events[
-    DateTime(selectedDay.year, selectedDay.month, selectedDay.day)] ??
+            DateTime(selectedDay.year, selectedDay.month, selectedDay.day)] ??
         [];
     //print(eventsForSelectedDay);
     return eventsForSelectedDay;
@@ -176,13 +178,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
-      appBar: leadingSubpage('Kalender', context),
+      appBar: leadingSubpage(sh.getLanguageResource("calendar"), context),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
               padding:
-              EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                  EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(18),
@@ -193,13 +195,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       calendarStyle: CalendarStyle(
                         // Other style properties...
                         defaultTextStyle:
-                        TextStyle(fontWeight: FontWeight.w600),
+                            TextStyle(fontWeight: FontWeight.w600),
                       ),
                       firstDay: DateTime.now().subtract(Duration(days: 365)),
                       lastDay: DateTime.now().add(Duration(days: 365)),
                       locale: 'DE',
-                      availableCalendarFormats: const {
-                        CalendarFormat.month: 'Monat',
+                      availableCalendarFormats: {
+                        CalendarFormat.month: sh.getLanguageResource("month"),
                       },
                       pageJumpingEnabled: true,
                       startingDayOfWeek: StartingDayOfWeek.monday,
@@ -222,13 +224,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       calendarBuilders: CalendarBuilders(
                         dowBuilder: (context, day) {
                           final days = {
-                            DateTime.monday: 'Monday',
-                            DateTime.tuesday: 'Tuesday',
-                            DateTime.wednesday: 'Wednesday',
-                            DateTime.thursday: 'Thursday',
-                            DateTime.friday: 'Friday',
-                            DateTime.saturday: 'Saturday',
-                            DateTime.sunday: 'Sunday',
+                            DateTime.monday: sh.getLanguageResource("monday"),
+                            DateTime.tuesday: sh.getLanguageResource("tuesday"),
+                            DateTime.wednesday:
+                                sh.getLanguageResource("wednesday"),
+                            DateTime.thursday:
+                                sh.getLanguageResource("thursday"),
+                            DateTime.friday: sh.getLanguageResource("friday"),
+                            DateTime.saturday:
+                                sh.getLanguageResource("saturday"),
+                            DateTime.sunday: sh.getLanguageResource("sunday"),
                           };
 
                           return Center(
@@ -298,7 +303,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget _buildMarkers(
       BuildContext context, DateTime date, List<dynamic> events) {
     final eventMarkers =
-    _getEventMarkers(_events)[DateTime(date.year, date.month, date.day)];
+        _getEventMarkers(_events)[DateTime(date.year, date.month, date.day)];
     if (eventMarkers != null && eventMarkers.isNotEmpty) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -306,9 +311,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
         children: eventMarkers
             .map((eventType) => _buildMarkerIndicator(eventType))
             .map((marker) => Transform.translate(
-          offset: Offset(0, -8.6),
-          child: marker,
-        ))
+                  offset: Offset(0, -8.6),
+                  child: marker,
+                ))
             .toList(),
       );
     }
@@ -317,47 +322,47 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   Widget _buildMarkerIndicator(EventType eventType) {
     return Container(
-        width: 5,
-        height: 5,
-        decoration: BoxDecoration(
+      width: 5,
+      height: 5,
+      decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: eventType.color,
-    ),
+      ),
     );
-}
+  }
 
-List<EventType> _getEventTypes() {
-  return [
-    EventType(
-        'Sprechstunde vor Ort',
-        Colors.pink,
-        SvgPicture.asset(
-          "assets/images/calendar_sprech_vor_ort.svg",
-          height: 40,
-        )),
-    EventType(
-        'Videosprechstunde',
-        Colors.lightBlueAccent,
-        SvgPicture.asset(
-          "assets/images/calendar_video.svg",
-          height: 40,
-        )),
-    EventType(
-        'Dokumente',
-        Colors.orange,
-        SvgPicture.asset(
-          "assets/images/calendar_dokumente.svg",
-          height: 40,
-        )),
-    EventType(
-        'Medicine Intake',
-        Colors.orange,
-        SvgPicture.asset(
-          "assets/images/calendar_dokumente.svg",
-          height: 40,
-        )),
-  ];
-}
+  List<EventType> _getEventTypes() {
+    return [
+      EventType(
+          sh.getLanguageResource("consultation"),
+          Colors.pink,
+          SvgPicture.asset(
+            "assets/images/calendar_sprech_vor_ort.svg",
+            height: 40,
+          )),
+      EventType(
+          sh.getLanguageResource("video_consultation"),
+          Colors.lightBlueAccent,
+          SvgPicture.asset(
+            "assets/images/calendar_video.svg",
+            height: 40,
+          )),
+      EventType(
+          sh.getLanguageResource("document_info"),
+          Colors.orange,
+          SvgPicture.asset(
+            "assets/images/calendar_dokumente.svg",
+            height: 40,
+          )),
+      EventType(
+          sh.getLanguageResource("medicine_intake"),
+          Colors.orange,
+          SvgPicture.asset(
+            "assets/images/calendar_dokumente.svg",
+            height: 40,
+          )),
+    ];
+  }
 }
 
 class Legend extends StatelessWidget {
@@ -373,22 +378,22 @@ class Legend extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: eventTypes
             .map((eventType) => Row(
-          children: [
-            ClipOval(
-              child: Container(
-                width: 10,
-                height: 10,
-                color: eventType.color,
-              ),
-            ),
-            SizedBox(width: 2),
-            Text(
-              eventType.title,
-              style: TextStyle(fontSize: 11),
-            ),
-            SizedBox(width: 2),
-          ],
-        ))
+                  children: [
+                    ClipOval(
+                      child: Container(
+                        width: 10,
+                        height: 10,
+                        color: eventType.color,
+                      ),
+                    ),
+                    SizedBox(width: 2),
+                    Text(
+                      eventType.title,
+                      style: TextStyle(fontSize: 11),
+                    ),
+                    SizedBox(width: 2),
+                  ],
+                ))
             .toList(),
       ),
     );
@@ -399,6 +404,7 @@ class EventList extends StatelessWidget {
   final DateTime selectedDay;
   final List<CalendarEvent> events;
 
+  Shared sh = Shared();
   EventList({required this.selectedDay, required this.events});
 
   @override
@@ -410,7 +416,7 @@ class EventList extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'Veranstaltungen am ${selectedDay.day.toString().padLeft(2, "0")}.${selectedDay.month.toString().padLeft(2, "0")}.${selectedDay.year}',
+              '${sh.getLanguageResource("events_on")} ${selectedDay.day.toString().padLeft(2, "0")}.${selectedDay.month.toString().padLeft(2, "0")}.${selectedDay.year}',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
@@ -434,12 +440,13 @@ class EventListItem extends StatefulWidget {
 class _EventListItemState extends State<EventListItem> {
   bool _isExpanded = false;
 
+  Shared sh = Shared();
   void _copyDescriptionToClipboard() {
     Clipboard.setData(ClipboardData(text: widget.event.description))
         .then((value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Description copied to clipboard!'),
-      duration: Duration(seconds: 2),
-    )));
+              content: Text(sh.getLanguageResource("description_copied")),
+              duration: Duration(seconds: 2),
+            )));
   }
 
   @override

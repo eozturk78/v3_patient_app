@@ -81,7 +81,7 @@ class _MeasurementResultWeightPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Gewicht', context),
+      appBar: leadingSubpage(sh.getLanguageResource("weight"), context),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -115,7 +115,7 @@ class _MeasurementResultWeightPageState
                           height: 35,
                           child: Center(
                             child: Text(
-                              "1 Woche",
+                              sh.getLanguageResource("one_week"),
                               style: TextStyle(
                                   color: periodType == 10
                                       ? Colors.white
@@ -152,7 +152,7 @@ class _MeasurementResultWeightPageState
                           height: 35,
                           child: Center(
                             child: Text(
-                              "3 Monate",
+                              sh.getLanguageResource("three_months"),
                               style: TextStyle(
                                   color: periodType == 20
                                       ? Colors.white
@@ -185,7 +185,7 @@ class _MeasurementResultWeightPageState
                           height: 35,
                           child: Center(
                             child: Text(
-                              "1 Jahr",
+                              sh.getLanguageResource("one_year"),
                               style: TextStyle(
                                   color: periodType == 30
                                       ? Colors.white
@@ -217,7 +217,7 @@ class _MeasurementResultWeightPageState
                           color: Colors.red,
                           xValueMapper: (_SalesData sales, _) => sales.year,
                           yValueMapper: (_SalesData sales, _) => sales.sales,
-                          name: 'Gewicht',
+                          name: sh.getLanguageResource("weight"),
                           // Enable data label
                           dataLabelSettings:
                               const DataLabelSettings(isVisible: false)),
@@ -226,7 +226,7 @@ class _MeasurementResultWeightPageState
                           color: Colors.amber,
                           xValueMapper: (_SalesData sales, _) => sales.year,
                           yValueMapper: (_SalesData sales, _) => sales.sales,
-                          name: 'Gewicht',
+                          name: sh.getLanguageResource("weight"),
                           // Enable data label
                           dataLabelSettings:
                               const DataLabelSettings(isVisible: false)),
@@ -235,7 +235,7 @@ class _MeasurementResultWeightPageState
                           color: Colors.amber,
                           xValueMapper: (_SalesData sales, _) => sales.year,
                           yValueMapper: (_SalesData sales, _) => sales.sales,
-                          name: 'Gewicht',
+                          name: sh.getLanguageResource("weight"),
                           // Enable data label
                           dataLabelSettings:
                               const DataLabelSettings(isVisible: false)),
@@ -244,7 +244,7 @@ class _MeasurementResultWeightPageState
                           color: Colors.blue[900],
                           xValueMapper: (_SalesData sales, _) => sales.year,
                           yValueMapper: (_SalesData sales, _) => sales.sales,
-                          name: 'Gewicht',
+                          name: sh.getLanguageResource("weight"),
                           // Enable data label
                           dataLabelSettings:
                               const DataLabelSettings(isVisible: false)),
@@ -253,7 +253,7 @@ class _MeasurementResultWeightPageState
                           color: Colors.red,
                           xValueMapper: (_SalesData sales, _) => sales.year,
                           yValueMapper: (_SalesData sales, _) => sales.sales,
-                          name: 'Gewicht',
+                          name: sh.getLanguageResource("weight"),
                           // Enable data label
                           dataLabelSettings:
                               const DataLabelSettings(isVisible: false)),
@@ -273,7 +273,7 @@ class _MeasurementResultWeightPageState
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Gestern",
+                                  sh.getLanguageResource("yesterday"),
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 Text(
@@ -298,7 +298,7 @@ class _MeasurementResultWeightPageState
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Heute",
+                                  sh.getLanguageResource("today"),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white),
@@ -318,7 +318,8 @@ class _MeasurementResultWeightPageState
                     height: 20,
                   ),
                   Text(
-                      "Ein gesundes Körpergewicht ist von entscheidender Bedeutung für chronisch kranke Patienten, da es das Risiko von Komplikationen verringern kann. Übergewicht kann das Fortschreiten bestimmter Krankheiten wie Diabetes, Herzerkrankungen und Gelenkproblemen verschlimmern. Ein gesundes Gewicht kann auch die Effektivität der medizinischen Behandlung verbessern und die allgemeine Lebensqualität steigern."),
+                    sh.getLanguageResource("body_weight_desc"),
+                  ),
                   SizedBox(
                     height: 20,
                   ),
@@ -334,7 +335,7 @@ class _MeasurementResultWeightPageState
                               .pushNamed('/weight-description');
                         },
                         child: Text(
-                          "Mehr Informationen über die Einstufung Ihrer Messwerte",
+                          sh.getLanguageResource("more_info"),
                           style: TextStyle(
                               overflow: TextOverflow.ellipsis,
                               fontSize: 14,

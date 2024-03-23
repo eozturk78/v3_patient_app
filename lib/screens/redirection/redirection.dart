@@ -51,14 +51,14 @@ class _RedirectionPageState extends State<RedirectionPage> {
               height: 30,
             ),
             Text(
-              "Willkomen bei iMedCom",
+              sh.getLanguageResource("welcome_imedcom"),
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             SizedBox(
               height: 10,
             ),
             Text(
-              "Für mehr Lebensqualitat und Sicherheit im Umgang mit Deiner Herzschwache",
+              sh.getLanguageResource("registration_desc"),
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(
@@ -70,7 +70,9 @@ class _RedirectionPageState extends State<RedirectionPage> {
                 onPressed: () {
                   Navigator.of(context).pushNamed('/login');
                 },
-                child: Text("ANMELDEN"),
+                child: Text(
+                  sh.getLanguageResource("register"),
+                ),
                 style: ElevatedButton.styleFrom(
                     shape: StadiumBorder(), backgroundColor: mainButtonColor),
               ),
@@ -85,7 +87,7 @@ class _RedirectionPageState extends State<RedirectionPage> {
                   Navigator.of(context).pushNamed('/registration-1');
                 },
                 child: Text(
-                  "KONTO ERSTELLEN",
+                  sh.getLanguageResource("create_account"),
                   style: TextStyle(color: Colors.black),
                 ),
                 style: ElevatedButton.styleFrom(

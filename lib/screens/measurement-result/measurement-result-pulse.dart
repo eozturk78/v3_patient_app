@@ -80,7 +80,7 @@ class _MeasurementResultPulsePageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Herzfrequenz', context),
+      appBar: leadingSubpage(sh.getLanguageResource("heart_rate"), context),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -115,7 +115,7 @@ class _MeasurementResultPulsePageState
                           height: 35,
                           child: Center(
                             child: Text(
-                              "1 Woche",
+                              sh.getLanguageResource("one_week"),
                               style: TextStyle(
                                   color: periodType == 10
                                       ? Colors.white
@@ -153,7 +153,7 @@ class _MeasurementResultPulsePageState
                           height: 35,
                           child: Center(
                             child: Text(
-                              "3 Monate",
+                              sh.getLanguageResource("three_months"),
                               style: TextStyle(
                                   color: periodType == 20
                                       ? Colors.white
@@ -187,7 +187,7 @@ class _MeasurementResultPulsePageState
                           height: 35,
                           child: Center(
                             child: Text(
-                              "1 Jahr",
+                              sh.getLanguageResource("one_year"),
                               style: TextStyle(
                                   color: periodType == 30
                                       ? Colors.white
@@ -225,7 +225,7 @@ class _MeasurementResultPulsePageState
                             color: Colors.red,
                             xValueMapper: (_SalesData sales, _) => sales.year,
                             yValueMapper: (_SalesData sales, _) => sales.sales,
-                            name: 'Herzfrequenz',
+                            name: sh.getLanguageResource("heart_rate"),
                             // Enable data label
                             dataLabelSettings:
                                 const DataLabelSettings(isVisible: false)),
@@ -234,7 +234,7 @@ class _MeasurementResultPulsePageState
                             color: Colors.amber,
                             xValueMapper: (_SalesData sales, _) => sales.year,
                             yValueMapper: (_SalesData sales, _) => sales.sales,
-                            name: 'Herzfrequenz',
+                            name: sh.getLanguageResource("heart_rate"),
                             // Enable data label
                             dataLabelSettings:
                                 const DataLabelSettings(isVisible: false)),
@@ -243,7 +243,7 @@ class _MeasurementResultPulsePageState
                             color: Colors.amber,
                             xValueMapper: (_SalesData sales, _) => sales.year,
                             yValueMapper: (_SalesData sales, _) => sales.sales,
-                            name: 'Herzfrequenz',
+                            name: sh.getLanguageResource("heart_rate"),
                             // Enable data label
                             dataLabelSettings:
                                 const DataLabelSettings(isVisible: false)),
@@ -252,7 +252,7 @@ class _MeasurementResultPulsePageState
                             color: Colors.blue[900],
                             xValueMapper: (_SalesData sales, _) => sales.year,
                             yValueMapper: (_SalesData sales, _) => sales.sales,
-                            name: 'Herzfrequenz',
+                            name: sh.getLanguageResource("heart_rate"),
                             // Enable data label
                             dataLabelSettings:
                                 const DataLabelSettings(isVisible: false)),
@@ -261,7 +261,7 @@ class _MeasurementResultPulsePageState
                             color: Colors.red,
                             xValueMapper: (_SalesData sales, _) => sales.year,
                             yValueMapper: (_SalesData sales, _) => sales.sales,
-                            name: 'Herzfrequenz',
+                            name: sh.getLanguageResource("heart_rate"),
                             // Enable data label
                             dataLabelSettings:
                                 const DataLabelSettings(isVisible: false)),
@@ -281,7 +281,7 @@ class _MeasurementResultPulsePageState
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "Gestern",
+                                    sh.getLanguageResource("yesterday"),
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
@@ -308,7 +308,7 @@ class _MeasurementResultPulsePageState
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "Heute",
+                                    sh.getLanguageResource("today"),
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white),
@@ -328,7 +328,7 @@ class _MeasurementResultPulsePageState
                       height: 20,
                     ),
                     Text(
-                      "Herzfrequenz",
+                      sh.getLanguageResource("heart_rate"),
                       style: TextStyle(
                         fontSize: 24,
                         color: mainButtonColor,
@@ -339,30 +339,22 @@ class _MeasurementResultPulsePageState
                       height: 20,
                     ),
                     Text(
-                        "Die Herzfrequenz ist ein wichtiger Indikator für die Aktivität des Herzens und spielt eine zentrale Rolle bei der Beurteilung der kardiovaskulären Gesundheit. Die Herzfrequenz bezieht sich auf die Anzahl der Herzschläge pro Minute. Sie gibt an, wie oft sich das Herz zusammenzieht und Blut durch den Körper pumpt. Die Herzfrequenz kann variieren und wird von verschiedenen Faktoren beeinflusst, einschließlich körperlicher Aktivität, emotionaler Zustand, Alter und allgemeiner Gesundheitszustand."),
+                      sh.getLanguageResource("heart_rate_desc"),
+                    ),
                     SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.info,
-                          color: Color.fromARGB(255, 0, 90, 47),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context)
-                                .pushNamed('/pulse-description');
-                          },
-                          child: Text(
-                            "Mehr Informationen über die Einstufung Ihrer Messwerte",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue),
-                          ),
-                        )
-                      ],
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/pulse-description');
+                      },
+                      child: Text(
+                        sh.getLanguageResource("more_info"),
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue),
+                      ),
                     )
                   ],
                 )),

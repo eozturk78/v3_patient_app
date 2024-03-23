@@ -16,6 +16,7 @@ class RegistrationCompletedPage extends StatefulWidget {
 
 class _RegistrationCompletedPageState extends State<RegistrationCompletedPage> {
   final _formKey = GlobalKey<FormState>();
+  Shared sh = Shared();
   @override
   void initState() {
     checkRememberMe();
@@ -29,7 +30,8 @@ class _RegistrationCompletedPageState extends State<RegistrationCompletedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingWithoutIcon('Registrierung vervollständigt', context),
+      appBar: leadingWithoutIcon(
+          sh.getLanguageResource("registration_completed"), context),
       body: Padding(
         padding: const EdgeInsets.all(30),
         child: Column(
@@ -44,7 +46,9 @@ class _RegistrationCompletedPageState extends State<RegistrationCompletedPage> {
               const SizedBox(
                 height: 10,
               ),
-              const Text("Das Patientenkonto wurde erfolgreich erstellt",
+              Text(
+                  sh.getLanguageResource(
+                      "patient_account_has_been_successfully"),
                   style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(
                 height: 10,
@@ -56,8 +60,9 @@ class _RegistrationCompletedPageState extends State<RegistrationCompletedPage> {
                     Navigator.of(context).pushNamed('/login');
                   },
                   style: ElevatedButton.styleFrom(
-                      shape: const StadiumBorder(), backgroundColor: mainButtonColor),
-                  child: const Text("ANMELDEN"),
+                      shape: const StadiumBorder(),
+                      backgroundColor: mainButtonColor),
+                  child: Text(sh.getLanguageResource("log_in")),
                 ),
               ),
             ]),

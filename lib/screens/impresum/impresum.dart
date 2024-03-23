@@ -15,6 +15,7 @@ class ImpresumPage extends StatefulWidget {
 }
 
 class _ImpresumPageState extends State<ImpresumPage> {
+  Shared sh = Shared();
   @override
   void initState() {
     // TODO: implement initState
@@ -29,7 +30,7 @@ class _ImpresumPageState extends State<ImpresumPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Impresum', context),
+      appBar: leadingSubpage(sh.getLanguageResource("imprint"), context),
       body: Padding(
         padding: EdgeInsets.all(30),
         child: SingleChildScrollView(
@@ -60,25 +61,24 @@ class _ImpresumPageState extends State<ImpresumPage> {
                 SizedBox(
                   height: 20,
                 ),
-                Text('Tel: +49 345 57029440'),
-                Text('Internet: https://imedcom.de/'),
-                Text('E-Mail: info@imedcom.de'),
-                SizedBox(
-                  height: 20,
-                ),
-                Text('Registergericht: Amtsgericht Halle (Saale)'),
-                Text('Registernummer: HRB 25641'),
-                Text('USt.-Identnr.: DE325355444'),
-                SizedBox(
-                  height: 20,
-                ),
+                Text('${sh.getLanguageResource("tel")} +49 345 57029440'),
                 Text(
-                    "Streitbeilegung Die EU-Kommission stellt unter dem Link https://ec.europa.eu/consumers/odr/ eine Online-Streitbeilegungsplattform („OS-Plattform“) bereit. Diese gibt Verbrauchern die Möglichkeit, Streitigkeiten im Zusammenhang mit ihrer Online-Bestellung zunächst ohne Einschaltung eines Gerichts zu klären."),
+                    '${sh.getLanguageResource("internet")} https://imedcom.de/'),
+                Text('${sh.getLanguageResource("email")} info@imedcom.de'),
                 SizedBox(
                   height: 20,
                 ),
-                Text(
-                    "Hinweis gemäß § 36 Verbraucherstreitbeilegungsgesetz (VSGB): Die iMedCom GmbH nimmt nicht an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle im Sinne des VSBG teil und ist hierzu auch nicht verpflichtet.")
+                Text(sh.getLanguageResource("address_1")),
+                Text(sh.getLanguageResource("register_number")),
+                Text(sh.getLanguageResource("address_2")),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(sh.getLanguageResource("about_company_1")),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(sh.getLanguageResource("about_company_2")),
               ],
             ),
           ),

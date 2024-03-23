@@ -254,6 +254,7 @@ leadingWithoutIcon(String title, BuildContext context) {
 }
 
 leadingSubpage(String title, BuildContext context) {
+  Shared sh = Shared();
   return AppBar(
     leading: TextButton(
       onPressed: () => Navigator.of(context).pop(true),
@@ -262,7 +263,7 @@ leadingSubpage(String title, BuildContext context) {
         children: [
           Icon(Icons.arrow_back_ios, color: mainButtonColor),
           Text(
-            "Zurück",
+            sh.getLanguageResource("back"),
             style: TextStyle(
                 color: mainButtonColor,
                 fontSize: ResponsiveValue(
@@ -350,7 +351,7 @@ checkPassword(String password) {
           ),
           Flexible(
               child: Text(
-            "Muss mindestens aus 10 Zeichen bestehen",
+            sh.getLanguageResource("must_consists_ten_chars"),
             style: password.length < 10
                 ? TextStyle(color: Colors.red)
                 : TextStyle(color: const Color.fromARGB(255, 1, 61, 32)),
@@ -366,7 +367,7 @@ checkPassword(String password) {
                 : const Color.fromARGB(255, 1, 61, 32),
           ),
           Flexible(
-              child: Text("Muss mindestens einen Großbuchstaben enthalten",
+              child: Text(sh.getLanguageResource("at_least_one_capital_letter"),
                   style: !sh.hasUpperCase(password)
                       ? TextStyle(color: Colors.red)
                       : TextStyle(color: const Color.fromARGB(255, 1, 61, 32))))
@@ -381,7 +382,8 @@ checkPassword(String password) {
                 : const Color.fromARGB(255, 1, 61, 32),
           ),
           Flexible(
-              child: Text("Muss mindestens einen Kleinbuchstaben enthalten",
+              child: Text(
+                  sh.getLanguageResource("must_contain_at_least_one_lower"),
                   style: !sh.hasLowerCase(password)
                       ? TextStyle(color: Colors.red)
                       : TextStyle(color: const Color.fromARGB(255, 1, 61, 32))))
@@ -396,7 +398,9 @@ checkPassword(String password) {
                 : const Color.fromARGB(255, 1, 61, 32),
           ),
           Flexible(
-              child: Text("Muss mindestens ein Symbol oder Zahl enthalten ",
+              child: Text(
+                  sh.getLanguageResource(
+                      "must_contain_at_least_symbol_or_number"),
                   style: !sh.hasSpecialChars(password)
                       ? TextStyle(color: Colors.red)
                       : TextStyle(color: const Color.fromARGB(255, 1, 61, 32))))
@@ -449,7 +453,8 @@ ButtonStyle profileBtnStyle = TextButton.styleFrom(
     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
     alignment: Alignment.centerLeft);
 openSettingsDialog(BuildContext context, String warningText) {
-  /**/ return AlertDialog(
+  Shared sh = Shared();
+  return AlertDialog(
       backgroundColor: Color.fromARGB(232, 255, 255, 255),
       insetPadding: const EdgeInsets.all(0),
       actionsPadding: EdgeInsets.all(0),
@@ -469,7 +474,7 @@ openSettingsDialog(BuildContext context, String warningText) {
                         Navigator.pop(context);
                       },
                       child: Text(
-                        'Abbrechen',
+                        sh.getLanguageResource("cancel"),
                         style:
                             TextStyle(color: Color.fromARGB(173, 33, 149, 243)),
                       ),
@@ -482,7 +487,9 @@ openSettingsDialog(BuildContext context, String warningText) {
                       onPressed: () {
                         openAppSettings().then((value) => null);
                       },
-                      child: Text('Einstellungen'),
+                      child: Text(
+                        sh.getLanguageResource("settings"),
+                      ),
                     ),
                   ),
                 ],
@@ -495,24 +502,25 @@ openSettingsDialog(BuildContext context, String warningText) {
 
 @pragma('vm:entry-point')
 Route<Object?> _dialogBuilder(BuildContext context, Object? arguments) {
+  Shared sh = Shared();
   return CupertinoDialogRoute<void>(
     context: context,
     builder: (BuildContext context) {
       return CupertinoAlertDialog(
-        title: const Text('Title'),
-        content: const Text('Content'),
+        title: Text(sh.getLanguageResource("title")),
+        content: Text(sh.getLanguageResource("content")),
         actions: <Widget>[
           CupertinoDialogAction(
             onPressed: () {
               Navigator.pop(context);
             },
-            child: const Text('Yes'),
+            child: Text(sh.getLanguageResource("yes")),
           ),
           CupertinoDialogAction(
             onPressed: () {
               Navigator.pop(context);
             },
-            child: const Text('No'),
+            child: Text(sh.getLanguageResource("no")),
           ),
         ],
       );

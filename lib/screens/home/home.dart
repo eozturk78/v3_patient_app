@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../apis/apis.dart';
 import '../shared/bottom-menu.dart';
+import '../../shared/shared.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,6 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Apis apis = Apis();
+  Shared sh = Shared();
   String title = "";
   String? bloodPressureValue,
       pulseValue,
@@ -84,7 +86,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
-      appBar: leadingSubpage('Grafische Darstellungen', context),
+      appBar: leadingSubpage(
+          sh.getLanguageResource("graph_representation"), context),
       body: SafeArea(
         // Wrap your body with SafeArea
         child: SingleChildScrollView(
@@ -102,15 +105,17 @@ class _HomePageState extends State<HomePage> {
                 GestureDetector(
                   child: CustomListComponent(
                       Icons.area_chart,
-                      "Blutdruck",
+                      sh.getLanguageResource("blood_pressure"),
                       bloodPressureValue != null
-                          ? "Heute: $bloodPressureValue mmHg"
+                          ? "${sh.getLanguageResource('today')} : $bloodPressureValue mmHg"
                           : "~",
                       bloodPressureValue != null
                           ? bloodPressureValue == "~"
-                              ? "Bitte tägliche Messung durchführen"
-                              : "Tägliche Messung  erfolgreich übermittelt"
-                          : "Lädt...",
+                              ? sh.getLanguageResource(
+                                  "perform_daily_mesaurement")
+                              : sh.getLanguageResource(
+                                  "daily_measurement_successfully_sent")
+                          : sh.getLanguageResource("loading"),
                       bloodPressureValue == "~" ? 10 : 20),
                   onTap: () {
                     Navigator.of(context).pushNamed('/measurement-result');
@@ -120,13 +125,17 @@ class _HomePageState extends State<HomePage> {
                 GestureDetector(
                   child: CustomListComponent(
                       Icons.monitor_weight_outlined,
-                      "Gewicht",
-                      weightValue != null ? "Heute: $weightValue kg" : "~",
+                      sh.getLanguageResource("weight"),
+                      weightValue != null
+                          ? "${sh.getLanguageResource("today")}: $weightValue kg"
+                          : "~",
                       weightValue != null
                           ? weightValue == "~"
-                              ? "Bitte tägliche Messung durchführen"
-                              : "Tägliche Messung  erfolgreich übermittelt"
-                          : "Lädt...",
+                              ? sh.getLanguageResource(
+                                  "perform_daily_mesaurement")
+                              : sh.getLanguageResource(
+                                  "daily_measurement_successfully_sent")
+                          : sh.getLanguageResource("loading"),
                       weightValue == "~" ? 10 : 20),
                   onTap: () {
                     Navigator.of(context)
@@ -137,13 +146,17 @@ class _HomePageState extends State<HomePage> {
                 GestureDetector(
                   child: CustomListComponent(
                       Icons.monitor_heart_outlined,
-                      "Herzfrequenz",
-                      pulseValue != null ? "Heute: $pulseValue bpm" : "~",
+                      sh.getLanguageResource("pulse"),
+                      pulseValue != null
+                          ? "${sh.getLanguageResource("today")}: $pulseValue bpm"
+                          : "~",
                       pulseValue != null
                           ? pulseValue == "~"
-                              ? "Bitte tägliche Messung durchführen"
-                              : "Tägliche Messung  erfolgreich übermittelt"
-                          : "Lädt...",
+                              ? sh.getLanguageResource(
+                                  "perform_daily_mesaurement")
+                              : sh.getLanguageResource(
+                                  "daily_measurement_successfully_sent")
+                          : sh.getLanguageResource("loading"),
                       pulseValue == "~" ? 10 : 20),
                   onTap: () {
                     Navigator.of(context)
@@ -154,15 +167,17 @@ class _HomePageState extends State<HomePage> {
                 GestureDetector(
                   child: CustomListComponent(
                       Icons.thermostat,
-                      "Temperatur",
+                      sh.getLanguageResource("temperature"),
                       temperatureValue != null
-                          ? "Heute: $temperatureValue  C°"
+                          ? "${sh.getLanguageResource("today")}: $temperatureValue  C°"
                           : "~",
                       temperatureValue != null
                           ? temperatureValue == "~"
-                              ? "Bitte tägliche Messung durchführen"
-                              : "Tägliche Messung  erfolgreich übermittelt"
-                          : "Lädt...",
+                              ? sh.getLanguageResource(
+                                  "perform_daily_mesaurement")
+                              : sh.getLanguageResource(
+                                  "daily_measurement_successfully_sent")
+                          : sh.getLanguageResource("loading"),
                       temperatureValue == "~" ? 10 : 20),
                   onTap: () {
                     Navigator.of(context)
@@ -173,15 +188,17 @@ class _HomePageState extends State<HomePage> {
                 GestureDetector(
                   child: CustomListComponent(
                       Icons.air,
-                      "Sauerstoffsättigung",
+                      sh.getLanguageResource("oxygen_saturation"),
                       saturationValue != null
-                          ? "Heute: $saturationValue  %"
+                          ? "${sh.getLanguageResource("today")}: $saturationValue  %"
                           : "~",
                       saturationValue != null
                           ? saturationValue == "~"
-                              ? "Bitte tägliche Messung durchführen"
-                              : "Tägliche Messung  erfolgreich übermittelt"
-                          : "Lädt...",
+                              ? sh.getLanguageResource(
+                                  "perform_daily_mesaurement")
+                              : sh.getLanguageResource(
+                                  "daily_measurement_successfully_sent")
+                          : sh.getLanguageResource("loading"),
                       saturationValue == "~" ? 10 : 20),
                   onTap: () {
                     Navigator.of(context)
@@ -192,13 +209,15 @@ class _HomePageState extends State<HomePage> {
                 GestureDetector(
                   child: CustomListComponent(
                       Icons.question_mark_outlined,
-                      "Fragebögen",
+                      sh.getLanguageResource("questionnaire"),
                       null,
                       allQuentionnaireFilled != 0
                           ? allQuentionnaireFilled == 20
-                              ? "Bitte Fragebögen beantworten"
-                              : "Fragebögen erfolgreich übermittelt"
-                          : "Lädt...",
+                              ? sh.getLanguageResource(
+                                  "perform_daily_mesaurement")
+                              : sh.getLanguageResource(
+                                  "daily_measurement_successfully_sent")
+                          : sh.getLanguageResource("loading"),
                       allQuentionnaireFilled == 20 ? 10 : 20),
                   onTap: () {
                     Navigator.of(context).pushNamed('/questionnaire-group');

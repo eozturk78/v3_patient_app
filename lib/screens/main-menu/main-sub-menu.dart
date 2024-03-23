@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:patient_app/shared/shared.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,6 +19,7 @@ class MainSubMenuPage extends StatefulWidget {
 
 class _MainSubMenuPageState extends State<MainSubMenuPage> {
   String title = "";
+  Shared sh = Shared();
   @override
   void initState() {
     super.initState();
@@ -34,7 +36,7 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Daten', context),
+      appBar: leadingSubpage(sh.getLanguageResource("data"), context),
       body: SafeArea(
           // Wrap your body with SafeArea
           child: Center(
@@ -55,7 +57,7 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
                     child: CustomSubTotal(
                         SvgPicture.asset(
                             'assets/images/menu-icons/tagliche-main.svg'),
-                        "Tägliche Messungen",
+                        sh.getLanguageResource("daily_measurements"),
                         null,
                         null,
                         10),
@@ -72,7 +74,7 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
                     child: CustomSubTotal(
                         SvgPicture.asset(
                             'assets/images/menu-icons/graphische-main.svg'),
-                        "Grafische Darstellungen",
+                        sh.getLanguageResource("graph_representation"),
                         null,
                         null,
                         20),

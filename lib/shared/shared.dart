@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:patient_app/main.dart';
+import 'package:patient_app/model/search-menu.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,59 +32,12 @@ class Shared {
     {"name": "systolic", "min": 60, "max": 250, "unit": 'mmHg'},
     {"name": "diastolic", "min": 40, "max": 150, "unit": 'mmHg'},
   ];
-  dynamic translations = {
-    'dailySteps': 'Tägliche Schritte',
-    'dailyStepsWeeklyAverage': 'Tägliche Schritte, Wochendurchschnitt',
-    'respiratoryRate': 'Atemfrequenz',
-    'diastolic': 'Diastolischer Blutdruck',
-    'systolic': 'Systolischer Blutdruck',
-    'peakFlow': 'Exspiratorischer Spitzenfluss',
-    'puls': 'Pulse',
-    'pulse': 'Pulse',
-    'saturation': 'Sauerstoffsättigung',
-    'comment': 'Kommentar',
-    'weight': 'Gewicht',
-    'temperature': 'Temperatur',
-    "URINE_LEVEL_NEGATIVE": "Negativ",
-    "URINE_LEVEL_PLUS_FOUR": "+4",
-    "URINE_LEVEL_PLUS_MINUS": "+/-",
-    "URINE_LEVEL_PLUS_ONE": "+1",
-    "URINE_LEVEL_PLUS_THREE": "+3",
-    "URINE_LEVEL_PLUS_TWO": "+2",
-    "URINE_LEVEL_POSITIVE": "Positiv",
-    "fatMass": "Fetmasse",
-    "hemoglobin": "Hämoglobin",
-    "height": "Körpergröße (cm)",
-    "bodyCellMass": "Körperzellmasse",
-    "phaseAngle": "Phasenwinkel",
-    "oxygenFlow": "Sauerstofffluss",
-    "painScale": "Schmerzskala",
-    "sitToStand": "Sit-to-stand (STS)",
-    "fev1": "FEV1",
-    "fev6": "FEV6",
-    "fev1Fev6Ratio": "FEV1/FEV6",
-    "fef2575": "FEF25% -75%",
-    "meanArterialPressure": "Mittlerer arterieller Blutdruck",
-    "yes": "Ja",
-    "no": "Nein",
-    "next": "Weiter",
-    "send": "Senden",
-    "senden": "Senden",
-    "skip": "Überspringen",
-    "ok": "OK",
-    "continue": "Weiter"
-  };
   String galeryPermissionText =
       "Um fortzufahren ändern Sie die Einstellungen zum Zugriff auf Bilder.";
   String cameraPermissionText =
       "Um fortzufahren ändern Sie die Einstellungen zum Zugriff auf die Kamera.";
   String storagePermissionText =
       "Um fortzufahren ändern Sie die Einstellungen zum Zugriff auf Dokumente.";
-
-  getTranslation(String field) {
-    field = field.toString().toLowerCase();
-    return translations[field] != null ? translations[field] : field;
-  }
 
   emailValidator(text) {
     if (text == null || text.isEmpty) {
@@ -357,10 +312,207 @@ class Shared {
   }
 
   getLanguageResource(String? resourceName) {
-    print(resourceName);
     var translation = jsonDecode(languageResource)[resourceName];
-    print(translation);
     if (translation != null) return translation;
     return resourceName;
+  }
+
+  getMainSearchItems() {
+    final searchAllRoutes = [
+      SearchMenu(
+        displayName: 'Erinnerungen',
+        route: '/notification-history',
+        type: 'menu',
+        icon:
+            SvgPicture.asset('assets/images/menu-icons/erinnerungen-main.svg'),
+        keywords: getLanguageResource("settings"),
+      ),
+      SearchMenu(
+        displayName: 'Auszug meiner Daten',
+        route: '/extract-data',
+        type: 'menu',
+        icon: Icons.data_object,
+        keywords: getLanguageResource("data_extract_keywords"),
+      ),
+      SearchMenu(
+        displayName: 'Meine medizinischen Kontakte',
+        route: '/patient-contacts-list',
+        type: 'menu',
+        icon: SvgPicture.asset('assets/images/menu-icons/nachrichten-main.svg'),
+        keywords: getLanguageResource("contact_keywords"),
+      ),
+      SearchMenu(
+        displayName: 'Meine Diagnosen',
+        route: '/diagnoses',
+        type: 'menu',
+        icon: Icons.contact_page,
+        keywords: getLanguageResource("diagnose_keywords"),
+      ),
+      SearchMenu(
+        displayName: 'Über mich',
+        route: '/about-me',
+        type: 'menu',
+        icon: Icons.person,
+        keywords: getLanguageResource("profile_keywords"),
+      ),
+      SearchMenu(
+        displayName: 'Temperatur - Bedeutung, Messung und Auswirkungen',
+        route: '/temperature-description',
+        type: 'menu',
+        icon: Icons.description,
+        keywords: getLanguageResource("temperature_keywords"),
+      ),
+      SearchMenu(
+          displayName: 'Was ist die Herzfrequenz?',
+          route: '/pulse-description',
+          type: 'menu',
+          icon: Icons.description,
+          keywords: getLanguageResource("heart_rate_keywords")),
+      SearchMenu(
+          displayName: 'Blutdruck: Was ist das?',
+          route: '/blutdruck-description',
+          type: 'menu',
+          icon: Icons.description,
+          keywords: getLanguageResource("blood_pressure")),
+      SearchMenu(
+          displayName: 'Was ist die Sauerstoffsättigung im Blut?',
+          route: '/saturation-description',
+          type: 'menu',
+          icon: Icons.description,
+          keywords: getLanguageResource("oxygen_saturation")),
+      SearchMenu(
+          displayName: 'Welche Rolle spielt das Körpergewicht?',
+          route: '/weight-description',
+          type: 'menu',
+          icon: Icons.description,
+          keywords: getLanguageResource("body_weight_keywords")),
+      SearchMenu(
+          displayName: 'Meine Dokumente',
+          route: '/documents',
+          type: 'menu',
+          icon: SvgPicture.asset('assets/images/menu-icons/dokumente-main.svg'),
+          keywords: getLanguageResource("documents_keywords")),
+      SearchMenu(
+          displayName: 'Aufklärung',
+          route: '/enlightenment',
+          type: 'menu',
+          icon:
+              SvgPicture.asset('assets/images/menu-icons/aufklarung-main.svg'),
+          keywords: getLanguageResource("clarification")),
+      SearchMenu(
+          displayName: 'Bibliothek',
+          route: '/libraries',
+          type: 'menu',
+          icon:
+              SvgPicture.asset('assets/images/menu-icons/bibliothek-main.svg'),
+          keywords: getLanguageResource("library")),
+      SearchMenu(
+        displayName: 'Rezept',
+        route: '/recipes',
+        type: 'menu',
+        icon: SvgPicture.asset('assets/images/menu-icons/rezept-main.svg'),
+        keywords: getLanguageResource("recipe"),
+      ),
+      SearchMenu(
+        displayName: 'Medikation',
+        route: '/medication',
+        type: 'menu',
+        icon: SvgPicture.asset('assets/images/menu-icons/medikation-main.svg'),
+        keywords: getLanguageResource("medication_keywords"),
+      ),
+      SearchMenu(
+        displayName: 'Kalender',
+        route: '/calendar',
+        type: 'menu',
+        icon: Icons.calendar_month_outlined,
+        keywords: getLanguageResource("calendar"),
+      ),
+      SearchMenu(
+        displayName: 'Mitteilungen',
+        route: '/messages',
+        type: 'menu',
+        icon:
+            SvgPicture.asset('assets/images/menu-icons/mitteilungen-main.svg'),
+        keywords: getLanguageResource("message_keywords"),
+      ),
+      SearchMenu(
+        displayName: 'Medikamentenplan',
+        route: '/medication-plan-list',
+        type: 'menu',
+        icon: SvgPicture.asset('assets/images/menu-icons/medikation-main.svg'),
+        keywords: getLanguageResource("medication_keywords"),
+      ),
+      SearchMenu(
+        displayName: 'Infothek',
+        route: '/info',
+        type: 'menu',
+        icon: SvgPicture.asset('assets/images/menu-icons/infothek-main.svg'),
+        keywords: getLanguageResource("info_tech"),
+      ),
+      SearchMenu(
+        displayName: 'Schnellzugriffsmenü',
+        route: '/communication',
+        type: 'menu',
+        icon: SvgPicture.asset('assets/images/menu-icons/infothek-main.svg'),
+        keywords: getLanguageResource("quick_access"),
+      ),
+      SearchMenu(
+        displayName: 'Sauerstoffsättigung',
+        route: '/measurement-result-saturation',
+        type: 'menu',
+        icon: SvgPicture.asset('assets/images/menu-icons/graphische-main.svg'),
+        keywords: getLanguageResource("oxygen_saturation_keywords"),
+      ),
+      SearchMenu(
+        displayName: 'Temperatur',
+        route: '/measurement-result-temperature',
+        type: 'menu',
+        icon: SvgPicture.asset('assets/images/menu-icons/graphische-main.svg'),
+        keywords: getLanguageResource("temperature_graph_keywords"),
+      ),
+      SearchMenu(
+        displayName: 'Herzfrequenz',
+        route: '/measurement-result-pulse',
+        type: 'menu',
+        icon: SvgPicture.asset('assets/images/menu-icons/graphische-main.svg'),
+        keywords: getLanguageResource("heart_graph_keywords"),
+      ),
+      SearchMenu(
+        displayName: 'Gewicht',
+        route: '/measurement-result-weight',
+        type: 'menu',
+        icon: SvgPicture.asset('assets/images/menu-icons/graphische-main.svg'),
+        keywords: getLanguageResource("body_weight_graph"),
+      ),
+      SearchMenu(
+        displayName: 'Einstellungen',
+        route: '/settings',
+        type: 'menu',
+        icon: Icons.settings,
+        keywords: getLanguageResource("settings"),
+      ),
+      SearchMenu(
+        displayName: 'Videosprechstunde',
+        route: '/communication',
+        type: 'menu',
+        icon: Icons.video_call,
+        keywords: getLanguageResource("video_consultation_keywords"),
+      ),
+      SearchMenu(
+        displayName: 'Tägliche Messungen',
+        route: '/questionnaire-group',
+        type: 'menu',
+        icon: SvgPicture.asset('assets/images/menu-icons/tagliche-main.svg'),
+        keywords: getLanguageResource("daily_measurements"),
+      ),
+      SearchMenu(
+        displayName: 'Grafische Darstellungen',
+        route: '/communication',
+        type: 'menu',
+        icon: SvgPicture.asset('assets/images/menu-icons/graphische-main.svg'),
+        keywords: getLanguageResource("temperature_graph_keywords"),
+      ),
+    ];
+    return searchAllRoutes;
   }
 }

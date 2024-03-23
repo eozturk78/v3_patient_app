@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:patient_app/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../apis/apis.dart';
@@ -20,7 +21,7 @@ bool _notificationsEnabled = true; // Default value
 
 class _SettingsPageState extends State<SettingsPage> {
   Apis apis = Apis();
-
+  Shared sh = Shared();
   @override
   void initState() {
     super.initState();
@@ -51,7 +52,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Einstellungen', context),
+      appBar: leadingSubpage(sh.getLanguageResource("settings"), context),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +79,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               height: 35,
                               child: Center(
                                 child: Text(
-                                  "Benutzer",
+                                  sh.getLanguageResource("users"),
                                   style: TextStyle(color: mainButtonColor),
                                 ),
                               ),
@@ -104,7 +105,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               height: 35,
                               child: Center(
                                 child: Text(
-                                  "Dashboard",
+                                  sh.getLanguageResource("dashboard"),
                                   style: TextStyle(color: mainButtonColor),
                                 ),
                               ),
@@ -121,7 +122,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             height: 35,
                             child: Center(
                               child: Text(
-                                "Erinnerungen",
+                                sh.getLanguageResource("memories"),
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
@@ -137,7 +138,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         border: InputBorder.none,
                         filled: true,
                         fillColor: const Color.fromARGB(255, 244, 246, 246),
-                        hintText: 'Suchen',
+                        hintText: sh.getLanguageResource("search"),
                         hintStyle: TextStyle(
                             fontSize: 16.0,
                             color: Color.fromARGB(255, 69, 81, 84)),
@@ -161,15 +162,15 @@ class _SettingsPageState extends State<SettingsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'MEDIKAMENTENERINNERUNGEN',
+                  Text(
+                    sh.getLanguageResource("medication_reminders"),
                     style: TextStyle(color: Color.fromARGB(255, 150, 159, 162)),
                   ),
                   Divider(),
                   Row(
                     children: [
                       Text(
-                        "Aktivieren",
+                        sh.getLanguageResource("activate"),
                         style: TextStyle(fontSize: 16),
                       ),
                       Spacer(),

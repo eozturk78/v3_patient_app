@@ -104,7 +104,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: leadingWithoutProfile("Passwort ändern", context),
+      appBar: leadingWithoutProfile(
+          sh.getLanguageResource("change_password"), context),
       body: Center(
         child: Container(
           alignment: Alignment.center,
@@ -149,7 +150,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                             controller: passwordController,
                             obscureText: !obSecuredText1,
                             decoration: InputDecoration(
-                              labelText: 'Aktuelles Passwort',
+                              labelText:
+                                  sh.getLanguageResource("current_password"),
                               suffixIcon: IconButton(
                                 icon: obSecuredText1 == true
                                     ? const Icon(Icons.visibility)
@@ -167,7 +169,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           controller: newPasswordController,
                           obscureText: !obSecuredText2,
                           decoration: InputDecoration(
-                            labelText: 'Neues Passwort',
+                            labelText: sh.getLanguageResource("new_password"),
                             suffixIcon: IconButton(
                               icon: obSecuredText2 == true
                                   ? const Icon(Icons.visibility)
@@ -187,7 +189,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           validator: (text) => sh.textRepeatPassword(
                               text, newPasswordController.text),
                           decoration: InputDecoration(
-                            labelText: 'Wiederhole das neue Passwort',
+                            labelText:
+                                sh.getLanguageResource("repeat_new_password"),
                             suffixIcon: IconButton(
                               icon: obSecuredText3 == true
                                   ? const Icon(Icons.visibility)
@@ -214,7 +217,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                             onChangePassword();
                           },
                           child: !isSendEP
-                              ? const Text("Senden")
+                              ? Text(sh.getLanguageResource("send"))
                               : Transform.scale(
                                   scale: 0.5,
                                   child: CircularProgressIndicator(

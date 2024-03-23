@@ -36,7 +36,6 @@ class _InteractiveMedicationPlanPageState
 
   @override
   void dispose() {
-
     if (_debounceTimer != null && _debounceTimer!.isActive) {
       _debounceTimer!.cancel();
     }
@@ -48,7 +47,8 @@ class _InteractiveMedicationPlanPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Interactive Medication Plan', context),
+      appBar: leadingSubpage(
+          sh.getLanguageResource("inteactive_medication_plan"), context),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(15),
@@ -72,10 +72,14 @@ class _InteractiveMedicationPlanPageState
                           controller: _tabController,
                           indicatorColor: Colors.black,
                           tabs: [
-                            _buildTab('Morgens', Icons.wb_sunny),
-                            _buildTab('Mittags', Icons.brightness_medium),
-                            _buildTab('Abends', Icons.wb_twilight),
-                            _buildTab('Nacht', Icons.nightlight_round_sharp),
+                            _buildTab(sh.getLanguageResource("mornings"),
+                                Icons.wb_sunny),
+                            _buildTab(sh.getLanguageResource("noons"),
+                                Icons.brightness_medium),
+                            _buildTab(sh.getLanguageResource("evenings"),
+                                Icons.wb_twilight),
+                            _buildTab(sh.getLanguageResource("nights"),
+                                Icons.nightlight_round_sharp),
                           ],
                         ),
                         SizedBox(height: 16),
@@ -114,7 +118,7 @@ class _InteractiveMedicationPlanPageState
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          'Ihre Medikamente für:',
+          sh.getLanguageResource("your_medication_for"),
           style: TextStyle(fontSize: 16),
         ),
         SizedBox(width: 8),
@@ -139,9 +143,11 @@ class _InteractiveMedicationPlanPageState
     return Container(
       height: MediaQuery.of(context).size.height * 0.6,
       child: FutureBuilder<dynamic>(
-        future: api.fetchMedicationPlansOfDay(
-          DateFormat('yyyy-MM-dd').format(_selectedDate),
-        ).onError((error, stackTrace) => sh.redirectPatient(error, context)),
+        future: api
+            .fetchMedicationPlansOfDay(
+              DateFormat('yyyy-MM-dd').format(_selectedDate),
+            )
+            .onError((error, stackTrace) => sh.redirectPatient(error, context)),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -150,15 +156,15 @@ class _InteractiveMedicationPlanPageState
           } else {
             dynamic data = snapshot.data;
 
-            if (data != null && data.toString() != "[]" ) {
+            if (data != null && data.toString() != "[]") {
               if (data is Map<String, dynamic>) {
                 return TabBarView(
                   controller: _tabController,
                   children: [
-                    _buildMedicationList(data, 'Morgens'),
-                    _buildMedicationList(data, 'Mittags'),
-                    _buildMedicationList(data, 'Abends'),
-                    _buildMedicationList(data, 'Nacht'),
+                    _buildMedicationList(data, 10),
+                    _buildMedicationList(data, 20),
+                    _buildMedicationList(data, 30),
+                    _buildMedicationList(data, 40),
                   ],
                 );
               } else if (data is List<dynamic>) {
@@ -168,22 +174,22 @@ class _InteractiveMedicationPlanPageState
             }
 
             return ListTile(
-                title: Text('Für dieses Datum sind keine Medikamentendaten verfügbar.',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),),);
+              title: Text(
+                sh.getLanguageResource(
+                    "not_drug_data_is_available_for_this_data"),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
+              ),
+            );
           }
-
         },
       ),
     );
   }
 
-
-
-
-  Widget _buildMedicationList(Map<String, dynamic> data, String time) {
+  Widget _buildMedicationList(Map<String, dynamic> data, int time) {
     List<Widget> medicationWidgets = [];
 
     // Get the corresponding dose key based on the time of day
@@ -206,7 +212,7 @@ class _InteractiveMedicationPlanPageState
             title: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
-                'Treatment ID: $treatmentId',
+                '${sh.getLanguageResource("treatment_id")}: $treatmentId',
                 style: TextStyle(
                   color: Color.fromARGB(255, 162, 28, 52),
                   fontSize: 16,
@@ -217,7 +223,7 @@ class _InteractiveMedicationPlanPageState
             subtitle: Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Text(
-                'Medication Date: ${DateFormat('dd.MM.yyyy').format(archivedat)} Version: $mpversion',
+                '${sh.getLanguageResource("medication_date")}: ${DateFormat('dd.MM.yyyy').format(archivedat)} Version: $mpversion',
                 style: TextStyle(
                   color: Colors.black45,
                   fontWeight: FontWeight.w600,
@@ -238,7 +244,8 @@ class _InteractiveMedicationPlanPageState
               else
                 ListTile(
                   title: Text(
-                    'Für diese Mahlzeit gibt es kein Medikament',
+                    sh.getLanguageResource(
+                        "there_is_no_medicine_for_this_meal"),
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey,
@@ -253,7 +260,10 @@ class _InteractiveMedicationPlanPageState
 
     return Column(
       children: [
-        Text(time),
+        if (time == 10) Text(sh.getLanguageResource("mornings")),
+        if (time == 20) Text(sh.getLanguageResource("noons")),
+        if (time == 30) Text(sh.getLanguageResource("evenings")),
+        if (time == 40) Text(sh.getLanguageResource("nights")),
         Text(
           "*${DateFormat('dd.MM.yyyy').format(_selectedDate)}",
         ),
@@ -262,21 +272,22 @@ class _InteractiveMedicationPlanPageState
             children: medicationWidgets,
           )
         else
-          Text('Für dieses Datum sind keine Medikamentendaten verfügbar.'),
+          Text(
+            sh.getLanguageResource("not_drug_data_is_available_for_this_data"),
+          ),
       ],
     );
   }
 
-
-  String _getDoseKey(String time) {
+  String _getDoseKey(int time) {
     switch (time) {
-      case 'Morgens':
+      case 10:
         return 'doseearly';
-      case 'Mittags':
+      case 20:
         return 'dosenoon';
-      case 'Abends':
+      case 30:
         return 'doseafternoon';
-      case 'Nacht':
+      case 40:
         return 'doseevening';
       default:
         return '';
@@ -284,7 +295,8 @@ class _InteractiveMedicationPlanPageState
   }
 
 // function to avoid request flood
-  void Function(DateTime) _debounce(void Function(DateTime) func, Duration duration) {
+  void Function(DateTime) _debounce(
+      void Function(DateTime) func, Duration duration) {
     return (DateTime dateTime) {
       if (_debounceTimer != null && _debounceTimer!.isActive) {
         _debounceTimer!.cancel();
@@ -294,7 +306,6 @@ class _InteractiveMedicationPlanPageState
       });
     };
   }
-
 
 // debounce function onDateTimeChanged to avoid request flood
   Future<void> _selectDate(BuildContext context) async {
@@ -322,5 +333,4 @@ class _InteractiveMedicationPlanPageState
       });
     }
   }
-
 }

@@ -452,7 +452,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                   children: [
                     Icon(Icons.arrow_back_ios, color: mainButtonColor),
                     Text(
-                      "Vorherige Frage",
+                      sh.getLanguageResource("previous_question"),
                       style: TextStyle(
                           color: mainButtonColor,
                           fontSize: ResponsiveValue(
@@ -510,7 +510,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
               child: Container(
                 margin: EdgeInsets.only(right: 10),
                 child: TextButton(
-                    child: Text("Fragebogen verlassen"),
+                    child: Text(
+                      sh.getLanguageResource("exit_questionnaire"),
+                    ),
                     onPressed: () {
                       showDialog(
                         context: context,
@@ -557,7 +559,10 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                 ),
                               )
                             : questions.isEmpty
-                                ? Center(child: Text("Keine Daten gefunden"))
+                                ? Center(
+                                    child: Text(
+                                    sh.getLanguageResource("no_data_fuond"),
+                                  ))
                                 : Container(
                                     width: MediaQuery.of(context).size.width *
                                         ResponsiveValue(
@@ -668,8 +673,8 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                 if (isLast)
                                                   Column(
                                                     children: [
-                                                      Text(
-                                                          "Möchten Sie Ergebnisse senden?"),
+                                                      Text(sh.getLanguageResource(
+                                                          "send_measurement_results")),
                                                     ],
                                                   ),
                                                 SizedBox(
@@ -707,7 +712,8 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                       ),
                                                       Center(
                                                         child: Text(
-                                                          "ausgewählter Wert",
+                                                          sh.getLanguageResource(
+                                                              "selected_value"),
                                                           style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -727,7 +733,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                 else if (deviceNode ==
                                                     'EcgDeviceNode')
                                                   Text(
-                                                      " Bitte schließen Sie Ihr EKG - Gerät an")
+                                                    sh.getLanguageResource(
+                                                        "please_connect_ecg"),
+                                                  )
                                                 else if (deviceNode ==
                                                     'BloodSugarManualDeviceNode')
                                                   Column(
@@ -787,7 +795,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                                 _groupValue =
                                                                     newValue!),
                                                         title: Text(
-                                                            "Vor dem Essen"),
+                                                          sh.getLanguageResource(
+                                                              "before_the_meal"),
+                                                        ),
                                                       ),
                                                       RadioListTile(
                                                         value: 1,
@@ -797,7 +807,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                                 _groupValue =
                                                                     newValue!),
                                                         title: Text(
-                                                            "Nach dem Essen"),
+                                                          sh.getLanguageResource(
+                                                              "after_the_meal"),
+                                                        ),
                                                       ),
                                                       RadioListTile(
                                                         value: 2,
@@ -806,7 +818,10 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                             setState(() =>
                                                                 _groupValue =
                                                                     newValue!),
-                                                        title: Text("Fasten"),
+                                                        title: Text(
+                                                          sh.getLanguageResource(
+                                                              "fasting"),
+                                                        ),
                                                       ),
                                                       RadioListTile(
                                                         value: 3,
@@ -816,7 +831,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                                 _groupValue =
                                                                     newValue!),
                                                         title: Text(
-                                                            "Keine der oben genannten"),
+                                                          sh.getLanguageResource(
+                                                              "none_of_the_above"),
+                                                        ),
                                                       )
                                                     ],
                                                   )
@@ -833,8 +850,8 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                                   getChoose(
                                                                       item,
                                                                       newValue)),
-                                                          title: Text(
-                                                              sh.getTranslation(
+                                                          title: Text(sh
+                                                              .getLanguageResource(
                                                                   item[
                                                                       'text'])),
                                                         )
@@ -854,7 +871,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                                 .start,
                                                         children: [
                                                           Text(
-                                                            sh.getTranslation(
+                                                            sh.getLanguageResource(
                                                                 inputList[i]
                                                                     ['title']),
                                                             style: TextStyle(
@@ -993,7 +1010,31 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                               !inputList[i][
                                                                   'isValueValid'])
                                                             Text(
-                                                              "Für die Eingabe sind Werte von ${inputList[i]['errorParams']['min']} ${inputList[i]['errorParams']['unit']} bis ${inputList[i]['errorParams']['max']} ${inputList[i]['errorParams']['unit']} möglich. Bitte überprüfen Sie die von Ihnen eingegeben Daten.",
+                                                              sh
+                                                                  .getLanguageResource(
+                                                                      "min_max_valid")
+                                                                  .toString()
+                                                                  .replaceAll(
+                                                                      "@min@",
+                                                                      inputList[i]
+                                                                              [
+                                                                              'errorParams']
+                                                                          [
+                                                                          'min'])
+                                                                  .replaceAll(
+                                                                      "@unit@",
+                                                                      inputList[i]
+                                                                              [
+                                                                              'errorParams']
+                                                                          [
+                                                                          'unit'])
+                                                                  .replaceAll(
+                                                                      "@max@",
+                                                                      inputList[i]
+                                                                              [
+                                                                              'errorParams']
+                                                                          [
+                                                                          'max']),
                                                               style: TextStyle(
                                                                   color:
                                                                       mainButtonColor),
@@ -1033,7 +1074,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                   sendValues();
                                 },
                                 child: !isSendEP
-                                    ? const Text("Senden")
+                                    ? Text(sh.getLanguageResource("send"))
                                     : Transform.scale(
                                         scale: 0.5,
                                         child: CircularProgressIndicator(
@@ -1076,7 +1117,8 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                     }
                                   }
                                 },
-                                child: Text(sh.getTranslation(item['text'])),
+                                child:
+                                    Text(sh.getLanguageResource(item['text'])),
                               ),
                             ),
                         ],
@@ -1112,7 +1154,8 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text("Sind Sie sicher den Fragebogen zu verlassen?",
+                  Text(
+                      sh.getLanguageResource("are_you_sure_exit_questionnaire"),
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1123,7 +1166,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                         onPressed: () async {
                           Navigator.of(context).pop(1);
                         },
-                        child: const Text("Ja"),
+                        child: Text(
+                          sh.getLanguageResource("yes"),
+                        ),
                       ),
                       SizedBox(
                         width: 5,
@@ -1135,7 +1180,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                         onPressed: () async {
                           Navigator.of(context).pop(0);
                         },
-                        child: const Text("Nein"),
+                        child: Text(
+                          sh.getLanguageResource("no"),
+                        ),
                       ),
                     ],
                   )
@@ -1168,7 +1215,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text("Fragebogen wurde erfolgreich übermittelt",
+                  Text(sh.getLanguageResource("questionnaire_was_successfully"),
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(

@@ -57,9 +57,10 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
   Widget build(BuildContext context) {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     String title = "MP";
-
+    Shared sh = new Shared();
     return Scaffold(
-      appBar: leadingSubpage('Tägliche Messungen', context),
+      appBar:
+          leadingSubpage(sh.getLanguageResource("daily_measurements"), context),
       body: Center(
           child: SingleChildScrollView(
         child: Container(
@@ -83,7 +84,7 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
                     ),
                   )
                 : questionnaireGroups.isEmpty
-                    ? Center(child: Text("Keine Daten gefunden"))
+                    ? Center(child: sh.getLanguageResource("no_data_found"))
                     : Center(
                         child: Container(
                           decoration: BoxDecoration(

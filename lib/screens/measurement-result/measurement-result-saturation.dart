@@ -78,7 +78,8 @@ class _MeasurementResultSaturationPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Sauerstoffsättigung', context),
+      appBar:
+          leadingSubpage(sh.getLanguageResource("oxygen_saturation"), context),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -112,7 +113,7 @@ class _MeasurementResultSaturationPageState
                           height: 35,
                           child: Center(
                             child: Text(
-                              "1 Woche",
+                              sh.getLanguageResource("one_week"),
                               style: TextStyle(
                                   color: periodType == 10
                                       ? Colors.white
@@ -149,7 +150,7 @@ class _MeasurementResultSaturationPageState
                           height: 35,
                           child: Center(
                             child: Text(
-                              "3 Monate",
+                              sh.getLanguageResource("three_months"),
                               style: TextStyle(
                                   color: periodType == 20
                                       ? Colors.white
@@ -182,7 +183,7 @@ class _MeasurementResultSaturationPageState
                           height: 35,
                           child: Center(
                             child: Text(
-                              "1 Jahr",
+                              sh.getLanguageResource("one_year"),
                               style: TextStyle(
                                   color: periodType == 30
                                       ? Colors.white
@@ -220,7 +221,7 @@ class _MeasurementResultSaturationPageState
                           color: Colors.amber,
                           xValueMapper: (_SalesData sales, _) => sales.year,
                           yValueMapper: (_SalesData sales, _) => sales.sales,
-                          name: 'Sauerstoffsättigung',
+                          name: sh.getLanguageResource("oxygen_saturation"),
                           // Enable data label
                           dataLabelSettings:
                               const DataLabelSettings(isVisible: false)),
@@ -229,7 +230,7 @@ class _MeasurementResultSaturationPageState
                           color: Colors.amber,
                           xValueMapper: (_SalesData sales, _) => sales.year,
                           yValueMapper: (_SalesData sales, _) => sales.sales,
-                          name: 'Sauerstoffsättigung',
+                          name: sh.getLanguageResource("oxygen_saturation"),
                           // Enable data label
                           dataLabelSettings:
                               const DataLabelSettings(isVisible: false)),
@@ -238,7 +239,7 @@ class _MeasurementResultSaturationPageState
                           color: Colors.blue[900],
                           xValueMapper: (_SalesData sales, _) => sales.year,
                           yValueMapper: (_SalesData sales, _) => sales.sales,
-                          name: 'Sauerstoffsättigung',
+                          name: sh.getLanguageResource("oxygen_saturation"),
                           // Enable data label
                           dataLabelSettings:
                               const DataLabelSettings(isVisible: false)),
@@ -258,7 +259,7 @@ class _MeasurementResultSaturationPageState
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Gestern",
+                                  sh.getLanguageResource("yesterday"),
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 Text(
@@ -283,7 +284,7 @@ class _MeasurementResultSaturationPageState
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Heute",
+                                  sh.getLanguageResource("today"),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white),
@@ -303,7 +304,7 @@ class _MeasurementResultSaturationPageState
                     height: 20,
                   ),
                   Text(
-                    "Sauerstoffsättigung",
+                    sh.getLanguageResource("oxygen_saturation"),
                     style: TextStyle(
                       fontSize: 24,
                       color: mainButtonColor,
@@ -314,7 +315,8 @@ class _MeasurementResultSaturationPageState
                     height: 20,
                   ),
                   Text(
-                      "Sauerstoff ist überlebenswichtig und für jede Körperzelle und -funktion notwendig. Damit unser Körper mit genug Sauerstoff versorgt wird, muss das Zusammenspiel aus Atmung, Kreislauf und der Gewebsdurchblutung stimmen. Die Sauerstoffsättigung gibt den Sauerstoffgehalt im Blut an."),
+                    sh.getLanguageResource("oxygen_saturation_desc"),
+                  ),
                   SizedBox(
                     height: 20,
                   ),
@@ -330,7 +332,7 @@ class _MeasurementResultSaturationPageState
                               .pushNamed('/saturation-description');
                         },
                         child: Text(
-                          "Mehr Informationen über die Einstufung Ihrer Messwerte",
+                          sh.getLanguageResource("more_info"),
                           style: TextStyle(
                               overflow: TextOverflow.ellipsis,
                               fontSize: 14,

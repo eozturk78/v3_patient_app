@@ -136,7 +136,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
   Widget build(BuildContext context) {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
-      appBar: leadingSubpage('Meine Dokumente', context),
+      appBar: leadingSubpage(sh.getLanguageResource('my_documents'), context),
       body: SafeArea(
         // Wrap your body with SafeArea
         child: Center(
@@ -159,7 +159,8 @@ class _DocumentListPageState extends State<DocumentListPage> {
                     color: mainButtonColor,
                   )
                 : folderList.isEmpty
-                    ? Center(child: Text("Keine Daten gefunden"))
+                    ? Center(
+                        child: Text(sh.getLanguageResource('no_data_found')))
                     : Container(
                         decoration: BoxDecoration(
                             color: Colors.white,
@@ -221,7 +222,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                       });
                     },
                     leading: new Icon(Icons.file_present_outlined),
-                    title: Text("neuer Ordner"),
+                    title: Text(sh.getLanguageResource('new_folder')),
                   ),
                   ListTile(
                     onTap: () async {
@@ -245,7 +246,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                       }
                     },
                     leading: new Icon(Icons.image_outlined),
-                    title: Text("Foto aufnehmen"),
+                    title: Text(sh.getLanguageResource('take_a_photo')),
                   ),
                   ListTile(
                     onTap: () async {
@@ -277,7 +278,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                       }
                     },
                     leading: new Icon(Icons.file_present_outlined),
-                    title: Text("Dokument / Foto hinzufügen"),
+                    title: Text(sh.getLanguageResource('add_document_photo')),
                   ),
                 ],
               );
@@ -286,108 +287,6 @@ class _DocumentListPageState extends State<DocumentListPage> {
         },
         child: Icon(Icons.add),
       ),
-
-      /*ExpandableFab(
-        key: key,
-        distance: 60.0,
-        type: ExpandableFabType.up,
-        child: const Icon(
-          Icons.add,
-          color: mainButtonColor,
-        ),
-        backgroundColor: Colors.white,
-        overlayStyle: ExpandableFabOverlayStyle(
-          blur: 2,
-        ),
-        onOpen: () {
-          setState(() {
-            selectedPhotoImage = null;
-            selectedFile = null;
-          });
-          debugPrint('onOpen');
-        },
-        afterOpen: () {
-          debugPrint('afterOpen');
-        },
-        onClose: () {
-          debugPrint('onClose');
-        },
-        afterClose: () {
-          debugPrint('afterClose');
-        },
-        children: [
-          FloatingActionButton.extended(
-            onPressed: () async {
-              setState(() {
-                showDialog(
-                  context: context,
-                  builder: (context) => onOpenFolderInfo(context),
-                ).then((resp) {
-                  getPatientFolders();
-                });
-              });
-            },
-            icon: new Icon(Icons.file_present_outlined),
-            label: Text("neuer Ordner"),
-          ),
-          FloatingActionButton.extended(
-            onPressed: () async {
-              if (await sh.checkPermission(
-                      context, Permission.camera, sh.cameraPermissionText) ==
-                  true) {
-                XFile? pickedFile = await ImagePicker().pickImage(
-                  source: ImageSource.camera,
-                );
-                if (pickedFile != null) {
-                  setState(() {
-                    selectedPhotoImage = pickedFile;
-                    showDialog(
-                      context: context,
-                      builder: (context) => onOpenImage(context),
-                    ).then((resp) {
-                      if (resp != null) Navigator.pop(context, resp);
-                    });
-                  });
-                }
-              }
-            },
-            icon: new Icon(Icons.image_outlined),
-            label: Text("Foto aufnehmen"),
-          ),
-          FloatingActionButton.extended(
-            onPressed: () async {
-              if (await sh.checkPermission(
-                      context, Permission.storage, sh.storagePermissionText) ==
-                  true) {
-                FilePickerResult? pickedFile =
-                    await FilePicker.platform.pickFiles(
-                  type: FileType.custom,
-                  allowMultiple: false,
-                  allowedExtensions: ['jpg', 'pdf', 'doc', 'png'],
-                );
-                if (pickedFile != null) {
-                  setState(() {
-                    selectedFile = pickedFile!.files.first;
-                    if (selectedFile?.extension == 'pdf') {
-                      File file = File(selectedFile!.path!);
-                      PDFDocument.fromFile(file).then((value) {
-                        setState(() {
-                          document = value;
-                          openDialog();
-                        });
-                      });
-                    } else {
-                      openDialog();
-                    }
-                  });
-                }
-              }
-            },
-            icon: new Icon(Icons.file_present_outlined),
-            label: Text("Dokument / Foto hinzufügen"),
-          ),
-        ],
-      ),*/
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: 4),
     );
   }
@@ -523,7 +422,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Speicherort",
+                        sh.getLanguageResource('storage_location'),
                         style: labelText,
                       ),
                       if (folderList.isNotEmpty)
@@ -554,7 +453,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                         height: 20,
                       ),
                       Text(
-                        "Name des Dokuments",
+                        sh.getLanguageResource('name_of_document'),
                         style: labelText,
                       ),
                       TextFormField(
@@ -578,11 +477,11 @@ class _DocumentListPageState extends State<DocumentListPage> {
                             setPatientFile();
                           } else {
                             showToast(
-                                "Bitte geben Sie den Namen der Datei ein");
+                                sh.getLanguageResource('enter_your_file_name'));
                           }
                         },
                         child: !isSendEP
-                            ? const Text("Senden")
+                            ? Text(sh.getLanguageResource('send'))
                             : Transform.scale(
                                 scale: 0.5,
                                 child: CircularProgressIndicator(
@@ -629,7 +528,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Name des Ordners"),
+                      Text(sh.getLanguageResource('name_of_the_folder')),
                       TextFormField(
                         controller: folderNameController,
                         obscureText: false,
@@ -667,11 +566,11 @@ class _DocumentListPageState extends State<DocumentListPage> {
                             );
                           } else {
                             showToast(
-                                "Ordner muss beschriftet werden um diesen zu erstellen");
+                                sh.getLanguageResource('required_folder_name'));
                           }
                         },
                         child: !isSendEP
-                            ? const Text("Erstellen")
+                            ? Text(sh.getLanguageResource('create'))
                             : Transform.scale(
                                 scale: 0.5,
                                 child: CircularProgressIndicator(

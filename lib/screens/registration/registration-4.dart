@@ -36,7 +36,8 @@ class _Registration4PageState extends State<Registration4Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingWithoutProfile('Registration 4!', context),
+      appBar: leadingWithoutProfile(
+          sh.getLanguageResource("registration_4"), context),
       body: Padding(
         padding: const EdgeInsets.all(30),
         child: SingleChildScrollView(
@@ -48,8 +49,8 @@ class _Registration4PageState extends State<Registration4Page> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Erstellen Sie jetzt Ihr Benutzerkonto",
+                    Text(
+                      sh.getLanguageResource("create_your_user_account"),
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -58,21 +59,22 @@ class _Registration4PageState extends State<Registration4Page> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const Text(
-                        'Bitte geben Sie Ihre E-Mail-Adresse an. Wir senden Ihnen im Anschluss eine Bestätigungsmail.'),
+                    Text(
+                      sh.getLanguageResource("please_enter_your_email"),
+                    ),
                     const SizedBox(
                       height: 40,
                     ),
                     Text(
-                      "E-Mail-Adresse",
+                      sh.getLanguageResource("email"),
                       style: labelText,
                     ),
                     TextFormField(
                       controller: emailController,
                       obscureText: false,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'Bitte eintragen',
+                        hintText: sh.getLanguageResource("please_enter"),
                       ),
                       validator: (text) => sh.emailValidator(text),
                     ),
@@ -84,7 +86,7 @@ class _Registration4PageState extends State<Registration4Page> {
                       height: 10,
                     ),
                     Text(
-                      "Passwort",
+                      sh.getLanguageResource("password"),
                       style: labelText,
                     ),
                     TextFormField(
@@ -114,7 +116,7 @@ class _Registration4PageState extends State<Registration4Page> {
                       height: 10,
                     ),
                     Text(
-                      "Passwort bestätigen",
+                      sh.getLanguageResource("confirm_password"),
                       style: labelText,
                     ),
                     TextFormField(
@@ -180,7 +182,7 @@ class _Registration4PageState extends State<Registration4Page> {
                                     });
                       },
                       child: !isSendEP
-                          ? const Text("REGISTRIEN")
+                          ? Text(sh.getLanguageResource("registry"))
                           : Transform.scale(
                               scale: 0.5,
                               child: const CircularProgressIndicator(

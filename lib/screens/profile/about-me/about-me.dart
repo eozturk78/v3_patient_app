@@ -75,7 +75,7 @@ class _AboutMeState extends State<AboutMe> {
   Widget build(BuildContext context) {
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
-      appBar: leadingSubpage('Über mich', context),
+      appBar: leadingSubpage(sh.getLanguageResource("about_me"), context),
       body: SafeArea(
         // Wrap your body with SafeArea
         child: Padding(
@@ -88,7 +88,8 @@ class _AboutMeState extends State<AboutMe> {
                       color: mainButtonColor,
                     ))
                   : aboutPatient == null
-                      ? Center(child: Text("Keine Daten gefunden"))
+                      ? Center(
+                          child: Text(sh.getLanguageResource("no_data_found")))
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -116,7 +117,7 @@ class _AboutMeState extends State<AboutMe> {
                             Center(
                               child: TextButton(
                                 child: Text(
-                                  'Bearbeiten',
+                                  sh.getLanguageResource("edit"),
                                   style: TextStyle(color: Colors.blue),
                                 ),
                                 onPressed: () {
@@ -166,7 +167,10 @@ class _AboutMeState extends State<AboutMe> {
                                               }
                                             },
                                             leading: new Icon(Icons.camera_alt),
-                                            title: Text("Foto aufnehmen"),
+                                            title: Text(
+                                              sh.getLanguageResource(
+                                                  "take_a_photo"),
+                                            ),
                                           ),
                                           ListTile(
                                             onTap: () async {
@@ -209,7 +213,10 @@ class _AboutMeState extends State<AboutMe> {
                                             },
                                             leading: new Icon(
                                                 Icons.file_present_outlined),
-                                            title: Text("Bild auswählen"),
+                                            title: Text(
+                                              sh.getLanguageResource(
+                                                  "take_a_photo"),
+                                            ),
                                           ),
                                         ],
                                       );
@@ -231,7 +238,7 @@ class _AboutMeState extends State<AboutMe> {
                             SizedBox(
                               height: 20,
                             ),
-                            Text("Über mich",
+                            Text(sh.getLanguageResource("about_me"),
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             SizedBox(
                               height: 10,
@@ -251,9 +258,7 @@ class _AboutMeState extends State<AboutMe> {
                                       SizedBox(
                                         width: 15,
                                       ),
-                                      Text(getLocalizedGender(
-                                              aboutPatient['sex'], context) ??
-                                          aboutPatient['sex']),
+                                      Text(sh.getLanguageResource("sex")),
                                     ],
                                   ),
                                   SizedBox(
@@ -287,7 +292,7 @@ class _AboutMeState extends State<AboutMe> {
                             SizedBox(
                               height: 20,
                             ),
-                            Text("Kontaktinformationen",
+                            Text(sh.getLanguageResource("contact_information"),
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             SizedBox(
                               height: 10,
@@ -370,7 +375,7 @@ class _AboutMeState extends State<AboutMe> {
                             SizedBox(
                               height: 20,
                             ),
-                            Text("Patientengruppen",
+                            Text(sh.getLanguageResource("patient_group"),
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             SizedBox(
                               height: 10,
@@ -410,36 +415,6 @@ class _AboutMeState extends State<AboutMe> {
         ),
       ),
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
-      /* floatingActionButtonLocation: ExpandableFab.location,
-      floatingActionButton: ExpandableFab(
-        key: key,
-        distance: 60.0,
-        type: ExpandableFabType.up,
-        child: const Icon(
-          Icons.image,
-          color: mainButtonColor,
-        ),
-        backgroundColor: Colors.white,
-        overlayStyle: ExpandableFabOverlayStyle(
-          blur: 2,
-        ),
-        onOpen: () {
-          setState(() {});
-          debugPrint('onOpen');
-        },
-        afterOpen: () {
-          debugPrint('afterOpen');
-        },
-        onClose: () {
-          debugPrint('onClose');
-        },
-        afterClose: () {
-          debugPrint('afterClose');
-        },
-        children: [
-         
-        ],
-      ),*/
     );
   }
 
@@ -464,7 +439,7 @@ class _AboutMeState extends State<AboutMe> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Sind Sie sicher, dass Sie die Datei löschen wollen?"),
+                Text(sh.getLanguageResource("are_you_sure_delete_file")),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -480,7 +455,7 @@ class _AboutMeState extends State<AboutMe> {
                           Navigator.of(context).pop('ok');
                         });
                       },
-                      child: Text("Ja"),
+                      child: Text(sh.getLanguageResource("yes")),
                     ),
                     SizedBox(
                       width: 10,
@@ -492,7 +467,7 @@ class _AboutMeState extends State<AboutMe> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text("Nein"),
+                      child: Text(sh.getLanguageResource("no")),
                     ),
                   ],
                 )
@@ -691,8 +666,9 @@ class _AboutMeState extends State<AboutMe> {
                       height: double.infinity,
                       errorBuilder: (BuildContext context, Object error,
                           StackTrace? stackTrace) {
-                        return const Center(
-                            child: Text('This image type is not supported'));
+                        return Center(
+                            child: Text(
+                                sh.getLanguageResource("image_not_supported")));
                       },
                     ),
                   ),

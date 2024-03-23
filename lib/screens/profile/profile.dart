@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:patient_app/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -18,6 +19,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  Shared sh = Shared();
   @override
   void initState() {
     super.initState();
@@ -37,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Einstellungen', context),
+      appBar: leadingSubpage(sh.getLanguageResource("settings"), context),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             height: 35,
                             child: Center(
                               child: Text(
-                                "Benutzer",
+                                sh.getLanguageResource("users"),
                                 textScaleFactor:
                                     ScaleSize.textScaleFactor(context),
                                 style: TextStyle(color: Colors.white),
@@ -88,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               height: 35,
                               child: Center(
                                 child: Text(
-                                  "Dashboard",
+                                  sh.getLanguageResource("dashboard"),
                                   textScaleFactor:
                                       ScaleSize.textScaleFactor(context),
                                   style: TextStyle(color: mainButtonColor),
@@ -111,7 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               height: 35,
                               child: Center(
                                 child: Text(
-                                  "Erinnerungen",
+                                  sh.getLanguageResource("memories"),
                                   textScaleFactor:
                                       ScaleSize.textScaleFactor(context),
                                   style: TextStyle(color: mainButtonColor),
@@ -130,7 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         border: InputBorder.none,
                         filled: true,
                         fillColor: const Color.fromARGB(255, 244, 246, 246),
-                        hintText: 'Search',
+                        hintText: sh.getLanguageResource("search"),
                         hintStyle: TextStyle(
                             fontSize: 16.0,
                             color: Color.fromARGB(255, 69, 81, 84)),
@@ -155,7 +157,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "BENUTZERPROFIL",
+                    sh.getLanguageResource("user_profile"),
                     style: TextStyle(color: Color.fromARGB(255, 150, 159, 162)),
                     textScaleFactor: ScaleSize.textScaleFactor(context),
                   ),
@@ -168,7 +170,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Row(
                       children: [
                         Text(
-                          "Über mich",
+                          sh.getLanguageResource("about_me"),
                           style: profileMenuItemColor,
                           textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
@@ -190,7 +192,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Row(
                       children: [
                         Text(
-                          "Meine Diagnosen",
+                          sh.getLanguageResource("my_diagnoses"),
                           style: profileMenuItemColor,
                           textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
@@ -212,7 +214,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Row(
                       children: [
                         Text(
-                          "Meine medizinischen Kontakte",
+                          sh.getLanguageResource("my_medical_contacts"),
                           style: profileMenuItemColor,
                           textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
@@ -230,7 +232,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 20,
                   ),
                   Text(
-                    "BENUTZERKONTO",
+                    sh.getLanguageResource("user_account"),
                     style: TextStyle(color: Color.fromARGB(255, 150, 159, 162)),
                     textScaleFactor: ScaleSize.textScaleFactor(context),
                   ),
@@ -243,7 +245,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Row(
                       children: [
                         Text(
-                          "Einwilligungen",
+                          sh.getLanguageResource("consents"),
                           style: profileMenuItemColor,
                           textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
@@ -265,7 +267,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Row(
                       children: [
                         Text(
-                          "Auszug meiner Daten",
+                          sh.getLanguageResource("extract_my_data"),
                           style: profileMenuItemColor,
                           textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
@@ -283,7 +285,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 20,
                   ),
                   Text(
-                    "RECHTLICHES",
+                    sh.getLanguageResource("legal"),
                     style: TextStyle(color: Color.fromARGB(255, 150, 159, 162)),
                     textScaleFactor: ScaleSize.textScaleFactor(context),
                   ),
@@ -296,7 +298,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Row(
                       children: [
                         Text(
-                          "Nutzungsbedingungen",
+                          sh.getLanguageResource("term_of_use"),
                           style: profileMenuItemColor,
                           textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
@@ -318,7 +320,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Row(
                       children: [
                         Text(
-                          "Datenschutzinformation",
+                          sh.getLanguageResource("data_protection_information"),
                           style: profileMenuItemColor,
                           textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
@@ -340,7 +342,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Row(
                       children: [
                         Text(
-                          "Impressum",
+                          sh.getLanguageResource("imprint"),
                           style: profileMenuItemColor,
                           textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
@@ -362,7 +364,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Row(
                       children: [
                         Text(
-                          "Sprache",
+                          sh.getLanguageResource("language"),
                           style: profileMenuItemColor,
                           textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
@@ -389,7 +391,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Row(
                       children: [
                         Text(
-                          "Abmelden",
+                          sh.getLanguageResource("log_out"),
                           style: profileMenuItemColor,
                           textScaleFactor: ScaleSize.textScaleFactor(context),
                         ),
@@ -411,7 +413,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Center(
               child: version != null
                   ? Text(
-                      "Version ${version}",
+                      "${sh.getLanguageResource("version")} ${version}",
                     )
                   : Text(""),
             ),

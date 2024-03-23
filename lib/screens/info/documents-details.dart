@@ -195,7 +195,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                           width: 200,
                           height: 100,
                         ),
-                        Text("Ordner ist leer")
+                        Text(sh.getLanguageResource("folder_is_empty"))
                       ],
                     ))
                   : SingleChildScrollView(
@@ -223,7 +223,9 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                                             ListTile(
                                               leading: Icon(
                                                   Icons.remove_red_eye_rounded),
-                                              title: Text('Datei zeigen'),
+                                              title: Text(
+                                                  sh.getLanguageResource(
+                                                      "show_file")),
                                               onTap: () {
                                                 var fileUrl = "";
 
@@ -263,8 +265,8 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                                             ),
                                             ListTile(
                                               leading: Icon(Icons.edit),
-                                              title: Text(
-                                                  'Bearbeiten von Dateinamen und Ordnern'),
+                                              title: Text(sh.getLanguageResource(
+                                                  "edit_file_name_and_folder")),
                                               onTap: () {
                                                 fileId = item.id;
                                                 showDialog(
@@ -310,7 +312,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                 children: [
                   ListTile(
                     leading: Icon(Icons.file_present_outlined),
-                    title: Text('Dokument / Foto hinzufügen'),
+                    title: Text(sh.getLanguageResource('add_document_photo')),
                     onTap: () async {
                       if ((Platform.isIOS &&
                                   await sh.checkPermission(
@@ -372,7 +374,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                       }
                     },
                     leading: new Icon(Icons.image_outlined),
-                    title: Text("Foto aufnehmen"),
+                    title: Text(sh.getLanguageResource('take_a_photo')),
                   ),
                   ListTile(
                     onTap: () {
@@ -387,7 +389,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                       });
                     },
                     leading: new Icon(Icons.edit),
-                    title: Text("Ordner umbenennen"),
+                    title: Text(sh.getLanguageResource('rename_folder')),
                   ),
                   ListTile(
                     onTap: () {
@@ -400,7 +402,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                       });
                     },
                     leading: new Icon(Icons.delete),
-                    title: Text("Ordner löschen"),
+                    title: Text(sh.getLanguageResource('delete_folder')),
                   ),
                 ],
               );
@@ -408,124 +410,6 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
           );
         },
       ),
-      /* floatingActionButton: ExpandableFab(
-        key: key,
-        distance: 60.0,
-        type: ExpandableFabType.up,
-        child: const Icon(
-          Icons.add,
-          color: mainButtonColor,
-        ),
-        backgroundColor: Colors.white,
-        overlayStyle: ExpandableFabOverlayStyle(
-          blur: 2,
-        ),
-        onOpen: () {
-          setState(() {});
-          debugPrint('onOpen');
-        },
-        afterOpen: () {
-          debugPrint('afterOpen');
-        },
-        onClose: () {
-          debugPrint('onClose');
-        },
-        afterClose: () {
-          debugPrint('afterClose');
-        },
-        children: [
-          FloatingActionButton.extended(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) =>
-                    onAreYouSureDeleteFolder(context, folderId),
-              ).then((resp) {
-                if (resp != null) Navigator.of(context).pop();
-              });
-            },
-            icon: new Icon(Icons.delete),
-            label: Text("Ordner löschen"),
-          ),
-          FloatingActionButton.extended(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) =>
-                    onOpenFolderInfo(context, screenTitle, folderId.toString()),
-              ).then((resp) {
-                setState(() {
-                  screenTitle = resp;
-                });
-              });
-            },
-            icon: new Icon(Icons.edit),
-            label: Text("Ordner umbenennen"),
-          ),
-          FloatingActionButton.extended(
-            onPressed: () async {
-              if (await sh.checkPermission(
-                      context, Permission.camera, sh.cameraPermissionText) ==
-                  true) {
-                XFile? pickedFile = await ImagePicker().pickImage(
-                  source: ImageSource.camera,
-                );
-                if (pickedFile != null) {
-                  setState(() {
-                    selectedPhotoImage = pickedFile;
-                    showDialog(
-                      context: context,
-                      builder: (context) => onOpenImage2(
-                        context,
-                      ),
-                    ).then((resp) {
-                      if (resp != null) Navigator.pop(context, resp);
-                    });
-                  });
-                }
-              }
-            },
-            icon: new Icon(Icons.image_outlined),
-            label: Text("Foto aufnehmen"),
-          ),
-          FloatingActionButton.extended(
-            onPressed: () async {
-              if ((Platform.isIOS &&
-                          await sh.checkPermission(context, Permission.photos,
-                              sh.galeryPermissionText) ||
-                      (Platform.isAndroid &&
-                          await sh.checkPermission(context, Permission.storage,
-                              sh.galeryPermissionText))) ==
-                  true) {
-                FilePickerResult? pickedFile =
-                    await FilePicker.platform.pickFiles(
-                  type: FileType.custom,
-                  allowMultiple: false,
-                  allowedExtensions: ['jpg', 'pdf', 'doc', 'png'],
-                );
-                if (pickedFile != null) {
-                  setState(() {
-                    selectedFile = pickedFile!.files.first;
-                    if (selectedFile?.extension == 'pdf') {
-                      File file = File(selectedFile!.path!);
-                      PDFDocument.fromFile(file).then((value) {
-                        setState(() {
-                          document = value;
-                          openDialog2();
-                        });
-                      });
-                    } else {
-                      openDialog2();
-                    }
-                  });
-                }
-              }
-            },
-            icon: new Icon(Icons.file_present_outlined),
-            label: Text("Dokument / Foto hinzufügen"),
-          ),
-        ],
-      ),*/
     );
   }
 
@@ -548,7 +432,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Sind Sie sicher, dass Sie den Ordner löschen wollen?"),
+                Text(sh.getLanguageResource('are_you_sure_delete_folder')),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -574,7 +458,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text("Nein"),
+                      child: Text(sh.getLanguageResource('no')),
                     ),
                   ],
                 )
@@ -605,7 +489,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Sind Sie sicher, dass Sie die Datei löschen wollen?"),
+                Text(sh.getLanguageResource('are_you_sure_delete_file')),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -619,7 +503,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                           Navigator.of(context).pop('ok');
                         });
                       },
-                      child: Text("Ja"),
+                      child: Text(sh.getLanguageResource('yes')),
                     ),
                     SizedBox(
                       width: 10,
@@ -631,7 +515,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text("Nein"),
+                      child: Text(sh.getLanguageResource('no')),
                     ),
                   ],
                 )
@@ -721,7 +605,8 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                   height: MediaQuery.of(context).size.height * 0.84,
                   width: double.infinity,
                   child: PDFViewer(
-                    tooltip: PDFViewerTooltip(pick: 'Wählen Sie eine Seite'),
+                    tooltip: PDFViewerTooltip(
+                        pick: sh.getLanguageResource('select_a_page')),
                     scrollDirection: Axis.vertical,
                     document: document!,
                   ),
@@ -780,7 +665,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Name des Ordners"),
+                      Text(sh.getLanguageResource('name_of_the_folder')),
                       TextFormField(
                         controller: folderNameController,
                         obscureText: false,
@@ -818,11 +703,11 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                             );
                           } else {
                             showToast(
-                                "Ordner muss beschriftet werden um diesen zu erstellen");
+                                sh.getLanguageResource('required_folder_name'));
                           }
                         },
                         child: !isSendEP
-                            ? const Text("Umbenennen")
+                            ? Text(sh.getLanguageResource('rename'))
                             : Transform.scale(
                                 scale: 0.5,
                                 child: CircularProgressIndicator(
@@ -869,7 +754,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "KATEGORIE",
+                        sh.getLanguageResource('category'),
                         style: labelText,
                       ),
                       if (folderList.isNotEmpty)
@@ -900,7 +785,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                         height: 20,
                       ),
                       Text(
-                        "BESCHREIBUNG",
+                        sh.getLanguageResource('description'),
                         style: labelText,
                       ),
                       TextFormField(
@@ -945,7 +830,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                           );
                         },
                         child: !isSendEP
-                            ? const Text("Senden")
+                            ? Text(sh.getLanguageResource('send'))
                             : Transform.scale(
                                 scale: 0.5,
                                 child: CircularProgressIndicator(
@@ -1096,7 +981,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Speicherort",
+                        sh.getLanguageResource('storage_location'),
                         style: labelText,
                       ),
                       if (folderList.isNotEmpty)
@@ -1127,7 +1012,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                         height: 20,
                       ),
                       Text(
-                        "Name des Dokuments",
+                        sh.getLanguageResource('name_of_document'),
                         style: labelText,
                       ),
                       TextFormField(
@@ -1151,11 +1036,11 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                             setPatientFile();
                           } else {
                             showToast(
-                                "Bitte geben Sie den Namen der Datei ein");
+                                sh.getLanguageResource('enter_your_file_name'));
                           }
                         },
                         child: !isSendEP
-                            ? const Text("Senden")
+                            ? Text(sh.getLanguageResource('send'))
                             : Transform.scale(
                                 scale: 0.5,
                                 child: CircularProgressIndicator(

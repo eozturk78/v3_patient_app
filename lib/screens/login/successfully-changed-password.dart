@@ -43,7 +43,8 @@ class _SuccessfullyChangedPasswordPageState
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: leadingSubpage("Erfolgreich geändert", context),
+      appBar: leadingSubpage(
+          sh.getLanguageResource("successfully_changes"), context),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +65,7 @@ class _SuccessfullyChangedPasswordPageState
                         color: const Color.fromARGB(255, 0, 58, 30),
                       ),
                       Text(
-                        "Ihr Passwort wurde erfolgreich geändert",
+                        sh.getLanguageResource("password_is_changed"),
                         style: labelText,
                       ),
                       const SizedBox(
@@ -75,7 +76,8 @@ class _SuccessfullyChangedPasswordPageState
                             Navigator.of(context).pushNamedAndRemoveUntil(
                                 "/login", ModalRoute.withName('/login'));
                           },
-                          child: Text('Zur Anmeldung gehen'))
+                          child: Text(
+                              sh.getLanguageResource("go_to_registration")))
                     ],
                   ),
                 ),

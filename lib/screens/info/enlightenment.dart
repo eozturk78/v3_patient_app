@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:patient_app/shared/shared.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,6 +20,7 @@ class EnlightenmentPage extends StatefulWidget {
 }
 
 class _EnlightenmentPageState extends State<EnlightenmentPage> {
+  Shared sh = Shared();
   @override
   void initState() {
     super.initState();
@@ -27,7 +29,7 @@ class _EnlightenmentPageState extends State<EnlightenmentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Aufklärung', context),
+      appBar: leadingSubpage(sh.getLanguageResource('clarification'), context),
       body: SafeArea(
         // Wrap your body with SafeArea
         child: SingleChildScrollView(

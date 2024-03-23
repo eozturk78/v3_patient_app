@@ -80,7 +80,7 @@ class _MeasurementResultTemperaturePageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Temperatur', context),
+      appBar: leadingSubpage(sh.getLanguageResource("temperature"), context),
       body: SingleChildScrollView(
           child: Column(
         children: [
@@ -113,7 +113,7 @@ class _MeasurementResultTemperaturePageState
                         height: 35,
                         child: Center(
                           child: Text(
-                            "1 Woche",
+                            sh.getLanguageResource("one_week"),
                             style: TextStyle(
                                 color: periodType == 10
                                     ? Colors.white
@@ -148,7 +148,7 @@ class _MeasurementResultTemperaturePageState
                         height: 35,
                         child: Center(
                           child: Text(
-                            "3 Monate",
+                            sh.getLanguageResource("three_months"),
                             style: TextStyle(
                                 color: periodType == 20
                                     ? Colors.white
@@ -181,7 +181,7 @@ class _MeasurementResultTemperaturePageState
                         height: 35,
                         child: Center(
                           child: Text(
-                            "1 Jahr",
+                            sh.getLanguageResource("one_year"),
                             style: TextStyle(
                                 color: periodType == 30
                                     ? Colors.white
@@ -216,7 +216,7 @@ class _MeasurementResultTemperaturePageState
                         color: Colors.red,
                         xValueMapper: (_SalesData sales, _) => sales.year,
                         yValueMapper: (_SalesData sales, _) => sales.sales,
-                        name: 'Temperatur',
+                        name: sh.getLanguageResource("temperature"),
                         // Enable data label
                         dataLabelSettings:
                             const DataLabelSettings(isVisible: false)),
@@ -225,7 +225,7 @@ class _MeasurementResultTemperaturePageState
                         color: Colors.amber,
                         xValueMapper: (_SalesData sales, _) => sales.year,
                         yValueMapper: (_SalesData sales, _) => sales.sales,
-                        name: 'Temperatur',
+                        name: sh.getLanguageResource("temperature"),
                         // Enable data label
                         dataLabelSettings:
                             const DataLabelSettings(isVisible: false)),
@@ -234,7 +234,7 @@ class _MeasurementResultTemperaturePageState
                         color: Colors.amber,
                         xValueMapper: (_SalesData sales, _) => sales.year,
                         yValueMapper: (_SalesData sales, _) => sales.sales,
-                        name: 'Temperatur',
+                        name: sh.getLanguageResource("temperature"),
                         // Enable data label
                         dataLabelSettings:
                             const DataLabelSettings(isVisible: false)),
@@ -243,7 +243,7 @@ class _MeasurementResultTemperaturePageState
                         color: Colors.blue[900],
                         xValueMapper: (_SalesData sales, _) => sales.year,
                         yValueMapper: (_SalesData sales, _) => sales.sales,
-                        name: 'Temperatur',
+                        name: sh.getLanguageResource("temperature"),
                         // Enable data label
                         dataLabelSettings:
                             const DataLabelSettings(isVisible: false)),
@@ -252,7 +252,7 @@ class _MeasurementResultTemperaturePageState
                         color: Colors.red,
                         xValueMapper: (_SalesData sales, _) => sales.year,
                         yValueMapper: (_SalesData sales, _) => sales.sales,
-                        name: 'Temperatur',
+                        name: sh.getLanguageResource("temperature"),
                         // Enable data label
                         dataLabelSettings:
                             const DataLabelSettings(isVisible: false)),
@@ -272,7 +272,7 @@ class _MeasurementResultTemperaturePageState
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                "Gestern",
+                                sh.getLanguageResource("yesterday"),
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               Text(
@@ -297,7 +297,7 @@ class _MeasurementResultTemperaturePageState
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                "Heute",
+                                sh.getLanguageResource("yesterday"),
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
@@ -317,7 +317,7 @@ class _MeasurementResultTemperaturePageState
                   height: 20,
                 ),
                 Text(
-                  "Temperatur",
+                  sh.getLanguageResource("temperature"),
                   style: TextStyle(
                     fontSize: 24,
                     color: mainButtonColor,
@@ -328,7 +328,8 @@ class _MeasurementResultTemperaturePageState
                   height: 20,
                 ),
                 Text(
-                    "Die Körpertemperatur ist ein wichtiger Parameter zur Beurteilung des Gesundheitszustands eines Menschen. In diesem Artikel werden wir die Bedeutung der Körpertemperatur erklären, verschiedene Messmethoden diskutieren und die Auswirkungen von abnormalen Körpertemperaturen auf den Körper betrachten."),
+                  sh.getLanguageResource("temperature_desc"),
+                ),
                 SizedBox(
                   height: 20,
                 ),
@@ -344,7 +345,7 @@ class _MeasurementResultTemperaturePageState
                             .pushNamed('/temperature-description');
                       },
                       child: Text(
-                        "Mehr Informationen über die Einstufung Ihrer Messwerte",
+                        sh.getLanguageResource("more_info"),
                         style: TextStyle(
                             overflow: TextOverflow.ellipsis,
                             fontSize: 14,

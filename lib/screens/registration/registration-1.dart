@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
-import 'package:patient_app/shared/toast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../apis/apis.dart';
 import '../../shared/shared.dart';
 import '../shared/shared.dart';
@@ -38,7 +35,8 @@ class _Registration1PageState extends State<Registration1Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingWithoutProfile('Registration 1!', context),
+      appBar: leadingWithoutProfile(
+          sh.getLanguageResource("registration_1"), context),
       body: Padding(
         padding: EdgeInsets.all(30),
         child: Center(
@@ -48,7 +46,7 @@ class _Registration1PageState extends State<Registration1Page> {
             child: Column(
               children: [
                 Text(
-                  "Damit Sie iMedCom verwenden dürfen , müssen folgende Voraussetzungen erfüllt sein:",
+                  sh.getLanguageResource("agreement_4"),
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -69,7 +67,7 @@ class _Registration1PageState extends State<Registration1Page> {
                     ),
                     Flexible(
                         child: Text(
-                      "Ich bestätige, dass ich mindestens 18 Jahre alt bin und nicht an folgenden Krankheiten leide: ??? und ich nicht schwanger oder in der Stillzeit bin. ",
+                      sh.getLanguageResource("older_than_eighteen"),
                       style: TextStyle(fontSize: 16),
                     ))
                   ],
@@ -89,7 +87,7 @@ class _Registration1PageState extends State<Registration1Page> {
                     ),
                     Flexible(
                       child: Text(
-                        "Ich stimme den Nutzungsbedingungen zu.",
+                        sh.getLanguageResource("i_agree_use"),
                         style: TextStyle(fontSize: 16),
                       ),
                     )
@@ -98,8 +96,8 @@ class _Registration1PageState extends State<Registration1Page> {
                 SizedBox(
                   height: 20,
                 ),
-                const Text(
-                  "Im Rahmen der iMedCom-App-Nutzung werden personenbezogene Daten  verarbeitet:",
+                Text(
+                  sh.getLanguageResource("agreement_1"),
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -120,7 +118,7 @@ class _Registration1PageState extends State<Registration1Page> {
                     ),
                     Flexible(
                         child: Text(
-                      "Ich möchte mit meinem Arzt bzw.  meiner Ärztin über „iMedCom-App“ kommunizieren und willige ein, dass meine personenbezogenen Gesundheitsdaten für den bestimmungsgemäßen Gebrauch verarbeitet werden. Ich kann meine Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen. Bitte beachten Sie jedoch, dass Ihr Benutzerkonto gelöscht wird, wenn Sie Ihre Einwilligung widerrufen, da die App ohne Ihre Einwilligung nicht genutzt werden darf. ",
+                      sh.getLanguageResource("agreement_2"),
                       style: TextStyle(fontSize: 16),
                     ))
                   ],
@@ -140,7 +138,7 @@ class _Registration1PageState extends State<Registration1Page> {
                     ),
                     Flexible(
                         child: Text(
-                      "Ich willige ein, dass die iMedCom GmbH, Weinbergweg 23, 06120 Halle an der Saale meine Daten verarbeiten darf, um die technische Funktionsfähigkeit und die Nutzerfreundlichkeit der App weiterzuentwickeln. Die Einwilligung ist jederzeit widerrufbar ohne Auswirkungen auf den Funktionsumfang der App. ",
+                      sh.getLanguageResource("imedcom_info_2"),
                       style: TextStyle(fontSize: 16),
                     ))
                   ],
@@ -158,7 +156,7 @@ class _Registration1PageState extends State<Registration1Page> {
                       Navigator.of(context).pushNamed('/registration-2');
                     }
                   },
-                  child: Text("Weiter"),
+                  child: Text(sh.getLanguageResource("further")),
                 )
               ],
             ),

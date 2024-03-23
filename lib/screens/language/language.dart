@@ -25,6 +25,7 @@ class LanguagePage extends StatefulWidget {
 
 class _LanguagePageState extends State<LanguagePage> {
   List<Language> list = [];
+  Shared sh = Shared();
   bool isStarted = false;
   String selectedLang = "de-DE";
   @override
@@ -59,10 +60,10 @@ class _LanguagePageState extends State<LanguagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Sprache', context),
+      appBar: leadingSubpage(sh.getLanguageResource("language"), context),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           child: isStarted
               ? Center(
                   child: CircularProgressIndicator(
@@ -70,7 +71,7 @@ class _LanguagePageState extends State<LanguagePage> {
                   ),
                 )
               : list.isEmpty
-                  ? Center(child: Text("Keine Daten gefunden"))
+                  ? Center(child: Text(sh.getLanguageResource("no_data_found")))
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       verticalDirection: VerticalDirection.down,
@@ -82,12 +83,13 @@ class _LanguagePageState extends State<LanguagePage> {
                                   await SharedPreferences.getInstance();
                               pref.setString("language", item.cultureName);
 
-                              var url =
-                                  '${apis.apiPublic}/resources/${item.cultureName}.json';
-                              http.get(Uri.parse(url)).then((result) {
-                                languageResource = result.body;
+                              apis
+                                  .getLanguageResources(item!.cultureName)
+                                  .then((resp) {
+                                setState(() {
+                                  languageResource = jsonEncode(resp);
+                                });
                               });
-
                               setState(() {
                                 selectedLang = item.cultureName;
 

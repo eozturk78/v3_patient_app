@@ -54,7 +54,6 @@ import 'package:patient_app/screens/profile/about-me/about-me.dart';
 import 'package:patient_app/screens/profile/profile.dart';
 import 'package:patient_app/screens/questionnaire-group/questionnaire-group.dart';
 import 'package:patient_app/screens/questionnaire-result/questionnaire-result.dart';
-import 'package:patient_app/screens/questionnaire-result/send-result.dart';
 import 'package:patient_app/screens/questionnaire/questionnaire-1.dart';
 import 'package:patient_app/screens/questionnaire/questionnaire-2.dart';
 import 'package:patient_app/screens/questionnaire/questionnaire-3.dart';
@@ -332,7 +331,6 @@ class MyApp extends StatelessWidget {
         "/redirection": (context) => const RedirectionPage(),
         "/questionnaire-group": (context) => const QuestionnaireGroupPage(),
         "/questionnaire-result": (context) => const QuestionnaireResultPage(),
-        "/send-result": (context) => const SendResultPage(),
         "/privacy-policy": (context) => const PrivacyPolicyPage(),
         "/terms-and-conditions": (context) => const TermsAndConditionsPage(),
         "/patient-contacts-list": (context) => ContactsListingPage(),

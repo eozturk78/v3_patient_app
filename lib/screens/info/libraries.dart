@@ -67,7 +67,7 @@ class _LibraryListPageState extends State<LibraryListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Bibliothek', context),
+      appBar: leadingSubpage(sh.getLanguageResource('library'), context),
       body: SafeArea(
         // Wrap your body with SafeArea
         child: SingleChildScrollView(
@@ -79,7 +79,8 @@ class _LibraryListPageState extends State<LibraryListPage> {
                     color: mainButtonColor,
                   )
                 : list.isEmpty
-                    ? Center(child: Text("Keine Daten gefunden"))
+                    ? Center(
+                        child: Text(sh.getLanguageResource('no_data_found')))
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         verticalDirection: VerticalDirection.down,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:patient_app/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../main-menu/route_util.dart';
 
@@ -14,7 +15,7 @@ class CustomizedMenuPage extends StatefulWidget {
 class _CustomizedMenuPageState extends State<CustomizedMenuPage> {
   List<Map<String, dynamic>> _customizedMenuItems = [];
   List<CustomMenuItem> _menuItems = []; // Store all menu items
-
+  Shared sh = Shared();
   @override
   void initState() {
     super.initState();
@@ -51,26 +52,34 @@ class _CustomizedMenuPageState extends State<CustomizedMenuPage> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         centerTitle: true,
-        title: Text('Schnellzugriffsmenü'),
+        title: Text(sh.getLanguageResource("quick_access")),
       ),
       body: selectedMenuItems.isEmpty
-          ? Center(child: Text('No customized menu items available.'))
-          : Padding(padding: EdgeInsets.only(top: 15.0), child: ListView.builder(
-        itemCount: selectedMenuItems.length,
-        itemBuilder: (context, index) {
-          String displayName = selectedMenuItems[index]['displayName'];
-          String routeName = selectedMenuItems[index]['routeName'];
+          ? Center(child: Text(sh.getLanguageResource("no_data_found")))
+          : Padding(
+              padding: EdgeInsets.only(top: 15.0),
+              child: ListView.builder(
+                itemCount: selectedMenuItems.length,
+                itemBuilder: (context, index) {
+                  String displayName = selectedMenuItems[index]['displayName'];
+                  String routeName = selectedMenuItems[index]['routeName'];
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 16.0),
-            child: ElevatedButton(
-              style: ButtonStyle(backgroundColor: MaterialStateColor.resolveWith((states) => Colors.white60), foregroundColor: MaterialStateColor.resolveWith((states) => Theme.of(context).errorColor)),
-              onPressed: () => _navigateToPage(routeName),
-              child: Text(displayName),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 2.0, horizontal: 16.0),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateColor.resolveWith(
+                              (states) => Colors.white60),
+                          foregroundColor: MaterialStateColor.resolveWith(
+                              (states) => Theme.of(context).errorColor)),
+                      onPressed: () => _navigateToPage(routeName),
+                      child: Text(displayName),
+                    ),
+                  );
+                },
+              ),
             ),
-          );
-        },
-      ),),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.red[800],
         foregroundColor: Colors.white,
@@ -79,11 +88,11 @@ class _CustomizedMenuPageState extends State<CustomizedMenuPage> {
       ),
     );
   }
+
   void _navigateToCustomMenu() async {
     await Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => CustomMenuPage(menuItems: _menuItems),
     ));
     _loadCustomizedMenuItems(); // Reload menu items when returning from customization page
   }
-
 }

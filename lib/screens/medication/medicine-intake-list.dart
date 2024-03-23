@@ -120,7 +120,8 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: leadingSubpage('Medicine Intake', context),
+      appBar:
+          leadingSubpage(sh.getLanguageResource("medication_intake"), context),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -137,7 +138,7 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Datum:",
+                      "${sh.getLanguageResource("date")}:",
                       style: TextStyle(
                           fontSize: 16,
                           color: Color.fromARGB(255, 162, 28, 52)),
@@ -183,7 +184,9 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              Center(child: Text("Bestätigung Medikamenteneinnahme")),
+              Center(
+                  child: Text(sh
+                      .getLanguageResource("confirmation_medication_intake"))),
               SizedBox(height: 20),
               if (_isLoading)
                 Center(child: CircularProgressIndicator())
@@ -192,8 +195,11 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                   padding: const EdgeInsets.fromLTRB(18, 5, 0, 18),
                   child: Column(
                     children: [
-                      buildCheckbox('Einnahme morgens', _morningIntake,
-                          _savedMorningIntake, 10, (bool? value) {
+                      buildCheckbox(
+                          sh.getLanguageResource("intake_morning"),
+                          _morningIntake,
+                          _savedMorningIntake,
+                          10, (bool? value) {
                         if (value != null) {
                           setState(() {
                             _morningIntake = value;
@@ -201,9 +207,8 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                           // saveMedicineIntake();
                         }
                       }),
-                      buildCheckbox(
-                          'Einnahme mittags', _noonIntake, _savedNoonIntake, 20,
-                          (bool? value) {
+                      buildCheckbox(sh.getLanguageResource("intake_noon"),
+                          _noonIntake, _savedNoonIntake, 20, (bool? value) {
                         if (value != null) {
                           setState(() {
                             _noonIntake = value;
@@ -211,8 +216,11 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                           // saveMedicineIntake();
                         }
                       }),
-                      buildCheckbox('Einnahme abends', _eveningIntake,
-                          _savedEveningIntake, 30, (bool? value) {
+                      buildCheckbox(
+                          sh.getLanguageResource("intake_evening"),
+                          _eveningIntake,
+                          _savedEveningIntake,
+                          30, (bool? value) {
                         if (value != null) {
                           setState(() {
                             _eveningIntake = value;
@@ -220,8 +228,8 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                           // saveMedicineIntake();
                         }
                       }),
-                      buildCheckbox('Einnahme nachts', _nightIntake,
-                          _savedNightIntake, 40, (bool? value) {
+                      buildCheckbox(sh.getLanguageResource("intake_night"),
+                          _nightIntake, _savedNightIntake, 40, (bool? value) {
                         if (value != null) {
                           setState(() {
                             _nightIntake = value;
@@ -238,7 +246,7 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                           saveMedicineIntake();
                         },
                         child: !_isLoading
-                            ? const Text("Einnahme bestätigen")
+                            ? Text(sh.getLanguageResource("confirm_intake"))
                             : Transform.scale(
                                 scale: 0.5,
                                 child: CircularProgressIndicator(
@@ -317,16 +325,16 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                             .where((element) => element.notificationtype == 20);
 
                         var defaultMsg =
-                            "Hallo, ich habe eine Frage zu den morgendlichen Medikamenten";
+                            sh.getLanguageResource("morning_intake_message");
                         if (typeOfValue == 20)
                           defaultMsg =
-                              "Hallo, ich habe eine Frage zu den Mittagsmedikamenten";
+                              sh.getLanguageResource("noon_intake_message");
                         else if (typeOfValue == 30)
-                          defaultMsg =
-                              "Hallo, ich habe eine Frage an die Abendmedizin";
+                          defaultMsg = sh
+                              .getLanguageResource("afternoon_intake_message");
                         else if (typeOfValue == 40)
                           defaultMsg =
-                              "Hallo, ich habe eine Frage zu Nachtmedikamenten";
+                              sh.getLanguageResource("night_intake_message");
                         SharedPreferences pref =
                             await SharedPreferences.getInstance();
                         pref.setString("defaultMsg", defaultMsg);

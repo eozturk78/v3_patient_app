@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
+import 'package:patient_app/shared/shared.dart';
 
 class CustomMedicationPlanBox extends StatelessWidget {
   final String nameOfMP;
   String? dateTime;
+  Shared sh = Shared();
   final String doctor;
   CustomMedicationPlanBox(this.nameOfMP, this.dateTime, this.doctor,
       {super.key});
@@ -40,7 +42,7 @@ class CustomMedicationPlanBox extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Name des Dokuments",
+                  sh.getLanguageResource("document_name"),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -54,7 +56,7 @@ class CustomMedicationPlanBox extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  "Erstelldatum",
+                  sh.getLanguageResource("creation_date"),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -68,7 +70,7 @@ class CustomMedicationPlanBox extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  "Ersteller des Medikamentenplans",
+                  sh.getLanguageResource("creator_of_medication_plan"),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),

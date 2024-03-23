@@ -65,7 +65,7 @@ class _NotificationHistoryPage extends State<NotificationHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Erinnerungen', context),
+      appBar: leadingSubpage(sh.getLanguageResource("memories"), context),
       body: Padding(
         padding: EdgeInsets.all(30),
         child: Center(
@@ -75,7 +75,7 @@ class _NotificationHistoryPage extends State<NotificationHistoryPage> {
                   color: mainButtonColor,
                 )
               : listMessages!.isEmpty
-                  ? Center(child: Text("Keine Daten gefunden"))
+                  ? Center(child: Text(sh.getLanguageResource("no_data_found")))
                   : ExpansionPanelList(
                       expansionCallback: (int index, bool isExpanded) {
                         setState(() {

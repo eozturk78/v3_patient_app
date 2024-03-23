@@ -55,7 +55,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Medikamentenplan', context),
+      appBar: leadingSubpage(sh.getLanguageResource("medical_plan"), context),
       body: SafeArea(
           // Wrap your body with SafeArea
           child: SingleChildScrollView(
@@ -67,12 +67,11 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                     color: mainButtonColor,
                   )
                 : mpLis.isEmpty
-                    ? Center(child: Text("Keine Daten gefunden"))
+                    ? Center(
+                        child: Text(sh.getLanguageResource("no_data_found")))
                     : ExpansionPanelList(
                         expansionCallback: (int index, bool isExpanded) {
                           setState(() {
-                            print(
-                                "======" + mpLis[index].isExpanded.toString());
                             mpLis[index].isExpanded = !mpLis[index].isExpanded;
                           });
                         },
@@ -94,7 +93,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                         ),
                                         Flexible(
                                           child: Text(
-                                            "Medikamentenplan_${item.versionNumber}",
+                                            "${sh.getLanguageResource("medical_plan")}_${item.versionNumber}",
                                             overflow: TextOverflow.ellipsis,
                                             style: item.isExpanded
                                                 ? TextStyle(
@@ -160,25 +159,29 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                                 children: [
                                                   Center(
                                                     child: Text(
-                                                      'morgens',
+                                                      sh.getLanguageResource(
+                                                          "mornings"),
                                                       style: labelText,
                                                     ),
                                                   ),
                                                   Center(
                                                     child: Text(
-                                                      'mittag',
+                                                      sh.getLanguageResource(
+                                                          "noons"),
                                                       style: labelText,
                                                     ),
                                                   ),
                                                   Center(
                                                     child: Text(
-                                                      'abend',
+                                                      sh.getLanguageResource(
+                                                          "evenigs"),
                                                       style: labelText,
                                                     ),
                                                   ),
                                                   Center(
                                                     child: Text(
-                                                      'nacht',
+                                                      sh.getLanguageResource(
+                                                          "nights"),
                                                       style: labelText,
                                                     ),
                                                   ),
@@ -216,7 +219,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                                 builder: (context) => onOpenImage2(
                                                     context,
                                                     value,
-                                                    "Medikamentenplan_${item.versionNumber}"),
+                                                    "${sh.getLanguageResource("medical_plan")}_${item.versionNumber}"),
                                               );
                                             });
                                           });
@@ -231,7 +234,8 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                               width: 10,
                                             ),
                                             Text(
-                                              'Datei herunterladen',
+                                              sh.getLanguageResource(
+                                                  "download_file"),
                                               style: TextStyle(
                                                   color: iconColor,
                                                   fontSize: 16),
