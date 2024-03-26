@@ -232,7 +232,11 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
               questionText = question['displayTextString'];
           }
         }
-        var p = {'next': question['next'], 'text': 'Senden', 'isNo': false};
+        var p = {
+          'next': question['next'],
+          'text': sh.getLanguageResource("send"),
+          'isNo': false
+        };
         buttons.add(p);
       }
     });
@@ -1016,11 +1020,10 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                                   .toString()
                                                                   .replaceAll(
                                                                       "@min@",
-                                                                      inputList[i]
+                                                                      inputList[i]['errorParams']
                                                                               [
-                                                                              'errorParams']
-                                                                          [
-                                                                          'min'])
+                                                                              'min']
+                                                                          .toString())
                                                                   .replaceAll(
                                                                       "@unit@",
                                                                       inputList[i]
@@ -1030,11 +1033,10 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                                           'unit'])
                                                                   .replaceAll(
                                                                       "@max@",
-                                                                      inputList[i]
+                                                                      inputList[i]['errorParams']
                                                                               [
-                                                                              'errorParams']
-                                                                          [
-                                                                          'max']),
+                                                                              'max']
+                                                                          .toString()),
                                                               style: TextStyle(
                                                                   color:
                                                                       mainButtonColor),

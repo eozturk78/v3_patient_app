@@ -122,7 +122,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             height: 35,
                             child: Center(
                               child: Text(
-                                sh.getLanguageResource("memories"),
+                                sh.getLanguageResource("notifications"),
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),

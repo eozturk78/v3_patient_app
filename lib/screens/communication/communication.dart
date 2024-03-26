@@ -45,7 +45,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Kommunikation', context),
+      appBar: leadingSubpage(sh.getLanguageResource("communication"), context),
       body: SafeArea(
         // Wrap your body with SafeArea
         child: Center(
@@ -122,7 +122,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
                         child: GestureDetector(
                           child: CustomSubTotal(
                               Icons.calendar_month_outlined,
-                              sh.getLanguageResource("calender"),
+                              sh.getLanguageResource("calendar"),
                               null,
                               null,
                               10),

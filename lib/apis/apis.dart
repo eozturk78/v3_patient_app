@@ -18,7 +18,7 @@ import 'package:intl/intl.dart';
 class Apis {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   Shared sh = new Shared();
-  String lang = 'tr-TR';
+  String lang = 'de-DE';
   String? baseUrl = 'https://v2test-api.imc-app.de/api';
   String? apiPublic = 'https://v2test-api.imc-app.de';
   String? othBaseUrl = 'https://praxiskamalmeo-test.oth.io';
@@ -30,6 +30,8 @@ class Apis {
       'password': password.toString(),
       'deviceToken': deviceToken
     };
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    lang = pref.getString("language")!;
     //TODO: try-catch
     var result = await http.post(Uri.parse(finalUrl),
         body: jsonEncode(params),
@@ -40,6 +42,7 @@ class Apis {
   Future patientInfo() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/patientinfo';
+    lang = pref.getString("language")!;
     var result = await http.get(Uri.parse(finalUrl), headers: {
       'Content-Type': 'application/text',
       'lang': lang,
@@ -63,6 +66,8 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/getPatientContactsByCategory';
+
+      lang = pref.getString("language")!;
       var params = {'category': category};
       var result = await http.post(Uri.parse(finalUrl),
           body: params,
@@ -76,6 +81,8 @@ class Apis {
   Future createPatientContact(dynamic contactdata) async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
+
+      lang = pref.getString("language")!;
       String finalUrl = '$baseUrl/createPatientContact';
       contactdata['category'] = contactdata['category'].toString();
       var result = await http.post(Uri.parse(finalUrl),
@@ -107,6 +114,7 @@ class Apis {
       contactdata['category'] = contactdata['category'].toString();
       contactdata['id'] = contactdata['id'].toString();
       Map<String, dynamic> convertedData = convertNullValues(contactdata);
+      lang = pref.getString("language")!;
       var result = await http.post(Uri.parse(finalUrl),
           body: convertedData,
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -120,11 +128,9 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/deletePatientContact';
-
       contactdata['id'] = contactdata['id'].toString();
-
       Map<String, dynamic> convertedData = convertNullValues(contactdata);
-
+      lang = pref.getString("language")!;
       var result = await http.post(Uri.parse(finalUrl),
           body: convertedData,
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -138,12 +144,12 @@ class Apis {
   Future getPatientMedicationReminderPreference() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/getPatientMedicationReminderPreference';
+    lang = pref.getString("language")!;
     var result = await http.get(Uri.parse(finalUrl), headers: {
       'Content-Type': 'application/text',
       'lang': lang,
       'token': pref.getString('token').toString()
     });
-
     var tmpval = getResponseFromApi(result);
     pref.setBool(
         'medication_notifications_enabled', tmpval == 1 ? true : false);
@@ -161,6 +167,7 @@ class Apis {
     var params = {
       'medication_reminder_preference': medicationReminderPreference.toString()
     };
+    lang = pref.getString("language")!;
     var result = await http.post(Uri.parse(finalUrl),
         body: params,
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -170,6 +177,7 @@ class Apis {
   Future getPatientCalendarEvents() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/getPatientCalendarEvents';
+    lang = pref.getString("language")!;
     var result = await http.get(Uri.parse(finalUrl), headers: {
       'Content-Type': 'application/text',
       'lang': lang,
@@ -182,6 +190,7 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/getPatientOnlineMeetingEvents';
+      lang = pref.getString("language")!;
       var result = await http.get(Uri.parse(finalUrl), headers: {
         'Content-Type': 'application/text',
         'lang': lang,
@@ -197,6 +206,7 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/getPatientOnlineMeetingEvents';
+      lang = pref.getString("language")!;
       var result = await http.get(Uri.parse(finalUrl), headers: {
         'Content-Type': 'application/text',
         'lang': lang,
@@ -212,6 +222,7 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/getPatientFileEvents';
+      lang = pref.getString("language")!;
       var result = await http.get(Uri.parse(finalUrl), headers: {
         'Content-Type': 'application/text',
         'lang': lang,
@@ -228,6 +239,7 @@ class Apis {
     var dateString = date.toString().replaceAll(" ", "T").toString();
     String finalUrl =
         '$baseUrl/getpatientmeasuremensresults?type=$type&from=$dateString';
+    lang = pref.getString("language")!;
     var result = await http.get(Uri.parse(finalUrl), headers: {
       'Content-Type': 'application/text',
       'lang': lang,
@@ -239,6 +251,7 @@ class Apis {
   Future getPatientMeasurement() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/getpatientallmeasurement';
+    lang = pref.getString("language")!;
     var result = await http.get(Uri.parse(finalUrl), headers: {
       'Content-Type': 'application/text',
       'lang': lang,
@@ -250,6 +263,8 @@ class Apis {
   Future getPatientMedicalPlanList() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/getpatientmedicalplanarchieve';
+
+    lang = pref.getString("language")!;
     var result = await http.get(Uri.parse(finalUrl), headers: {
       'Content-Type': 'application/text',
       'lang': lang,
@@ -261,6 +276,7 @@ class Apis {
   Future getPatientNotificationList() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/getpatientnotificationlist';
+    lang = pref.getString("language")!;
     var result = await http.get(Uri.parse(finalUrl), headers: {
       'Content-Type': 'application/text',
       'lang': lang,
@@ -272,6 +288,7 @@ class Apis {
   Future getPatientThreadMessages(String thread) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/getpatientthreadmessages?thread=${thread}';
+    lang = pref.getString("language")!;
     var result = await http.get(Uri.parse(finalUrl), headers: {
       'Content-Type': 'application/text',
       'lang': lang,
@@ -283,7 +300,7 @@ class Apis {
   Future getAttachmentDataUrl(imageUrl) async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
-      print("=================");
+      lang = pref.getString("language")!;
       String finalUrl = '$baseUrl/getattachmentdataurl?url=$imageUrl';
       var result = await http.get(Uri.parse(finalUrl),
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -301,6 +318,7 @@ class Apis {
   Future getImageUrl(imageUrl) async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
+      lang = pref.getString("language")!;
       String finalUrl = '$imageUrl';
       var result = await http.get(Uri.parse(finalUrl), headers: {
         'lang': lang,
@@ -322,6 +340,7 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/getpatientfolders';
+      lang = pref.getString("language")!;
       var result = await http.get(Uri.parse(finalUrl), headers: {
         'Content-Type': 'application/text',
         'lang': lang,
@@ -339,6 +358,7 @@ class Apis {
       String finalUrl = '$baseUrl/setpatientfoldername';
       var body = {"foldername": folderName};
       if (folderId != null) body['folderid'] = folderId;
+      lang = pref.getString("language")!;
       var result = await http.post(Uri.parse(finalUrl),
           body: body,
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -352,6 +372,8 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/deletepatientfolder?folderid=$folderId';
+
+      lang = pref.getString("language")!;
       var result = await http.delete(Uri.parse(finalUrl),
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
       return getResponseFromApi(result);
@@ -364,6 +386,7 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/deletepatientfile?fileid=$fileId';
+      lang = pref.getString("language")!;
       var result = await http.delete(Uri.parse(finalUrl),
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
       return getResponseFromApi(result);
@@ -376,6 +399,7 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/deletepatientprofilephoto';
+      lang = pref.getString("language")!;
       var result = await http.delete(Uri.parse(finalUrl),
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
       return getResponseFromApi(result);
@@ -388,6 +412,7 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/getpatientfiles?folderid=$folderId';
+      lang = pref.getString("language")!;
       var result = await http.get(Uri.parse(finalUrl),
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
       return getResponseFromApi(result);
@@ -418,6 +443,7 @@ class Apis {
   Future<List<Map<String, dynamic>>> fetchEvents() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
 
+    lang = pref.getString("language")!;
     final response = await http
         .get(Uri.parse('$baseUrl/getpatientonlinemeetings'), headers: {
       'Content-Type': 'application/text',
@@ -443,6 +469,8 @@ class Apis {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl =
         '$baseUrl/getmedicationplansbeforedate?cutoffdate=$selecteddate';
+
+    lang = pref.getString("language")!;
     var result = await http.get(Uri.parse(finalUrl), headers: {
       'Content-Type': 'application/text',
       'lang': lang,
@@ -455,6 +483,7 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/getmedicineintakes?datetaken=$selecteddate';
+      lang = pref.getString("language")!;
       var result = await http.get(Uri.parse(finalUrl), headers: {
         'Content-Type': 'application/text',
         'lang': lang,
@@ -470,6 +499,7 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/savemedicineintake';
+      lang = pref.getString("language")!;
       var result = await http.post(Uri.parse(finalUrl),
           body: intakeData,
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -482,6 +512,7 @@ class Apis {
   Future sendMessage(String message, String organization) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/sendmessage';
+    lang = pref.getString("language")!;
     var params = {'message': message.toString(), 'organization': organization};
     //print(params);
     var result = await http.post(Uri.parse(finalUrl),
@@ -493,6 +524,7 @@ class Apis {
   Future sendMessageWithAttachment(
       String message, image, String organization) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+    lang = pref.getString("language")!;
     String finalUrl = '$baseUrl/sendmessage';
     var params = {
       'message': message.toString(),
@@ -514,6 +546,7 @@ class Apis {
     request.files.add(http.MultipartFile.fromBytes(
         'file', await file.readAsBytes(),
         filename: '$fileName.pdf'));
+    lang = pref.getString("language")!;
     request.headers
         .addAll({'lang': lang, 'token': pref.getString('token').toString()});
     var response = await request.send();
@@ -528,6 +561,7 @@ class Apis {
     request.files.add(http.MultipartFile.fromBytes(
         'file', await file.readAsBytes(),
         filename: 'test.jpg'));
+    lang = pref.getString("language")!;
     request.headers
         .addAll({'lang': lang, 'token': pref.getString('token').toString()});
     var response = await request.send();
@@ -543,6 +577,7 @@ class Apis {
       'fileName': fileName,
       'folderId': folderId.toString()
     };
+    lang = pref.getString("language")!;
     var result = await http.post(Uri.parse(finalUrl),
         body: params,
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -573,6 +608,7 @@ class Apis {
       'height': height,
       'sex': sex
     };
+    lang = pref.getString("language")!;
     var result = await http
         .post(Uri.parse(finalUrl), body: params, headers: {'lang': lang}); /**/
     return getResponseFromApi(result);
@@ -582,6 +618,7 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/getquestionnairegroups';
+      lang = pref.getString("language")!;
       var result = await http.get(Uri.parse(finalUrl), headers: {
         'Content-Type': 'application/text',
         'lang': lang,
@@ -596,7 +633,7 @@ class Apis {
   Future setMeasurementValues(dynamic outPuts, String qid) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/setmeasurementvalues?qid=$qid';
-    print(outPuts);
+    lang = pref.getString("language")!;
     var result = await http.post(Uri.parse(finalUrl),
         body: jsonEncode(outPuts),
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -608,7 +645,7 @@ class Apis {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl =
           '$baseUrl/getquestionnairegroupdetails?questionnaireGroupId=$questionnaireGroupId';
-      print(finalUrl);
+      lang = pref.getString("language")!;
       var result = await http.get(Uri.parse(finalUrl), headers: {
         'Content-Type': 'application/text',
         'lang': lang,
@@ -624,6 +661,7 @@ class Apis {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl = '$baseUrl/getpatientmaindata';
+      lang = pref.getString("language")!;
       var result = await http.get(Uri.parse(finalUrl), headers: {
         'Content-Type': 'application/text',
         'lang': lang,
@@ -639,6 +677,7 @@ class Apis {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl =
         '$baseUrl/sendquestionnaireresult?questionnaireId=$questionnaireId';
+    lang = pref.getString("language")!;
     var result = await http.post(Uri.parse(finalUrl),
         body: outputs,
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -647,7 +686,9 @@ class Apis {
 
   Future changePassword(String userName, String newPassword, String oldPassword,
       String? deviceToken) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/changepassword';
+    lang = pref.getString("language")!;
     var params = {
       'userName': userName,
       'newPassword': newPassword,
@@ -660,14 +701,17 @@ class Apis {
   }
 
   Future getSecretQuestion(String userName) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/getsecretquestion?username=$userName';
-    print(finalUrl);
+    lang = pref.getString("language")!;
     var result =
         await http.get(Uri.parse(finalUrl), headers: {'lang': lang}); /**/
     return getResponseFromApi(result);
   }
 
   Future onCheckAnswer(String answer, String userName) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    lang = pref.getString("language")!;
     String finalUrl = '$baseUrl/oncheckanswer';
     var params = {'answer': answer, 'username': userName};
     print(params);
@@ -677,13 +721,17 @@ class Apis {
   }
 
   Future resetPasswordRequestEmail(String userName) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/resetpasswordrequestemail?username=$userName';
+    lang = pref.getString("language")!;
     var result =
         await http.get(Uri.parse(finalUrl), headers: {'lang': lang}); /**/
     return getResponseFromApi(result);
   }
 
   Future resetPassword(String userName) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    lang = pref.getString("language")!;
     String finalUrl = '$baseUrl/resetpassword';
     var params = {'username': userName};
     var result = await http
@@ -705,6 +753,7 @@ class Apis {
 
     if (questionId != null) params['secretquestionid'] = questionId.toString();
 
+    lang = pref.getString("language")!;
     var result = await http.post(Uri.parse(finalUrl), body: params, headers: {
       'lang': lang,
       'token': pref.getString('token').toString()
@@ -715,6 +764,7 @@ class Apis {
   Future getPatientRecipes() async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
+      lang = pref.getString("language")!;
       String finalUrl = '$baseUrl/getpatientrecipes';
       var result = await http.get(Uri.parse(finalUrl), headers: {
         'Content-Type': 'application/text',
@@ -730,6 +780,7 @@ class Apis {
   Future getPatientDiagnoses() async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
+      lang = pref.getString("language")!;
       String finalUrl = '$baseUrl/getpatientdiagnoselist';
       var result = await http.get(Uri.parse(finalUrl), headers: {
         'Content-Type': 'application/text',
@@ -745,6 +796,7 @@ class Apis {
   Future getPatientLibraryList(List<dynamic> params) async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
+      lang = pref.getString("language")!;
       String finalUrl = '$baseUrl/getpatientlibrarylist';
       var body = {"patientGroups": jsonEncode(params)};
       var result = await http.post(Uri.parse(finalUrl),
@@ -759,6 +811,7 @@ class Apis {
   Future deleteRequestByPatient() async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
+      lang = pref.getString("language")!;
       String finalUrl = '$baseUrl/deleterequestbypatient';
       var result = await http.get(Uri.parse(finalUrl),
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -771,6 +824,7 @@ class Apis {
   Future extractdata() async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
+      lang = pref.getString("language")!;
       String finalUrl =
           '$apiPublic/extractdata?token=${pref.getString('token')}';
       var result = await http.get(Uri.parse(finalUrl),
@@ -784,7 +838,7 @@ class Apis {
   Future markAsRead(messageId) async {
     try {
       SharedPreferences pref = await SharedPreferences.getInstance();
-      print(messageId);
+      lang = pref.getString("language")!;
       String finalUrl = '$baseUrl/markasread?messageid=$messageId';
       var result = await http.post(Uri.parse(finalUrl),
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -796,6 +850,7 @@ class Apis {
 
   Future getnotificationhistories() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+    lang = pref.getString("language")!;
     String finalUrl = '$baseUrl/getnotificationhistories';
     var result = await http.get(Uri.parse(finalUrl), headers: {
       'Content-Type': 'application/text',
@@ -807,6 +862,7 @@ class Apis {
 
   Future patientrenewtoken() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+    lang = pref.getString("language")!;
     String finalUrl = '$baseUrl/patientrenewtoken';
     var result = await http.get(Uri.parse(finalUrl),
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -815,6 +871,7 @@ class Apis {
 
   Future getSearchFunctions(searchText) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+    lang = pref.getString("language")!;
     String finalUrl = '$baseUrl/getsearchfunctions?searchText=$searchText';
     var result = await http.get(Uri.parse(finalUrl),
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -823,6 +880,7 @@ class Apis {
 
   Future getPatientSecretQuestions() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+    lang = pref.getString("language")!;
     String finalUrl = '$baseUrl/getpatientsecretquestionlist';
     var result = await http.get(Uri.parse(finalUrl),
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -831,6 +889,7 @@ class Apis {
 
   Future getUnReadMessageCount() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+    lang = pref.getString("language")!;
     String finalUrl = '$baseUrl/unreadmessagecount';
     var result = await http.get(Uri.parse(finalUrl),
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -839,6 +898,7 @@ class Apis {
 
   Future getLanguageList() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+    lang = pref.getString("language")!;
     String finalUrl = '$baseUrl/getlanguagelist';
     var result = await http.get(Uri.parse(finalUrl),
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -847,6 +907,7 @@ class Apis {
 
   Future setPatientLanguage(String language) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+    lang = pref.getString("language")!;
     String finalUrl = '$baseUrl/setpatientlanguage?language=$language';
     var result = await http.post(Uri.parse(finalUrl),
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -873,7 +934,6 @@ class Apis {
         }
       } else {
         body = jsonDecode(body);
-        print("===================");
         //print(body['errors']);
         if (body['errors'] == null ||
             (body['errors'] != null &&

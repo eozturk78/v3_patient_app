@@ -113,7 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               height: 35,
                               child: Center(
                                 child: Text(
-                                  sh.getLanguageResource("memories"),
+                                  sh.getLanguageResource("notifications"),
                                   textScaleFactor:
                                       ScaleSize.textScaleFactor(context),
                                   style: TextStyle(color: mainButtonColor),

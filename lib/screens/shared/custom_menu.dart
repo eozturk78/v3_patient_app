@@ -193,7 +193,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                                   height: 35,
                                   child: Center(
                                     child: Text(
-                                      sh.getLanguageResource("memories"),
+                                      sh.getLanguageResource("notifications"),
                                       style: TextStyle(color: mainButtonColor),
                                     ),
                                   ),
@@ -275,7 +275,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
                                       12), // Add spacing between the icon and title
                               Expanded(
                                   child: Text(
-                                item.displayName,
+                                sh.getLanguageResource(item.displayName),
                                 style: TextStyle(fontSize: 14),
                                 overflow: TextOverflow.ellipsis,
                                 softWrap: false,
