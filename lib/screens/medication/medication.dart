@@ -27,7 +27,7 @@ class _MedicationPageState extends State<MedicationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: leadingSubpage('Medikation', context),
+      appBar: leadingSubpage(sh.getLanguageResource("medication"), context),
       body: SafeArea(
         // Wrap your body with SafeArea
         child: Center(
