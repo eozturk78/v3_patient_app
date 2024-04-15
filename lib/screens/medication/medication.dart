@@ -44,35 +44,41 @@ class _MedicationPageState extends State<MedicationPage> {
                       lg: 2,
                       xs: 6,
                       md: 4,
-                      child: GestureDetector(
-                        child: CustomSubTotal(
-                            SvgPicture.asset(
-                                'assets/images/menu-icons/medikamentenplan-main.svg'),
-                            sh.getLanguageResource("medical_plan"),
-                            null,
-                            null,
-                            10),
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed('/medication-plan-list');
-                        },
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10, right: 10),
+                        child: GestureDetector(
+                          child: CustomSubTotal(
+                              SvgPicture.asset(
+                                  'assets/images/menu-icons/medikamentenplan-main.svg'),
+                              sh.getLanguageResource("medical_plan"),
+                              null,
+                              null,
+                              10),
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed('/medication-plan-list');
+                          },
+                        ),
                       ),
                     ),
                     ResponsiveGridCol(
                       lg: 2,
                       xs: 6,
                       md: 4,
-                      child: GestureDetector(
-                        child: CustomSubTotal(
-                            SvgPicture.asset(
-                                'assets/images/menu-icons/rezept-main.svg'),
-                            sh.getLanguageResource("recipe"),
-                            null,
-                            null,
-                            20),
-                        onTap: () {
-                          Navigator.of(context).pushNamed('/recipes');
-                        },
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10, right: 10),
+                        child: GestureDetector(
+                          child: CustomSubTotal(
+                              SvgPicture.asset(
+                                  'assets/images/menu-icons/rezept-main.svg'),
+                              sh.getLanguageResource("recipe"),
+                              null,
+                              null,
+                              20),
+                          onTap: () {
+                            Navigator.of(context).pushNamed('/recipes');
+                          },
+                        ),
                       ),
                     ),
                   ],
@@ -83,35 +89,42 @@ class _MedicationPageState extends State<MedicationPage> {
                       lg: 2,
                       xs: 6,
                       md: 4,
-                      child: GestureDetector(
-                        child: CustomSubTotal(
-                            SvgPicture.asset(
-                                'assets/images/menu-icons/medikamentenplan-main.svg'),
-                            sh.getLanguageResource("interactive_medical_plan"),
-                            null,
-                            null,
-                            10),
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed('/interactive-medication-plan');
-                        },
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10, right: 10),
+                        child: GestureDetector(
+                          child: CustomSubTotal(
+                              SvgPicture.asset(
+                                  'assets/images/menu-icons/medikamentenplan-main.svg'),
+                              sh.getLanguageResource(
+                                  "interactive_medical_plan"),
+                              null,
+                              null,
+                              10),
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed('/interactive-medication-plan');
+                          },
+                        ),
                       ),
                     ),
                     ResponsiveGridCol(
                       lg: 2,
                       xs: 6,
                       md: 4,
-                      child: GestureDetector(
-                        child: CustomSubTotal(
-                            SvgPicture.asset(
-                                'assets/images/menu-icons/medikamentenplan-main.svg'),
-                            sh.getLanguageResource("medication_intake"),
-                            null,
-                            null,
-                            10),
-                        onTap: () {
-                          Navigator.of(context).pushNamed('/medicine-intake');
-                        },
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10, right: 10),
+                        child: GestureDetector(
+                          child: CustomSubTotal(
+                              SvgPicture.asset(
+                                  'assets/images/menu-icons/medikamentenplan-main.svg'),
+                              sh.getLanguageResource("medication_intake"),
+                              null,
+                              null,
+                              10),
+                          onTap: () {
+                            Navigator.of(context).pushNamed('/medicine-intake');
+                          },
+                        ),
                       ),
                     ),
                   ],

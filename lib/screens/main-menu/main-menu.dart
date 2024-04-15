@@ -273,18 +273,21 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
             lg: 2,
             xs: 6,
             md: 3,
-            child: GestureDetector(
-              child: CustomSubTotal(
-                key: UniqueKey(), // UniqueKey for CustomSubTotal
-                menuItem.icon,
-                sh.getLanguageResource(menuItem.displayName!)!,
-                null,
-                null,
-                10,
+            child: Padding(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: GestureDetector(
+                child: CustomSubTotal(
+                  key: UniqueKey(), // UniqueKey for CustomSubTotal
+                  menuItem.icon,
+                  sh.getLanguageResource(menuItem.displayName!)!,
+                  null,
+                  null,
+                  10,
+                ),
+                onTap: () {
+                  Navigator.of(context).pushNamed(menuItem.routerName!);
+                },
               ),
-              onTap: () {
-                Navigator.of(context).pushNamed(menuItem.routerName!);
-              },
             ),
           ),
       ],

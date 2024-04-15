@@ -43,51 +43,60 @@ class _InfoPageState extends State<InfoPage> {
                         lg: 2,
                         xs: 6,
                         md: 4,
-                        child: GestureDetector(
-                          child: CustomSubTotal(
-                              SvgPicture.asset(
-                                  'assets/images/menu-icons/bibliothek-main.svg'),
-                              sh.getLanguageResource('library'),
-                              null,
-                              null,
-                              10),
-                          onTap: () {
-                            Navigator.of(context).pushNamed('/libraries');
-                          },
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          child: GestureDetector(
+                            child: CustomSubTotal(
+                                SvgPicture.asset(
+                                    'assets/images/menu-icons/bibliothek-main.svg'),
+                                sh.getLanguageResource('library'),
+                                null,
+                                null,
+                                10),
+                            onTap: () {
+                              Navigator.of(context).pushNamed('/libraries');
+                            },
+                          ),
                         ),
                       ),
                       ResponsiveGridCol(
                         lg: 2,
                         xs: 6,
                         md: 4,
-                        child: GestureDetector(
-                          child: CustomSubTotal(
-                              SvgPicture.asset(
-                                  'assets/images/menu-icons/dokumente-main.svg'),
-                              sh.getLanguageResource('my_documents'),
-                              null,
-                              null,
-                              10),
-                          onTap: () {
-                            Navigator.of(context).pushNamed('/documents');
-                          },
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          child: GestureDetector(
+                            child: CustomSubTotal(
+                                SvgPicture.asset(
+                                    'assets/images/menu-icons/dokumente-main.svg'),
+                                sh.getLanguageResource('my_documents'),
+                                null,
+                                null,
+                                10),
+                            onTap: () {
+                              Navigator.of(context).pushNamed('/documents');
+                            },
+                          ),
                         ),
                       ),
                       ResponsiveGridCol(
                         lg: 2,
                         xs: 6,
                         md: 4,
-                        child: GestureDetector(
-                          child: CustomSubTotal(
-                              SvgPicture.asset(
-                                  'assets/images/menu-icons/aufklarung-main.svg'),
-                              sh.getLanguageResource('clarification'),
-                              null,
-                              null,
-                              10),
-                          onTap: () {
-                            Navigator.of(context).pushNamed('/enlightenment');
-                          },
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          child: GestureDetector(
+                            child: CustomSubTotal(
+                                SvgPicture.asset(
+                                    'assets/images/menu-icons/aufklarung-main.svg'),
+                                sh.getLanguageResource('clarification'),
+                                null,
+                                null,
+                                10),
+                            onTap: () {
+                              Navigator.of(context).pushNamed('/enlightenment');
+                            },
+                          ),
                         ),
                       ),
                     ],

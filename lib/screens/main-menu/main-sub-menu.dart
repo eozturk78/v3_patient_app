@@ -53,34 +53,40 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
                   lg: 2,
                   xs: 6,
                   md: 4,
-                  child: GestureDetector(
-                    child: CustomSubTotal(
-                        SvgPicture.asset(
-                            'assets/images/menu-icons/tagliche-main.svg'),
-                        sh.getLanguageResource("daily_measurements"),
-                        null,
-                        null,
-                        10),
-                    onTap: () {
-                      Navigator.of(context).pushNamed('/questionnaire-group');
-                    },
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    child: GestureDetector(
+                      child: CustomSubTotal(
+                          SvgPicture.asset(
+                              'assets/images/menu-icons/tagliche-main.svg'),
+                          sh.getLanguageResource("daily_measurements"),
+                          null,
+                          null,
+                          10),
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/questionnaire-group');
+                      },
+                    ),
                   ),
                 ),
                 ResponsiveGridCol(
                   lg: 2,
                   xs: 6,
                   md: 4,
-                  child: GestureDetector(
-                    child: CustomSubTotal(
-                        SvgPicture.asset(
-                            'assets/images/menu-icons/graphische-main.svg'),
-                        sh.getLanguageResource("graph_representation"),
-                        null,
-                        null,
-                        20),
-                    onTap: () {
-                      Navigator.of(context).pushNamed('/home');
-                    },
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    child: GestureDetector(
+                      child: CustomSubTotal(
+                          SvgPicture.asset(
+                              'assets/images/menu-icons/graphische-main.svg'),
+                          sh.getLanguageResource("graph_representation"),
+                          null,
+                          null,
+                          20),
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/home');
+                      },
+                    ),
                   ),
                 ),
               ],

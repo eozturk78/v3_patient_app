@@ -25,6 +25,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
   DateTime today = DateTime.now();
   String? videoUrl;
   Shared sh = Shared();
+  int? unReadMessageCount;
   @override
   void initState() {
     super.initState();
@@ -39,6 +40,17 @@ class _CommunicationPageState extends State<CommunicationPage> {
           }
         } catch (e) {}
       }
+    });
+    getUnReadMessageCount();
+  }
+
+  bool loading = true;
+  getUnReadMessageCount() {
+    Apis apis = Apis();
+    apis.getUnReadMessageCount().then((value) {
+      setState(() {
+        unReadMessageCount = value['unreadmessagecount'];
+      });
     });
   }
 
@@ -60,75 +72,106 @@ class _CommunicationPageState extends State<CommunicationPage> {
                   child: ResponsiveGridRow(
                     children: [
                       ResponsiveGridCol(
-                        lg: 2,
+                        lg: 3,
                         xs: 6,
                         md: 3,
-                        child: GestureDetector(
-                          child: CustomSubTotal(
-                              SvgPicture.asset(
-                                  'assets/images/menu-icons/mitteilungen-main.svg'),
-                              sh.getLanguageResource("notifications"),
-                              null,
-                              null,
-                              10),
-                          onTap: () {
-                            Navigator.of(context).pushNamed('/messages');
-                          },
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          child: unReadMessageCount != null &&
+                                  unreadMessageCount! > 0
+                              ? Badge(
+                                  label: Text(unReadMessageCount.toString()),
+                                  child: GestureDetector(
+                                    child: CustomSubTotal(
+                                        SvgPicture.asset(
+                                            'assets/images/menu-icons/mitteilungen-main.svg'),
+                                        sh.getLanguageResource("notifications"),
+                                        null,
+                                        null,
+                                        10),
+                                    onTap: () {
+                                      Navigator.of(context)
+                                          .pushNamed('/messages');
+                                    },
+                                  ),
+                                )
+                              : GestureDetector(
+                                  child: CustomSubTotal(
+                                      SvgPicture.asset(
+                                          'assets/images/menu-icons/mitteilungen-main.svg'),
+                                      sh.getLanguageResource("notifications"),
+                                      null,
+                                      null,
+                                      10),
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .pushNamed('/messages');
+                                  },
+                                ),
                         ),
                       ),
                       ResponsiveGridCol(
                         lg: 2,
                         xs: 6,
                         md: 3,
-                        child: GestureDetector(
-                          child: CustomSubTotal(
-                              SvgPicture.asset(
-                                  'assets/images/menu-icons/erinnerungen-main.svg'),
-                              sh.getLanguageResource("memories"),
-                              null,
-                              null,
-                              10),
-                          onTap: () {
-                            Navigator.of(context)
-                                .pushNamed('/notification-history');
-                          },
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          child: GestureDetector(
+                            child: CustomSubTotal(
+                                SvgPicture.asset(
+                                    'assets/images/menu-icons/erinnerungen-main.svg'),
+                                sh.getLanguageResource("memories"),
+                                null,
+                                null,
+                                10),
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushNamed('/notification-history');
+                            },
+                          ),
                         ),
                       ),
                       ResponsiveGridCol(
                         lg: 2,
                         xs: 6,
                         md: 3,
-                        child: GestureDetector(
-                          child: CustomSubTotal(
-                              Icons.video_call,
-                              sh.getLanguageResource("video_consultation"),
-                              null,
-                              null,
-                              20),
-                          onTap: () async {
-                            if (videoUrl != null) {
-                              await launch(videoUrl!);
-                            } else {
-                              showToast(sh.getLanguageResource(
-                                  "no_video_consultation_event"));
-                            }
-                          },
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          child: GestureDetector(
+                            child: CustomSubTotal(
+                                Icons.video_call,
+                                sh.getLanguageResource("video_consultation"),
+                                null,
+                                null,
+                                20),
+                            onTap: () async {
+                              if (videoUrl != null) {
+                                await launch(videoUrl!);
+                              } else {
+                                showToast(sh.getLanguageResource(
+                                    "no_video_consultation_event"));
+                              }
+                            },
+                          ),
                         ),
                       ),
                       ResponsiveGridCol(
                         lg: 2,
                         xs: 6,
                         md: 3,
-                        child: GestureDetector(
-                          child: CustomSubTotal(
-                              Icons.calendar_month_outlined,
-                              sh.getLanguageResource("calendar"),
-                              null,
-                              null,
-                              10),
-                          onTap: () {
-                            Navigator.of(context).pushNamed('/calendar');
-                          },
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          child: GestureDetector(
+                            child: CustomSubTotal(
+                                Icons.calendar_month_outlined,
+                                sh.getLanguageResource("calendar"),
+                                null,
+                                null,
+                                10),
+                            onTap: () {
+                              Navigator.of(context).pushNamed('/calendar');
+                            },
+                          ),
                         ),
                       ),
                     ],
