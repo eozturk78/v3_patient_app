@@ -12,6 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../apis/apis.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/sub-total.dart';
+import 'package:badges/badges.dart' as badges;
 
 class CommunicationPage extends StatefulWidget {
   const CommunicationPage({super.key});
@@ -41,7 +42,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
         } catch (e) {}
       }
     });
-    getUnReadMessageCount();
+    // getUnReadMessageCount();
   }
 
   bool loading = true;
@@ -77,37 +78,32 @@ class _CommunicationPageState extends State<CommunicationPage> {
                         md: 3,
                         child: Padding(
                           padding: EdgeInsets.only(left: 10, right: 10),
-                          child: unReadMessageCount != null &&
-                                  unreadMessageCount! > 0
-                              ? Badge(
-                                  label: Text(unReadMessageCount.toString()),
-                                  child: GestureDetector(
-                                    child: CustomSubTotal(
-                                        SvgPicture.asset(
-                                            'assets/images/menu-icons/mitteilungen-main.svg'),
-                                        sh.getLanguageResource("notifications"),
-                                        null,
-                                        null,
-                                        10),
-                                    onTap: () {
-                                      Navigator.of(context)
-                                          .pushNamed('/messages');
-                                    },
-                                  ),
-                                )
-                              : GestureDetector(
-                                  child: CustomSubTotal(
-                                      SvgPicture.asset(
-                                          'assets/images/menu-icons/mitteilungen-main.svg'),
-                                      sh.getLanguageResource("notifications"),
-                                      null,
-                                      null,
-                                      10),
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .pushNamed('/messages');
-                                  },
-                                ),
+                          child: badges.Badge(
+                            badgeStyle: badges.BadgeStyle(
+                                padding: EdgeInsets.all(7),
+                                badgeColor: unReadMessageCount == 0
+                                    ? Colors.transparent
+                                    : Colors.red),
+                            badgeContent: Text(
+                              unreadMessageCount.toString(),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            child: GestureDetector(
+                              child: CustomSubTotal(
+                                  SvgPicture.asset(
+                                      'assets/images/menu-icons/mitteilungen-main.svg'),
+                                  sh.getLanguageResource("notifications"),
+                                  null,
+                                  null,
+                                  10),
+                              onTap: () {
+                                Navigator.of(context).pushNamed('/messages');
+                              },
+                            ),
+                          ),
                         ),
                       ),
                       ResponsiveGridCol(

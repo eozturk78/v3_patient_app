@@ -7,6 +7,8 @@ import 'package:patient_app/shared/shared.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 
+import 'package:badges/badges.dart' as badges;
+
 class BottomNavigatorBar extends StatefulWidget {
   final int? selectedIndex;
 
@@ -118,22 +120,29 @@ class _CustomMenuButtonState extends State<BottomNavigatorBar> {
       alignment: Alignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 6),
-          child: unReadMessageCount == null || unReadMessageCount == 0
-              ? SvgPicture.asset(
-                  assetName,
-                  height: 20,
-                  color: color, // Set the color based on selection
-                )
-              : Badge(
-                  label: Text(unReadMessageCount.toString()),
-                  child: SvgPicture.asset(
-                    assetName,
-                    height: 20,
-                    color: color, // Set the color based on selection
-                  ),
-                ),
-        ),
+            padding: const EdgeInsets.only(bottom: 6),
+            child: badges.Badge(
+              badgeStyle: badges.BadgeStyle(
+                  padding: EdgeInsets.all(7),
+                  badgeColor:
+                      unReadMessageCount == null || unReadMessageCount == 0
+                          ? Colors.transparent
+                          : Colors.red),
+              badgeContent: unReadMessageCount != null
+                  ? Text(
+                      unreadMessageCount.toString(),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                    )
+                  : null,
+              child: SvgPicture.asset(
+                assetName,
+                height: 20,
+                color: color, // Set the color based on selection
+              ),
+            )),
         if (isSelected)
           Positioned(
             bottom: 0,

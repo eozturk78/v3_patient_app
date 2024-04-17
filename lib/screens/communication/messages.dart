@@ -10,6 +10,7 @@ import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:badges/badges.dart' as badges;
 import '../../apis/apis.dart';
 import '../../colors/colors.dart';
 import '../../model/message-notification.dart';
@@ -191,8 +192,26 @@ class _MessagesPageState extends State<MessagesPage> {
                                         for (var element in notificationList)
                                           if (element.notificationtype ==
                                               fpType)
-                                            GestureDetector(
-                                              child: CustomMessageListContainer(
+                                            badges.Badge(
+                                              badgeStyle: badges.BadgeStyle(
+                                                  padding: EdgeInsets.all(7),
+                                                  badgeColor:
+                                                      element.isRead == 0
+                                                          ? Colors.transparent
+                                                          : Colors.red),
+                                              badgeContent: element.isRead != 0
+                                                  ? Text(
+                                                      element.isRead.toString(),
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )
+                                                  : null,
+                                              child: GestureDetector(
+                                                child:
+                                                    CustomMessageListContainer(
                                                   Icons.info,
                                                   element.notificationTitle
                                                               .length >
@@ -204,30 +223,32 @@ class _MessagesPageState extends State<MessagesPage> {
                                                           .notificationTitle,
                                                   sh.formatDateTime(
                                                       element.createdAt),
-                                                  element.isRead),
-                                              onTap: () async {
-                                                if (element.notificationtype ==
-                                                    10) {
-                                                  Navigator.pushNamed(context,
-                                                      '/medical-plan-1',
-                                                      arguments: element);
-                                                } else {
-                                                  SharedPreferences pref =
-                                                      await SharedPreferences
-                                                          .getInstance();
-                                                  pref.setString(
-                                                      "organization",
-                                                      element.organization ??
-                                                          "");
-                                                  pref.setString("thread",
-                                                      element.thread ?? "");
+                                                  null,
+                                                ),
+                                                onTap: () async {
+                                                  if (element
+                                                          .notificationtype ==
+                                                      10) {
+                                                    Navigator.pushNamed(context,
+                                                        '/medical-plan-1',
+                                                        arguments: element);
+                                                  } else {
+                                                    SharedPreferences pref =
+                                                        await SharedPreferences
+                                                            .getInstance();
+                                                    pref.setString(
+                                                        "organization",
+                                                        element.organization ??
+                                                            "");
+                                                    pref.setString("thread",
+                                                        element.thread ?? "");
 
-                                                  print(element.organization);
-                                                  Navigator.pushNamed(
-                                                      context, '/chat');
-                                                }
-                                              },
-                                            ),
+                                                    Navigator.pushNamed(
+                                                        context, '/chat');
+                                                  }
+                                                },
+                                              ),
+                                            )
                                       ],
                                     ),
                                   ],
