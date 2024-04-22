@@ -123,7 +123,7 @@ class _CustomMenuButtonState extends State<BottomNavigatorBar> {
             padding: const EdgeInsets.only(bottom: 6),
             child: badges.Badge(
               badgeStyle: badges.BadgeStyle(
-                  padding: EdgeInsets.all(7),
+                  padding: EdgeInsets.all(4),
                   badgeColor:
                       unReadMessageCount == null || unReadMessageCount == 0
                           ? Colors.transparent
@@ -133,7 +133,7 @@ class _CustomMenuButtonState extends State<BottomNavigatorBar> {
                       unreadMessageCount.toString(),
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 15,
+                          fontSize: 10,
                           fontWeight: FontWeight.bold),
                     )
                   : null,

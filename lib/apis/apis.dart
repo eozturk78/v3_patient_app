@@ -25,11 +25,13 @@ class Apis {
 
   Future login(String email, String password, String? deviceToken) async {
     String finalUrl = '$baseUrl/patientlogin';
+    print(finalUrl);
     var params = {
       'username': email.toString(),
       'password': password.toString(),
       'deviceToken': deviceToken
     };
+    print(params);
     SharedPreferences pref = await SharedPreferences.getInstance();
     lang = pref.getString("language")!;
     //TODO: try-catch
@@ -288,6 +290,7 @@ class Apis {
   Future getPatientThreadMessages(String thread) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/getpatientthreadmessages?thread=${thread}';
+    print(finalUrl);
     lang = pref.getString("language")!;
     var result = await http.get(Uri.parse(finalUrl), headers: {
       'Content-Type': 'application/text',

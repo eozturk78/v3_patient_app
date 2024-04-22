@@ -82,24 +82,22 @@ class _ChatPageState extends State<ChatPage> {
         setState(() {
           var i = 0;
           for (var element in value) {
-            if (element['body'] != null) {
-              listMessages.add(Message(
-                  image: element['links'] != null &&
-                          element['links']['attachments']?.length > 0
-                      ? element['links']['attachments'][0]['full']
-                      : null,
-                  text: element['body'],
-                  senderType:
-                      element['sender']['type'] == "organization" ? 10 : 20,
-                  senderTitle: element['sender']['name'],
-                  dateTime: sh.formatDateTime(element['timestamp']),
-                  readAt: element['readAt'],
-                  messageId: element['links'] != null
-                      ? sh.getBaseName(element['links']['message'])
-                      : null,
-                  index: i));
-              i++;
-            }
+            listMessages.add(Message(
+                image: element['links'] != null &&
+                        element['links']['attachments']?.length > 0
+                    ? element['links']['attachments'][0]['full']
+                    : null,
+                text: element['body'] ?? "",
+                senderType:
+                    element['sender']['type'] == "organization" ? 10 : 20,
+                senderTitle: element['sender']['name'],
+                dateTime: sh.formatDateTime(element['timestamp']),
+                readAt: element['readAt'],
+                messageId: element['links'] != null
+                    ? sh.getBaseName(element['links']['message'])
+                    : null,
+                index: i));
+            i++;
           }
 
           listMessages.sort((a, b) => b.index.compareTo(a.index));

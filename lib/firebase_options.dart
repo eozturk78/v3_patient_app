@@ -67,8 +67,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '870497548445',
     projectId: 'imedcom-patient-app',
     storageBucket: 'imedcom-patient-app.appspot.com',
-    iosClientId: '870497548445-vbnph7hjabh3ek1su1srl0q49qj8gcea.apps.googleusercontent.com',
-    iosBundleId: 'com.example.iMedCom',
+    iosClientId:
+        '870497548445-vbnph7hjabh3ek1su1srl0q49qj8gcea.apps.googleusercontent.com',
+    iosBundleId: 'com.imedcom.iMedCom',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -77,7 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '870497548445',
     projectId: 'imedcom-patient-app',
     storageBucket: 'imedcom-patient-app.appspot.com',
-    iosClientId: '870497548445-79vanc1ru1343v8efh06nmc7qkdrutqa.apps.googleusercontent.com',
-    iosBundleId: 'com.example.patientApp',
+    iosClientId:
+        '870497548445-79vanc1ru1343v8efh06nmc7qkdrutqa.apps.googleusercontent.com',
+    iosBundleId: 'com.imedcom.patientApp',
   );
 }
