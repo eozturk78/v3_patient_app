@@ -26,7 +26,6 @@ class _CommunicationPageState extends State<CommunicationPage> {
   DateTime today = DateTime.now();
   String? videoUrl;
   Shared sh = Shared();
-  int? unReadMessageCount;
   @override
   void initState() {
     super.initState();
@@ -51,7 +50,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
     Apis apis = Apis();
     apis.getUnReadMessageCount().then((value) {
       setState(() {
-        unReadMessageCount = value['unreadmessagecount'];
+        //unReadMessageCount = value['unreadmessagecount'];
       });
     });
   }
@@ -82,17 +81,17 @@ class _CommunicationPageState extends State<CommunicationPage> {
                           child: badges.Badge(
                             badgeStyle: badges.BadgeStyle(
                                 padding: EdgeInsets.all(7),
-                                badgeColor: unReadMessageCount == 0 ||
-                                        unReadMessageCount == "0" ||
-                                        unReadMessageCount == null
+                                badgeColor: unreadMessageCount == 0 ||
+                                        unreadMessageCount == "0" ||
+                                        unreadMessageCount == null
                                     ? Colors.transparent
                                     : Colors.red),
                             badgeContent: Text(
                               unreadMessageCount.toString(),
                               style: TextStyle(
-                                  color: unReadMessageCount == 0 ||
-                                          unReadMessageCount == "0" ||
-                                          unReadMessageCount == null
+                                  color: unreadMessageCount == 0 ||
+                                          unreadMessageCount == "0" ||
+                                          unreadMessageCount == null
                                       ? Colors.transparent
                                       : Colors.white,
                                   fontSize: 15,

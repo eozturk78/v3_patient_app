@@ -9,6 +9,8 @@ import 'package:responsive_framework/responsive_value.dart';
 
 import 'package:badges/badges.dart' as badges;
 
+int? unreadMessageCount;
+
 class BottomNavigatorBar extends StatefulWidget {
   final int? selectedIndex;
 
@@ -17,8 +19,6 @@ class BottomNavigatorBar extends StatefulWidget {
   @override
   State<BottomNavigatorBar> createState() => _CustomMenuButtonState();
 }
-
-int? unreadMessageCount;
 
 class _CustomMenuButtonState extends State<BottomNavigatorBar> {
   late int _selectedIndex;
