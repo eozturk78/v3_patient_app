@@ -64,6 +64,7 @@ class _ChatPageState extends State<ChatPage> {
     getThreadMessages();
 
     controller = new ScrollController()..addListener(_scrollListener);
+    sh.openPopUp(context, 'chat');
   }
 
   getThreadMessages() async {
@@ -259,7 +260,6 @@ class _ChatPageState extends State<ChatPage> {
                                 .sendMessage(
                                     txtMessageController.text, organization)
                                 .then((resp) {
-                              print(resp);
                               txtMessageController.text = "";
                               setState(
                                 () {

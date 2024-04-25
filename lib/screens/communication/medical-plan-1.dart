@@ -26,6 +26,7 @@ class _MedicalPlan1PageState extends State<MedicalPlan1Page> {
   @override
   void initState() {
     super.initState();
+    sh.openPopUp(context, 'medical-plan-1');
   }
 
   getNotification(notification) async {

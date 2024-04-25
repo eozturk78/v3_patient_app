@@ -22,6 +22,7 @@ class _BlutdruckDescriptionPageState extends State<BlutdruckDescriptionPage> {
   @override
   void initState() {
     super.initState();
+    sh.openPopUp(context, 'blutdruck-description');
   }
 
   @override

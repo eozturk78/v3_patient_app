@@ -21,6 +21,7 @@ class _ImpresumPageState extends State<ImpresumPage> {
     // TODO: implement initState
     checkRemeberMe();
     super.initState();
+    sh.openPopUp(context, 'impresum');
   }
 
   checkRemeberMe() async {

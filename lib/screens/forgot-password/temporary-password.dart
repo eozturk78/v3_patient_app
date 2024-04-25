@@ -55,7 +55,6 @@ class _TemporaryPasswordPageState extends State<TemporaryPasswordPage> {
     });
     apis.resetPassword(userName).then(
       (resp) async {
-        print(resp['temporaryPassword']);
         pref.setString("temporaryPassword", resp['temporaryPassword']);
 
         await apis.login(userName, resp['temporaryPassword'], deviceToken).then(
@@ -72,7 +71,6 @@ class _TemporaryPasswordPageState extends State<TemporaryPasswordPage> {
           setState(() {
             isSendEP = false;
           });
-          print(err);
           try {
             sh.redirectPatient(err, context);
           } catch (e) {

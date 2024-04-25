@@ -25,13 +25,11 @@ class Apis {
 
   Future login(String email, String password, String? deviceToken) async {
     String finalUrl = '$baseUrl/patientlogin';
-    print(finalUrl);
     var params = {
       'username': email.toString(),
       'password': password.toString(),
       'deviceToken': deviceToken
     };
-    print(params);
     SharedPreferences pref = await SharedPreferences.getInstance();
     lang = pref.getString("language")!;
     //TODO: try-catch
@@ -290,7 +288,6 @@ class Apis {
   Future getPatientThreadMessages(String thread) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/getpatientthreadmessages?thread=${thread}';
-    print(finalUrl);
     lang = pref.getString("language")!;
     var result = await http.get(Uri.parse(finalUrl), headers: {
       'Content-Type': 'application/text',
@@ -308,7 +305,6 @@ class Apis {
       var result = await http.get(Uri.parse(finalUrl),
           headers: {'lang': lang, 'token': pref.getString('token').toString()});
       final data = result.bodyBytes;
-      // print(result);
       // and encode them to base64
       final base64data = base64Encode(data);
       Uint8List _bytesImage = Base64Decoder().convert(base64data);
@@ -332,7 +328,6 @@ class Apis {
       final base64data = base64Encode(data);
 
       Uint8List _bytesImage = Base64Decoder().convert(result.body);
-      print(_bytesImage);
       return _bytesImage;
     } catch (err) {
       throw Exception("can't decode");
@@ -517,7 +512,6 @@ class Apis {
     String finalUrl = '$baseUrl/sendmessage';
     lang = pref.getString("language")!;
     var params = {'message': message.toString(), 'organization': organization};
-    //print(params);
     var result = await http.post(Uri.parse(finalUrl),
         body: params,
         headers: {'lang': lang, 'token': pref.getString('token').toString()});
@@ -717,7 +711,6 @@ class Apis {
     lang = pref.getString("language")!;
     String finalUrl = '$baseUrl/oncheckanswer';
     var params = {'answer': answer, 'username': userName};
-    print(params);
     var result = await http
         .post(Uri.parse(finalUrl), body: params, headers: {'lang': lang}); /**/
     return getResponseFromApi(result);
@@ -750,7 +743,6 @@ class Apis {
       'ownquestion': ownQuestion.toString(),
       'answer': answer.toString()
     };
-    print(params);
     if (patientAnswerId != null)
       params['patientanswerid'] = patientAnswerId.toString();
 
@@ -923,10 +915,9 @@ class Apis {
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('token', result.headers['token'].toString());
       }
-      //  print(result.body);
       var body = jsonDecode(result.body);
-      //  print(result.statusCode);
       if (result.statusCode == 200 || result.statusCode == 201) {
+        tokenTimeOutSecond = tokenTimeOutSecondDB;
         try {
           return body;
         } on Exception catch (err) {
@@ -937,7 +928,6 @@ class Apis {
         }
       } else {
         body = jsonDecode(body);
-        //print(body['errors']);
         if (body['errors'] == null ||
             (body['errors'] != null &&
                 (body['errors'] as List).first['error'] != 'expired'))
@@ -959,7 +949,6 @@ class Apis {
         throw Exception(body['message']);
       }
     } on Exception catch (err) {
-      print(err.toString());
       showToast(err.toString());
       //showToast(AppLocalizations.tr("Something went wrong"));
       navigatorKey.currentState?.pushReplacementNamed("/login");

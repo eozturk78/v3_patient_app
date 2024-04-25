@@ -15,11 +15,13 @@ class PrivacyPolicyPage extends StatefulWidget {
 }
 
 class _PrivacyPolicyState extends State<PrivacyPolicyPage> {
+  Shared sh = Shared();
   @override
   void initState() {
     // TODO: implement initState
     checkRemeberMe();
     super.initState();
+    sh.openPopUp(context, 'privacy-policy');
   }
 
   checkRemeberMe() async {

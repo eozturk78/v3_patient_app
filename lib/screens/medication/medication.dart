@@ -22,6 +22,7 @@ class _MedicationPageState extends State<MedicationPage> {
   @override
   void initState() {
     super.initState();
+    sh.openPopUp(context, 'medication');
   }
 
   @override

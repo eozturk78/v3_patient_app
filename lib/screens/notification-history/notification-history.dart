@@ -29,6 +29,7 @@ class _NotificationHistoryPage extends State<NotificationHistoryPage> {
     // TODO: implement initState
     super.initState();
     onGetRecipes();
+    sh.openPopUp(context, 'notification-history');
   }
 
   /* _savedMessages() async {
@@ -47,7 +48,6 @@ class _NotificationHistoryPage extends State<NotificationHistoryPage> {
     apis.getnotificationhistories().then((value) {
       setState(() {
         isStarted = false;
-        print(value);
         listMessages = (value as List)
             .map((e) => NotificationHistory.fromJson(e))
             .toList();

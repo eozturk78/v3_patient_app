@@ -42,6 +42,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
         } catch (e) {}
       }
     });
+    sh.openPopUp(context, 'communication');
     // getUnReadMessageCount();
   }
 
@@ -81,13 +82,19 @@ class _CommunicationPageState extends State<CommunicationPage> {
                           child: badges.Badge(
                             badgeStyle: badges.BadgeStyle(
                                 padding: EdgeInsets.all(7),
-                                badgeColor: unReadMessageCount == 0
+                                badgeColor: unReadMessageCount == 0 ||
+                                        unReadMessageCount == "0" ||
+                                        unReadMessageCount == null
                                     ? Colors.transparent
                                     : Colors.red),
                             badgeContent: Text(
                               unreadMessageCount.toString(),
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: unReadMessageCount == 0 ||
+                                          unReadMessageCount == "0" ||
+                                          unReadMessageCount == null
+                                      ? Colors.transparent
+                                      : Colors.white,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold),
                             ),

@@ -39,7 +39,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         FirebaseMessaging.instance; // Change here
     _firebaseMessaging.getToken().then((token) {
       if (token != null) deviceToken = token;
-      print(deviceToken);
     });
     checkUserWhere();
     super.initState();

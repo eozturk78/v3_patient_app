@@ -27,6 +27,7 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
   void initState() {
     checkRememberMe();
     super.initState();
+    sh.openPopUp(context, 'edit-agreements');
   }
 
   checkRememberMe() async {

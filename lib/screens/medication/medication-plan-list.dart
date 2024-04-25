@@ -30,6 +30,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
   @override
   void initState() {
     super.initState();
+    sh.openPopUp(context, 'medication-plan-list');
     fnGetMedicalPlanList();
   }
 
@@ -39,14 +40,12 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
     });
     apis.getPatientMedicalPlanList().then((value) {
       setState(() {
-        print(value);
         mpLis = (value as List).map((e) => MedicalPlan.fromJson(e)).toList();
         isStarted = false;
       });
     }, onError: (err) {
       sh.redirectPatient(err, context);
       setState(() {
-        print(err);
         isStarted = false;
       });
     });

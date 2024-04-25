@@ -37,6 +37,7 @@ class _LibraryListPageState extends State<LibraryListPage> {
   void initState() {
     super.initState();
     getPatientLibraryList();
+    sh.openPopUp(context, 'libraries');
   }
 
   getPatientLibraryList() async {

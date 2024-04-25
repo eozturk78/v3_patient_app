@@ -53,6 +53,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
   void initState() {
     super.initState();
     getPatientFolders(true);
+    sh.openPopUp(context, 'documents');
   }
 
   getPatientFolders(bool loader) async {
@@ -64,7 +65,6 @@ class _DocumentListPageState extends State<DocumentListPage> {
         setState(() {
           isStarted = false;
           folderList = (value as List).map((e) => Folder.fromJson(e)).toList();
-          print(folderList);
           folderId = folderList[0].id;
         });
       },

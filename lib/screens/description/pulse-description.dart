@@ -21,6 +21,7 @@ class _PulseDescriptionPageState extends State<PulseDescriptionPage> {
   @override
   void initState() {
     super.initState();
+    sh.openPopUp(context, 'pulse-description');
   }
 
   @override

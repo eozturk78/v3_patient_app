@@ -42,6 +42,7 @@ class _CustomMenuPageState extends State<CustomMenuPage> {
         0, // Use the existing order
       );
     }).toList();
+    sh.openPopUp(context, 'custom-menu');
 
     _loadSelectedMenuItems(); // Load selected menu items on initialization
   }

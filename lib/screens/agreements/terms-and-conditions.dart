@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:patient_app/shared/shared.dart';
 import '../shared/shared.dart';
 
 class TermsAndConditionsPage extends StatefulWidget {
@@ -9,11 +10,13 @@ class TermsAndConditionsPage extends StatefulWidget {
 }
 
 class _TermsAndConditionsState extends State<TermsAndConditionsPage> {
+  Shared sh = Shared();
   @override
   void initState() {
     // TODO: implement initState
     checkRemeberMe();
     super.initState();
+    sh.openPopUp(context, 'terms-and-conditions');
   }
 
   checkRemeberMe() async {

@@ -34,6 +34,7 @@ class _AboutMeState extends State<AboutMe> {
   void initState() {
     super.initState();
     getAboutMe(true);
+    sh.openPopUp(context, 'about-me');
   }
 
   getAboutMe(bool loader) async {
@@ -44,7 +45,6 @@ class _AboutMeState extends State<AboutMe> {
     });
     SharedPreferences pref = await SharedPreferences.getInstance();
     await apis.patientInfo().then((value) {
-      print(value);
       setState(() {
         aboutPatient = value;
         if (aboutPatient["profilephoto"] != null &&
@@ -608,7 +608,6 @@ class _AboutMeState extends State<AboutMe> {
                           if (file != null) {
                             apis.setPatientProfilePhoto(file).then(
                               (value) {
-                                print(value);
                                 setState(() {
                                   isSendEP = false;
                                 });

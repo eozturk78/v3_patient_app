@@ -83,9 +83,6 @@ class _LoginPageState extends State<LoginPage> {
       userNameController.text = pref.getString("userName")!;
       passwordController.text = pref.getString("password")!;
     }
-    setState(() {
-      print(pref.getString("messages"));
-    });
   }
 
   Future<bool> authenticateIsAvailable() async {
@@ -94,7 +91,6 @@ class _LoginPageState extends State<LoginPage> {
       final isDeviceSupported = await auth.isDeviceSupported();
       return isAvailable && isDeviceSupported;
     } on PlatformException catch (e) {
-      print(e);
       return false;
     }
   }
@@ -105,7 +101,6 @@ class _LoginPageState extends State<LoginPage> {
       canCheckBiometrics = await auth.canCheckBiometrics;
     } on PlatformException catch (e) {
       canCheckBiometrics = false;
-      print(e);
     }
     if (!mounted) {
       return;
@@ -122,7 +117,6 @@ class _LoginPageState extends State<LoginPage> {
       availableBiometrics = await auth.getAvailableBiometrics();
     } on PlatformException catch (e) {
       availableBiometrics = <BiometricType>[];
-      print(e);
     }
     if (!mounted) {
       return;
@@ -150,7 +144,6 @@ class _LoginPageState extends State<LoginPage> {
         _isAuthenticating = false;
       });
     } on PlatformException catch (e) {
-      print(e);
       setState(() {
         _isAuthenticating = false;
         _authorized = 'Error - ${e.message}';
@@ -194,7 +187,6 @@ class _LoginPageState extends State<LoginPage> {
           _authorized = 'Authenticating';
         });
       } on PlatformException catch (e) {
-        print(e);
         setState(() {
           _isAuthenticating = false;
           _authorized = 'Error - ${e.message}';
@@ -261,6 +253,9 @@ class _LoginPageState extends State<LoginPage> {
           pref.setString("patientTitle", value['firstName']);
           pref.setString('token', value['token']);
           _isRequiredSecretQuestion = value['isRequiredSecretQuestion'];
+          tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
+          tokenTimeOutSecond = value['tokenTimeOutSecond'];
+          popUpAppearSecond = value['popUpAppearSecond'];
 
           checkRedirection();
         }
@@ -268,7 +263,6 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           isSendEP = false;
         });
-        print(err);
         try {
           sh.redirectPatient(err, context);
         } catch (e) {
@@ -319,10 +313,15 @@ class _LoginPageState extends State<LoginPage> {
       pref.setBool("${userNameController.text}_isAgreementRead", true);
     } else if (pref.getBool('${user}_isAgreementRead') == true) {
       isLoggedIn = true;
-      if (_isRequiredSecretQuestion)
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            "/main-menu", ModalRoute.withName('/main-menu'));
-      else
+
+      if (_isRequiredSecretQuestion) {
+        if (!Navigator.canPop(context))
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/main-menu', ModalRoute.withName('/main-menu'));
+        else
+          Navigator.of(context).pop(pref.getString("token")); /* */
+        //
+      } else
         Navigator.of(context).pushNamed("/secret-question");
     } else {
       Navigator.of(context).pushReplacementNamed("/agreements");

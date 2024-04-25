@@ -46,7 +46,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     var userName = userNameController.text; //pref.getString("userName");
     apis.getSecretQuestion(userName!).then(
       (resp) {
-        print(resp);
         if (resp != null) {
           setState(() {
             isSendEP = false;

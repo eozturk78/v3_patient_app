@@ -132,7 +132,10 @@ class _CustomMenuButtonState extends State<BottomNavigatorBar> {
                   ? Text(
                       unreadMessageCount.toString(),
                       style: TextStyle(
-                          color: Colors.white,
+                          color: unReadMessageCount == 0 ||
+                                  unReadMessageCount == "0"
+                              ? Colors.transparent
+                              : Colors.white,
                           fontSize: 10,
                           fontWeight: FontWeight.bold),
                     )

@@ -30,6 +30,7 @@ class _MeasurementResultWeightPageState
     super.initState();
     today = today.add(const Duration(days: -8));
     onGetMeasurementList(today, 'weight');
+    sh.openPopUp(context, 'measurement-result-weight');
   }
 
   onGetMeasurementList(DateTime date, String bp) {

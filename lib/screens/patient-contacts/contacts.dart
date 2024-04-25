@@ -34,6 +34,8 @@ class _ContactsListingPageState extends State<ContactsListingPage>
       initialIndex: _selectedCategory,
     );
     _fetchContactsByCategory(_selectedCategory + 1); // Fetch contacts initially
+
+    sh.openPopUp(context, 'patient-contacts-list');
   }
 
   Future<void> _fetchContactsByCategory(int category) async {
@@ -313,7 +315,6 @@ class _ContactsListingPageState extends State<ContactsListingPage>
                     value: _tmpSelectedCategory,
                     onChanged: (newValue) {
                       setState(() {
-                        print(newValue);
                         _tmpSelectedCategory = newValue!;
                       });
                     },

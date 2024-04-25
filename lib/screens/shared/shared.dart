@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:patient_app/apis/apis.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../colors/colors.dart';
 import '../../model/scale-size.dart';
@@ -113,57 +115,14 @@ class _AppLocalizationsDelegate
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
-/*
-class AppLocalizations {
-  final Locale locale;
-  Map<String, dynamic>? _localizedStrings;
-
-  AppLocalizations(this.locale);
-
-  static AppLocalizations? of(BuildContext context) {
-    return Localizations.of<AppLocalizations>(context, AppLocalizations);
-  }
-
-  Future<void> load() async {
-    String jsonString = await rootBundle.loadString('lib/l10n/intl_${locale.languageCode}.arb');
-    _localizedStrings = json.decode(jsonString) as Map<String, dynamic>;
-  }
-
-  String? translate(String key) {
-    return _localizedStrings?[key] as String?;
-  }
-
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-  _AppLocalizationsDelegate();
-}
-
-
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
-  const _AppLocalizationsDelegate();
-
-  @override
-  bool isSupported(Locale locale) => ['en', 'de'].contains(locale.languageCode);
-
-  @override
-  Future<AppLocalizations> load(Locale locale) async {
-    final appLocalization = AppLocalizations(locale);
-    await appLocalization.load();
-    return appLocalization;
-  }
-
-  @override
-  bool shouldReload(_AppLocalizationsDelegate old) => false;
-}
-
-
- */
-
 leadingWithoutProfile(String title, BuildContext context) {
   return AppBar(
     leading: IconButton(
       icon: Icon(Icons.arrow_back, color: Colors.black),
-      onPressed: () => Navigator.of(context).pop(),
+      onPressed: () {
+        renewToken();
+        Navigator.of(context).pop();
+      },
     ),
     title: Text(
       title,
@@ -192,17 +151,6 @@ leading(String title, BuildContext context) {
     centerTitle: true,
     automaticallyImplyLeading: false,
     backgroundColor: Colors.white,
-    /*actions: <Widget>[
-      IconButton(
-        icon: const Icon(
-          Icons.person_outline,
-          color: Colors.black,
-        ),
-        onPressed: () {
-          Navigator.of(context).pushNamed("/profile");
-        },
-      )
-    ],*/
   );
 }
 
@@ -240,6 +188,7 @@ leadingWithoutBack(String title, BuildContext context) {
 }
 
 leadingWithoutIcon(String title, BuildContext context) {
+  // countDownDialog(context);
   return AppBar(
     title: Text(
       title,
@@ -253,11 +202,29 @@ leadingWithoutIcon(String title, BuildContext context) {
   );
 }
 
+renewToken() {
+  if (tokenTimeOutSecond > 0) tokenTimeOutSecond = tokenTimeOutSecondDB;
+
+  Apis apis = Apis();
+  apis.patientrenewtoken().then((value) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString("token", value['token']);
+
+    tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
+    tokenTimeOutSecond = value['tokenTimeOutSecond'];
+    popUpAppearSecond = value['popUpAppearSecond'];
+  });
+}
+
 leadingSubpage(String title, BuildContext context) {
+  // countDownDialog(context);
   Shared sh = Shared();
   return AppBar(
     leading: TextButton(
-      onPressed: () => Navigator.of(context).pop(true),
+      onPressed: () {
+        renewToken();
+        Navigator.of(context).pop();
+      },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -308,11 +275,14 @@ leadingSubpage(String title, BuildContext context) {
 }
 
 leadingDescSubpage(String title, BuildContext context) {
+  // countDownDialog(context);
   return AppBar(
     leading: IconButton(
       icon: Icon(Icons.arrow_back, color: Colors.black),
-      onPressed: () => Navigator.of(context)
-          .pop(), //Navigator.of(context).pushNamed("/home"),
+      onPressed: () {
+        renewToken();
+        Navigator.of(context).pop();
+      },
     ),
     title: Text(
       title,

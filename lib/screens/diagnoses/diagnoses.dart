@@ -28,6 +28,7 @@ class _DiagnosesPageState extends State<DiagnosesPage> {
   void initState() {
     super.initState();
     onGetDiagnoses();
+    sh.openPopUp(context, 'diagnoses');
   }
 
   onGetDiagnoses() {

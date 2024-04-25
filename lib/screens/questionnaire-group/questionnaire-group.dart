@@ -112,7 +112,6 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
                                                 .getInstance();
                                         pref.setString('questionnaireId',
                                             item.questionnaireId);
-                                        //  print(item);
                                         pref.setString('questionnaireName',
                                             item.nameShownToPatient);
                                         Navigator.of(context)

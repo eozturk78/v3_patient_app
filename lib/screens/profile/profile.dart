@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:patient_app/apis/apis.dart';
+import 'package:patient_app/main.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,6 +26,16 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     getInfoVersion();
+    Apis apis = Apis();
+    apis.patientrenewtoken().then((value) async {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
+      tokenTimeOutSecond = value['tokenTimeOutSecond'];
+      popUpAppearSecond = value['popUpAppearSecond'];
+      pref.setString("token", value['token']);
+      navigatorKey.currentState?.pushNamed(redirectionScreen.toString());
+    });
+    sh.openPopUp(context, 'profile');
   }
 
   String? version;
@@ -32,7 +44,6 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         version = packageInfo.version;
       });
-      print(version);
     });
   }
 
@@ -74,11 +85,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () async {
-                              await Navigator.of(context)
-                                  .pushReplacement(MaterialPageRoute(
-                                builder: (context) =>
-                                    CustomMenuPage(menuItems: []),
-                              ));
+                              Navigator.of(context)
+                                  .pushReplacementNamed("/custom-menu");
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -383,6 +391,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       SharedPreferences pref =
                           await SharedPreferences.getInstance();
                       pref.remove("token");
+                      pref.remove("currentPage");
                       //pref.remove("userName");
                       Navigator.of(context).pushNamedAndRemoveUntil(
                           "/login", ModalRoute.withName('/login'));

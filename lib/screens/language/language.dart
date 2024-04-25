@@ -32,6 +32,7 @@ class _LanguagePageState extends State<LanguagePage> {
   void initState() {
     super.initState();
     getLanguageList();
+    sh.openPopUp(context, 'language');
   }
 
   getLanguageList() async {

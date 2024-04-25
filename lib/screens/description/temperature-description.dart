@@ -24,6 +24,7 @@ class _TemperatureDescriptionPageState
   @override
   void initState() {
     super.initState();
+    sh.openPopUp(context, 'temperature-description');
   }
 
   @override

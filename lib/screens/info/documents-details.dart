@@ -56,6 +56,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
     super.initState();
     getFiles(true);
     getPatientFolders();
+    sh.openPopUp(context, 'document-details');
   }
 
   getFiles(bool loader) async {
@@ -69,7 +70,6 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
             (value) => {
               setState(() {
                 isStarted = false;
-                print(value);
                 fileList = (value as List)
                     .map((e) => PatientFile.fromJson(e))
                     .toList();
@@ -94,7 +94,6 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
         setState(() {
           isStarted = false;
           folderList = (value as List).map((e) => Folder.fromJson(e)).toList();
-          //print(folderList);
         });
       },
       onError: (err) => setState(
@@ -564,7 +563,6 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                             builder: (context) =>
                                 onOpenFileInfo(context, _fileName),
                           ).then((value) {
-                            print(value);
                             _fileName = value;
                             if (value != null) Navigator.of(context).pop();
                           });
@@ -805,9 +803,6 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                           setState(() {
                             isSendEP = true;
                           });
-                          print(fileId);
-                          print(fileNameController.text);
-                          print(folderId);
                           apis
                               .movePatientFile(
                                   fileId, fileNameController.text, folderId)

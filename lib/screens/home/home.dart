@@ -31,6 +31,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     getPatientInfo();
     getMainData();
+    sh.openPopUp(context, 'home');
   }
 
   getPatientInfo() async {
@@ -47,7 +48,6 @@ class _HomePageState extends State<HomePage> {
     });
     apis.getpatientmaindata().then((resp) {
       if (resp != null) {
-        print(resp);
         setState(() {
           bloodPressureValue = resp['bloodPressureValue'] != null
               ? resp['bloodPressureValue']

@@ -30,6 +30,7 @@ class _MeasurementResultPulsePageState
     super.initState();
     today = today.add(const Duration(days: -8));
     onGetMeasurementList(today, 'pulse');
+    sh.openPopUp(context, 'measurement-result-pulse');
   }
 
   onGetMeasurementList(DateTime date, String bp) {

@@ -30,6 +30,7 @@ class _MeasurementResultTemperaturePageState
     super.initState();
     today = today.add(const Duration(days: -8));
     onGetMeasurementList(today, 'temperature');
+    sh.openPopUp(context, 'measurement-result-temperature');
   }
 
   onGetMeasurementList(DateTime date, String bp) {

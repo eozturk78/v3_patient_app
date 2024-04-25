@@ -31,6 +31,8 @@ class _InteractiveMedicationPlanPageState
   @override
   void initState() {
     super.initState();
+
+    sh.openPopUp(context, 'interactive-medication-plan');
     _tabController = TabController(length: 4, vsync: this);
   }
 

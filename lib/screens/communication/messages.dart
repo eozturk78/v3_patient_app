@@ -43,6 +43,7 @@ class _MessagesPageState extends State<MessagesPage> {
       isStarted = true;
     });
     getNotificationList();
+    sh.openPopUp(context, 'messages');
   }
 
   getNotificationList() async {

@@ -30,6 +30,7 @@ class _ExtractDataPageState extends State<ExtractDataPage> {
   void initState() {
     super.initState();
     onGetRecipes();
+    sh.openPopUp(context, 'extract-data');
   }
 
   onGetRecipes() {
@@ -37,7 +38,6 @@ class _ExtractDataPageState extends State<ExtractDataPage> {
       (value) {
         setState(() {
           isStarted = false;
-          print(value);
           diagnoseList =
               (value as List).map((e) => PatientDiagnose.fromJson(e)).toList();
         });

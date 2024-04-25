@@ -34,6 +34,7 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
   @override
   void initState() {
     super.initState();
+    sh.openPopUp(context, 'medicine-intake');
     api = Apis(); // Initialize API class instance
     fetchMedicineIntake(
         true); // Fetch medicine intake information when the screen is initialized
@@ -108,7 +109,6 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
         print('Data is null');
       }
     } catch (error) {
-      print('Error fetching medicine intake: $error');
     } finally {
       setState(() {
         _isLoading = false;

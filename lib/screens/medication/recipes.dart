@@ -24,13 +24,13 @@ class _RecipesPageState extends State<RecipesPage> {
   void initState() {
     super.initState();
     onGetRecipes();
+    sh.openPopUp(context, 'recipes');
   }
 
   onGetRecipes() {
     apis.getPatientRecipes().then((value) {
       setState(() {
         isStarted = false;
-        print(value);
         recipeList = (value as List).map((e) => Recipe.fromJson(e)).toList();
         if (recipeList != null && recipeList?.length != 0)
           recipeList![0].isExpanded = true;
@@ -63,7 +63,6 @@ class _RecipesPageState extends State<RecipesPage> {
                               setState(() {
                                 recipeList![index].isExpanded =
                                     !recipeList![index].isExpanded;
-                                print(recipeList![index].isExpanded);
                               });
                             },
                             children: [

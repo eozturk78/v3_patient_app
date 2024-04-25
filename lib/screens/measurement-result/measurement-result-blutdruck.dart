@@ -28,6 +28,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
     super.initState();
     today = today.add(const Duration(days: -8));
     onGetMeasurementList(today, 'blood_pressure');
+    sh.openPopUp(context, 'measurement-result');
   }
 
   onGetMeasurementList(DateTime date, String bp) {
@@ -41,9 +42,7 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
           data1.add(_SalesData(timestamp, systolic));
           var diastolic = result['measurement']['diastolic'];
           data2.add(_SalesData(timestamp, diastolic));
-          print(sh.formatDate(DateTime.now().toString()) +
-              "==" +
-              sh.formatDate(result['timestamp']));
+
           if (sh.formatDate(DateTime.now().toString()) ==
               sh.formatDate(result['timestamp'])) {
             todayValue = "$systolic/$diastolic";

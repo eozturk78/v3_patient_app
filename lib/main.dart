@@ -70,6 +70,7 @@ import 'package:patient_app/screens/registration/registration-2.dart';
 import 'package:patient_app/screens/registration/registration-3.dart';
 import 'package:patient_app/screens/registration/registration-4.dart';
 import 'package:patient_app/screens/settings/settings.dart';
+import 'package:patient_app/screens/shared/custom_menu.dart';
 import 'package:patient_app/screens/shared/customized_menu.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:responsive_framework/breakpoint.dart';
@@ -130,7 +131,9 @@ main() async {
 
     SharedPreferences pref = await SharedPreferences.getInstance();
     apis.patientrenewtoken().then((value) async {
-      print(value);
+      tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
+      tokenTimeOutSecond = value['tokenTimeOutSecond'];
+      popUpAppearSecond = value['popUpAppearSecond'];
       pref.setString("token", value['token']);
       navigatorKey.currentState?.pushNamed(redirectionScreen.toString());
     });
@@ -157,7 +160,6 @@ main() async {
 
   // If permission is granted, get the FCM token
   String? token = await messaging.getToken();
-  print('FCM Token: $token');
 
   FirebaseMessaging.instance.getInitialMessage().then((message) {
     if (message != null) {
@@ -289,6 +291,7 @@ class MyApp extends StatelessWidget {
         "/info": (context) => const InfoPage(),
         "/medication": (context) => const MedicationPage(),
         "/quick-access": (context) => CustomizedMenuPage(),
+        "/custom-menu": (context) => CustomMenuPage(menuItems: []),
         "/messages": (context) => const MessagesPage(),
         "/chat": (context) => const ChatPage(),
         "/medical-plan-1": (context) => const MedicalPlan1Page(),
@@ -378,8 +381,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   redirectToInside() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.remove("fromPopUp");
     apis.patientrenewtoken().then((value) async {
       pref.setString("token", value['token']);
+      tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
+      tokenTimeOutSecond = value['tokenTimeOutSecond'];
+      popUpAppearSecond = value['popUpAppearSecond'];
       if (value['isRequiredSecretQuestion'])
         Navigator.of(context).pushNamedAndRemoveUntil(
             "/main-menu", ModalRoute.withName('/main-menu'));
@@ -392,7 +399,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   checkRedirection() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-
+    pref.remove("fromPopUp");
     var lang = "de-DE";
     if (pref.getString("language") != null) {
       lang = pref.getString("language")!;
@@ -401,7 +408,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     var url = '${apis.apiPublic}/resources/$lang.json';
-    /**/
 
     apis.getLanguageResources(lang).then((resp) {
       languageResource = jsonEncode(resp);
@@ -416,16 +422,6 @@ class _MyHomePageState extends State<MyHomePage> {
         Navigator.of(context).pushReplacementNamed("/agreements");
       }
     });
-
-//    Navigator.of(context).pushReplacementNamed("/agreements");
-
-    /*
-    pref.remove("token");
-    var isAgreementRead = Timer(
-      Duration(seconds: 3),
-      (() {
-      }),
-    );*/
   }
 
   @override

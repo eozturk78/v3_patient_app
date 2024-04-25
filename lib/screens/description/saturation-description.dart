@@ -22,6 +22,7 @@ class _SaturationDescriptionPageState extends State<SaturationDescriptionPage> {
   @override
   void initState() {
     super.initState();
+    sh.openPopUp(context, 'saturation-description');
   }
 
   @override

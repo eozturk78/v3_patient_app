@@ -76,7 +76,6 @@ class _SecretQuestionPageState extends State<SecretQuestionPage> {
     });
     var ownQuestion = null;
     if (!questionController.text.isEmpty) ownQuestion = questionController.text;
-    print(ownQuestion);
     apis
         .setSecretQuestion(null, questionId, ownQuestion, answerController.text)
         .then(
@@ -89,7 +88,6 @@ class _SecretQuestionPageState extends State<SecretQuestionPage> {
         }
       },
       onError: (err) {
-        print(err);
         setState(
           () {
             isSendEP = false;

@@ -27,6 +27,17 @@ class _SettingsPageState extends State<SettingsPage> {
     super.initState();
     // Load user preference for notification enable/disable on app startup
     _loadNotificationPreference();
+    sh.openPopUp(context, 'settings');
+
+    Apis apis = Apis();
+    apis.patientrenewtoken().then((value) async {
+      tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
+      tokenTimeOutSecond = value['tokenTimeOutSecond'];
+      popUpAppearSecond = value['popUpAppearSecond'];
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setString("token", value['token']);
+      tokenTimeOutSecond = tokenTimeOutSecondDB;
+    });
   }
 
   // Load user preference for notification enable/disable from SharedPreferences
@@ -89,11 +100,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () async {
-                              await Navigator.of(context)
-                                  .pushReplacement(MaterialPageRoute(
-                                builder: (context) =>
-                                    CustomMenuPage(menuItems: []),
-                              ));
+                              Navigator.of(context)
+                                  .pushReplacementNamed("/custom-menu");
                             },
                             child: Container(
                               decoration: BoxDecoration(

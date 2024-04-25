@@ -63,6 +63,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   void initState() {
     super.initState();
     getQuestionnaireResults();
+    sh.openPopUp(context, 'questionnaire-result');
   }
 
   getQuestionnaireResults() async {
@@ -176,7 +177,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
               if (element['HelpTextElement']['image'] != null) {
                 _helpImageStr = element['HelpTextElement']['image'];
               }
-              print(_helpText);
             }
           }
         } catch (err) {}
@@ -249,7 +249,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
     _helpImageStr = null;
     _helpText = null;
     question = questions.where((x) => x['nodeName'] == next).first;
-    print(question);
     if (question['deviceNode'] == 'EndNode') {
       setState(() {
         isLast = true;
@@ -285,7 +284,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
       _helpText = null;
     });
     question = questions.where((x) => x['nodeName'] == next).first;
-    print(question);
     if (question['deviceNode'] == 'EndNode') {
       setState(() {
         isLast = true;

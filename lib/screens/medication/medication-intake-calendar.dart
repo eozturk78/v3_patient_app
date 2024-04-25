@@ -85,6 +85,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   void initState() {
     super.initState();
+    sh.openPopUp(context, 'calendar');
     _fetchPatientCalendarEventsFromBackend();
     _fetchPatientOnlineMeetingEventsFromBackend();
     _fetchPatientFileEventsFromBackend();

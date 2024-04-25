@@ -1,16 +1,28 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/main.dart';
 import 'package:patient_app/model/search-menu.dart';
+import 'package:patient_app/screens/login/login.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:patient_app/shared/toast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 bool isLoggedIn = false;
+
+int tokenTimeOutSecond = 10;
+int tokenTimeOutSecondDB = 10;
+int popUpAppearSecond = 6;
+
+Timer? _timer;
 
 class Shared {
   var outputFormat = DateFormat('dd/MM/yyyy HH:mm');
@@ -288,7 +300,6 @@ class Shared {
     }
 
     pref.setString(prefText, listCount.toString());
-    print(await permission.isGranted);
     if (await permission.isGranted == false) {
       if ((Platform.isIOS && listCount > 1) ||
           (Platform.isAndroid && listCount > 2))
@@ -315,6 +326,112 @@ class Shared {
     var translation = jsonDecode(languageResource)[resourceName];
     if (translation != null) return translation;
     return resourceName;
+  }
+
+  setCurrentScreen(String page) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString("currentPage", '/$page');
+  }
+
+  StateSetter? _setState;
+  openPopUp(BuildContext context, String page) {
+    if (tokenTimeOutSecond > 0) tokenTimeOutSecond = tokenTimeOutSecondDB;
+    const oneSec = const Duration(seconds: 1);
+    setCurrentScreen(page);
+    _timer?.cancel();
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        _timer = timer;
+        if (tokenTimeOutSecond == popUpAppearSecond) {
+          showDialog(
+            context: navigatorKey.currentState!.overlay!.context,
+            builder: (BuildContext context) => StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                _setState = setState;
+
+                return AlertDialog(
+                  title: Text(getLanguageResource('session_expiring')),
+                  content: Container(
+                    height: 50,
+                    child: Column(
+                      children: [
+                        Text(
+                          getLanguageResource('session_will_end'),
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text("$tokenTimeOutSecond s")
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ).then((value) {
+            _setState = null;
+            Apis apis = Apis();
+            apis.patientrenewtoken().then((value) async {
+              SharedPreferences pref = await SharedPreferences.getInstance();
+              pref.setString("token", value['token']);
+
+              tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
+              tokenTimeOutSecond = value['tokenTimeOutSecond'];
+              popUpAppearSecond = value['popUpAppearSecond'];
+            });
+          });
+        }
+        if (tokenTimeOutSecond < popUpAppearSecond) {
+          if (_setState != null)
+            _setState!(() {
+              tokenTimeOutSecond--;
+            });
+        } else {
+          tokenTimeOutSecond--;
+        }
+        if (tokenTimeOutSecond <= 0) {
+          timer.cancel();
+          onLogOut();
+        }
+      },
+    ); /* */
+  }
+
+  onLogOut() async {
+    Navigator.pop(navigatorKey.currentState!.overlay!.context);
+
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.remove("token");
+
+    showDialog(
+      context: navigatorKey.currentState!.overlay!.context,
+      builder: (BuildContext context) => StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return LoginPage();
+        },
+      ),
+    ).then((value) {
+      if (value == null) {
+        exit(0);
+      }
+      /* print(value);
+       _setState = null;
+      Apis apis = Apis();
+      apis.patientrenewtoken().then((value) async {
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        pref.setString("token", value['token']);
+
+        tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
+        tokenTimeOutSecond = value['tokenTimeOutSecond'];
+        popUpAppearSecond = value['popUpAppearSecond'];
+      });*/
+      var s = pref.getString("currentPage").toString();
+      s = s.substring(1);
+      openPopUp(navigatorKey.currentState!.overlay!.context, s);
+    });
   }
 
   getMainSearchItems() {

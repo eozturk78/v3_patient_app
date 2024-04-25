@@ -24,6 +24,7 @@ class _EnlightenmentPageState extends State<EnlightenmentPage> {
   @override
   void initState() {
     super.initState();
+    sh.openPopUp(context, 'enlightenment');
   }
 
   @override

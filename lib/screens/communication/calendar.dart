@@ -89,6 +89,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     _fetchPatientCalendarEventsFromBackend();
     _fetchPatientOnlineMeetingEventsFromBackend();
     _fetchPatientFileEventsFromBackend();
+    sh.openPopUp(context, 'calendar');
   }
 
   Future<void> _fetchPatientCalendarEventsFromBackend() async {
@@ -100,7 +101,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
       final events = List<Map<String, dynamic>>.from(eventsData);
       setState(() {
         _events.addAll(_convertToCalendarEvents(events));
-        //print(_events);
       });
     } else {
       // Handle error if fetching events fails
@@ -118,7 +118,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
       final events = List<Map<String, dynamic>>.from(eventsData);
       setState(() {
         _events.addAll(_convertToCalendarEvents(events));
-        print(_events);
       });
     } else {
       // Handle error if fetching events fails
@@ -135,7 +134,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
       final events = List<Map<String, dynamic>>.from(eventsData);
       setState(() {
         _events.addAll(_convertToCalendarEvents(events));
-        print(_events);
       });
     } else {
       // Handle error if fetching events fails

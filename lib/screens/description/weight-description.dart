@@ -21,6 +21,7 @@ class _WeightDescriptionPageState extends State<WeightDescriptionPage> {
   @override
   void initState() {
     super.initState();
+    sh.openPopUp(context, 'weight-description');
   }
 
   @override

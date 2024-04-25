@@ -63,7 +63,6 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
         setState(
           () {
             imageText = value;
-            print(value);
             widget.startedLoadImage = false;
           },
         );
@@ -218,19 +217,64 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
       height: 200,
     );
     return AlertDialog(
-      backgroundColor: Colors.transparent,
-      insetPadding: EdgeInsets.all(0),
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: 0,
+        vertical: 0,
+      ),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 0,
+        vertical: 0,
+      ),
       content: StatefulBuilder(
         builder: (BuildContext context, setState) {
-          return Container(
-            padding: EdgeInsets.zero,
-            width: MediaQuery.of(context).size.width * 1,
-            child: PhotoView.customChild(
-              backgroundDecoration: BoxDecoration(color: Colors.transparent),
-              child: image,
-              minScale: PhotoViewComputedScale.contained * 1,
-              initialScale: PhotoViewComputedScale.contained,
-              basePosition: Alignment.center,
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: double.infinity,
+            child: Column(
+              children: [
+                Container(
+                  child: Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Icon(
+                          Icons.close,
+                          size: 30,
+                        ),
+                      ),
+                      Spacer(),
+                    ],
+                  ),
+                  height: 40,
+                  padding: EdgeInsets.only(right: 10, left: 10),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 5,
+                        color: Colors.black.withOpacity(0.3),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                AspectRatio(
+                  aspectRatio: 0.7,
+                  child: PhotoView.customChild(
+                    backgroundDecoration:
+                        BoxDecoration(color: Colors.transparent),
+                    child: image,
+                    minScale: PhotoViewComputedScale.contained * 1,
+                    initialScale: PhotoViewComputedScale.contained,
+                    basePosition: Alignment.center,
+                  ),
+                )
+              ],
             ),
           );
         },

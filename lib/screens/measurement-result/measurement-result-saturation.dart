@@ -30,6 +30,7 @@ class _MeasurementResultSaturationPageState
     super.initState();
     today = today.add(const Duration(days: -8));
     onGetMeasurementList(today, 'saturation');
+    sh.openPopUp(context, 'measurement-result-saturation');
   }
 
   onGetMeasurementList(DateTime date, String bp) {

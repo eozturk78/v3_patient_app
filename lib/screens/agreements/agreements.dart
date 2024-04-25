@@ -33,6 +33,7 @@ class _AgreementsPageState extends State<AgreementsPage> {
     // TODO: implement initState
     getLanguageList();
     super.initState();
+    sh.openPopUp(context, 'agreements');
   }
 
   List<Language> list = [];
@@ -44,7 +45,6 @@ class _AgreementsPageState extends State<AgreementsPage> {
     apis.getLanguageList().then(
       (data) {
         setState(() {
-          print(data);
           list = (data as List).map((e) => Language.fromJson(e)).toList();
 
           if (pref.getString("language") != null) {

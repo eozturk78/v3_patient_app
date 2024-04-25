@@ -22,6 +22,7 @@ class _InfoPageState extends State<InfoPage> {
   @override
   void initState() {
     super.initState();
+    sh.openPopUp(context, 'info');
   }
 
   @override

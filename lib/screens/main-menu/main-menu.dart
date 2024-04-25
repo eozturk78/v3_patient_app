@@ -59,7 +59,6 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
       _loadMenuItems();
       _selectedIndex = 0;
     });
-    //print('User returned to MainMenuPage');
   }
 
   Apis apis = Apis();
@@ -73,15 +72,13 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
   void initState() {
     super.initState();
     getPatientInfo();
-
-    _loadMenuItems(); // Load menu items from shared preferences
+    _loadMenuItems();
+    sh.openPopUp(context, 'main-menu');
   }
 
   void _loadMenuItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? selectedRouteNamesJson = prefs.getString('selectedMenuItems');
-    print("stored data");
-    print(selectedRouteNamesJson);
     setState(() {
       if (selectedRouteNamesJson != null && selectedRouteNamesJson != '') {
         List<dynamic> selectedRouteNames = jsonDecode(selectedRouteNamesJson!);
@@ -104,7 +101,6 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
       } else {
         _menuItems.clear();
         defaultMenuList.forEach((element) {
-          print(element);
           var p =
               routeDisplayNames.entries.where((x) => x.key == element).first;
           p.value.routerName = element;
@@ -112,7 +108,6 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
         });
       }
       _refreshKey = UniqueKey();
-      //print(_refreshKey);
     });
   }
 
@@ -125,7 +120,6 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
       pref.setString("patientTitle", title);
     });
     await apis.patientInfo().then((value) {
-      print(value);
       setState(() {
         pref.setString("patientGroups", jsonEncode(value['patientGroups']));
         pref.setString("organizations", jsonEncode(value['organizations']));
@@ -373,7 +367,6 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                               onChanged: (value) {
                                 filteredRouters = [];
                                 // ignore: unnecessary_null_comparison
-                                print(value);
                                 _searchText = value;
                                 if (value != "" && value != null) {
                                   filteredRouters = [];
