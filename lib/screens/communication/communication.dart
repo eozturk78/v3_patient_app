@@ -42,7 +42,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
       }
     });
     sh.openPopUp(context, 'communication');
-    // getUnReadMessageCount();
+    getUnReadMessageCount();
   }
 
   bool loading = true;
@@ -50,7 +50,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
     Apis apis = Apis();
     apis.getUnReadMessageCount().then((value) {
       setState(() {
-        //unReadMessageCount = value['unreadmessagecount'];
+        unreadMessageCount = value['unreadmessagecount'];
       });
     });
   }
@@ -128,7 +128,8 @@ class _CommunicationPageState extends State<CommunicationPage> {
                                 10),
                             onTap: () {
                               Navigator.of(context)
-                                  .pushNamed('/notification-history');
+                                  .pushNamed('/notification-history')
+                                  .then((value) => getUnReadMessageCount());
                             },
                           ),
                         ),
@@ -171,7 +172,9 @@ class _CommunicationPageState extends State<CommunicationPage> {
                                 null,
                                 10),
                             onTap: () {
-                              Navigator.of(context).pushNamed('/calendar');
+                              Navigator.of(context)
+                                  .pushNamed('/calendar')
+                                  .then((value) => getUnReadMessageCount());
                             },
                           ),
                         ),

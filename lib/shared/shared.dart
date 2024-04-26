@@ -18,9 +18,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 bool isLoggedIn = false;
 
-int tokenTimeOutSecond = 10;
-int tokenTimeOutSecondDB = 10;
-int popUpAppearSecond = 6;
+int tokenTimeOutSecond = 0;
+int tokenTimeOutSecondDB = 0;
+int popUpAppearSecond = 0;
 
 Timer? _timer;
 
@@ -335,6 +335,7 @@ class Shared {
 
   StateSetter? _setState;
   openPopUp(BuildContext context, String page) {
+    if (tokenTimeOutSecondDB == 0) return;
     if (tokenTimeOutSecond > 0) tokenTimeOutSecond = tokenTimeOutSecondDB;
     const oneSec = const Duration(seconds: 1);
     setCurrentScreen(page);

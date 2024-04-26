@@ -245,7 +245,9 @@ class _MessagesPageState extends State<MessagesPage> {
                                                         element.thread ?? "");
 
                                                     Navigator.pushNamed(
-                                                        context, '/chat');
+                                                            context, '/chat')
+                                                        .then((value) =>
+                                                            getNotificationList());
                                                   }
                                                 },
                                               ),

@@ -65,6 +65,18 @@ class _ChatPageState extends State<ChatPage> {
 
     controller = new ScrollController()..addListener(_scrollListener);
     sh.openPopUp(context, 'chat');
+
+    getUnReadMessageCount();
+  }
+
+  getUnReadMessageCount() {
+    Apis apis = Apis();
+
+    apis.getUnReadMessageCount().then((value) {
+      setState(() {
+        unreadMessageCount = value['unreadmessagecount'];
+      });
+    });
   }
 
   getThreadMessages() async {
