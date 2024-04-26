@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/colors/colors.dart';
+import 'package:patient_app/screens/shared/bottom-menu.dart';
 import 'package:patient_app/shared/shared.dart';
 import 'package:patient_app/shared/toast.dart';
 import 'package:photo_view/photo_view.dart';
@@ -48,11 +49,6 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
     //if (widget.senderType == 10 && widget.readAt == null) markAsRead();
   }
 
-  markAsRead() {
-    apis
-        .markAsRead(widget.messageId)
-        .then((value) {}, onError: (err) => {sh.redirectPatient(err, context)});
-  }
 
   saveLoad() {
     setState(() {

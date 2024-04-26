@@ -162,6 +162,7 @@ main() async {
   String? token = await messaging.getToken();
 
   FirebaseMessaging.instance.getInitialMessage().then((message) {
+    print("=================");
     if (message != null) {
       var data = message.data;
       var payload = data['screen'];
@@ -172,6 +173,7 @@ main() async {
 // Background message handler
   Future<void> _firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
+    print("=================");
     var data = message.data;
     var payload = data['screen'];
     redirection(payload);
