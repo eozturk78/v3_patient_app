@@ -276,16 +276,18 @@ class Shared {
     return string.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>_-]'));
   }
 
-  redirectPatient(error, context) {
+  redirectPatient(error, BuildContext? context) {
     var errorStatus = error['error'] ?? "";
+    var _context = context;
+    if (context == null) _context = navigatorKey.currentContext;
     // TODO: HANDLE FOLLOWING ERROR
     //  [ERROR:flutter/runtime/dart_vm_initializer.cc(41)] Unhandled Exception: NoSuchMethodError: Class '_ClientSocketException' has no instance method '[]'.
     // E/flutter (21469): Receiver: Instance of '_ClientSocketException'
     if (errorStatus == "expired") {
       // change password redirection
-      Navigator.of(context).pushNamed('/change-password');
+      Navigator.of(_context!).pushNamed('/change-password');
     } else if (errorStatus == 'tokenexpired') {
-      Navigator.of(context).pushNamed('/login');
+      Navigator.of(_context!).pushNamed('/login');
     }
   }
 

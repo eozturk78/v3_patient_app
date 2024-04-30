@@ -67,16 +67,14 @@ class _ChatPageState extends State<ChatPage> {
     sh.openPopUp(context, 'chat');
   }
 
-  getUnReadMessageCount() {
+  /* getUnReadMessageCount() {
     Apis apis = Apis();
 
     apis.getUnReadMessageCount().then((value) {
-      setState(() {
-        print(value['unreadmessagecount']);
-        unreadMessageCount = value['unreadmessagecount'];
-      });
+      print(value['unreadmessagecount']);
+      unreadMessageCount = value['unreadmessagecount'];
     });
-  }
+  }*/
 
   getThreadMessages() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -93,7 +91,7 @@ class _ChatPageState extends State<ChatPage> {
           (value) {
         setState(() {
           var i = 0;
-          for (var element in value) {
+          for (var element in value['chat']) {
             listMessages.add(Message(
                 image: element['links'] != null &&
                         element['links']['attachments']?.length > 0
@@ -115,8 +113,9 @@ class _ChatPageState extends State<ChatPage> {
           listMessages.sort((a, b) => b.index.compareTo(a.index));
           setState(() {
             isStarted = false;
+            unreadMessageCount = value['unreadmessagecount'];
           });
-          getUnReadMessageCount();
+          //getUnReadMessageCount();
         });
       }, onError: (err) {
         sh.redirectPatient(err, context);

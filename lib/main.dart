@@ -136,7 +136,7 @@ main() async {
       popUpAppearSecond = value['popUpAppearSecond'];
       pref.setString("token", value['token']);
       navigatorKey.currentState?.pushNamed(redirectionScreen.toString());
-    });
+    }, onError: (err) => sh.redirectPatient(err, null));
   }
 
   Future<void> onSelectNotification(payload) async {
@@ -162,7 +162,6 @@ main() async {
   String? token = await messaging.getToken();
 
   FirebaseMessaging.instance.getInitialMessage().then((message) {
-    print("=================");
     if (message != null) {
       var data = message.data;
       var payload = data['screen'];
@@ -173,7 +172,6 @@ main() async {
 // Background message handler
   Future<void> _firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
-    print("=================");
     var data = message.data;
     var payload = data['screen'];
     redirection(payload);
@@ -271,6 +269,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       //home: const MyHomePage(title: 'iMedCom App Demo Home Page'),
       initialRoute: "/splash-screen",
+      
       routes: {
         "/splash-screen": (context) => const MyHomePage(title: ''),
         "/main-menu": (context) => const MainMenuPage(),

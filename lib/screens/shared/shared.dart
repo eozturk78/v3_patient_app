@@ -213,6 +213,9 @@ renewToken() {
     tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
     tokenTimeOutSecond = value['tokenTimeOutSecond'];
     popUpAppearSecond = value['popUpAppearSecond'];
+  }, onError: (err) {
+    Shared sh = Shared();
+    sh.redirectPatient(err, null);
   });
 }
 
