@@ -58,8 +58,8 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
         minSdkVersion 21//flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 64//flutterVersionCode.toInteger()
-        versionName '1.0.63'//lutterVersionName
+        versionCode 65//flutterVersionCode.toInteger()
+        versionName '1.0.69'//lutterVersionName
     }
 
     signingConfigs {

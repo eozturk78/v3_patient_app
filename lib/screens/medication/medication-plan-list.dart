@@ -134,7 +134,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                             Divider(),
                                             Text(
                                               mpr.activeingredient,
-                                              style: TextStyle(fontSize: 15),
+                                              style: mpBoldText,
                                             ),
                                             Text(
                                               mpr.commercialname,
@@ -159,29 +159,29 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                                   Center(
                                                     child: Text(
                                                       sh.getLanguageResource(
-                                                          "mornings"),
-                                                      style: labelText,
+                                                          "morning_mp"),
+                                                      style: mpBoldText,
                                                     ),
                                                   ),
                                                   Center(
                                                     child: Text(
                                                       sh.getLanguageResource(
-                                                          "noons"),
-                                                      style: labelText,
+                                                          "noon_mp"),
+                                                      style: mpBoldText,
                                                     ),
                                                   ),
                                                   Center(
                                                     child: Text(
                                                       sh.getLanguageResource(
-                                                          "evenigs"),
-                                                      style: labelText,
+                                                          "evening_mp"),
+                                                      style: mpBoldText,
                                                     ),
                                                   ),
                                                   Center(
                                                     child: Text(
                                                       sh.getLanguageResource(
-                                                          "nights"),
-                                                      style: labelText,
+                                                          "night_mp"),
+                                                      style: mpBoldText,
                                                     ),
                                                   ),
                                                 ],

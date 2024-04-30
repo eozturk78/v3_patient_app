@@ -21,9 +21,9 @@ class CustomSubTotal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.38,
+      width: MediaQuery.of(context).size.width * 0.35,
       margin: EdgeInsets.only(bottom: 10, left: 10),
-      padding: EdgeInsets.only(top: 10, bottom: 10, left: 2),
+      padding: EdgeInsets.only(top: 10, bottom: 10),
       decoration: menuBoxDecoration,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -33,50 +33,56 @@ class CustomSubTotal extends StatelessWidget {
             if (iconData is IconData) // Check if it's IconData
               Icon(
                 iconData,
-                size: 50,
+                size: 35,
                 color: iconColor,
               )
             else if (iconData is Widget) // Check if it's Widget (for SVG)
               Container(
                 child: iconData,
-                width: 50,
-                height: 50,
+                width: 35,
+                height: 35,
               ),
           ],
           SizedBox(
             height: 15,
           ),
           if (headText != null)
-            Text(
-              headText!,
-              overflow: TextOverflow.visible,
-              style: TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: ResponsiveValue(
-                  context,
-                  defaultValue: 12.0,
-                  conditionalValues: [
-                    Condition.largerThan(
-                      //Tablet
-                      name: MOBILE,
-                      value: 16.0,
-                    ),
-                  ],
-                ).value!,
-                color: menuTextColor,
+            Padding(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: Text(
+                headText!,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: ResponsiveValue(
+                    context,
+                    defaultValue: 12.0,
+                    conditionalValues: [
+                      Condition.largerThan(
+                        //Tablet
+                        name: MOBILE,
+                        value: 16.0,
+                      ),
+                    ],
+                  ).value!,
+                  color: menuTextColor,
+                ),
+                textAlign: TextAlign.center,
+                textScaleFactor: ScaleSize.textScaleFactor(context),
               ),
-              textAlign: TextAlign.center,
-              textScaleFactor: ScaleSize.textScaleFactor(context),
             ),
           SizedBox(
             height: 5,
           ),
           if (subText != null)
-            Text(
-              subText!,
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: menuTextColor),
-              textScaleFactor: ScaleSize.textScaleFactor(context),
+            FittedBox(
+              child: Text(
+                subText!,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: menuTextColor),
+                textScaleFactor: ScaleSize.textScaleFactor(context),
+              ),
             ),
           SizedBox(
             height: 5,
@@ -86,6 +92,7 @@ class CustomSubTotal extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.4,
               child: Text(
                 warningText!,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,

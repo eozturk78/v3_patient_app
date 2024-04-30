@@ -232,11 +232,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
               questionText = question['displayTextString'];
           }
         }
-        var p = {
-          'next': question['next'],
-          'text': sh.getLanguageResource("send"),
-          'isNo': false
-        };
+        var p = {'next': question['next'], 'text': "next", 'isNo': false};
         buttons.add(p);
       }
     });
@@ -890,7 +886,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                                           TextFormField(
                                                             scrollPadding:
                                                                 EdgeInsets.all(
-                                                                    120),
+                                                                    160),
                                                             decoration:
                                                                 InputDecoration(
                                                               focusedBorder:
@@ -1092,7 +1088,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                           for (var item in buttons)
                             Container(
                               width: 150,
-                              margin: EdgeInsets.only(left: 10, bottom: 10),
+                              margin: EdgeInsets.only(left: 10, bottom: 150),
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   primary: (item['isNo'])
@@ -1117,8 +1113,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                     }
                                   }
                                 },
-                                child:
-                                    Text(sh.getLanguageResource(item['text'])),
+                                child: Text(sh.getLanguageResource(
+                                  item['text'].toString().toLowerCase(),
+                                )),
                               ),
                             ),
                         ],

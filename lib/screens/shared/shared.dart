@@ -399,6 +399,8 @@ ButtonStyle descriptionNotStyle = ElevatedButton.styleFrom(
 
 TextStyle labelText =
     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
+TextStyle mpBoldText =
+    const TextStyle(fontSize: 15, fontWeight: FontWeight.bold);
 
 TextStyle selectionLabel = const TextStyle(color: Colors.black, fontSize: 20);
 

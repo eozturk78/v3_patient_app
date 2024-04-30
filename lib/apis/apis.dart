@@ -642,6 +642,9 @@ class Apis {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String finalUrl =
           '$baseUrl/getquestionnairegroupdetails?questionnaireGroupId=$questionnaireGroupId';
+
+      print(finalUrl);
+      print(pref.getString('token').toString());
       lang = pref.getString("language")!;
       var result = await http.get(Uri.parse(finalUrl), headers: {
         'Content-Type': 'application/text',
