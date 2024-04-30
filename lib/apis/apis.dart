@@ -930,10 +930,12 @@ class Apis {
         body = jsonDecode(body);
         if (body['errors'] == null ||
             (body['errors'] != null &&
-                (body['errors'] as List).first['error'] != 'expired'))
+                    (body['errors'] as List).first['error'] != 'expired') &&
+                result.statusCode != 401)
           showToast(AppLocalizations.tr(body['message']));
 
-        if (body['message'] == "Bitte melden Sie sich erneut an.") {
+        if (body['message'] == "Bitte melden Sie sich erneut an." ||
+            result.statusCode == 401) {
           navigatorKey.currentState?.pushReplacementNamed("/login");
         }
 
@@ -949,7 +951,7 @@ class Apis {
         throw Exception(body['message']);
       }
     } on Exception catch (err) {
-      showToast(err.toString());
+      if (result.statusCode != 401) showToast(err.toString());
       //showToast(AppLocalizations.tr("Something went wrong"));
       navigatorKey.currentState?.pushReplacementNamed("/login");
       throw Exception(AppLocalizations.tr(

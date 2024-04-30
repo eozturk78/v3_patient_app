@@ -269,7 +269,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       //home: const MyHomePage(title: 'iMedCom App Demo Home Page'),
       initialRoute: "/splash-screen",
-      
+
       routes: {
         "/splash-screen": (context) => const MyHomePage(title: ''),
         "/main-menu": (context) => const MainMenuPage(),
@@ -394,6 +394,7 @@ class _MyHomePageState extends State<MyHomePage> {
       else
         Navigator.of(context).pushNamed("/secret-question");
     }, onError: (err) {
+      print("====412323123====");
       Navigator.of(context).pushReplacementNamed("/login");
     });
   }
