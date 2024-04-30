@@ -40,6 +40,8 @@ class _CommunicationPageState extends State<CommunicationPage> {
           }
         } catch (e) {}
       }
+    }, onError: (err) {
+      sh.redirectPatient(err, context);
     });
     sh.openPopUp(context, 'communication');
     getUnReadMessageCount();

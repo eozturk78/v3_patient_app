@@ -29,28 +29,18 @@ class _ExtractDataPageState extends State<ExtractDataPage> {
   @override
   void initState() {
     super.initState();
-    onGetRecipes();
-    sh.openPopUp(context, 'extract-data');
+    renewToken();
   }
 
-  onGetRecipes() {
-    apis.getPatientDiagnoses().then(
-      (value) {
-        setState(() {
-          isStarted = false;
-          diagnoseList =
-              (value as List).map((e) => PatientDiagnose.fromJson(e)).toList();
-        });
-      },
-      onError: (err) {
-        sh.redirectPatient(err, context);
-        setState(
-          () {
-            isStarted = false;
-          },
-        );
-      },
-    );
+  renewToken() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    apis.patientrenewtoken().then((value) async {
+      tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
+      tokenTimeOutSecond = value['tokenTimeOutSecond'];
+      popUpAppearSecond = value['popUpAppearSecond'];
+      pref.setString("token", value['token']);
+    }, onError: (err) => sh.redirectPatient(err, null));
+    sh.openPopUp(context, 'extract-data');
   }
 
   @override

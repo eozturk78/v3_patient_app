@@ -33,42 +33,47 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
 
   onGetMeasurementList(DateTime date, String bp) {
     List<_SalesData> data1 = [], data2 = [], data3 = [];
-    apis.getMeasurementList(date, bp).then((value) {
-      var results = value['results'] as List;
-      for (var result in results) {
-        var timestamp = sh.formatDate(result['timestamp']);
-        if (bp == 'blood_pressure') {
-          var systolic = result['measurement']['systolic'];
-          data1.add(_SalesData(timestamp, systolic));
-          var diastolic = result['measurement']['diastolic'];
-          data2.add(_SalesData(timestamp, diastolic));
+    apis.getMeasurementList(date, bp).then(
+      (value) {
+        var results = value['results'] as List;
+        for (var result in results) {
+          var timestamp = sh.formatDate(result['timestamp']);
+          if (bp == 'blood_pressure') {
+            var systolic = result['measurement']['systolic'];
+            data1.add(_SalesData(timestamp, systolic));
+            var diastolic = result['measurement']['diastolic'];
+            data2.add(_SalesData(timestamp, diastolic));
 
-          if (sh.formatDate(DateTime.now().toString()) ==
-              sh.formatDate(result['timestamp'])) {
-            todayValue = "$systolic/$diastolic";
+            if (sh.formatDate(DateTime.now().toString()) ==
+                sh.formatDate(result['timestamp'])) {
+              todayValue = "$systolic/$diastolic";
+            }
+            if (sh.formatDate(
+                    DateTime.now().add(Duration(days: -1)).toString()) ==
+                sh.formatDate(result['timestamp'])) {
+              yesterdayValue = "$systolic/$diastolic";
+            }
+          } else {
+            var pulse = result['measurement']['value'];
+            data3.add(_SalesData(timestamp, pulse));
           }
-          if (sh.formatDate(
-                  DateTime.now().add(Duration(days: -1)).toString()) ==
-              sh.formatDate(result['timestamp'])) {
-            yesterdayValue = "$systolic/$diastolic";
-          }
-        } else {
-          var pulse = result['measurement']['value'];
-          data3.add(_SalesData(timestamp, pulse));
         }
-      }
-      setState(() {
-        if (bp == 'blood_pressure') {
-          dataS = data1;
-          dataD = data2;
-        } else {
-          dataPulse = data3;
+        setState(() {
+          if (bp == 'blood_pressure') {
+            dataS = data1;
+            dataD = data2;
+          } else {
+            dataPulse = data3;
 
-          if (dataS.length != dataPulse.length) {}
-        }
-      });
-      if (bp == "blood_pressure") onGetMeasurementList(date, 'pulse');
-    });
+            if (dataS.length != dataPulse.length) {}
+          }
+        });
+        if (bp == "blood_pressure") onGetMeasurementList(date, 'pulse');
+      },
+      onError: (err) {
+        sh.redirectPatient(err, context);
+      },
+    );
   }
 
   int periodType = 10; // 10 week, 20 month, 30 year

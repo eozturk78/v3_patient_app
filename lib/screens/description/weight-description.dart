@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/shared.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../shared/bottom-menu.dart';
 
@@ -22,6 +24,19 @@ class _WeightDescriptionPageState extends State<WeightDescriptionPage> {
   void initState() {
     super.initState();
     sh.openPopUp(context, 'weight-description');
+    renewToken();
+  }
+
+  Apis apis = Apis();
+  renewToken() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    apis.patientrenewtoken().then((value) async {
+      tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
+      tokenTimeOutSecond = value['tokenTimeOutSecond'];
+      popUpAppearSecond = value['popUpAppearSecond'];
+      pref.setString("token", value['token']);
+    }, onError: (err) => sh.redirectPatient(err, null));
+    sh.openPopUp(context, 'extract-data');
   }
 
   @override

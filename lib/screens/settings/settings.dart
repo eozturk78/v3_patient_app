@@ -28,16 +28,18 @@ class _SettingsPageState extends State<SettingsPage> {
     // Load user preference for notification enable/disable on app startup
     _loadNotificationPreference();
     sh.openPopUp(context, 'settings');
+    renewToken();
+  }
 
-    Apis apis = Apis();
+  renewToken() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     apis.patientrenewtoken().then((value) async {
       tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
       tokenTimeOutSecond = value['tokenTimeOutSecond'];
       popUpAppearSecond = value['popUpAppearSecond'];
-      SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setString("token", value['token']);
-      tokenTimeOutSecond = tokenTimeOutSecondDB;
-    });
+    }, onError: (err) => sh.redirectPatient(err, null));
+    sh.openPopUp(context, 'extract-data');
   }
 
   // Load user preference for notification enable/disable from SharedPreferences

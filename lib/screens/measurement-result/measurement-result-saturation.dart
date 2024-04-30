@@ -35,26 +35,32 @@ class _MeasurementResultSaturationPageState
 
   onGetMeasurementList(DateTime date, String bp) {
     List<_SalesData> dataFrom = [];
-    apis.getMeasurementList(date, bp).then((value) {
-      var results = value['results'] as List;
-      for (var result in results) {
-        var timestamp = sh.formatDate(result['timestamp']);
-        var value = result['measurement']['value'];
-        if (sh.formatDate(DateTime.now().toString()) ==
-            sh.formatDate(result['timestamp'])) {
-          todayValue = "$value";
+    apis.getMeasurementList(date, bp).then(
+      (value) {
+        var results = value['results'] as List;
+        for (var result in results) {
+          var timestamp = sh.formatDate(result['timestamp']);
+          var value = result['measurement']['value'];
+          if (sh.formatDate(DateTime.now().toString()) ==
+              sh.formatDate(result['timestamp'])) {
+            todayValue = "$value";
+          }
+          if (sh.formatDate(
+                  DateTime.now().add(Duration(days: -1)).toString()) ==
+              sh.formatDate(result['timestamp'])) {
+            yesterdayValue = "$value";
+          }
+          dataFrom.add(_SalesData(timestamp, value));
         }
-        if (sh.formatDate(DateTime.now().add(Duration(days: -1)).toString()) ==
-            sh.formatDate(result['timestamp'])) {
-          yesterdayValue = "$value";
-        }
-        dataFrom.add(_SalesData(timestamp, value));
-      }
-      setState(() {
-        data = dataFrom;
-        setFillThreshold();
-      });
-    });
+        setState(() {
+          data = dataFrom;
+          setFillThreshold();
+        });
+      },
+      onError: (err) {
+        sh.redirectPatient(err, context);
+      },
+    );
   }
 
   setFillThreshold() {

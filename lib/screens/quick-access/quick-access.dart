@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/shared.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../shared/bottom-menu.dart';
 
@@ -20,6 +22,19 @@ class _QuickAccessPageState extends State<QuickAccessPage> {
   @override
   void initState() {
     super.initState();
+    renewToken();
+  }
+
+  Apis apis = Apis();
+  renewToken() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    apis.patientrenewtoken().then((value) async {
+      tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
+      tokenTimeOutSecond = value['tokenTimeOutSecond'];
+      popUpAppearSecond = value['popUpAppearSecond'];
+      pref.setString("token", value['token']);
+    }, onError: (err) => sh.redirectPatient(err, null));
+    sh.openPopUp(context, 'extract-data');
   }
 
   @override
@@ -64,7 +79,7 @@ class _QuickAccessPageState extends State<QuickAccessPage> {
           FloatingActionButton.extended(
             onPressed: () => {},
             icon: new Icon(Icons.dock_outlined),
-            label: Text( sh.getLanguageResource("video_consultation")),
+            label: Text(sh.getLanguageResource("video_consultation")),
           ),
           FloatingActionButton.extended(
             onPressed: () => {},
@@ -74,7 +89,7 @@ class _QuickAccessPageState extends State<QuickAccessPage> {
           FloatingActionButton.extended(
             onPressed: () => {},
             icon: new Icon(Icons.dock_outlined),
-            label: Text(sh.getLanguageResource("blood_pressure_measurement") ),
+            label: Text(sh.getLanguageResource("blood_pressure_measurement")),
           ),
         ],
       ),

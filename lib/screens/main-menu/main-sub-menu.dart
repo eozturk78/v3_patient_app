@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/shared.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -24,12 +25,26 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
   void initState() {
     super.initState();
     getPatientInfo();
+    renewToken();
+  }
+
+  Apis apis = Apis();
+  renewToken() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    apis.patientrenewtoken().then((value) async {
+      tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
+      tokenTimeOutSecond = value['tokenTimeOutSecond'];
+      popUpAppearSecond = value['popUpAppearSecond'];
+      pref.setString("token", value['token']);
+    }, onError: (err) => sh.redirectPatient(err, null));
+    sh.openPopUp(context, 'extract-data');
   }
 
   getPatientInfo() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
       title = pref.getString("patientTitle") ?? "";
+      sh.openPopUp(context, 'main-sub-menu');
     });
   }
 

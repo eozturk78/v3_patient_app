@@ -26,16 +26,20 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     getInfoVersion();
-    Apis apis = Apis();
+    renewToken();
+  }
+
+  Apis apis = Apis();
+
+  renewToken() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     apis.patientrenewtoken().then((value) async {
-      SharedPreferences pref = await SharedPreferences.getInstance();
       tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
       tokenTimeOutSecond = value['tokenTimeOutSecond'];
       popUpAppearSecond = value['popUpAppearSecond'];
       pref.setString("token", value['token']);
-      navigatorKey.currentState?.pushNamed(redirectionScreen.toString());
-    });
-    sh.openPopUp(context, 'profile');
+    }, onError: (err) => sh.redirectPatient(err, null));
+    sh.openPopUp(context, 'extract-data');
   }
 
   String? version;

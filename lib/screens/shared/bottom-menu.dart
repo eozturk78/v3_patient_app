@@ -35,7 +35,7 @@ class _CustomMenuButtonState extends State<BottomNavigatorBar> {
 
     apis.getUnReadMessageCount().then((value) {
       setState(() {
-        unreadMessageCount = value['unreadmessagecount'];
+        if (value != null) unreadMessageCount = value['unreadmessagecount'];
       });
     });
   }
