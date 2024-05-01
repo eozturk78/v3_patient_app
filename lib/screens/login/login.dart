@@ -18,12 +18,16 @@ import '../../main.dart';
 import '../../shared/shared.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final bool isDiaglog;
+  const LoginPage({required this.isDiaglog});
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState(this.isDiaglog);
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool isDiaglog;
+  _LoginPageState(this.isDiaglog);
+
   TextEditingController userNameController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -43,6 +47,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _isRequiredSecretQuestion = false;
   String? deviceToken;
   bool hasInternelConnection = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -499,6 +504,7 @@ class _LoginPageState extends State<LoginPage> {
                           TextButton(
                               onPressed: () async {
                                 await _listener.cancel();
+                                //if (this.isDiaglog) Navigator.of(context).pop();
                                 Navigator.of(context)
                                     .pushNamed("/forgot-password");
                               },

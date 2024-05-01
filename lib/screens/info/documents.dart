@@ -205,7 +205,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
       //floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showModalBottomSheet(
+          /* showModalBottomSheet(
             context: context,
             builder: (context) {
               return Wrap(
@@ -283,11 +283,111 @@ class _DocumentListPageState extends State<DocumentListPage> {
                 ],
               );
             },
+          );*/
+          showDialog(
+            context: context,
+            builder: (context) => folderFileMenu(
+              context,
+            ),
           );
         },
         child: Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigatorBar(selectedIndex: 4),
+    );
+  }
+
+  Widget folderFileMenu(BuildContext context) {
+    return AlertDialog(
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: 0,
+        vertical: 0,
+      ),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 0,
+        vertical: 0,
+      ),
+      content: StatefulBuilder(
+        builder: (BuildContext context, setState) {
+          return SizedBox(
+            width: MediaQuery.of(context).size.width * 0.85,
+            child: Wrap(
+              children: [
+                ListTile(
+                  onTap: () async {
+                    if (await sh.checkPermission(context, Permission.storage,
+                            sh.storagePermissionText) ==
+                        true) {
+                      FilePickerResult? pickedFile =
+                          await FilePicker.platform.pickFiles(
+                        type: FileType.custom,
+                        allowMultiple: false,
+                        allowedExtensions: ['jpg', 'pdf', 'doc', 'png'],
+                      );
+                      if (pickedFile != null) {
+                        setState(() {
+                          selectedFile = pickedFile!.files.first;
+                          if (selectedFile?.extension == 'pdf') {
+                            File file = File(selectedFile!.path!);
+                            PDFDocument.fromFile(file).then((value) {
+                              setState(() {
+                                document = value;
+                                openDialog();
+                              });
+                            });
+                          } else {
+                            openDialog();
+                          }
+                        });
+                      }
+                    }
+                  },
+                  leading: new Icon(Icons.file_present_outlined),
+                  title: Text(sh.getLanguageResource('add_document_photo')),
+                ),
+                ListTile(
+                  onTap: () async {
+                    if (await sh.checkPermission(context, Permission.camera,
+                            sh.cameraPermissionText) ==
+                        true) {
+                      XFile? pickedFile = await ImagePicker().pickImage(
+                        source: ImageSource.camera,
+                      );
+                      if (pickedFile != null) {
+                        setState(() {
+                          selectedPhotoImage = pickedFile;
+                          showDialog(
+                            context: context,
+                            builder: (context) => onOpenImage(context),
+                          ).then((resp) {
+                            if (resp != null) Navigator.pop(context, resp);
+                          });
+                        });
+                      }
+                    }
+                  },
+                  leading: new Icon(Icons.image_outlined),
+                  title: Text(sh.getLanguageResource('take_a_photo')),
+                ),
+                ListTile(
+                  onTap: () async {
+                    setState(() {
+                      showDialog(
+                        context: context,
+                        builder: (context) => onOpenFolderInfo(context),
+                      ).then((resp) {
+                        getPatientFolders(false);
+                      });
+                    });
+                  },
+                  leading: new Icon(Icons.file_present_outlined),
+                  title: Text(sh.getLanguageResource('new_folder')),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 

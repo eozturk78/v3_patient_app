@@ -59,7 +59,7 @@ android {
         minSdkVersion 21//flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode 65//flutterVersionCode.toInteger()
-        versionName '1.0.69'//lutterVersionName
+        versionName '1.0.70'//lutterVersionName
     }
 
     signingConfigs {

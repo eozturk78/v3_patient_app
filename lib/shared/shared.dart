@@ -11,6 +11,7 @@ import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/main.dart';
 import 'package:patient_app/model/search-menu.dart';
 import 'package:patient_app/screens/login/login.dart';
+import 'package:patient_app/screens/shared/bottom-menu.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/toast.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -336,6 +337,17 @@ class Shared {
   setCurrentScreen(String page) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString("currentPage", '/$page');
+    getUnReadMessageCount();
+  }
+
+  getUnReadMessageCount() {
+    Apis apis = Apis();
+
+    apis.getUnReadMessageCount().then((value) {
+      navigatorKey.currentState!.setState(() {
+        if (value != null) unreadMessageCount = value['unreadmessagecount'];
+      });
+    });
   }
 
   StateSetter? _setState;
@@ -417,24 +429,15 @@ class Shared {
       context: navigatorKey.currentState!.overlay!.context,
       builder: (BuildContext context) => StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
-          return LoginPage();
+          return LoginPage(
+            isDiaglog: true,
+          );
         },
       ),
     ).then((value) {
       if (value == null) {
         exit(0);
       }
-      /* print(value);
-       _setState = null;
-      Apis apis = Apis();
-      apis.patientrenewtoken().then((value) async {
-        SharedPreferences pref = await SharedPreferences.getInstance();
-        pref.setString("token", value['token']);
-
-        tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
-        tokenTimeOutSecond = value['tokenTimeOutSecond'];
-        popUpAppearSecond = value['popUpAppearSecond'];
-      });*/
       var s = pref.getString("currentPage").toString();
       s = s.substring(1);
       openPopUp(navigatorKey.currentState!.overlay!.context, s);

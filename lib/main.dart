@@ -276,7 +276,7 @@ class MyApp extends StatelessWidget {
         "/settings": (context) => const SettingsPage(),
         "/main-sub-menu": (context) => const MainSubMenuPage(),
         "/home": (context) => const HomePage(),
-        "/login": (context) => const LoginPage(),
+        "/login": (context) => const LoginPage(isDiaglog: false,),
         "/change-password": (context) => const ChangePasswordPage(),
         "/profile": (context) => const ProfilePage(),
         "/measurement-result": (context) => const MeasurementResultPage(),

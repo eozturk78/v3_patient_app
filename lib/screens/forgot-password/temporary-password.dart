@@ -93,8 +93,23 @@ class _TemporaryPasswordPageState extends State<TemporaryPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: leadingWithoutProfile(
-          sh.getLanguageResource("forgetten_password"), context),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        title: Text(
+          sh.getLanguageResource("forgetten_password"),
+          style: TextStyle(color: Colors.black),
+        ),
+        shadowColor: null,
+        elevation: 0.0,
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+      ),
       body: Center(
         child: Container(
           alignment: Alignment.center,
@@ -156,8 +171,7 @@ class _TemporaryPasswordPageState extends State<TemporaryPasswordPage> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                Navigator.of(context)
-                                    .pushReplacementNamed('/login');
+                                Navigator.of(context).pop();
                               },
                               child: Text(sh.getLanguageResource("no")),
                               style: ElevatedButton.styleFrom(

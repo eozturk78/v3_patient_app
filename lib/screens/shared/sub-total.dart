@@ -21,7 +21,7 @@ class CustomSubTotal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.35,
+      width: MediaQuery.of(context).size.width * 0.39,
       margin: EdgeInsets.only(bottom: 10, left: 10),
       padding: EdgeInsets.only(top: 10, bottom: 10),
       decoration: menuBoxDecoration,

@@ -27,17 +27,7 @@ class _CustomMenuButtonState extends State<BottomNavigatorBar> {
     super.initState();
     _selectedIndex = widget.selectedIndex ?? 0;
 
-    getUnReadMessageCount();
-  }
-
-  getUnReadMessageCount() {
-    Apis apis = Apis();
-
-    apis.getUnReadMessageCount().then((value) {
-      setState(() {
-        if (value != null) unreadMessageCount = value['unreadmessagecount'];
-      });
-    });
+    // getUnReadMessageCount();
   }
 
   @override

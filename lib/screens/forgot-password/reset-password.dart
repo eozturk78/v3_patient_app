@@ -42,8 +42,23 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: leadingWithoutProfile(
-            sh.getLanguageResource("forgetten_password"), context),
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          title: Text(
+            sh.getLanguageResource("forgetten_password"),
+            style: TextStyle(color: Colors.black),
+          ),
+          shadowColor: null,
+          elevation: 0.0,
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,
+        ),
         body: Center(
           child: Container(
             alignment: Alignment.center,
