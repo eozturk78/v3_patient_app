@@ -159,6 +159,37 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
     );
   }
 
+  onShowFile(PatientFile item) {
+    var fileUrl = "";
+
+    fileUrl = '${apis.apiPublic}/patient_files/${item.fileUrl}';
+
+    if (item.fileUrl.contains('treatmentid')) {
+      var url = '${apis.apiPublic}/${item.fileUrl}';
+      PDFDocument.fromURL(url).then((value) {
+        setState(() {
+          isPdf = true;
+          document = value;
+          openDialog(item);
+        });
+      });
+    } else if (fileUrl.contains('pdf')) {
+      PDFDocument.fromURL(fileUrl).then((value) {
+        setState(() {
+          isPdf = true;
+          document = value;
+          openDialog(item);
+        });
+      });
+    } else {
+      setState(() {
+        isPdf = false;
+        imageUrl = fileUrl;
+        openDialog(item);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final key = GlobalObjectKey<ExpandableFabState>(context);
@@ -213,6 +244,9 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                             for (var item in fileList)
                               Column(children: [
                                 TextButton(
+                                  onLongPress: () {
+                                    onShowFile(item);
+                                  },
                                   onPressed: () async {
                                     showModalBottomSheet(
                                       context: context,
@@ -226,40 +260,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                                                   sh.getLanguageResource(
                                                       "show_file")),
                                               onTap: () {
-                                                var fileUrl = "";
-
-                                                fileUrl =
-                                                    '${apis.apiPublic}/patient_files/${item.fileUrl}';
-
-                                                if (item.fileUrl
-                                                    .contains('treatmentid')) {
-                                                  var url =
-                                                      '${apis.apiPublic}/${item.fileUrl}';
-                                                  PDFDocument.fromURL(url)
-                                                      .then((value) {
-                                                    setState(() {
-                                                      isPdf = true;
-                                                      document = value;
-                                                      openDialog(item);
-                                                    });
-                                                  });
-                                                } else if (fileUrl
-                                                    .contains('pdf')) {
-                                                  PDFDocument.fromURL(fileUrl)
-                                                      .then((value) {
-                                                    setState(() {
-                                                      isPdf = true;
-                                                      document = value;
-                                                      openDialog(item);
-                                                    });
-                                                  });
-                                                } else {
-                                                  setState(() {
-                                                    isPdf = false;
-                                                    imageUrl = fileUrl;
-                                                    openDialog(item);
-                                                  });
-                                                }
+                                                onShowFile(item);
                                               },
                                             ),
                                             ListTile(
