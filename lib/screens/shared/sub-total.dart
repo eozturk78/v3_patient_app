@@ -24,6 +24,7 @@ class CustomSubTotal extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.39,
       margin: EdgeInsets.only(bottom: 10, left: 10),
       padding: EdgeInsets.only(top: 10, bottom: 10),
+      height: 110.0,
       decoration: menuBoxDecoration,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -51,7 +52,6 @@ class CustomSubTotal extends StatelessWidget {
               padding: EdgeInsets.only(left: 10, right: 10),
               child: Text(
                 headText!,
-                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontWeight: FontWeight.normal,
                   fontSize: ResponsiveValue(
@@ -78,7 +78,6 @@ class CustomSubTotal extends StatelessWidget {
             FittedBox(
               child: Text(
                 subText!,
-                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     fontWeight: FontWeight.bold, color: menuTextColor),
                 textScaleFactor: ScaleSize.textScaleFactor(context),
