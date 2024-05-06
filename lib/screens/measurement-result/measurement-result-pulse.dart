@@ -219,7 +219,7 @@ class _MeasurementResultPulsePageState
                     ),
                     //Initialize the chart widget
                     SfCartesianChart(
-                      primaryXAxis: CategoryAxis(),
+                      primaryXAxis: CategoryAxis(isVisible: false),
                       // Chart title
                       title: ChartTitle(text: ''),
                       // Enable legend

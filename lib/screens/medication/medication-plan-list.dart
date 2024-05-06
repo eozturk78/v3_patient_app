@@ -118,7 +118,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                   );
                                 },
                                 body: Padding(
-                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                  padding: EdgeInsets.only(left: 5, right: 5),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,

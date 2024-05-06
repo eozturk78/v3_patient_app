@@ -268,7 +268,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
             xs: 6,
             md: 3,
             child: Padding(
-              padding: EdgeInsets.only(left: 10, right: 10),
+              padding: EdgeInsets.only(left: 5, right: 5),
               child: GestureDetector(
                 child: CustomSubTotal(
                   key: UniqueKey(), // UniqueKey for CustomSubTotal

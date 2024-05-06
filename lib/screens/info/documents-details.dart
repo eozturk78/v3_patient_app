@@ -245,9 +245,6 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                               Column(children: [
                                 TextButton(
                                   onLongPress: () {
-                                    onShowFile(item);
-                                  },
-                                  onPressed: () async {
                                     showModalBottomSheet(
                                       context: context,
                                       builder: (context) {
@@ -286,6 +283,9 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                                         );
                                       },
                                     );
+                                  },
+                                  onPressed: () async {
+                                    onShowFile(item);
                                   },
                                   child: CustomDocumentBox(
                                       Icons.file_copy_rounded,

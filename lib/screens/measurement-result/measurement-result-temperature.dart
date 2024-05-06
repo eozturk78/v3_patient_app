@@ -210,7 +210,7 @@ class _MeasurementResultTemperaturePageState
               children: [
                 //Initialize the chart widget
                 SfCartesianChart(
-                  primaryXAxis: CategoryAxis(),
+                  primaryXAxis: CategoryAxis(isVisible: false),
                   // Chart title
                   title: ChartTitle(text: ''),
                   // Enable legend

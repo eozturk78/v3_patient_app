@@ -23,7 +23,6 @@ class CustomSubTotal extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width * 0.39,
       margin: EdgeInsets.only(bottom: 10, left: 10),
-      padding: EdgeInsets.only(top: 10, bottom: 10),
       height: 110.0,
       decoration: menuBoxDecoration,
       child: Column(
@@ -49,7 +48,7 @@ class CustomSubTotal extends StatelessWidget {
           ),
           if (headText != null)
             Padding(
-              padding: EdgeInsets.only(left: 10, right: 10),
+              padding: EdgeInsets.only(left: 5, right: 5),
               child: Text(
                 headText!,
                 style: TextStyle(

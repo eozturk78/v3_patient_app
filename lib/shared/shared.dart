@@ -410,7 +410,6 @@ class Shared {
         } else {
           tokenTimeOutSecond--;
         }
-        print("timout sec ========= " + tokenTimeOutSecond.toString());
         if (tokenTimeOutSecond <= 0) {
           timer.cancel();
           onLogOut();

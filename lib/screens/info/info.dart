@@ -60,7 +60,7 @@ class _InfoPageState extends State<InfoPage> {
                         xs: 6,
                         md: 4,
                         child: Padding(
-                          padding: EdgeInsets.only(left: 10, right: 10),
+                          padding: EdgeInsets.only(left: 5, right: 5),
                           child: GestureDetector(
                             child: CustomSubTotal(
                                 SvgPicture.asset(
@@ -80,7 +80,7 @@ class _InfoPageState extends State<InfoPage> {
                         xs: 6,
                         md: 4,
                         child: Padding(
-                          padding: EdgeInsets.only(left: 10, right: 10),
+                          padding: EdgeInsets.only(left: 5, right: 5),
                           child: GestureDetector(
                             child: CustomSubTotal(
                                 SvgPicture.asset(
@@ -100,7 +100,7 @@ class _InfoPageState extends State<InfoPage> {
                         xs: 6,
                         md: 4,
                         child: Padding(
-                          padding: EdgeInsets.only(left: 10, right: 10),
+                          padding: EdgeInsets.only(left: 5, right: 5),
                           child: GestureDetector(
                             child: CustomSubTotal(
                                 SvgPicture.asset(

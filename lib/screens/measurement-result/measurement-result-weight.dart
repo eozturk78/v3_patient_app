@@ -211,7 +211,7 @@ class _MeasurementResultWeightPageState
               child: Column(
                 children: [
                   SfCartesianChart(
-                    primaryXAxis: CategoryAxis(),
+                    primaryXAxis: CategoryAxis(isVisible: false),
                     // Chart title
                     title: ChartTitle(text: ''),
                     // Enable legend

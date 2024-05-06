@@ -223,7 +223,8 @@ class _MeasurementResultPageState extends State<MeasurementResultPage> {
                 children: [
                   //Initialize the chart widget
                   SfCartesianChart(
-                    primaryXAxis: CategoryAxis(arrangeByIndex: true),
+                    primaryXAxis:
+                        CategoryAxis(arrangeByIndex: true, isVisible: false),
                     // Chart title
                     title: ChartTitle(text: ''),
                     // Enable legend

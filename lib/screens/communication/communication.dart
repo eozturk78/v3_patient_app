@@ -119,7 +119,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
                         xs: 6,
                         md: 3,
                         child: Padding(
-                          padding: EdgeInsets.only(left: 10, right: 10),
+                          padding: EdgeInsets.only(left: 5, right: 5),
                           child: GestureDetector(
                             child: CustomSubTotal(
                                 SvgPicture.asset(
@@ -141,7 +141,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
                         xs: 6,
                         md: 3,
                         child: Padding(
-                          padding: EdgeInsets.only(left: 10, right: 10),
+                          padding: EdgeInsets.only(left: 5, right: 5),
                           child: GestureDetector(
                             child: CustomSubTotal(
                                 Icons.video_call,
@@ -165,7 +165,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
                         xs: 6,
                         md: 3,
                         child: Padding(
-                          padding: EdgeInsets.only(left: 10, right: 10),
+                          padding: EdgeInsets.only(left: 5, right: 5),
                           child: GestureDetector(
                             child: CustomSubTotal(
                                 Icons.calendar_month_outlined,

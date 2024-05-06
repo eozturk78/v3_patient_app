@@ -61,7 +61,7 @@ class _MedicationPageState extends State<MedicationPage> {
                       xs: 6,
                       md: 4,
                       child: Padding(
-                        padding: EdgeInsets.only(left: 10, right: 10),
+                        padding: EdgeInsets.only(left: 5, right: 5),
                         child: GestureDetector(
                           child: CustomSubTotal(
                               SvgPicture.asset(
@@ -82,7 +82,7 @@ class _MedicationPageState extends State<MedicationPage> {
                       xs: 6,
                       md: 4,
                       child: Padding(
-                        padding: EdgeInsets.only(left: 10, right: 10),
+                        padding: EdgeInsets.only(left: 5, right: 5),
                         child: GestureDetector(
                           child: CustomSubTotal(
                               SvgPicture.asset(
@@ -106,7 +106,7 @@ class _MedicationPageState extends State<MedicationPage> {
                       xs: 6,
                       md: 4,
                       child: Padding(
-                        padding: EdgeInsets.only(left: 10, right: 10),
+                        padding: EdgeInsets.only(left: 5, right: 5),
                         child: GestureDetector(
                           child: CustomSubTotal(
                               SvgPicture.asset(
@@ -128,7 +128,7 @@ class _MedicationPageState extends State<MedicationPage> {
                       xs: 6,
                       md: 4,
                       child: Padding(
-                        padding: EdgeInsets.only(left: 10, right: 10),
+                        padding: EdgeInsets.only(left: 3, right: 3),
                         child: GestureDetector(
                           child: CustomSubTotal(
                               SvgPicture.asset(
