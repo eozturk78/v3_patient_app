@@ -79,7 +79,8 @@ class _NotificationHistoryPage extends State<NotificationHistoryPage> {
                   : ExpansionPanelList(
                       expansionCallback: (int index, bool isExpanded) {
                         setState(() {
-                          listMessages![index].isExpanded = !isExpanded;
+                          listMessages[index].isExpanded =
+                              !listMessages[index].isExpanded;
                         });
                       },
                       children: [
@@ -119,7 +120,7 @@ class _NotificationHistoryPage extends State<NotificationHistoryPage> {
                                 ],
                               ),
                             ),
-                            isExpanded: item.isExpanded ?? false,
+                            isExpanded: item.isExpanded,
                           )
                       ],
                     ),

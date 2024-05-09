@@ -4,7 +4,7 @@ class NotificationHistory {
   final String title;
   final String body;
   final DateTime? createdAt;
-  bool isExpanded;
+  bool isExpanded = false;
 
   NotificationHistory(
       {required this.notificationHistoryId,

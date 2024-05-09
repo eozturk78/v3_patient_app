@@ -38,8 +38,7 @@ class _MedicalPlan1PageState extends State<MedicalPlan1Page> {
 
   @override
   Widget build(BuildContext context) {
-    notification =
-        ModalRoute.of(navContext)!.settings.arguments as MessageNotification;
+    notification = chosenMedicationPlan!;
     getNotification(notification);
     return Scaffold(
       appBar: leadingSubpage('Nachrichten', context),

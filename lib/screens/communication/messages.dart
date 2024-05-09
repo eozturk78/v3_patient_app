@@ -231,9 +231,11 @@ class _MessagesPageState extends State<MessagesPage> {
                                                   if (element
                                                           .notificationtype ==
                                                       10) {
-                                                    Navigator.pushNamed(navContext,
-                                                        '/medical-plan-1',
-                                                        arguments: element);
+                                                    chosenMedicationPlan =
+                                                        element;
+                                                    Navigator.pushNamed(
+                                                        navContext,
+                                                        '/medical-plan-1');
                                                   } else {
                                                     SharedPreferences pref =
                                                         await SharedPreferences
@@ -290,7 +292,7 @@ class _MessagesPageState extends State<MessagesPage> {
         children: [
           for (var item in organizations)
             FloatingActionButton.extended(
-              heroTag: item.organization+item.name+item.hashCode.toString(),
+              heroTag: item.organization + item.name + item.hashCode.toString(),
               onPressed: () async {
                 SharedPreferences pref = await SharedPreferences.getInstance();
 

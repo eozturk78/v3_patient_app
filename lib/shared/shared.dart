@@ -9,6 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/main.dart';
+import 'package:patient_app/model/message-notification.dart';
 import 'package:patient_app/model/search-menu.dart';
 import 'package:patient_app/screens/login/login.dart';
 import 'package:patient_app/screens/shared/bottom-menu.dart';
@@ -22,7 +23,7 @@ bool isLoggedIn = false;
 int tokenTimeOutSecond = 0;
 int tokenTimeOutSecondDB = 0;
 int popUpAppearSecond = 0;
-
+MessageNotification? chosenMedicationPlan;
 Timer? _timer;
 
 class Shared {
