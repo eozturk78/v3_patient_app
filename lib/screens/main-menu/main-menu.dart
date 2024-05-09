@@ -547,6 +547,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
   Widget build(BuildContext context) {
     return PersistentTabView(
       context,
+      padding: NavBarPadding.only(left: 0,right: 0),
       controller: navcontroller,
       screens: _buildScreens(context),
       items: _navBarsItems(),
@@ -597,20 +598,25 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
     Shared sh = Shared();
     return [
       PersistentBottomNavBarItem(
-        icon: SvgPicture.asset(
+        contentPadding:1,
+        icon: Padding(
+          padding: EdgeInsets.only(top: 10.0),
+          child:SvgPicture.asset(
           'assets/images/home.svg',
           height: 20,
           color: iconColor,
           fit: BoxFit.cover,
           clipBehavior: Clip.none,
-        ),
-        inactiveIcon: SvgPicture.asset(
-          'assets/images/home.svg',
+        )),
+        inactiveIcon: Padding(
+        padding: EdgeInsets.only(top: 10.0),
+        child:SvgPicture.asset(
+              'assets/images/home.svg',
           height: 20,
           color: Colors.grey,
           fit: BoxFit.cover,
           clipBehavior: Clip.none,
-        ),
+        )),
         title: sh.getLanguageResource("home"),
         activeColorPrimary: iconColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
@@ -626,20 +632,24 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
          */
       ),
       PersistentBottomNavBarItem(
-        icon: SvgPicture.asset(
+      icon: Padding(
+      padding: EdgeInsets.only(top: 10.0),
+      child:SvgPicture.asset(
           'assets/images/daten.svg',
           height: 20,
           color: iconColor,
           fit: BoxFit.cover,
           clipBehavior: Clip.none,
-        ),
-        inactiveIcon: SvgPicture.asset(
+        )),
+        inactiveIcon: Padding(
+        padding: EdgeInsets.only(top: 10.0),
+        child:SvgPicture.asset(
           'assets/images/daten.svg',
           height: 20,
           color: Colors.grey,
           fit: BoxFit.cover,
           clipBehavior: Clip.none,
-        ),
+        )),
         title: sh.getLanguageResource("data"),
         activeColorPrimary: iconColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
@@ -649,20 +659,24 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
         ),
       ),
       PersistentBottomNavBarItem(
-        icon: SvgPicture.asset(
+        icon: Padding(
+    padding: EdgeInsets.only(top: 10.0),
+    child:SvgPicture.asset(
           'assets/images/medikation.svg',
           height: 20,
           color: iconColor,
           fit: BoxFit.cover,
           clipBehavior: Clip.none,
-        ),
-        inactiveIcon: SvgPicture.asset(
+        )),
+        inactiveIcon: Padding(
+    padding: EdgeInsets.only(top: 10.0),
+    child:SvgPicture.asset(
           'assets/images/medikation.svg',
           height: 20,
           color: Colors.grey,
           fit: BoxFit.cover,
           clipBehavior: Clip.none,
-        ),
+        )),
         title: sh.getLanguageResource("medication"),
         activeColorPrimary: iconColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
@@ -671,21 +685,26 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
           routes: routes,
         ),
       ),
+
       PersistentBottomNavBarItem(
-        icon: SvgPicture.asset(
+        icon: Padding(
+        padding: EdgeInsets.only(top: 10.0),
+    child:SvgPicture.asset(
           'assets/images/messenger_outline.svg',
           height: 20,
           color: iconColor,
           fit: BoxFit.cover,
           clipBehavior: Clip.none,
-        ),
-        inactiveIcon: SvgPicture.asset(
+        )),
+        inactiveIcon: Padding(
+    padding: EdgeInsets.only(top: 10.0),
+    child:SvgPicture.asset(
           'assets/images/messenger_outline.svg',
           height: 20,
           color: Colors.grey,
           fit: BoxFit.cover,
           clipBehavior: Clip.none,
-        ),
+        )),
         title: sh.getLanguageResource("communication"),
         activeColorPrimary: iconColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
@@ -694,21 +713,26 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
           routes: routes,
         ),
       ),
+
       PersistentBottomNavBarItem(
-        icon: SvgPicture.asset(
+        icon: Padding(
+    padding: EdgeInsets.only(top: 10.0),
+    child:SvgPicture.asset(
           'assets/images/info.svg',
           height: 20,
           color: iconColor,
           fit: BoxFit.cover,
           clipBehavior: Clip.none,
-        ),
-        inactiveIcon: SvgPicture.asset(
+        )),
+        inactiveIcon: Padding(
+    padding: EdgeInsets.only(top: 10.0),
+    child:SvgPicture.asset(
           'assets/images/info.svg',
           height: 20,
           color: Colors.grey,
           fit: BoxFit.cover,
           clipBehavior: Clip.none,
-        ),
+        )),
         title: sh.getLanguageResource("info_tech"),
         activeColorPrimary: iconColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
