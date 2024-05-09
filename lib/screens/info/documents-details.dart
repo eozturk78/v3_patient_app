@@ -439,7 +439,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: mainButtonColor,
+                        backgroundColor: mainButtonColor,
                       ),
                       onPressed: () {
                         apis
@@ -453,7 +453,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey,
+                        backgroundColor: Colors.grey,
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -496,7 +496,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: mainButtonColor,
+                        backgroundColor: mainButtonColor,
                       ),
                       onPressed: () {
                         apis.deletePatientFile(fileId!).then((resp) {
@@ -510,7 +510,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey,
+                        backgroundColor: Colors.grey,
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -672,8 +672,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(40),
-                          primary: mainButtonColor,
+                          minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
                         ),
                         onPressed: () {
                           if (folderNameController.text != "") {
@@ -797,8 +796,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(40),
-                          primary: mainButtonColor,
+                          minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
                         ),
                         onPressed: () {
                           setState(() {
@@ -1021,8 +1019,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(40),
-                          primary: mainButtonColor,
+                          minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
                         ),
                         onPressed: () {
                           if (fileNameController.text != "") {

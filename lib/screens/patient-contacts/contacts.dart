@@ -107,7 +107,7 @@ class _ContactsListingPageState extends State<ContactsListingPage>
         },
         child: Icon(Icons.add),
       ),
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
     );
   }
 

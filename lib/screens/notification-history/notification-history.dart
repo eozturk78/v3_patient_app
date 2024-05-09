@@ -125,7 +125,7 @@ class _NotificationHistoryPage extends State<NotificationHistoryPage> {
                     ),
         )),
       ),
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
     );
   }
 }

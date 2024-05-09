@@ -116,7 +116,7 @@ class _RecipesPageState extends State<RecipesPage> {
                               ])
                         : Text(sh.getLanguageResource("no_data_found")))),
       )),
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 2),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 2),
     );
   }
 }

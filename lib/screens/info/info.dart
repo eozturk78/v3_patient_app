@@ -123,7 +123,7 @@ class _InfoPageState extends State<InfoPage> {
           ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 4),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 4),
     );
   }
 }

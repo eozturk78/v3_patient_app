@@ -355,7 +355,7 @@ class _MeasurementResultSaturationPageState
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
     );
   }
 }

@@ -466,8 +466,7 @@ class _Registration3PageState extends State<Registration3Page> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(40),
-                          primary: mainButtonColor,
+                          minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
                         ),
                         onPressed: () async {
                           if (_selectedDate ==

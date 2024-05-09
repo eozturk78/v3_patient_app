@@ -414,7 +414,7 @@ class _AboutMeState extends State<AboutMe> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
     );
   }
 
@@ -446,7 +446,7 @@ class _AboutMeState extends State<AboutMe> {
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: mainButtonColor,
+                        backgroundColor: mainButtonColor,
                       ),
                       onPressed: () {
                         apis.deletePatientProfilePhoto().then((resp) {
@@ -462,7 +462,7 @@ class _AboutMeState extends State<AboutMe> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.grey,
+                        backgroundColor: Colors.grey,
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();

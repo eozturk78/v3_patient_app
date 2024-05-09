@@ -239,8 +239,7 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                       }),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(30),
-                          primary: mainButtonColor,
+                          minimumSize: const Size.fromHeight(30), backgroundColor: mainButtonColor,
                         ),
                         onPressed: () async {
                           saveMedicineIntake();

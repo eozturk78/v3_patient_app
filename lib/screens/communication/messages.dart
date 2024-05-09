@@ -4,6 +4,7 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:patient_app/model/patient-group.dart';
+import 'package:patient_app/screens/main-menu/main-menu.dart';
 import 'package:patient_app/screens/shared/message-list-container.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
@@ -121,7 +122,7 @@ class _MessagesPageState extends State<MessagesPage> {
                             ).value!,
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: fpType == 20
+                              backgroundColor: fpType == 20
                                   ? mainButtonColor
                                   : mainItemColor,
                             ),
@@ -153,7 +154,7 @@ class _MessagesPageState extends State<MessagesPage> {
                             ).value!,
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: fpType == 10
+                              backgroundColor: fpType == 10
                                   ? mainButtonColor
                                   : mainItemColor,
                             ),
@@ -230,7 +231,7 @@ class _MessagesPageState extends State<MessagesPage> {
                                                   if (element
                                                           .notificationtype ==
                                                       10) {
-                                                    Navigator.pushNamed(context,
+                                                    Navigator.pushNamed(navContext,
                                                         '/medical-plan-1',
                                                         arguments: element);
                                                   } else {
@@ -289,6 +290,7 @@ class _MessagesPageState extends State<MessagesPage> {
         children: [
           for (var item in organizations)
             FloatingActionButton.extended(
+              heroTag: item.organization+item.name+item.hashCode.toString(),
               onPressed: () async {
                 SharedPreferences pref = await SharedPreferences.getInstance();
 
@@ -316,7 +318,7 @@ class _MessagesPageState extends State<MessagesPage> {
             ),
         ],
       ),
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
     );
   }
 }

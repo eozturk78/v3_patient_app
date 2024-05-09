@@ -73,7 +73,7 @@ class _ExtractDataPageState extends State<ExtractDataPage> {
           child: Text(
             sh.getLanguageResource("extract_data"),
           )),
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
     );
   }
 }

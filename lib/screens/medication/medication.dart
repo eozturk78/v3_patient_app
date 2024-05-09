@@ -150,7 +150,7 @@ class _MedicationPageState extends State<MedicationPage> {
           ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 2),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 2),
     );
   }
 }

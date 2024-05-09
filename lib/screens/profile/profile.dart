@@ -438,9 +438,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigatorBar(
-        selectedIndex: 1,
-      ),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 1,),
     );
   }
 }

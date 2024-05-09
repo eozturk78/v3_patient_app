@@ -274,7 +274,7 @@ class _BlutdruckDescriptionPageState extends State<BlutdruckDescriptionPage> {
           ),
         ),
       )), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
     );
   }
 }

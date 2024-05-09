@@ -293,7 +293,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
         },
         child: Icon(Icons.add),
       ),
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 4),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 4),
     );
   }
 
@@ -566,8 +566,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(40),
-                          primary: mainButtonColor,
+                          minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
                         ),
                         onPressed: () {
                           if (fileNameController.text != "") {
@@ -636,8 +635,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(40),
-                          primary: mainButtonColor,
+                          minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
                         ),
                         onPressed: () {
                           if (folderNameController.text != "") {

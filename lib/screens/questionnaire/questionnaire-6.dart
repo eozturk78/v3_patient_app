@@ -92,7 +92,7 @@ class _Questionnaire6PageState extends State<Questionnaire6Page> {
                             Navigator.of(context).pop();
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: mainButtonColor,
+                            backgroundColor: mainButtonColor,
                           ),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -119,7 +119,7 @@ class _Questionnaire6PageState extends State<Questionnaire6Page> {
           ),
         ),
       )),
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
     );
   }
 }

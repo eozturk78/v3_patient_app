@@ -282,8 +282,7 @@ class _AgreementsPageState extends State<AgreementsPage> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(40),
-                    primary: mainButtonColor,
+                    minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
                   ),
                   onPressed: () async {
                     if (check1 && check2 && check3) {
@@ -433,8 +432,7 @@ Widget languageDialog(
                 },
                 child: Text("OK"),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(40),
-                  primary: mainButtonColor,
+                  minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
                 ),
               )
             ],

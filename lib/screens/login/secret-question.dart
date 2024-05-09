@@ -176,8 +176,7 @@ class _SecretQuestionPageState extends State<SecretQuestionPage> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(30),
-                        primary: mainButtonColor,
+                        minimumSize: const Size.fromHeight(30), backgroundColor: mainButtonColor,
                       ),
                       onPressed: () async {
                         final isValid = _formKey.currentState?.validate();

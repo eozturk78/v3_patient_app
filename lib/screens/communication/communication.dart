@@ -189,7 +189,7 @@ class _CommunicationPageState extends State<CommunicationPage> {
           ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
     );
   }
 }

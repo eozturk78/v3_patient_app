@@ -173,7 +173,7 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
                                     ).value!,
                                 child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      primary: fpType == 10
+                                      backgroundColor: fpType == 10
                                           ? mainButtonColor
                                           : mainItemColor,
                                     ),
@@ -206,7 +206,7 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
                                     ).value!,
                                 child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      primary: fpType == 20
+                                      backgroundColor: fpType == 20
                                           ? mainButtonColor
                                           : mainItemColor,
                                     ),
@@ -246,8 +246,7 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
                               ),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size.fromHeight(30),
-                                  primary: mainButtonColor,
+                                  minimumSize: const Size.fromHeight(30), backgroundColor: mainButtonColor,
                                 ),
                                 onPressed: () async {
                                   final isValid =

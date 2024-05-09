@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,15 +17,26 @@ import '../../model/patient-file.dart';
 import '../../model/scale-size.dart';
 import '../../model/search-menu.dart';
 import '../communication/calendar.dart';
+import '../communication/communication.dart';
+import '../info/info.dart';
+import '../medication/medication-plan-list.dart';
+import '../medication/medication.dart';
+import '../questionnaire-group/questionnaire-group.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/custom_menu.dart';
 import '../../apis/apis.dart';
 import '../../shared/shared.dart';
 import '../shared/shared.dart';
 import '../shared/sub-total.dart';
+import 'main-sub-menu.dart';
 import 'route_util.dart';
 import '../shared/customized_menu.dart'; // Import the customized_menu.dart file
 import 'package:responsive_grid/responsive_grid.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+
+
+PersistentTabController navcontroller = PersistentTabController(initialIndex: 0);
+late BuildContext navContext;
 
 class MainMenuPage extends StatefulWidget {
   const MainMenuPage({Key? key}) : super(key: key);
@@ -30,6 +44,7 @@ class MainMenuPage extends StatefulWidget {
   @override
   _MainMenuPageState createState() => _MainMenuPageState();
 }
+
 
 class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
   int _selectedIndex = 0;
@@ -287,9 +302,8 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
       ],
     );
   }
+  Widget buildmainmenu(BuildContext context){
 
-  @override
-  Widget build(BuildContext context) {
     TextEditingController tec = TextEditingController();
     return Scaffold(
       appBar: isFocusedSearch == false
@@ -372,11 +386,11 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                                   filteredRouters = [];
                                   filteredRouters = searchAllRoutes
                                       .where((element) => (element.displayName
-                                              .toLowerCase()
-                                              .contains(value.toLowerCase()) ||
-                                          (element.keywords!
-                                              .toLowerCase()
-                                              .contains(value.toLowerCase()))))
+                                      .toLowerCase()
+                                      .contains(value.toLowerCase()) ||
+                                      (element.keywords!
+                                          .toLowerCase()
+                                          .contains(value.toLowerCase()))))
                                       .toList();
 
                                   if (_debounce?.isActive ?? false)
@@ -402,7 +416,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                                   border: InputBorder.none,
                                   filled: true,
                                   fillColor:
-                                      const Color.fromARGB(255, 244, 246, 246),
+                                  const Color.fromARGB(255, 244, 246, 246),
                                   hintText: sh.getLanguageResource("search"),
                                   hintStyle: TextStyle(
                                       fontSize: 16.0,
@@ -410,20 +424,20 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                                   prefixIcon: Icon(Icons.search_sharp),
                                   suffixIcon: filteredRouters.length > 0
                                       ? Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            GestureDetector(
-                                              child: Icon(Icons.close_outlined),
-                                              onTap: () {
-                                                setState(() {
-                                                  filteredRouters = [];
-                                                  _formkey.currentState
-                                                      ?.reset();
-                                                });
-                                              },
-                                            )
-                                          ],
-                                        )
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      GestureDetector(
+                                        child: Icon(Icons.close_outlined),
+                                        onTap: () {
+                                          setState(() {
+                                            filteredRouters = [];
+                                            _formkey.currentState
+                                                ?.reset();
+                                          });
+                                        },
+                                      )
+                                    ],
+                                  )
                                       : null),
                             )),
                       ),
@@ -464,7 +478,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                 for (var item in filteredRouters)
                   Padding(
                     padding:
-                        const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                    const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                     child: GestureDetector(
                       onTap: () async {
                         onClickSearchFunctionResult(item);
@@ -526,7 +540,123 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: _selectedIndex),
+      //bottomNavigationBar: BottomNavigatorBar(selectedIndex: _selectedIndex),
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return PersistentTabView(
+      context,
+      controller: navcontroller,
+      screens: _buildScreens(context),
+      items: _navBarsItems(),
+      confineInSafeArea: true,
+      backgroundColor: Colors.white, // Default is Colors.white.
+      handleAndroidBackButtonPress: true, // Default is true.
+      resizeToAvoidBottomInset: true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
+      stateManagement: true, // Default is true.
+      hideNavigationBarWhenKeyboardShows: true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
+      decoration: NavBarDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        colorBehindNavBar: Colors.white,
+      ),
+      popAllScreensOnTapOfSelectedTab: true,
+      popActionScreens: PopActionScreensType.all,
+      itemAnimationProperties: ItemAnimationProperties( // Navigation Bar's items animation properties.
+        duration: Duration(milliseconds: 200),
+        curve: Curves.ease,
+      ),
+      screenTransitionAnimation: ScreenTransitionAnimation( // Screen transition animation on change of selected tab.
+        animateTabTransition: true,
+        curve: Curves.ease,
+        duration: Duration(milliseconds: 200),
+      ),
+      navBarStyle: NavBarStyle.style3, // Choose the nav bar style with this property.
+      selectedTabScreenContext: (final context) {
+        navContext = context!;
+      },
+    );
+  }
+
+  List<Widget> _buildScreens(BuildContext context) {
+    return [
+      buildmainmenu(context),
+      MainSubMenuPage(),
+      MedicationPage(),
+      CommunicationPage(),
+      InfoPage()
+    ];
+  }
+
+  List<PersistentBottomNavBarItem> _navBarsItems() {
+    Shared sh = Shared();
+    return [
+      PersistentBottomNavBarItem(
+        icon: SvgPicture.asset('assets/images/home.svg',height:20,color: iconColor,fit: BoxFit.cover,clipBehavior: Clip.none,),
+        inactiveIcon: SvgPicture.asset('assets/images/home.svg',height:20,color: Colors.grey,fit: BoxFit.cover,clipBehavior: Clip.none,),
+        title: sh.getLanguageResource("home"),
+        activeColorPrimary: iconColor,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          initialRoute: "/",
+          routes: routes,
+        ),
+        //iconSize: 20,
+        /*onPressed:  (context) {
+
+          },
+
+         */
+      ),
+      PersistentBottomNavBarItem(
+        icon: SvgPicture.asset('assets/images/daten.svg',height:20,color: iconColor,fit: BoxFit.cover,clipBehavior: Clip.none,),
+        inactiveIcon: SvgPicture.asset('assets/images/daten.svg',height:20,color: Colors.grey,fit: BoxFit.cover,clipBehavior: Clip.none,),
+        title: sh.getLanguageResource("data"),
+        activeColorPrimary: iconColor,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          initialRoute: "/",
+          routes: routes,
+        ),
+      ),
+      PersistentBottomNavBarItem(
+        icon: SvgPicture.asset('assets/images/medikation.svg',height:20,color: iconColor,fit: BoxFit.cover,clipBehavior: Clip.none,),
+        inactiveIcon: SvgPicture.asset('assets/images/medikation.svg',height:20,color: Colors.grey,fit: BoxFit.cover,clipBehavior: Clip.none,),
+        title: sh.getLanguageResource("medication"),
+        activeColorPrimary: iconColor,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          initialRoute: "/",
+          routes: routes,
+        ),
+      ),
+      PersistentBottomNavBarItem(
+        icon: SvgPicture.asset('assets/images/messenger_outline.svg',height:20,color: iconColor,fit: BoxFit.cover,clipBehavior: Clip.none,),
+        inactiveIcon: SvgPicture.asset('assets/images/messenger_outline.svg',height:20,color: Colors.grey,fit: BoxFit.cover,clipBehavior: Clip.none,),
+        title:  sh.getLanguageResource("communication"),
+        activeColorPrimary: iconColor,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          initialRoute: "/",
+          routes: routes,
+        ),
+      ),
+      PersistentBottomNavBarItem(
+        icon: SvgPicture.asset('assets/images/info.svg',height:20,color: iconColor,fit: BoxFit.cover,clipBehavior: Clip.none,),
+        inactiveIcon: SvgPicture.asset('assets/images/info.svg',height:20,color: Colors.grey,fit: BoxFit.cover,clipBehavior: Clip.none,),
+        title:  sh.getLanguageResource("info_tech"),
+        activeColorPrimary: iconColor,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          initialRoute: "/",
+          routes: routes,
+        ),
+      ),
+    ];
+  }
+
+
 }
+
+

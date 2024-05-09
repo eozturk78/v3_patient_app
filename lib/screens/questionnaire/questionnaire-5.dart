@@ -56,7 +56,7 @@ class _Questionnaire5PageState extends State<Questionnaire5Page> {
                             Navigator.of(context).pop();
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: mainButtonColor,
+                            backgroundColor: mainButtonColor,
                           ),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -83,7 +83,7 @@ class _Questionnaire5PageState extends State<Questionnaire5Page> {
           ),
         ),
       )),
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
     );
   }
 }

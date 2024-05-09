@@ -99,6 +99,88 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 String? redirectionScreen;
 dynamic languageResource;
+
+final Map<String, WidgetBuilder> routes = {
+  "/splash-screen": (context) => const MyHomePage(title: ''),
+  "/main-menu": (context) => const MainMenuPage(),
+  "/settings": (context) => const SettingsPage(),
+  "/main-sub-menu": (context) => const MainSubMenuPage(),
+  "/home": (context) => const HomePage(),
+  "/login": (context) => const LoginPage(isDiaglog: false,),
+  "/change-password": (context) => const ChangePasswordPage(),
+  "/profile": (context) => const ProfilePage(),
+  "/measurement-result": (context) => const MeasurementResultPage(),
+  "/measurement-result-weight": (context) =>
+  const MeasurementResultWeightPage(),
+  "/measurement-result-pulse": (context) =>
+  const MeasurementResultPulsePage(),
+  "/measurement-result-temperature": (context) =>
+  const MeasurementResultTemperaturePage(),
+  "/measurement-result-saturation": (context) =>
+  const MeasurementResultSaturationPage(),
+  "/communication": (context) => const CommunicationPage(),
+  "/info": (context) => const InfoPage(),
+  "/medication": (context) => const MedicationPage(),
+  "/quick-access": (context) => CustomizedMenuPage(),
+  "/custom-menu": (context) => CustomMenuPage(menuItems: []),
+  "/messages": (context) => const MessagesPage(),
+  "/chat": (context) => const ChatPage(),
+  "/medical-plan-1": (context) => const MedicalPlan1Page(),
+  "/calendar": (context) => CalendarScreen(),
+  "/medication-plan-list": (context) => const MedicationPlanListPage(),
+  "/interactive-medication-plan": (context) =>
+      InteractiveMedicationPlanPage(),
+  "/medicine-intake": (context) => MedicineIntakeScreen(),
+  "/recipes": (context) => const RecipesPage(),
+  "/libraries": (context) => const LibraryListPage(),
+  "/enlightenment": (context) => const EnlightenmentPage(),
+  "/documents": (context) => const DocumentListPage(),
+  "/document-details": (context) => const DocumentDetailsPage(),
+  "/questionnaire-1": (context) => const Questionnaire1Page(),
+  "/questionnaire-2": (context) => const Questionnaire2Page(),
+  "/questionnaire-3": (context) => const Questionnaire3Page(),
+  "/questionnaire-4": (context) => const Questionnaire4Page(),
+  "/questionnaire-5": (context) => const Questionnaire5Page(),
+  "/questionnaire-6": (context) => const Questionnaire6Page(),
+  "/questionnaire-7": (context) => const Questionnaire7Page(),
+  "/questionnaire-8": (context) => const Questionnaire8Page(),
+  "/questionnaire-9": (context) => const Questionnaire9Page(),
+  "/blutdruck-description": (context) => const BlutdruckDescriptionPage(),
+  "/weight-description": (context) => const WeightDescriptionPage(),
+  "/saturation-description": (context) =>
+  const SaturationDescriptionPage(),
+  "/pulse-description": (context) => const PulseDescriptionPage(),
+  "/temperature-description": (context) =>
+  const TemperatureDescriptionPage(),
+  "/about-me": (context) => const AboutMe(),
+  "/registration-1": (context) => const Registration1Page(),
+  "/registration-2": (context) => const Registration2Page(),
+  "/registration-3": (context) => const Registration3Page(),
+  "/registration-4": (context) => const Registration4Page(),
+  "/created-account-successfully": (context) =>
+  const RegistrationCompletedPage(),
+  "/diagnoses": (context) => const DiagnosesPage(),
+  "/agreements": (context) => const AgreementsPage(),
+  "/edit-agreements": (context) => const EditAgreementsPage(),
+  "/redirection": (context) => const RedirectionPage(),
+  "/questionnaire-group": (context) => const QuestionnaireGroupPage(),
+  "/questionnaire-result": (context) => const QuestionnaireResultPage(),
+  "/privacy-policy": (context) => const PrivacyPolicyPage(),
+  "/terms-and-conditions": (context) => const TermsAndConditionsPage(),
+  "/patient-contacts-list": (context) => ContactsListingPage(),
+  "/impresum": (context) => ImpresumPage(),
+  "/language": (context) => LanguagePage(),
+  "/extract-data": (context) => ExtractDataPage(),
+  "/notification-history": (context) => NotificationHistoryPage(),
+  '/secret-question': (context) => SecretQuestionPage(),
+  '/forgot-password': (context) => ForgotPasswordPage(),
+  '/answer-secret-question': (context) => AnswerSecretQuestionPage(),
+  '/reset-password': (context) => ResetPasswordPage(),
+  '/temporary-password': (context) => TemporaryPasswordPage(),
+  '/successfully-changed-password': (context) =>
+      SuccessfullyChangedPasswordPage(),
+};
+
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize the plugin
@@ -270,86 +352,7 @@ class MyApp extends StatelessWidget {
       //home: const MyHomePage(title: 'iMedCom App Demo Home Page'),
       initialRoute: "/splash-screen",
 
-      routes: {
-        "/splash-screen": (context) => const MyHomePage(title: ''),
-        "/main-menu": (context) => const MainMenuPage(),
-        "/settings": (context) => const SettingsPage(),
-        "/main-sub-menu": (context) => const MainSubMenuPage(),
-        "/home": (context) => const HomePage(),
-        "/login": (context) => const LoginPage(isDiaglog: false,),
-        "/change-password": (context) => const ChangePasswordPage(),
-        "/profile": (context) => const ProfilePage(),
-        "/measurement-result": (context) => const MeasurementResultPage(),
-        "/measurement-result-weight": (context) =>
-            const MeasurementResultWeightPage(),
-        "/measurement-result-pulse": (context) =>
-            const MeasurementResultPulsePage(),
-        "/measurement-result-temperature": (context) =>
-            const MeasurementResultTemperaturePage(),
-        "/measurement-result-saturation": (context) =>
-            const MeasurementResultSaturationPage(),
-        "/communication": (context) => const CommunicationPage(),
-        "/info": (context) => const InfoPage(),
-        "/medication": (context) => const MedicationPage(),
-        "/quick-access": (context) => CustomizedMenuPage(),
-        "/custom-menu": (context) => CustomMenuPage(menuItems: []),
-        "/messages": (context) => const MessagesPage(),
-        "/chat": (context) => const ChatPage(),
-        "/medical-plan-1": (context) => const MedicalPlan1Page(),
-        "/calendar": (context) => CalendarScreen(),
-        "/medication-plan-list": (context) => const MedicationPlanListPage(),
-        "/interactive-medication-plan": (context) =>
-            InteractiveMedicationPlanPage(),
-        "/medicine-intake": (context) => MedicineIntakeScreen(),
-        "/recipes": (context) => const RecipesPage(),
-        "/libraries": (context) => const LibraryListPage(),
-        "/enlightenment": (context) => const EnlightenmentPage(),
-        "/documents": (context) => const DocumentListPage(),
-        "/document-details": (context) => const DocumentDetailsPage(),
-        "/questionnaire-1": (context) => const Questionnaire1Page(),
-        "/questionnaire-2": (context) => const Questionnaire2Page(),
-        "/questionnaire-3": (context) => const Questionnaire3Page(),
-        "/questionnaire-4": (context) => const Questionnaire4Page(),
-        "/questionnaire-5": (context) => const Questionnaire5Page(),
-        "/questionnaire-6": (context) => const Questionnaire6Page(),
-        "/questionnaire-7": (context) => const Questionnaire7Page(),
-        "/questionnaire-8": (context) => const Questionnaire8Page(),
-        "/questionnaire-9": (context) => const Questionnaire9Page(),
-        "/blutdruck-description": (context) => const BlutdruckDescriptionPage(),
-        "/weight-description": (context) => const WeightDescriptionPage(),
-        "/saturation-description": (context) =>
-            const SaturationDescriptionPage(),
-        "/pulse-description": (context) => const PulseDescriptionPage(),
-        "/temperature-description": (context) =>
-            const TemperatureDescriptionPage(),
-        "/about-me": (context) => const AboutMe(),
-        "/registration-1": (context) => const Registration1Page(),
-        "/registration-2": (context) => const Registration2Page(),
-        "/registration-3": (context) => const Registration3Page(),
-        "/registration-4": (context) => const Registration4Page(),
-        "/created-account-successfully": (context) =>
-            const RegistrationCompletedPage(),
-        "/diagnoses": (context) => const DiagnosesPage(),
-        "/agreements": (context) => const AgreementsPage(),
-        "/edit-agreements": (context) => const EditAgreementsPage(),
-        "/redirection": (context) => const RedirectionPage(),
-        "/questionnaire-group": (context) => const QuestionnaireGroupPage(),
-        "/questionnaire-result": (context) => const QuestionnaireResultPage(),
-        "/privacy-policy": (context) => const PrivacyPolicyPage(),
-        "/terms-and-conditions": (context) => const TermsAndConditionsPage(),
-        "/patient-contacts-list": (context) => ContactsListingPage(),
-        "/impresum": (context) => ImpresumPage(),
-        "/language": (context) => LanguagePage(),
-        "/extract-data": (context) => ExtractDataPage(),
-        "/notification-history": (context) => NotificationHistoryPage(),
-        '/secret-question': (context) => SecretQuestionPage(),
-        '/forgot-password': (context) => ForgotPasswordPage(),
-        '/answer-secret-question': (context) => AnswerSecretQuestionPage(),
-        '/reset-password': (context) => ResetPasswordPage(),
-        '/temporary-password': (context) => TemporaryPasswordPage(),
-        '/successfully-changed-password': (context) =>
-            SuccessfullyChangedPasswordPage(),
-      },
+      routes: routes,
     );
   }
 }

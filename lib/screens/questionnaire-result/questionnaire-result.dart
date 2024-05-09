@@ -1063,8 +1063,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                               padding: EdgeInsets.all(10),
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size.fromHeight(30),
-                                  primary: mainButtonColor,
+                                  minimumSize: const Size.fromHeight(30), backgroundColor: mainButtonColor,
                                 ),
                                 onPressed: () async {
                                   sendValues();
@@ -1091,7 +1090,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                               margin: EdgeInsets.only(left: 10, bottom: 150),
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  primary: (item['isNo'])
+                                  backgroundColor: (item['isNo'])
                                       ? confirmButton
                                       : mainButtonColor,
                                 ),
@@ -1159,7 +1158,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary: const Color.fromARGB(255, 158, 158, 158)),
+                            backgroundColor: const Color.fromARGB(255, 158, 158, 158)),
                         onPressed: () async {
                           Navigator.of(context).pop(1);
                         },
@@ -1172,7 +1171,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: mainButtonColor,
+                          backgroundColor: mainButtonColor,
                         ),
                         onPressed: () async {
                           Navigator.of(context).pop(0);
@@ -1216,8 +1215,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(30),
-                      primary: mainButtonColor,
+                      minimumSize: const Size.fromHeight(30), backgroundColor: mainButtonColor,
                     ),
                     onPressed: () async {
                       Navigator.pop(context);

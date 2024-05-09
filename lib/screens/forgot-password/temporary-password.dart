@@ -163,7 +163,7 @@ class _TemporaryPasswordPageState extends State<TemporaryPasswordPage> {
                                       ),
                                     ),
                               style: ElevatedButton.styleFrom(
-                                primary: mainButtonColor,
+                                backgroundColor: mainButtonColor,
                               ),
                             ),
                             SizedBox(
@@ -175,7 +175,7 @@ class _TemporaryPasswordPageState extends State<TemporaryPasswordPage> {
                               },
                               child: Text(sh.getLanguageResource("no")),
                               style: ElevatedButton.styleFrom(
-                                primary: mainItemColor,
+                                backgroundColor: mainItemColor,
                               ),
                             ),
                           ],

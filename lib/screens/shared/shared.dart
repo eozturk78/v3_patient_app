@@ -8,6 +8,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:patient_app/screens/main-menu/main-menu.dart';
 
 import '../../colors/colors.dart';
 import '../../model/scale-size.dart';
@@ -226,7 +227,12 @@ leadingSubpage(String title, BuildContext context) {
     leading: TextButton(
       onPressed: () {
         renewToken();
-        Navigator.of(context).pop();
+        if (Navigator.of(context).canPop()) {
+          Navigator.of(context).pop();
+        }else{
+        navcontroller.jumpToTab(0);
+        }
+
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -394,7 +400,7 @@ TextStyle articleTitle = const TextStyle(
     fontWeight: FontWeight.bold, color: Colors.black, fontSize: 15);
 
 ButtonStyle descriptionNotStyle = ElevatedButton.styleFrom(
-  primary: descriptionNotSelectedButton,
+  backgroundColor: descriptionNotSelectedButton,
 );
 
 TextStyle labelText =

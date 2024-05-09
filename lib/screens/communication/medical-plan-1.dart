@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:patient_app/screens/main-menu/main-menu.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/message-list-container.dart';
 import 'package:patient_app/screens/shared/shared.dart';
@@ -38,7 +39,7 @@ class _MedicalPlan1PageState extends State<MedicalPlan1Page> {
   @override
   Widget build(BuildContext context) {
     notification =
-        ModalRoute.of(context)!.settings.arguments as MessageNotification;
+        ModalRoute.of(navContext)!.settings.arguments as MessageNotification;
     getNotification(notification);
     return Scaffold(
       appBar: leadingSubpage('Nachrichten', context),
@@ -63,7 +64,7 @@ class _MedicalPlan1PageState extends State<MedicalPlan1Page> {
                 ), // This trailing comma makes auto-formatting nicer for build methods.
         ),
       ),
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 3),
     );
   }
 }

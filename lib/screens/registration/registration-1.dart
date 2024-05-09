@@ -148,8 +148,7 @@ class _Registration1PageState extends State<Registration1Page> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(40),
-                    primary: mainButtonColor,
+                    minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
                   ),
                   onPressed: () async {
                     if (check1 && check2 && check3 && check4) {

@@ -215,7 +215,7 @@ class _PulseDescriptionPageState extends State<PulseDescriptionPage> {
           ),
         ),
       )), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
     );
   }
 }
