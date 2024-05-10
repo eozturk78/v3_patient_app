@@ -12,7 +12,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../apis/apis.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/sub-total.dart';
-import 'package:badges/badges.dart' as badges;
 
 class CommunicationPage extends StatefulWidget {
   const CommunicationPage({super.key});
@@ -51,9 +50,13 @@ class _CommunicationPageState extends State<CommunicationPage> {
   getUnReadMessageCount() {
     Apis apis = Apis();
     apis.getUnReadMessageCount().then((value) {
-      setState(() {
+      if (value['unreadmessagecount'] != null &&
+          value['unreadmessagecount'] != 0) {
         unreadMessageCount = value['unreadmessagecount'];
-      });
+      }
+      if (mounted == true) {
+        setState(() {});
+      }
     });
   }
 
@@ -79,38 +82,19 @@ class _CommunicationPageState extends State<CommunicationPage> {
                         xs: 6,
                         md: 3,
                         child: Padding(
-                          padding: EdgeInsets.only(left: 10, right: 0),
-                          child: badges.Badge(
-                            badgeStyle: badges.BadgeStyle(
-                                padding: EdgeInsets.all(7),
-                                badgeColor: unreadMessageCount == 0 ||
-                                        unreadMessageCount == "0" ||
-                                        unreadMessageCount == null
-                                    ? Colors.transparent
-                                    : Colors.red),
-                            badgeContent: Text(
-                              unreadMessageCount.toString(),
-                              style: TextStyle(
-                                  color: unreadMessageCount == 0 ||
-                                          unreadMessageCount == "0" ||
-                                          unreadMessageCount == null
-                                      ? Colors.transparent
-                                      : Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            child: GestureDetector(
-                              child: CustomSubTotal(
-                                  SvgPicture.asset(
-                                      'assets/images/menu-icons/mitteilungen-main.svg'),
-                                  sh.getLanguageResource("notifications"),
-                                  null,
-                                  null,
-                                  10),
-                              onTap: () {
-                                Navigator.of(context).pushNamed('/messages');
-                              },
-                            ),
+                          padding: EdgeInsets.only(left: 5, right: 5),
+                          child: GestureDetector(
+                            child: CustomSubTotal(
+                                SvgPicture.asset(
+                                    'assets/images/menu-icons/mitteilungen-main.svg'),
+                                sh.getLanguageResource("notifications"),
+                                null,
+                                null,
+                                10,
+                                true),
+                            onTap: () {
+                              Navigator.of(context).pushNamed('/messages');
+                            },
                           ),
                         ),
                       ),
@@ -127,7 +111,8 @@ class _CommunicationPageState extends State<CommunicationPage> {
                                 sh.getLanguageResource("memories"),
                                 null,
                                 null,
-                                10),
+                                10,
+                                false),
                             onTap: () {
                               Navigator.of(context)
                                   .pushNamed('/notification-history')
@@ -148,7 +133,8 @@ class _CommunicationPageState extends State<CommunicationPage> {
                                 sh.getLanguageResource("video_consultation"),
                                 null,
                                 null,
-                                20),
+                                20,
+                                false),
                             onTap: () async {
                               if (videoUrl != null) {
                                 await launch(videoUrl!);
@@ -172,7 +158,8 @@ class _CommunicationPageState extends State<CommunicationPage> {
                                 sh.getLanguageResource("calendar"),
                                 null,
                                 null,
-                                10),
+                                10,
+                                true),
                             onTap: () {
                               Navigator.of(context)
                                   .pushNamed('/calendar')

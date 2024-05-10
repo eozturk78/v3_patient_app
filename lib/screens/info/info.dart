@@ -68,7 +68,8 @@ class _InfoPageState extends State<InfoPage> {
                                 sh.getLanguageResource('library'),
                                 null,
                                 null,
-                                10),
+                                10,
+                                false),
                             onTap: () {
                               Navigator.of(context).pushNamed('/libraries');
                             },
@@ -88,7 +89,8 @@ class _InfoPageState extends State<InfoPage> {
                                 sh.getLanguageResource('my_documents'),
                                 null,
                                 null,
-                                10),
+                                10,
+                                false),
                             onTap: () {
                               Navigator.of(context).pushNamed('/documents');
                             },
@@ -108,7 +110,8 @@ class _InfoPageState extends State<InfoPage> {
                                 sh.getLanguageResource('clarification'),
                                 null,
                                 null,
-                                10),
+                                10,
+                                false),
                             onTap: () {
                               Navigator.of(context).pushNamed('/enlightenment');
                             },

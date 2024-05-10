@@ -77,7 +77,8 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
                           sh.getLanguageResource("daily_measurements"),
                           null,
                           null,
-                          10),
+                          10,
+                          false),
                       onTap: () {
                         Navigator.of(context).pushNamed('/questionnaire-group');
                       },
@@ -97,7 +98,8 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
                           sh.getLanguageResource("graph_representation"),
                           null,
                           null,
-                          20),
+                          20,
+                          false),
                       onTap: () {
                         Navigator.of(context).pushNamed('/home');
                       },

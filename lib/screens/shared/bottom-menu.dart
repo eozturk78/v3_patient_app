@@ -9,7 +9,7 @@ import 'package:responsive_framework/responsive_value.dart';
 
 import 'package:badges/badges.dart' as badges;
 
-int? unreadMessageCount;
+int unreadMessageCount = 0;
 
 class BottomNavigatorBar extends StatefulWidget {
   final int? selectedIndex;

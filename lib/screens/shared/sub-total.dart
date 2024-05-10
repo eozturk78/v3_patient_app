@@ -1,21 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_app/colors/colors.dart';
+import 'package:patient_app/screens/shared/bottom-menu.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 
 import '../../model/scale-size.dart';
 
+import 'package:badges/badges.dart' as badges;
+
 class CustomSubTotal extends StatelessWidget {
   dynamic iconData;
   String? headText;
   String? subText;
+  final bool showNotification;
   final String? warningText;
   final int? colorState;
 
   CustomSubTotal(this.iconData, this.headText, this.subText, this.warningText,
-      this.colorState,
+      this.colorState, this.showNotification,
       {super.key});
 
   @override
@@ -37,11 +41,28 @@ class CustomSubTotal extends StatelessWidget {
                 color: iconColor,
               )
             else if (iconData is Widget) // Check if it's Widget (for SVG)
-              Container(
-                child: iconData,
-                width: 35,
-                height: 35,
-              ),
+              if (showNotification && unreadMessageCount != 0)
+                badges.Badge(
+                  badgeStyle: badges.BadgeStyle(badgeColor: Colors.red),
+                  badgeContent: Text(
+                    unreadMessageCount.toString(),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  child: Container(
+                    child: iconData,
+                    width: 35,
+                    height: 35,
+                  ),
+                )
+              else
+                Container(
+                  child: iconData,
+                  width: 35,
+                  height: 35,
+                )
           ],
           SizedBox(
             height: 15,

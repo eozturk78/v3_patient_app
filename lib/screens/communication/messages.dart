@@ -233,9 +233,10 @@ class _MessagesPageState extends State<MessagesPage> {
                                                       10) {
                                                     chosenMedicationPlan =
                                                         element;
-                                                    Navigator.pushNamed(
-                                                        navContext,
-                                                        '/medical-plan-1');
+                                                    Navigator.pushNamed(context,
+                                                            '/medical-plan-1')
+                                                        .then((value) =>
+                                                            getNotificationList());
                                                   } else {
                                                     SharedPreferences pref =
                                                         await SharedPreferences

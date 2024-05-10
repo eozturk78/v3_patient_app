@@ -344,11 +344,11 @@ class Shared {
   getUnReadMessageCount() {
     Apis apis = Apis();
 
-    apis.getUnReadMessageCount().then((value) {
+    /* apis.getUnReadMessageCount().then((value) {
       navigatorKey.currentState!.setState(() {
         if (value != null) unreadMessageCount = value['unreadmessagecount'];
       });
-    });
+    });*/
   }
 
   StateSetter? _setState;

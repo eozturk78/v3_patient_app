@@ -69,7 +69,8 @@ class _MedicationPageState extends State<MedicationPage> {
                               sh.getLanguageResource("medical_plan"),
                               null,
                               null,
-                              10),
+                              10,
+                              false),
                           onTap: () {
                             Navigator.of(context)
                                 .pushNamed('/medication-plan-list');
@@ -90,7 +91,8 @@ class _MedicationPageState extends State<MedicationPage> {
                               sh.getLanguageResource("recipe"),
                               null,
                               null,
-                              20),
+                              20,
+                              false),
                           onTap: () {
                             Navigator.of(context).pushNamed('/recipes');
                           },
@@ -115,7 +117,8 @@ class _MedicationPageState extends State<MedicationPage> {
                                   "interactive_medical_plan"),
                               null,
                               null,
-                              10),
+                              10,
+                              false),
                           onTap: () {
                             Navigator.of(context)
                                 .pushNamed('/interactive-medication-plan');
@@ -136,7 +139,8 @@ class _MedicationPageState extends State<MedicationPage> {
                               sh.getLanguageResource("medication_intake"),
                               null,
                               null,
-                              10),
+                              10,
+                              false),
                           onTap: () {
                             Navigator.of(context).pushNamed('/medicine-intake');
                           },
