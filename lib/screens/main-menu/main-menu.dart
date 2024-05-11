@@ -569,12 +569,13 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
       controller: navcontroller,
       screens: _buildScreens(context),
       items: _navBarsItems(),
-      confineInSafeArea: true,
+      confineInSafeArea: false,
+      hideNavigationBar: showNavbar,
       backgroundColor: Colors.white, // Default is Colors.white.
       handleAndroidBackButtonPress: true, // Default is true.
       resizeToAvoidBottomInset:
           true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-      stateManagement: false, // Default is true.
+      stateManagement: true, // Default is true.
       hideNavigationBarWhenKeyboardShows:
           true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
       decoration: NavBarDecoration(
@@ -612,195 +613,180 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
     ];
   }
 
+  var list = [];
+  setCurrentPage() {
+    if (list.length > 1) {
+      pageValue = list[list.length - 2];
+      list.removeAt(list.length - 1);
+    } else {
+      list.clear();
+      pageValue = 10;
+    }
+    setState(() {});
+  }
+
+  int pageValue =
+      10; // 10 home, 20 data, 30 medication, 40 communication, 50 info
   List<PersistentBottomNavBarItem> _navBarsItems() {
     Shared sh = Shared();
     return [
       PersistentBottomNavBarItem(
         icon: Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child: SvgPicture.asset(
-              'assets/images/home.svg',
-              height: 20,
-              color: iconColor,
-              fit: BoxFit.cover,
-              clipBehavior: Clip.none,
-            )),
-        inactiveIcon: Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child: SvgPicture.asset(
-              'assets/images/home.svg',
-              height: 20,
-              color: Colors.grey,
-              fit: BoxFit.cover,
-              clipBehavior: Clip.none,
-            )),
+          padding: EdgeInsets.only(top: 10.0),
+          child: SvgPicture.asset(
+            'assets/images/home.svg',
+            height: 20,
+            color: pageValue == 10 ? iconColor : CupertinoColors.systemGrey,
+            fit: BoxFit.cover,
+            clipBehavior: Clip.none,
+          ),
+        ),
         title: sh.getLanguageResource("home"),
-        activeColorPrimary: iconColor,
+        activeColorPrimary:
+            pageValue == 10 ? iconColor : CupertinoColors.systemGrey,
         textStyle: TextStyle(fontSize: 11),
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        onPressed: ((p0) {
+          Navigator.of(context)
+              .pushReplacementNamed("/main-menu")
+              .then((value) => setCurrentPage());
+          list.clear();
+          pageValue = 10;
+        }),
+        /**/
+        inactiveColorPrimary:
+            pageValue == 10 ? iconColor : CupertinoColors.systemGrey,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: "/",
+          initialRoute: "/main-menu",
           routes: routes,
         ),
-        //iconSize: 20,
-        /*onPressed:  (context) {
-
-          },
-
-         */
       ),
       PersistentBottomNavBarItem(
         icon: Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child: SvgPicture.asset(
-              'assets/images/daten.svg',
-              height: 20,
-              color: iconColor,
-              fit: BoxFit.cover,
-              clipBehavior: Clip.none,
-            )),
-        inactiveIcon: Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child: SvgPicture.asset(
-              'assets/images/daten.svg',
-              height: 20,
-              color: Colors.grey,
-              fit: BoxFit.cover,
-              clipBehavior: Clip.none,
-            )),
+          padding: EdgeInsets.only(top: 10.0),
+          child: SvgPicture.asset(
+            'assets/images/daten.svg',
+            height: 20,
+            color: pageValue == 20 ? iconColor : CupertinoColors.systemGrey,
+            fit: BoxFit.cover,
+            clipBehavior: Clip.none,
+          ),
+        ),
         title: sh.getLanguageResource("data"),
-        activeColorPrimary: iconColor,
+        activeColorPrimary:
+            pageValue == 20 ? iconColor : CupertinoColors.systemGrey,
         textStyle: TextStyle(fontSize: 11),
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        onPressed: ((p0) {
+          Navigator.of(navContext)
+              .pushNamed('/main-sub-menu')
+              .then((value) => setCurrentPage());
+          pageValue = 20;
+          list.add(pageValue);
+        }),
+        /**/
+        inactiveColorPrimary:
+            pageValue == 20 ? iconColor : CupertinoColors.systemGrey,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: "/",
+          initialRoute: "/main-sub-menu",
           routes: routes,
         ),
       ),
       PersistentBottomNavBarItem(
         icon: Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child: SvgPicture.asset(
-              'assets/images/medikation.svg',
-              height: 20,
-              color: iconColor,
-              fit: BoxFit.cover,
-              clipBehavior: Clip.none,
-            )),
-        inactiveIcon: Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child: SvgPicture.asset(
-              'assets/images/medikation.svg',
-              height: 20,
-              color: Colors.grey,
-              fit: BoxFit.cover,
-              clipBehavior: Clip.none,
-            )),
+          padding: EdgeInsets.only(top: 10.0),
+          child: SvgPicture.asset(
+            'assets/images/medikation.svg',
+            height: 20,
+            color: pageValue == 30 ? iconColor : CupertinoColors.systemGrey,
+            fit: BoxFit.cover,
+            clipBehavior: Clip.none,
+          ),
+        ),
         title: sh.getLanguageResource("medication"),
-        activeColorPrimary: iconColor,
+        activeColorPrimary:
+            pageValue == 30 ? iconColor : CupertinoColors.systemGrey,
         textStyle: TextStyle(fontSize: 11),
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        onPressed: ((p0) {
+          Navigator.of(navContext)
+              .pushNamed('/medication')
+              .then((value) => setCurrentPage());
+          pageValue = 30;
+          list.add(pageValue);
+        }),
+        /**/
+        inactiveColorPrimary:
+            pageValue == 30 ? iconColor : CupertinoColors.systemGrey,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: "/",
+          initialRoute: "/medication",
           routes: routes,
         ),
       ),
       PersistentBottomNavBarItem(
-        icon: unreadMessageCount != 0
-            ? badges.Badge(
-                badgeStyle: badges.BadgeStyle(badgeColor: Colors.red),
-                badgeContent: Text(
-                  unreadMessageCount.toString(),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(top: 10.0),
-                  child: SvgPicture.asset(
-                    'assets/images/messenger_outline.svg',
-                    height: 20,
-                    color: iconColor,
-                    fit: BoxFit.cover,
-                    clipBehavior: Clip.none,
-                  ),
-                ),
-              )
-            : Padding(
-                padding: EdgeInsets.only(top: 10.0),
-                child: SvgPicture.asset(
-                  'assets/images/messenger_outline.svg',
-                  height: 20,
-                  color: iconColor,
-                  fit: BoxFit.cover,
-                  clipBehavior: Clip.none,
-                ),
-              ),
-        inactiveIcon: unreadMessageCount != 0
-            ? badges.Badge(
-                badgeStyle: badges.BadgeStyle(badgeColor: Colors.red),
-                badgeContent: Text(
-                  unreadMessageCount.toString(),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold),
-                ),
-                child: Padding(
-                    padding: EdgeInsets.only(top: 10.0),
-                    child: SvgPicture.asset(
-                      'assets/images/messenger_outline.svg',
-                      height: 20,
-                      color: Colors.grey,
-                      fit: BoxFit.cover,
-                      clipBehavior: Clip.none,
-                    )),
-              )
-            : Padding(
-                padding: EdgeInsets.only(top: 10.0),
-                child: SvgPicture.asset(
-                  'assets/images/messenger_outline.svg',
-                  height: 20,
-                  color: Colors.grey,
-                  fit: BoxFit.cover,
-                  clipBehavior: Clip.none,
-                ),
-              ),
+        icon: badges.Badge(
+          badgeStyle: badges.BadgeStyle(
+              badgeColor:
+                  unreadMessageCount != 0 ? Colors.red : Colors.transparent),
+          badgeContent: Text(
+            unreadMessageCount.toString(),
+            style: TextStyle(
+                color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+          ),
+          child: Padding(
+            padding: EdgeInsets.only(top: 10.0),
+            child: SvgPicture.asset(
+              'assets/images/messenger_outline.svg',
+              height: 20,
+              color: pageValue == 40 ? iconColor : CupertinoColors.systemGrey,
+              fit: BoxFit.cover,
+              clipBehavior: Clip.none,
+            ),
+          ),
+        ),
         title: sh.getLanguageResource("communication"),
-        activeColorPrimary: iconColor,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        activeColorPrimary:
+            pageValue == 40 ? iconColor : CupertinoColors.systemGrey,
+        inactiveColorPrimary:
+            pageValue == 40 ? iconColor : CupertinoColors.systemGrey,
         textStyle: TextStyle(fontSize: 11),
+        onPressed: ((p0) {
+          Navigator.of(navContext)
+              .pushNamed('/communication')
+              .then((value) => setCurrentPage());
+          pageValue = 40;
+          list.add(pageValue);
+        }),
+        /* */
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: "/",
+          initialRoute: "/communication",
           routes: routes,
         ),
       ),
       PersistentBottomNavBarItem(
         icon: Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child: SvgPicture.asset(
-              'assets/images/info.svg',
-              height: 20,
-              color: iconColor,
-              fit: BoxFit.cover,
-              clipBehavior: Clip.none,
-            )),
-        inactiveIcon: Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child: SvgPicture.asset(
-              'assets/images/info.svg',
-              height: 20,
-              color: Colors.grey,
-              fit: BoxFit.cover,
-              clipBehavior: Clip.none,
-            )),
+          padding: EdgeInsets.only(top: 10.0),
+          child: SvgPicture.asset(
+            'assets/images/info.svg',
+            height: 20,
+            color: pageValue == 50 ? iconColor : CupertinoColors.systemGrey,
+            fit: BoxFit.cover,
+            clipBehavior: Clip.none,
+          ),
+        ),
         title: sh.getLanguageResource("info_tech"),
-        activeColorPrimary: iconColor,
+        activeColorPrimary:
+            pageValue == 50 ? iconColor : CupertinoColors.systemGrey,
         textStyle: TextStyle(fontSize: 11),
-        inactiveColorPrimary: CupertinoColors.systemGrey,
+        onPressed: ((p0) {
+          Navigator.of(navContext)
+              .pushNamed('/info')
+              .then((value) => setCurrentPage());
+          pageValue = 50;
+          list.add(pageValue);
+        }),
+        /**/
+        inactiveColorPrimary:
+            pageValue == 50 ? iconColor : CupertinoColors.systemGrey,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: "/",
+          initialRoute: "/info",
           routes: routes,
         ),
       ),

@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class Enums {
   var enumDeviceNodeParserTypes = [
     {
@@ -49,4 +51,8 @@ class Enums {
       ],
     }
   ];
+}
+
+currentPage() {
+  print(Get.currentRoute);
 }

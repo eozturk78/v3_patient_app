@@ -398,6 +398,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       pref.remove("currentPage");
                       tokenTimeOutSecond = 0;
                       tokenTimeOutSecondDB = 0;
+                      showNavbar = false;
                       //pref.remove("userName");
                       Navigator.of(context).pushNamedAndRemoveUntil(
                           "/login", ModalRoute.withName('/login'));

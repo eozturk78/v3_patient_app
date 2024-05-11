@@ -180,8 +180,8 @@ leadingWithoutBack(String title, BuildContext context) {
           Icons.settings,
           color: Color.fromARGB(255, 69, 81, 84),
         ),
-        onPressed: () async {
-          await Navigator.of(context).pushNamed("/profile");
+        onPressed: () {
+          Navigator.of(navContext).pushNamed("/profile");
         },
       )
     ],
@@ -227,12 +227,7 @@ leadingSubpage(String title, BuildContext context) {
     leading: TextButton(
       onPressed: () {
         renewToken();
-        if (Navigator.of(context).canPop()) {
-          Navigator.of(context).pop();
-        }else{
-        navcontroller.jumpToTab(0);
-        }
-
+        Navigator.of(navContext).pop();
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,

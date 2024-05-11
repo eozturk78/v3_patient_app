@@ -106,18 +106,19 @@ final Map<String, WidgetBuilder> routes = {
   "/settings": (context) => const SettingsPage(),
   "/main-sub-menu": (context) => const MainSubMenuPage(),
   "/home": (context) => const HomePage(),
-  "/login": (context) => const LoginPage(isDiaglog: false,),
+  "/login": (context) => const LoginPage(
+        isDiaglog: false,
+      ),
   "/change-password": (context) => const ChangePasswordPage(),
   "/profile": (context) => const ProfilePage(),
   "/measurement-result": (context) => const MeasurementResultPage(),
   "/measurement-result-weight": (context) =>
-  const MeasurementResultWeightPage(),
-  "/measurement-result-pulse": (context) =>
-  const MeasurementResultPulsePage(),
+      const MeasurementResultWeightPage(),
+  "/measurement-result-pulse": (context) => const MeasurementResultPulsePage(),
   "/measurement-result-temperature": (context) =>
-  const MeasurementResultTemperaturePage(),
+      const MeasurementResultTemperaturePage(),
   "/measurement-result-saturation": (context) =>
-  const MeasurementResultSaturationPage(),
+      const MeasurementResultSaturationPage(),
   "/communication": (context) => const CommunicationPage(),
   "/info": (context) => const InfoPage(),
   "/medication": (context) => const MedicationPage(),
@@ -128,8 +129,7 @@ final Map<String, WidgetBuilder> routes = {
   "/medical-plan-1": (context) => const MedicalPlan1Page(),
   "/calendar": (context) => CalendarScreen(),
   "/medication-plan-list": (context) => const MedicationPlanListPage(),
-  "/interactive-medication-plan": (context) =>
-      InteractiveMedicationPlanPage(),
+  "/interactive-medication-plan": (context) => InteractiveMedicationPlanPage(),
   "/medicine-intake": (context) => MedicineIntakeScreen(),
   "/recipes": (context) => const RecipesPage(),
   "/libraries": (context) => const LibraryListPage(),
@@ -147,18 +147,16 @@ final Map<String, WidgetBuilder> routes = {
   "/questionnaire-9": (context) => const Questionnaire9Page(),
   "/blutdruck-description": (context) => const BlutdruckDescriptionPage(),
   "/weight-description": (context) => const WeightDescriptionPage(),
-  "/saturation-description": (context) =>
-  const SaturationDescriptionPage(),
+  "/saturation-description": (context) => const SaturationDescriptionPage(),
   "/pulse-description": (context) => const PulseDescriptionPage(),
-  "/temperature-description": (context) =>
-  const TemperatureDescriptionPage(),
+  "/temperature-description": (context) => const TemperatureDescriptionPage(),
   "/about-me": (context) => const AboutMe(),
   "/registration-1": (context) => const Registration1Page(),
   "/registration-2": (context) => const Registration2Page(),
   "/registration-3": (context) => const Registration3Page(),
   "/registration-4": (context) => const Registration4Page(),
   "/created-account-successfully": (context) =>
-  const RegistrationCompletedPage(),
+      const RegistrationCompletedPage(),
   "/diagnoses": (context) => const DiagnosesPage(),
   "/agreements": (context) => const AgreementsPage(),
   "/edit-agreements": (context) => const EditAgreementsPage(),

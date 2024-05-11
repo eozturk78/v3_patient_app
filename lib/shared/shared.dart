@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/main.dart';
@@ -25,6 +26,7 @@ int tokenTimeOutSecondDB = 0;
 int popUpAppearSecond = 0;
 MessageNotification? chosenMedicationPlan;
 Timer? _timer;
+bool showNavbar = false;
 
 class Shared {
   var outputFormat = DateFormat('dd/MM/yyyy HH:mm');
@@ -286,8 +288,6 @@ class Shared {
     //  [ERROR:flutter/runtime/dart_vm_initializer.cc(41)] Unhandled Exception: NoSuchMethodError: Class '_ClientSocketException' has no instance method '[]'.
     // E/flutter (21469): Receiver: Instance of '_ClientSocketException'
 
-    print("============");
-
     if (errorStatus == "expired") {
       // change password redirection
       Navigator.of(_context!).pushNamed('/change-password');
@@ -337,6 +337,7 @@ class Shared {
 
   setCurrentScreen(String page) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+
     pref.setString("currentPage", '/$page');
     getUnReadMessageCount();
   }
@@ -424,7 +425,7 @@ class Shared {
 
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.remove("token");
-
+    showNavbar = false;
     showDialog(
       context: navigatorKey.currentState!.overlay!.context,
       builder: (BuildContext context) => StatefulBuilder(
