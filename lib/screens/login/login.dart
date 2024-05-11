@@ -448,7 +448,8 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
+                              minimumSize: const Size.fromHeight(40),
+                              backgroundColor: mainButtonColor,
                             ),
                             onPressed: () async {
                               final isValid = _formKey.currentState?.validate();
@@ -471,7 +472,8 @@ class _LoginPageState extends State<LoginPage> {
                               _availableBiometrics!.isNotEmpty)
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                shape: const StadiumBorder(), backgroundColor: mainButtonColor,
+                                shape: const StadiumBorder(),
+                                backgroundColor: Colors.white,
                                 //backgroundColor: Colors.white,
                                 minimumSize: const Size.fromHeight(30),
                               ),

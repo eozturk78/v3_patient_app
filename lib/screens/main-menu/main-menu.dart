@@ -88,6 +88,8 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
   void initState() {
     super.initState();
     getPatientInfo();
+
+    getUnReadMessageCount();
     _loadMenuItems();
     sh.openPopUp(context, 'main-menu');
   }
@@ -143,6 +145,20 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
     }, onError: (err) {
       sh.redirectPatient(err, context);
       setState(() {});
+    });
+  }
+
+  bool loading = true;
+  getUnReadMessageCount() {
+    Apis apis = Apis();
+    apis.getUnReadMessageCount().then((value) {
+      if (value['unreadmessagecount'] != null &&
+          value['unreadmessagecount'] != 0) {
+        unreadMessageCount = value['unreadmessagecount'];
+      }
+      if (mounted == true) {
+        setState(() {});
+      }
     });
   }
 
@@ -620,6 +636,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
             )),
         title: sh.getLanguageResource("home"),
         activeColorPrimary: iconColor,
+        textStyle: TextStyle(fontSize: 11),
         inactiveColorPrimary: CupertinoColors.systemGrey,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: "/",
@@ -653,6 +670,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
             )),
         title: sh.getLanguageResource("data"),
         activeColorPrimary: iconColor,
+        textStyle: TextStyle(fontSize: 11),
         inactiveColorPrimary: CupertinoColors.systemGrey,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: "/",
@@ -680,6 +698,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
             )),
         title: sh.getLanguageResource("medication"),
         activeColorPrimary: iconColor,
+        textStyle: TextStyle(fontSize: 11),
         inactiveColorPrimary: CupertinoColors.systemGrey,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: "/",
@@ -746,10 +765,12 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                   color: Colors.grey,
                   fit: BoxFit.cover,
                   clipBehavior: Clip.none,
-                )),
+                ),
+              ),
         title: sh.getLanguageResource("communication"),
         activeColorPrimary: iconColor,
         inactiveColorPrimary: CupertinoColors.systemGrey,
+        textStyle: TextStyle(fontSize: 11),
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: "/",
           routes: routes,
@@ -776,6 +797,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
             )),
         title: sh.getLanguageResource("info_tech"),
         activeColorPrimary: iconColor,
+        textStyle: TextStyle(fontSize: 11),
         inactiveColorPrimary: CupertinoColors.systemGrey,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: "/",
