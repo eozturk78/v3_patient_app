@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/main.dart';
+import 'package:patient_app/screens/main-menu/main-menu.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -398,7 +399,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       pref.remove("currentPage");
                       tokenTimeOutSecond = 0;
                       tokenTimeOutSecondDB = 0;
-                      showNavbar = false;
+                      hideNavBar = true;
                       //pref.remove("userName");
                       Navigator.of(context).pushNamedAndRemoveUntil(
                           "/login", ModalRoute.withName('/login'));

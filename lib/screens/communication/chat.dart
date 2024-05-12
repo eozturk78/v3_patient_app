@@ -4,8 +4,10 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:patient_app/apis/apis.dart';
+import 'package:patient_app/main.dart';
 import 'package:patient_app/screens/shared/list-box.dart';
 import 'package:patient_app/screens/shared/message-list-container.dart';
 import 'package:patient_app/screens/shared/shared.dart';
@@ -15,6 +17,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../colors/colors.dart';
+import '../main-menu/main-menu.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/message-text-bubble.dart';
 
@@ -65,6 +68,24 @@ class _ChatPageState extends State<ChatPage> {
 
     controller = new ScrollController()..addListener(_scrollListener);
     sh.openPopUp(context, 'chat');
+
+    _focusNode.addListener(isActive);
+    fnHideNavBar();
+  }
+
+  final FocusNode _focusNode = FocusNode();
+  void isActive() {
+    if (_focusNode.hasFocus) {
+      debugPrint("Keyboard is active");
+      hideNavBar = true;
+    } else {
+      debugPrint("Keyboard is not active");
+      hideNavBar = false;
+    }
+  }
+
+  fnHideNavBar() {
+    print(hideNavBar);
   }
 
   /* getUnReadMessageCount() {
@@ -160,8 +181,10 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToEnd());
+
     return Scaffold(
       appBar: leadingSubpage(sh.getLanguageResource("messages"), context),
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           Padding(
@@ -211,6 +234,7 @@ class _ChatPageState extends State<ChatPage> {
               padding: EdgeInsets.only(left: 10),
               child: TextFormField(
                 controller: txtMessageController,
+                focusNode: _focusNode,
                 obscureText: false,
                 keyboardType: TextInputType.multiline,
                 minLines: 1, //Normal textInputField will be displayed
@@ -427,6 +451,7 @@ class _ChatPageState extends State<ChatPage> {
                 margin: EdgeInsets.only(left: 30),
                 child: TextFormField(
                   controller: txtHeaderMessageController,
+                  scrollPadding: EdgeInsets.zero,
                   style: TextStyle(
                       color: const Color.fromARGB(255, 255, 255, 255)),
                   decoration: InputDecoration(

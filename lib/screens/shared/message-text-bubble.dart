@@ -49,19 +49,16 @@ class _CustomMessageTextBubbleState extends State<CustomMessageTextBubble> {
     //if (widget.senderType == 10 && widget.readAt == null) markAsRead();
   }
 
-
   saveLoad() {
     setState(() {
       widget.startedLoadImage = true;
     });
     apis.getAttachmentDataUrl(widget.image).then(
       (value) {
-        setState(
-          () {
-            imageText = value;
-            widget.startedLoadImage = false;
-          },
-        );
+        imageText = value;
+        widget.startedLoadImage = false;
+
+        if (mounted) setState(() {});
       },
       onError: (err) => setState(
         () {

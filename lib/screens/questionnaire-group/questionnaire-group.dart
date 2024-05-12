@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/model/questionnaire-group.dart';
+import 'package:patient_app/screens/main-menu/main-menu.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
@@ -62,8 +63,8 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
       appBar:
           leadingSubpage(sh.getLanguageResource("daily_measurements"), context),
       body: Center(
-          child: SingleChildScrollView(
-        child: Container(
+        child: SingleChildScrollView(
+          child: Container(
             alignment: Alignment.center,
             width: MediaQuery.of(context).size.width *
                 ResponsiveValue(
@@ -107,6 +108,7 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
                                   children: [
                                     TextButton(
                                       onPressed: () async {
+                                        hideNavBar = true;
                                         SharedPreferences pref =
                                             await SharedPreferences
                                                 .getInstance();
@@ -153,8 +155,10 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
                             ],
                           ),
                         ),
-                      )),
-      )),
+                      ),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -57,6 +57,7 @@ class _MessagesPageState extends State<MessagesPage> {
     apis.getPatientNotificationList().then(
       (resp) => {
         setState(() {
+          hideNavBar = false;
           notificationList = (resp as List)
               .map((e) => MessageNotification.fromJson(e))
               .toList();
@@ -238,6 +239,7 @@ class _MessagesPageState extends State<MessagesPage> {
                                                         .then((value) =>
                                                             getNotificationList());
                                                   } else {
+                                                    hideNavBar = true;
                                                     SharedPreferences pref =
                                                         await SharedPreferences
                                                             .getInstance();

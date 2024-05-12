@@ -13,6 +13,7 @@ import 'package:patient_app/main.dart';
 import 'package:patient_app/model/message-notification.dart';
 import 'package:patient_app/model/search-menu.dart';
 import 'package:patient_app/screens/login/login.dart';
+import 'package:patient_app/screens/main-menu/main-menu.dart';
 import 'package:patient_app/screens/shared/bottom-menu.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/toast.dart';
@@ -26,7 +27,7 @@ int tokenTimeOutSecondDB = 0;
 int popUpAppearSecond = 0;
 MessageNotification? chosenMedicationPlan;
 Timer? _timer;
-bool showNavbar = false;
+
 
 class Shared {
   var outputFormat = DateFormat('dd/MM/yyyy HH:mm');
@@ -425,7 +426,7 @@ class Shared {
 
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.remove("token");
-    showNavbar = false;
+    hideNavBar = true;
     showDialog(
       context: navigatorKey.currentState!.overlay!.context,
       builder: (BuildContext context) => StatefulBuilder(

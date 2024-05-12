@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:patient_app/colors/colors.dart';
+import 'package:patient_app/screens/main-menu/main-menu.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/toast.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
@@ -254,6 +255,7 @@ class _LoginPageState extends State<LoginPage> {
           // TODO: add else block to this if block
           setState(() {
             isSendEP = false;
+            hideNavBar = false;
           });
           pref.setString("patientTitle", value['firstName']);
           pref.setString('token', value['token']);

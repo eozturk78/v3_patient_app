@@ -227,7 +227,10 @@ leadingSubpage(String title, BuildContext context) {
     leading: TextButton(
       onPressed: () {
         renewToken();
-        Navigator.of(navContext).pop();
+        if (Navigator.of(context).canPop())
+          Navigator.of(navContext).pop();
+        else
+          Navigator.pushReplacementNamed(context, '/main-menu');
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -285,7 +288,10 @@ leadingDescSubpage(String title, BuildContext context) {
       icon: Icon(Icons.arrow_back, color: Colors.black),
       onPressed: () {
         renewToken();
-        Navigator.of(context).pop();
+        if (Navigator.of(context).canPop())
+          Navigator.of(navContext).pop();
+        else
+          Navigator.pushReplacementNamed(context, '/main-menu');
       },
     ),
     title: Text(

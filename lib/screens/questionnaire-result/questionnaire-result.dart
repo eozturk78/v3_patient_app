@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/model/scale-size.dart';
+import 'package:patient_app/screens/main-menu/main-menu.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
@@ -415,8 +416,9 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
         context: context,
         builder: (context) => savedSuccessFully(context),
       ).then((value) {
+        hideNavBar = false;
         Navigator.of(context).pushNamedAndRemoveUntil(
-            '/home', ModalRoute.withName("/questionnaire-group"));
+            '/main-menu', ModalRoute.withName("/questionnaire-group"));
       });
     }, onError: (err) {
       setState(() {
@@ -498,7 +500,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
       ),
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
-        child: Column(
+        child: Stack(
           children: [
             SizedBox(
               height: 10,
@@ -516,10 +518,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                         context: context,
                         builder: (context) => exitQuestionnaire(context),
                       ).then((value) {
-                        if (value == 1)
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/questionnaire-group',
-                              ModalRoute.withName("/main-menu"));
+                        if (value == 1) Navigator.of(context).pop();
                       });
                     }),
               ),
@@ -1063,7 +1062,8 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                               padding: EdgeInsets.all(10),
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size.fromHeight(30), backgroundColor: mainButtonColor,
+                                  minimumSize: const Size.fromHeight(30),
+                                  backgroundColor: mainButtonColor,
                                 ),
                                 onPressed: () async {
                                   sendValues();
@@ -1080,52 +1080,51 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                             ),
                           ),
                         ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          for (var item in buttons)
-                            Container(
-                              width: 150,
-                              margin: EdgeInsets.only(left: 10, bottom: 150),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: (item['isNo'])
-                                      ? confirmButton
-                                      : mainButtonColor,
-                                ),
-                                onPressed: () async {
-                                  setState(() {
-                                    focusNotToFirst.unfocus();
-                                  });
-                                  prepareOutputs();
-                                  if (item['next'] == endNode) {
-                                    setState(() {
-                                      isLast = true;
-                                    });
-                                    clearAll();
-                                  } else {
-                                    if (item['next'] != null) {
-                                      findQuestionaire(item['next']);
-                                    } else if (_next != null) {
-                                      findQuestionaire(_next);
-                                    }
-                                  }
-                                },
-                                child: Text(sh.getLanguageResource(
-                                  item['text'].toString().toLowerCase(),
-                                )),
-                              ),
-                            ),
-                        ],
-                      )
                     ],
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
+      ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          for (var item in buttons)
+            Container(
+              width: 150,
+              margin: EdgeInsets.only(left: 10, bottom: 10),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      (item['isNo']) ? confirmButton : mainButtonColor,
+                ),
+                onPressed: () async {
+                  setState(() {
+                    focusNotToFirst.unfocus();
+                  });
+                  prepareOutputs();
+                  if (item['next'] == endNode) {
+                    setState(() {
+                      isLast = true;
+                    });
+                    clearAll();
+                  } else {
+                    if (item['next'] != null) {
+                      findQuestionaire(item['next']);
+                    } else if (_next != null) {
+                      findQuestionaire(_next);
+                    }
+                  }
+                },
+                child: Text(sh.getLanguageResource(
+                  item['text'].toString().toLowerCase(),
+                )),
+              ),
+            ),
+        ],
       ),
     );
   }
@@ -1158,8 +1157,10 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 158, 158, 158)),
+                            backgroundColor:
+                                const Color.fromARGB(255, 158, 158, 158)),
                         onPressed: () async {
+                          hideNavBar = false;
                           Navigator.of(context).pop(1);
                         },
                         child: Text(
@@ -1215,7 +1216,8 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(30), backgroundColor: mainButtonColor,
+                      minimumSize: const Size.fromHeight(30),
+                      backgroundColor: mainButtonColor,
                     ),
                     onPressed: () async {
                       Navigator.pop(context);
