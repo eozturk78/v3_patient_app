@@ -417,8 +417,7 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
         builder: (context) => savedSuccessFully(context),
       ).then((value) {
         hideNavBar = false;
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            '/main-menu', ModalRoute.withName("/questionnaire-group"));
+        Navigator.of(context).pop();
       });
     }, onError: (err) {
       setState(() {
