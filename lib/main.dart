@@ -8,6 +8,8 @@ import 'package:patient_app/screens/agreements/agreements.dart';
 import 'package:patient_app/screens/agreements/edit-agreements.dart';
 import 'package:patient_app/screens/agreements/privacy-policy.dart';
 import 'package:patient_app/screens/agreements/terms-and-conditions.dart';
+import 'package:patient_app/screens/bluetooth-example/bluetooth-example-2.dart';
+import 'package:patient_app/screens/bluetooth-example/bluetooth-example.dart';
 import 'package:patient_app/screens/communication/calendar.dart';
 import 'package:patient_app/screens/communication/chat.dart';
 import 'package:patient_app/screens/communication/communication.dart';
@@ -175,6 +177,8 @@ final Map<String, WidgetBuilder> routes = {
   '/answer-secret-question': (context) => AnswerSecretQuestionPage(),
   '/reset-password': (context) => ResetPasswordPage(),
   '/temporary-password': (context) => TemporaryPasswordPage(),
+  '/bluetooth-example': (context) => BluetoothExamplePage(),
+  '/bluetooth-example-2': (context) => BluetoothExample2Page(),
   '/successfully-changed-password': (context) =>
       SuccessfullyChangedPasswordPage(),
 };

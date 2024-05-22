@@ -347,6 +347,18 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed("/bluetooth-example");
+                          },
+                          child: Text("bluetooth")),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed("/bluetooth-example-2");
+                          },
+                          child: Text("bluetooth 2")),
                       if (isFocusedSearch == false)
                         Text(
                           "${sh.getLanguageResource("hello")} ${title}!",

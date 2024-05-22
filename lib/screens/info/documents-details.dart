@@ -17,6 +17,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../apis/apis.dart';
 import '../../model/patient-file.dart';
@@ -159,6 +160,9 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
     );
   }
 
+  late VideoPlayerController _controller;
+  int fileType =
+      10; // 10 pdf, 20 image, 30 video, 40 excel, 50 word, 60 webview
   onShowFile(PatientFile item) {
     var fileUrl = "";
 
@@ -168,7 +172,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
       var url = '${apis.apiPublic}/${item.fileUrl}';
       PDFDocument.fromURL(url).then((value) {
         setState(() {
-          isPdf = true;
+          fileType = 10;
           document = value;
           openDialog(item);
         });
@@ -176,17 +180,29 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
     } else if (fileUrl.contains('pdf')) {
       PDFDocument.fromURL(fileUrl).then((value) {
         setState(() {
-          isPdf = true;
+          fileType = 10;
           document = value;
           openDialog(item);
         });
       });
-    } else {
+    } else if (fileUrl.contains('webp') ||
+        fileUrl.contains('png') ||
+        fileUrl.contains('jpg') ||
+        fileUrl.contains('jpeg')) {
       setState(() {
-        isPdf = false;
+        fileType = 20;
         imageUrl = fileUrl;
         openDialog(item);
       });
+    } else if (fileUrl.contains('mp4')) {
+      fileType = 30;
+      print(fileUrl);
+      _controller = VideoPlayerController.networkUrl(Uri.parse(fileUrl))
+        ..initialize().then((_) {
+          // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+          openDialog(item);
+          setState(() {});
+        });
     }
   }
 
@@ -528,6 +544,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
   }
 
   Widget onOpenImage(BuildContext context, String? fileName) {
+    if (fileType == 30) _controller.play();
     String? _fileName = fileName ?? null;
     return AlertDialog(
       insetPadding: EdgeInsets.symmetric(
@@ -542,92 +559,131 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
         builder: (BuildContext context, setState) {
           return SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: double.infinity,
-            child: Column(children: [
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Icon(
-                        Icons.close,
-                        size: 30,
+            child: Column(
+              children: [
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          _controller.pause();
+                          Navigator.of(context).pop();
+                        },
+                        child: Icon(
+                          Icons.close,
+                          size: 30,
+                        ),
                       ),
-                    ),
-                    TextButton(
+                      TextButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  onOpenFileInfo(context, _fileName),
+                            ).then((value) {
+                              _fileName = value;
+                              if (value != null) Navigator.of(context).pop();
+                            });
+                          },
+                          child: Text(_fileName ?? "")),
+                      if (fileType == 30)
+                        IconButton(
+                            color: Colors.blue,
+                            onPressed: () {
+                              setState(() {
+                                _controller.value.isPlaying
+                                    ? _controller.pause()
+                                    : _controller.play();
+                              });
+                            },
+                            icon: Icon(
+                              _controller.value.isPlaying
+                                  ? Icons.pause
+                                  : Icons.play_arrow,
+                            )),
+                      TextButton(
                         onPressed: () {
                           showDialog(
                             context: context,
                             builder: (context) =>
-                                onOpenFileInfo(context, _fileName),
-                          ).then((value) {
-                            _fileName = value;
-                            if (value != null) Navigator.of(context).pop();
+                                onAreYouSureDeleteFile(context, fileId),
+                          ).then((resp) {
+                            if (resp != null) Navigator.of(context).pop();
                           });
                         },
-                        child: Text(_fileName ?? "")),
-                    TextButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) =>
-                              onAreYouSureDeleteFile(context, fileId),
-                        ).then((resp) {
-                          if (resp != null) Navigator.of(context).pop();
-                        });
-                      },
-                      child: Icon(
-                        Icons.delete_outline,
-                        size: 30,
+                        child: Icon(
+                          Icons.delete_outline,
+                          size: 30,
+                        ),
+                      ),
+                    ],
+                  ),
+                  height: 40,
+                  padding: EdgeInsets.only(right: 10, left: 10),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 5,
+                        color: Colors.black.withOpacity(0.3),
+                      ),
+                    ],
+                  ),
+                ),
+                if (fileType == 10)
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.84,
+                    width: double.infinity,
+                    child: PDFViewer(
+                      tooltip: PDFViewerTooltip(
+                          pick: sh.getLanguageResource('select_a_page')),
+                      scrollDirection: Axis.vertical,
+                      document: document!,
+                    ),
+                  ),
+                if (fileType == 20 && imageUrl != null)
+                  Flexible(
+                    child: AspectRatio(
+                      aspectRatio: 0.7,
+                      child: PhotoViewGallery.builder(
+                        backgroundDecoration:
+                            BoxDecoration(color: Colors.white),
+                        scrollPhysics: BouncingScrollPhysics(),
+                        builder: (BuildContext context, int index) {
+                          return PhotoViewGalleryPageOptions(
+                            imageProvider: NetworkImage(imageUrl!),
+                            initialScale:
+                                PhotoViewComputedScale.contained * 0.8,
+                            minScale: PhotoViewComputedScale.contained * 0.8,
+                          );
+                        },
+                        itemCount: 1,
                       ),
                     ),
-                  ],
-                ),
-                height: 40,
-                padding: EdgeInsets.only(right: 10, left: 10),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 5,
-                      color: Colors.black.withOpacity(0.3),
+                  ),
+                if (fileType == 30)
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    child: SingleChildScrollView(
+                      child: Stack(
+                        children: [
+                          _controller.value.isInitialized
+                              ? AspectRatio(
+                                  aspectRatio: _controller.value.aspectRatio,
+                                  child: VideoPlayer(
+                                    _controller,
+                                  ),
+                                )
+                              : Container(),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-              if (isPdf)
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.84,
-                  width: double.infinity,
-                  child: PDFViewer(
-                    tooltip: PDFViewerTooltip(
-                        pick: sh.getLanguageResource('select_a_page')),
-                    scrollDirection: Axis.vertical,
-                    document: document!,
-                  ),
-                ),
-              if (!isPdf && imageUrl != null)
-                Flexible(
-                    child: AspectRatio(
-                  aspectRatio: 0.7,
-                  child: PhotoViewGallery.builder(
-                    backgroundDecoration: BoxDecoration(color: Colors.white),
-                    scrollPhysics: BouncingScrollPhysics(),
-                    builder: (BuildContext context, int index) {
-                      return PhotoViewGalleryPageOptions(
-                        imageProvider: NetworkImage(imageUrl!),
-                        initialScale: PhotoViewComputedScale.contained * 0.8,
-                        minScale: PhotoViewComputedScale.contained * 0.8,
-                      );
-                    },
-                    itemCount: 1,
-                  ),
-                ))
-            ]),
+                  )
+              ],
+            ),
           );
         },
       ),
@@ -672,7 +728,8 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
+                          minimumSize: const Size.fromHeight(40),
+                          backgroundColor: mainButtonColor,
                         ),
                         onPressed: () {
                           if (folderNameController.text != "") {
@@ -796,7 +853,8 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
+                          minimumSize: const Size.fromHeight(40),
+                          backgroundColor: mainButtonColor,
                         ),
                         onPressed: () {
                           setState(() {
@@ -1019,7 +1077,8 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
+                          minimumSize: const Size.fromHeight(40),
+                          backgroundColor: mainButtonColor,
                         ),
                         onPressed: () {
                           if (fileNameController.text != "") {

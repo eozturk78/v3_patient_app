@@ -205,85 +205,6 @@ class _DocumentListPageState extends State<DocumentListPage> {
       //floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          /* showModalBottomSheet(
-            context: context,
-            builder: (context) {
-              return Wrap(
-                children: [
-                  ListTile(
-                    onTap: () async {
-                      setState(() {
-                        showDialog(
-                          context: context,
-                          builder: (context) => onOpenFolderInfo(context),
-                        ).then((resp) {
-                          getPatientFolders(false);
-                        });
-                      });
-                    },
-                    leading: new Icon(Icons.file_present_outlined),
-                    title: Text(sh.getLanguageResource('new_folder')),
-                  ),
-                  ListTile(
-                    onTap: () async {
-                      if (await sh.checkPermission(context, Permission.camera,
-                              sh.cameraPermissionText) ==
-                          true) {
-                        XFile? pickedFile = await ImagePicker().pickImage(
-                          source: ImageSource.camera,
-                        );
-                        if (pickedFile != null) {
-                          setState(() {
-                            selectedPhotoImage = pickedFile;
-                            showDialog(
-                              context: context,
-                              builder: (context) => onOpenImage(context),
-                            ).then((resp) {
-                              if (resp != null) Navigator.pop(context, resp);
-                            });
-                          });
-                        }
-                      }
-                    },
-                    leading: new Icon(Icons.image_outlined),
-                    title: Text(sh.getLanguageResource('take_a_photo')),
-                  ),
-                  ListTile(
-                    onTap: () async {
-                      if (await sh.checkPermission(context, Permission.storage,
-                              sh.storagePermissionText) ==
-                          true) {
-                        FilePickerResult? pickedFile =
-                            await FilePicker.platform.pickFiles(
-                          type: FileType.custom,
-                          allowMultiple: false,
-                          allowedExtensions: ['jpg', 'pdf', 'doc', 'png'],
-                        );
-                        if (pickedFile != null) {
-                          setState(() {
-                            selectedFile = pickedFile!.files.first;
-                            if (selectedFile?.extension == 'pdf') {
-                              File file = File(selectedFile!.path!);
-                              PDFDocument.fromFile(file).then((value) {
-                                setState(() {
-                                  document = value;
-                                  openDialog();
-                                });
-                              });
-                            } else {
-                              openDialog();
-                            }
-                          });
-                        }
-                      }
-                    },
-                    leading: new Icon(Icons.file_present_outlined),
-                    title: Text(sh.getLanguageResource('add_document_photo')),
-                  ),
-                ],
-              );
-            },
-          );*/
           showDialog(
             context: context,
             builder: (context) => folderFileMenu(
@@ -413,6 +334,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                     children: [
                       TextButton(
                         onPressed: () {
+                          
                           Navigator.of(context).pop();
                         },
                         child: Icon(
@@ -475,10 +397,7 @@ class _DocumentListPageState extends State<DocumentListPage> {
                     ),
                   ),
                 if (selectedPhotoImage == null &&
-                    selectedFile?.extension != 'jpg' &&
-                    selectedFile?.extension != 'jpeg' &&
-                    selectedFile?.extension != 'png' &&
-                    selectedFile?.extension != 'Webp' &&
+                    selectedFile?.extension != 'pdf' &&
                     document != null)
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.84,
@@ -566,7 +485,8 @@ class _DocumentListPageState extends State<DocumentListPage> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
+                          minimumSize: const Size.fromHeight(40),
+                          backgroundColor: mainButtonColor,
                         ),
                         onPressed: () {
                           if (fileNameController.text != "") {
@@ -635,7 +555,8 @@ class _DocumentListPageState extends State<DocumentListPage> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
+                          minimumSize: const Size.fromHeight(40),
+                          backgroundColor: mainButtonColor,
                         ),
                         onPressed: () {
                           if (folderNameController.text != "") {

@@ -80,7 +80,12 @@ dependencies:
   badges: ^3.1.2
   persistent_bottom_nav_bar: any
   go_router: ^14.1.0
-  
+  video_player: ^2.8.5
+  flutter_blue_plus: ^1.32.7
+  flutter_reactive_ble: ^5.2.0
+  simple_logger: ^1.9.0+3
+  sprintf: ^7.0.0
+
 
 
 dev_dependencies:
