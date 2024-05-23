@@ -53,7 +53,8 @@
 	
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>recognize speech</string>
-
+	<key>NSBluetoothAlwaysUsageDescription</key>
+    <string>This app needs Bluetooth to function</string>
 
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>

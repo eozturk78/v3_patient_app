@@ -101,13 +101,11 @@ class _BluetoothExamplePage2State extends State<BluetoothExample2Page> {
   List<BluetoothService>? services;
   void discoverServices(BluetoothDevice device) async {
     List<BluetoothService> discoveredServices = await device.discoverServices();
-    setState(() {
-      services = discoveredServices;
-    });
+    services = discoveredServices;
     for (BluetoothService service in discoveredServices) {
       for (BluetoothCharacteristic characteristic in service.characteristics) {
         // Replace with your characteristic's UUID
-        if (characteristic.properties.read) {
+        if (characteristic.properties.notify) {
           readCharacteristic(characteristic);
           print("object");
           break;
@@ -119,6 +117,9 @@ class _BluetoothExamplePage2State extends State<BluetoothExample2Page> {
   String readValue = "No data read";
   void readCharacteristic(BluetoothCharacteristic characteristic) async {
     await characteristic.setNotifyValue(true);
+    characteristic.value.listen((data) {
+      print('characteristicCalibration success readCalibration $data');
+    });
 
     List<int> value = await characteristic.read();
     setState(() {
