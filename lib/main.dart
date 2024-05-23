@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:patient_app/apis/apis.dart';
 import 'package:patient_app/screens/agreements/agreements.dart';
 import 'package:patient_app/screens/agreements/edit-agreements.dart';
@@ -40,6 +41,8 @@ import 'package:patient_app/screens/login/secret-question.dart';
 import 'package:patient_app/screens/login/successfully-changed-password.dart';
 import 'package:patient_app/screens/main-menu/main-menu.dart';
 import 'package:patient_app/screens/main-menu/main-sub-menu.dart';
+import 'package:patient_app/screens/measure_bluetooth_device/bluetooth-blood-pressure.dart';
+import 'package:patient_app/screens/measure_bluetooth_device/bluetooth-device-measurement-types.dart';
 import 'package:patient_app/screens/measurement-result/measurement-result-blutdruck.dart';
 import 'package:patient_app/screens/measurement-result/measurement-result-pulse.dart';
 import 'package:patient_app/screens/measurement-result/measurement-result-saturation.dart';
@@ -164,6 +167,9 @@ final Map<String, WidgetBuilder> routes = {
   "/edit-agreements": (context) => const EditAgreementsPage(),
   "/redirection": (context) => const RedirectionPage(),
   "/questionnaire-group": (context) => const QuestionnaireGroupPage(),
+  "/bluetooth-device-measurement-types": (context) =>
+      const BluetoothDeviceMeasurementTypesPage(),
+  "/bluetooth-blood-pressure": (context) => const BluetoothBloodPressurePage(),
   "/questionnaire-result": (context) => const QuestionnaireResultPage(),
   "/privacy-policy": (context) => const PrivacyPolicyPage(),
   "/terms-and-conditions": (context) => const TermsAndConditionsPage(),

@@ -428,6 +428,10 @@ TextStyle agreementSubHeader = TextStyle(
 
 TextStyle profileMenuItemColor = TextStyle(
     color: Color.fromARGB(255, 94, 94, 94), fontWeight: FontWeight.normal);
+TextStyle valueTag = TextStyle(
+    color: Color.fromARGB(255, 94, 94, 94),
+    fontWeight: FontWeight.normal,
+    fontSize: 15);
 
 ButtonStyle profileBtnStyle = TextButton.styleFrom(
     padding: EdgeInsets.zero,

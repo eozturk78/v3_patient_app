@@ -106,6 +106,28 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
                     ),
                   ),
                 ),
+                ResponsiveGridCol(
+                  lg: 2,
+                  xs: 6,
+                  md: 4,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 5, right: 5),
+                    child: GestureDetector(
+                      child: CustomSubTotal(
+                          SvgPicture.asset(
+                              'assets/images/menu-icons/graphische-main.svg'),
+                          sh.getLanguageResource("connect_devices"),
+                          null,
+                          null,
+                          20,
+                          false),
+                      onTap: () {
+                        Navigator.of(context)
+                            .pushNamed('/bluetooth-device-measurement-types');
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
           ],

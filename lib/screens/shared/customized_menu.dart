@@ -69,10 +69,9 @@ class _CustomizedMenuPageState extends State<CustomizedMenuPage> {
                         vertical: 2.0, horizontal: 16.0),
                     child: ElevatedButton(
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith(
-                              (states) => Colors.white60),
-                          foregroundColor: MaterialStateColor.resolveWith(
-                              (states) => Theme.of(context).errorColor)),
+                        backgroundColor: MaterialStateColor.resolveWith(
+                            (states) => Colors.white60),
+                      ),
                       onPressed: () => _navigateToPage(routeName),
                       child: Text(displayName),
                     ),

@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -27,7 +29,6 @@ int tokenTimeOutSecondDB = 0;
 int popUpAppearSecond = 0;
 MessageNotification? chosenMedicationPlan;
 Timer? _timer;
-
 
 class Shared {
   var outputFormat = DateFormat('dd/MM/yyyy HH:mm');
@@ -354,6 +355,7 @@ class Shared {
   }
 
   StateSetter? _setState;
+
   openPopUp(BuildContext context, String page) {
     if (tokenTimeOutSecondDB == 0) return;
     if (tokenTimeOutSecond > 0) tokenTimeOutSecond = tokenTimeOutSecondDB;
@@ -643,5 +645,34 @@ class Shared {
       ),
     ];
     return searchAllRoutes;
+  }
+
+  double parseIeee16BitSFloat(int byte1, int byte2) {
+    Map<int, double> reservedValues = {
+      0x07FE: double.nan,
+      0x07FF: double.nan,
+      0x0800: double.nan,
+      0x0801: double.nan,
+      0x0802: double.nan,
+    };
+
+    int ieee11073 = (byte1 & 0xFF) + (0x100 * (byte2 & 0xFF));
+    int mantissa = ieee11073 & 0x0FFF;
+
+    if (reservedValues.containsKey(mantissa)) {
+      return reservedValues[mantissa]!;
+    }
+
+    if (mantissa >= 0x0800) {
+      mantissa = -(0x1000 - mantissa);
+    }
+
+    int exponent = ieee11073 >> 12;
+    if (exponent >= 0x08) {
+      exponent = -(0x10 - exponent);
+    }
+
+    num magnitude = pow(10, exponent);
+    return (mantissa * magnitude).toDouble();
   }
 }

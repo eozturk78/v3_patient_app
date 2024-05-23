@@ -1,132 +1,194 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
-import 'package:patient_app/screens/bluetooth-example/bluetooth/communication_handler.dart';
+import 'package:patient_app/shared/shared.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:simple_logger/simple_logger.dart';
-import 'package:collection/collection.dart';
 
 class BluetoothExamplePage extends StatefulWidget {
-  const BluetoothExamplePage({Key? key}) : super(key: key);
-
   @override
-  State<BluetoothExamplePage> createState() => _BluetoothExamplePageState();
+  _BluetoothExamplePageState createState() => _BluetoothExamplePageState();
 }
 
 class _BluetoothExamplePageState extends State<BluetoothExamplePage> {
-  SimpleLogger logger = SimpleLogger();
-  CommunicationHandler? communicationHandler;
-  bool isScanStarted = false;
-  bool isConnected = false;
-  List<DiscoveredDevice> discoveredDevices =
-      List<DiscoveredDevice>.empty(growable: true);
-  String connectedDeviceDetails = "";
+  final flutterReactiveBle = FlutterReactiveBle();
+  late StreamSubscription<DiscoveredDevice> _scanSubscription;
+  late StreamSubscription<ConnectionStateUpdate> _connectionSubscription;
+  List<DiscoveredDevice> _devices = [];
+  String? _bloodPressureData;
+
+  static const String BLOOD_PRESSURE_SERVICE_UUID =
+      "00001810-0000-1000-8000-00805f9b34fb";
+  static const String BLOOD_PRESSURE_MEASUREMENT_UUID =
+      "00002a35-0000-1000-8000-00805f9b34fb";
+
+  @override
+  void initState() {
+    super.initState();
+    _checkPermissions().then((_) => _startScan());
+  }
+
+  Future<void> _checkPermissions() async {
+    if (await Permission.location.isDenied) {
+      await Permission.location.request();
+    }
+  }
+
+  DiscoveredDevice? _bm96;
+  void _startScan() {
+    _scanSubscription =
+        flutterReactiveBle.scanForDevices(withServices: []).listen((device) {
+      setState(() {
+        final existingIndex = _devices.indexWhere((d) => d.id == device.id);
+        if (existingIndex >= 0) {
+          _devices[existingIndex] = device;
+        } else {
+          _devices.add(device);
+        }
+      });
+    }, onError: (e) {
+      print('Error occurred while scanning: $e');
+    });
+  }
+
+  @override
+  void dispose() {
+    _scanSubscription.cancel();
+    _connectionSubscription?.cancel();
+    super.dispose();
+  }
+
+  void connectToDevice(DiscoveredDevice device) {
+    _connectionSubscription = flutterReactiveBle
+        .connectToDevice(
+      id: device.id,
+      servicesWithCharacteristicsToDiscover: {
+        Uuid.parse(BLOOD_PRESSURE_SERVICE_UUID): [
+          Uuid.parse(BLOOD_PRESSURE_MEASUREMENT_UUID)
+        ]
+      },
+      connectionTimeout: const Duration(seconds: 5),
+    )
+        .listen((connectionState) {
+      _handleConnectionState(device, connectionState);
+    }, onError: (e) {
+      print('Connection error: $e');
+    });
+  }
+
+  void _handleConnectionState(
+      DiscoveredDevice device, ConnectionStateUpdate connectionState) {
+    switch (connectionState.connectionState) {
+      case DeviceConnectionState.connecting:
+        print('Connecting to ${device.name}');
+        break;
+      case DeviceConnectionState.connected:
+        print('Connected to ${device.name}');
+        discoverServices(device);
+        break;
+      case DeviceConnectionState.disconnecting:
+        print('Disconnecting from ${device.name}');
+        break;
+      case DeviceConnectionState.disconnected:
+        print('Disconnected from ${device.name}');
+        break;
+    }
+  }
+
+  void discoverServices(DiscoveredDevice device) async {
+    final services = await flutterReactiveBle.discoverServices(device.id);
+    for (var service in services) {
+      if (service.serviceId == Uuid.parse(BLOOD_PRESSURE_SERVICE_UUID)) {
+        for (var characteristic in service.characteristics) {
+          if (characteristic.characteristicId ==
+              Uuid.parse(BLOOD_PRESSURE_MEASUREMENT_UUID)) {
+            subscribeToCharacteristic(device.id, characteristic);
+          }
+        }
+      }
+    }
+  }
+
+  void subscribeToCharacteristic(
+      String deviceId, DiscoveredCharacteristic characteristic) {
+    final characteristicSubscription = flutterReactiveBle
+        .subscribeToCharacteristic(
+      QualifiedCharacteristic(
+        serviceId: characteristic.serviceId,
+        characteristicId: characteristic.characteristicId,
+        deviceId: deviceId,
+      ),
+    )
+        .listen((data) {
+      setState(() {
+        _bloodPressureData = _parseBloodPressureData(data);
+      });
+    }, onError: (error) {
+      print('Error subscribing to characteristic: $error');
+    });
+  }
+
+  String _parseBloodPressureData(List<int> data) {
+    if (data.length < 19) return "Invalid data length";
+    Shared sh = Shared();
+    num systolic = sh.parseIeee16BitSFloat(data[1], data[2]);
+
+    num diastolic = sh.parseIeee16BitSFloat(data[3], data[4]);
+    num pulse = sh.parseIeee16BitSFloat(data[14], data[15]);
+
+    num year = sh.parseIeee16BitSFloat(data[7], data[8]);
+    int month = data[9];
+    int day = data[10];
+    int hour = data[11];
+    int minute = data[12];
+    int second = data[13];
+
+    print(
+        "Systolic: $systolic mmHg, Diastolic: $diastolic mmHg, Pulse: $pulse BPM\n"
+        "Date: $year-$month-$day, Time: $hour:$minute:$second");
+    return "Systolic: $systolic mmHg, Diastolic: $diastolic mmHg, Pulse: $pulse BPM\n"
+        "Date: $year-$month-$day, Time: $hour:$minute:$second";
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("KT Session"),
-        ),
-        body: Column(
-          children: [
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  isScanStarted ? stopScan() : startScan();
-                },
-                child: Text(isScanStarted ? "Stop Scan" : "Start Scan"),
+      appBar: AppBar(
+        title: Text('Bluetooth Example'),
+      ),
+      body: Column(
+        children: [
+          ElevatedButton(
+              onPressed: () {
+                connectToDevice(_bm96!);
+              },
+              child: Text("connect to bm96")),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _devices.length,
+              itemBuilder: (context, index) {
+                final device = _devices[index];
+                return ListTile(
+                  title: Text(device.name),
+                  subtitle: Text(device.id),
+                  onTap: () {
+                    connectToDevice(device);
+                  },
+                );
+              },
+            ),
+          ),
+          if (_bloodPressureData != null)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                _bloodPressureData!,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
-            SizedBox(
-              height: 400,
-              child: ListView.builder(
-                  padding: const EdgeInsets.all(10),
-                  itemCount: discoveredDevices.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: Container(
-                        height: 60,
-                        color: Colors.greenAccent,
-                        child: Center(
-                            child: TextButton(
-                          child: Text(discoveredDevices[index].name),
-                          onPressed: () {
-                            print("---------------");
-                            DiscoveredDevice selectedDevice =
-                                discoveredDevices[index];
-                            connectToDevice(selectedDevice);
-                          },
-                        )),
-                      ),
-                    );
-                  }),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Text(connectedDeviceDetails),
-            )
-          ],
-        ));
-  }
-
-  @override
-  void initState() {
-    checkPermissions();
-    super.initState();
-  }
-
-  void checkPermissions() async {
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.bluetooth,
-      Permission.bluetoothConnect,
-      Permission.bluetoothScan,
-      Permission.location,
-      Permission.bluetoothAdvertise,
-    ].request();
-
-    logger.info("PermissionStatus -- $statuses");
-  }
-
-  void startScan() {
-    communicationHandler ??= CommunicationHandler();
-    communicationHandler?.startScan((scanDevice) {
-      logger.info("Scan device: ${scanDevice.name}");
-      if (discoveredDevices
-              .firstWhereOrNull((val) => val.id == scanDevice.id) ==
-          null) {
-        logger.info("Added new device to list: ${scanDevice.name}");
-        setState(() {
-          discoveredDevices.add(scanDevice);
-        });
-      }
-    });
-
-    setState(() {
-      isScanStarted = true;
-      discoveredDevices.clear();
-    });
-  }
-
-  Future<void> stopScan() async {
-    await communicationHandler?.stopScan();
-    setState(() {
-      isScanStarted = false;
-    });
-  }
-
-  Future<void> connectToDevice(DiscoveredDevice selectedDevice) async {
-    await stopScan();
-    communicationHandler?.connectToDevice(selectedDevice, (isConnected) {
-      this.isConnected = isConnected;
-      if (isConnected) {
-        connectedDeviceDetails = "Connected Device Details\n\n$selectedDevice";
-      } else {
-        connectedDeviceDetails = "";
-      }
-      setState(() {
-        connectedDeviceDetails;
-      });
-    });
+        ],
+      ),
+    );
   }
 }
