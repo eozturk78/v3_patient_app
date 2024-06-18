@@ -912,12 +912,35 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future setbeurervalues(dynamic outPuts) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/setbeurervalues';
+    lang = pref.getString("language")!;
+    var body = {"measurements": jsonEncode(outPuts)};
+    var result = await http.post(Uri.parse(finalUrl),
+        body: body,
+        headers: {'lang': lang, 'token': pref.getString('token').toString()});
+    return getResponseFromApi(result);
+  }
+
+  Future checkmeasurements(dynamic outPuts) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/checkmeasurements';
+    lang = pref.getString("language")!;
+    var body = {"measurements": jsonEncode(outPuts)};
+    var result = await http.post(Uri.parse(finalUrl),
+        body: body,
+        headers: {'lang': lang, 'token': pref.getString('token').toString()});
+    return getResponseFromApi(result);
+  }
+
   getResponseFromApi(http.Response result) async {
     try {
       if (result.headers['token'] != null) {
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('token', result.headers['token'].toString());
       }
+      print(result.body);
       var body = jsonDecode(result.body);
       if (result.statusCode == 200 || result.statusCode == 201) {
         tokenTimeOutSecond = tokenTimeOutSecondDB;

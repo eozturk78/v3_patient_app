@@ -130,6 +130,28 @@ class Shared {
     return outputDate;
   }
 
+  formatDateTimeToRequest(String date) {
+    var listData = date.toString().split("/");
+
+    var day = listData[0];
+    if (day.toString().length == 1) day = '0${day}';
+    var month = listData[1];
+    if (month.toString().length == 1) month = '0${month}';
+    var year = listData[2].toString().substring(0, listData[2].indexOf(" "));
+
+    var time = listData[2].toString().substring(listData[2].indexOf(" ") + 1);
+
+    var timeData = time.toString().split(":");
+
+    var hour = timeData[0];
+    if (hour.toString().length == 1) hour = '0${hour}';
+    var min = timeData[1];
+    if (min.toString().length == 1) min = '0${min}';
+
+    var outputDate = '$year-$month-${day}T${hour}:${min}';
+    return outputDate;
+  }
+
   formatDateImc(String date) {
     DateTime parseDate = new DateFormat("yyyy-MM-dd HH:mm:ss").parse(date);
     var inputDate = DateTime.parse(parseDate.toString());

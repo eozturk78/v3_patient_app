@@ -114,16 +114,15 @@ class _MainSubMenuPageState extends State<MainSubMenuPage> {
                     padding: EdgeInsets.only(left: 5, right: 5),
                     child: GestureDetector(
                       child: CustomSubTotal(
-                          SvgPicture.asset(
-                              'assets/images/menu-icons/graphische-main.svg'),
-                          sh.getLanguageResource("connect_devices"),
+                          Icons.monitor_heart_outlined,
+                          sh.getLanguageResource("blood_pressure"),
                           null,
                           null,
                           20,
                           false),
                       onTap: () {
                         Navigator.of(context)
-                            .pushNamed('/bluetooth-device-measurement-types');
+                            .pushNamed('/bluetooth-blood-pressure');
                       },
                     ),
                   ),
