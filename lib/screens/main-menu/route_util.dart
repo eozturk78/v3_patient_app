@@ -68,6 +68,8 @@ final Map<String, MenuSet> routeDisplayNames = {
   "/patient-contacts-list": MenuSet('my_medical_contacts', Icons.contact_page),
   "/notification-history": MenuSet('memories',
       SvgPicture.asset('assets/images/menu-icons/erinnerungen-main.svg')),
+  "/bluetooth-blood-pressure":
+      MenuSet('Blutdruck', Icons.monitor_heart_outlined),
 };
 
 final searchAllRoutes = [
