@@ -120,25 +120,30 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
                                             .pushNamed('/questionnaire-result');
                                       },
                                       child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            item.nameShownToPatient ??
-                                                item.name,
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: ResponsiveValue(
-                                                  context,
-                                                  defaultValue: 12.0,
-                                                  conditionalValues: [
-                                                    Condition.largerThan(
-                                                      //Tablet
-                                                      name: MOBILE,
-                                                      value: 20.0,
-                                                    ),
-                                                  ],
-                                                ).value!),
+                                          Flexible(
+                                            child: Text(
+                                              item.nameShownToPatient ??
+                                                  item.name,
+                                              style: TextStyle(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  color: Colors.black,
+                                                  fontSize: ResponsiveValue(
+                                                    context,
+                                                    defaultValue: 12.0,
+                                                    conditionalValues: [
+                                                      Condition.largerThan(
+                                                        //Tablet
+                                                        name: MOBILE,
+                                                        value: 20.0,
+                                                      ),
+                                                    ],
+                                                  ).value!),
+                                            ),
                                           ),
-                                          Spacer(),
                                           Icon(
                                             Icons.arrow_forward_ios,
                                             color: mainButtonColor,

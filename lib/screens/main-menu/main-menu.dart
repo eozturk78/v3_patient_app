@@ -686,6 +686,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
               .pushNamed('/main-sub-menu')
               .then((value) => setCurrentPage());
           pageValue = 20;
+          setState(() {});
           list.add(pageValue);
         }),
         /**/
@@ -716,6 +717,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
               .pushNamed('/medication')
               .then((value) => setCurrentPage());
           pageValue = 30;
+          setState(() {});
           list.add(pageValue);
         }),
         /**/
@@ -758,6 +760,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
               .pushNamed('/communication')
               .then((value) => setCurrentPage());
           pageValue = 40;
+          setState(() {});
           list.add(pageValue);
         }),
         /* */
@@ -786,6 +789,8 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
               .pushNamed('/info')
               .then((value) => setCurrentPage());
           pageValue = 50;
+          setState(() {});
+
           list.add(pageValue);
         }),
         /**/
