@@ -10,6 +10,7 @@ import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/screens/main-menu/main-menu.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/toast.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -226,6 +227,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   onLogin() async {
+    final navBarVisibility = Provider.of<NavBarVisibility>(context, listen: false);
+
     setState(() {
       isSendEP = true;
     });
@@ -256,6 +259,8 @@ class _LoginPageState extends State<LoginPage> {
           setState(() {
             isSendEP = false;
             hideNavBar = false;
+            navBarVisibility.updateHideNavBar(false);
+
           });
           pref.setString("patientTitle", value['firstName']);
           pref.setString('token', value['token']);

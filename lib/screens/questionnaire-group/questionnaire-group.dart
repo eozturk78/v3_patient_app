@@ -5,11 +5,13 @@ import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/model/questionnaire-group.dart';
 import 'package:patient_app/screens/main-menu/main-menu.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../apis/apis.dart';
 import '../../shared/shared.dart';
+
 
 class QuestionnaireGroupPage extends StatefulWidget {
   const QuestionnaireGroupPage({super.key});
@@ -57,6 +59,8 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
   @override
   Widget build(BuildContext context) {
     final key = GlobalObjectKey<ExpandableFabState>(context);
+    final navBarVisibility = Provider.of<NavBarVisibility>(context, listen: false);
+
     String title = "MP";
     Shared sh = new Shared();
     return Scaffold(
@@ -108,7 +112,13 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
                                   children: [
                                     TextButton(
                                       onPressed: () async {
-                                        hideNavBar = true;
+                                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                                          // Display dialog after UI has rerendered
+                                          setState(() {
+                                            navBarVisibility.updateHideNavBar(true);
+                                          });
+                                        });
+
                                         SharedPreferences pref =
                                             await SharedPreferences
                                                 .getInstance();

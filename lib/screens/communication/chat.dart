@@ -14,6 +14,7 @@ import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/shared.dart';
 import 'package:patient_app/shared/toast.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../colors/colors.dart';
@@ -75,12 +76,18 @@ class _ChatPageState extends State<ChatPage> {
 
   final FocusNode _focusNode = FocusNode();
   void isActive() {
+    final navBarVisibility = Provider.of<NavBarVisibility>(context, listen: false);
+
     if (_focusNode.hasFocus) {
       debugPrint("Keyboard is active");
       hideNavBar = true;
+      navBarVisibility.updateHideNavBar(true);
+
     } else {
       debugPrint("Keyboard is not active");
       hideNavBar = false;
+      navBarVisibility.updateHideNavBar(false);
+
     }
   }
 

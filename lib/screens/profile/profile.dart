@@ -4,6 +4,7 @@ import 'package:patient_app/main.dart';
 import 'package:patient_app/screens/main-menu/main-menu.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/shared.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -54,6 +55,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final navBarVisibility = Provider.of<NavBarVisibility>(context, listen: false);
+
     return Scaffold(
       appBar: leadingSubpage(sh.getLanguageResource("settings"), context),
       body: SingleChildScrollView(
@@ -400,6 +403,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       tokenTimeOutSecond = 0;
                       tokenTimeOutSecondDB = 0;
                       hideNavBar = true;
+                      navBarVisibility.updateHideNavBar(true);
+
                       //pref.remove("userName");
                       Navigator.of(context).pushNamedAndRemoveUntil(
                           "/login", ModalRoute.withName('/login'));

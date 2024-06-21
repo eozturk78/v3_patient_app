@@ -35,11 +35,15 @@ import 'package:responsive_grid/responsive_grid.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:badges/badges.dart' as badges;
+import 'package:provider/provider.dart';
+
+
 
 PersistentTabController navcontroller =
     PersistentTabController(initialIndex: 0);
 late BuildContext navContext;
 bool hideNavBar = false;
+ValueNotifier<bool> hideNavBarNotifier = ValueNotifier<bool>(false);
 
 class MainMenuPage extends StatefulWidget {
   const MainMenuPage({Key? key}) : super(key: key);
@@ -95,6 +99,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
 
     sh.openPopUp(context, 'main-menu');
     hideNavBar = false;
+
   }
 
   void _loadMenuItems() async {
@@ -295,6 +300,8 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   Timer? _debounce;
   Widget buildCustomizedMenuItemButtons(BuildContext context) {
+    final navBarVisibility = Provider.of<NavBarVisibility>(context, listen: false);
+
     return ResponsiveGridRow(
       children: [
         for (var menuItem in _menuItems)
@@ -318,6 +325,8 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                       .pushNamed(menuItem.routerName!)
                       .then((value) {
                     hideNavBar = false;
+                    navBarVisibility.updateHideNavBar(false);
+
                   });
                 },
               ),
@@ -568,47 +577,51 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
     );
   }
 
+  void updateHideNavBar(bool hide) {
+    hideNavBarNotifier.value = hide;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(
-      context,
-      padding: NavBarPadding.only(left: 0, right: 0),
-      controller: navcontroller,
-      screens: _buildScreens(context),
-      items: _navBarsItems(),
-      confineInSafeArea: true,
-      hideNavigationBar: hideNavBar,
-      backgroundColor: Colors.white, // Default is Colors.white.
-      handleAndroidBackButtonPress: true, // Default is true.
-      resizeToAvoidBottomInset:
-          false, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-      stateManagement: false, // Default is true.
-      hideNavigationBarWhenKeyboardShows:
-          true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
-      decoration: NavBarDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        colorBehindNavBar: Colors.white,
-      ),
-      popAllScreensOnTapOfSelectedTab: true,
-      popActionScreens: PopActionScreensType.all,
-      itemAnimationProperties: ItemAnimationProperties(
-        // Navigation Bar's items animation properties.
-        duration: Duration(milliseconds: 200),
-        curve: Curves.ease,
-      ),
-      screenTransitionAnimation: ScreenTransitionAnimation(
-        // Screen transition animation on change of selected tab.
-        animateTabTransition: true,
-        curve: Curves.ease,
-        duration: Duration(milliseconds: 200),
-      ),
-      navBarStyle:
-          NavBarStyle.simple, // Choose the nav bar style with this property.
-      selectedTabScreenContext: (final context) {
-        navContext = context!;
+    return Consumer<NavBarVisibility>(
+      builder: (context, navBarVisibility, child) {
+        return PersistentTabView(
+          context,
+          padding: NavBarPadding.only(left: 0, right: 0),
+          controller: navcontroller,
+          screens: _buildScreens(context),
+          items: _navBarsItems(),
+          confineInSafeArea: true,
+          hideNavigationBar: navBarVisibility.hideNavBar,
+          backgroundColor: Colors.white,
+          handleAndroidBackButtonPress: true,
+          resizeToAvoidBottomInset: false,
+          stateManagement: false,
+          hideNavigationBarWhenKeyboardShows: true,
+          decoration: NavBarDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            colorBehindNavBar: Colors.white,
+          ),
+          popAllScreensOnTapOfSelectedTab: true,
+          popActionScreens: PopActionScreensType.all,
+          itemAnimationProperties: ItemAnimationProperties(
+            duration: Duration(milliseconds: 200),
+            curve: Curves.ease,
+          ),
+          screenTransitionAnimation: ScreenTransitionAnimation(
+            animateTabTransition: true,
+            curve: Curves.ease,
+            duration: Duration(milliseconds: 200),
+          ),
+          navBarStyle: NavBarStyle.simple,
+          selectedTabScreenContext: (final context) {
+            navContext = context!;
+          },
+        );
       },
     );
   }
+
 
   List<Widget> _buildScreens(BuildContext context) {
     return [

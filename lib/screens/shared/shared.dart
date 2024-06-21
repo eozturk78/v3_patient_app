@@ -15,6 +15,19 @@ import '../../model/scale-size.dart';
 import '../../shared/shared.dart';
 import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'dart:convert';
+import 'package:provider/provider.dart';
+
+
+class NavBarVisibility extends ChangeNotifier {
+  bool _hideNavBar = false;
+
+  bool get hideNavBar => _hideNavBar;
+
+  void updateHideNavBar(bool hide) {
+    _hideNavBar = hide;
+    notifyListeners();
+  }
+}
 
 class SvgIconData extends IconData {
   const SvgIconData(String assetName, {Key? key})

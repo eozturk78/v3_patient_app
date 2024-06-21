@@ -7,6 +7,7 @@ import 'package:patient_app/model/patient-group.dart';
 import 'package:patient_app/screens/main-menu/main-menu.dart';
 import 'package:patient_app/screens/shared/message-list-container.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,7 +48,10 @@ class _MessagesPageState extends State<MessagesPage> {
     sh.openPopUp(context, 'messages');
   }
 
+
   getNotificationList() async {
+    final navBarVisibility = Provider.of<NavBarVisibility>(context, listen: false);
+
     SharedPreferences pref = await SharedPreferences.getInstance();
     if (pref.getString('organizations') != null) {
       organizations = (jsonDecode(pref.getString('organizations')!) as List)
@@ -58,6 +62,8 @@ class _MessagesPageState extends State<MessagesPage> {
       (resp) => {
         setState(() {
           hideNavBar = false;
+          navBarVisibility.updateHideNavBar(false);
+
           notificationList = (resp as List)
               .map((e) => MessageNotification.fromJson(e))
               .toList();
@@ -82,6 +88,8 @@ class _MessagesPageState extends State<MessagesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final navBarVisibility = Provider.of<NavBarVisibility>(context, listen: false);
+
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
       appBar: leadingSubpage(sh.getLanguageResource("notifications"), context),
@@ -240,6 +248,8 @@ class _MessagesPageState extends State<MessagesPage> {
                                                             getNotificationList());
                                                   } else {
                                                     hideNavBar = true;
+                                                    navBarVisibility.updateHideNavBar(true);
+
                                                     SharedPreferences pref =
                                                         await SharedPreferences
                                                             .getInstance();

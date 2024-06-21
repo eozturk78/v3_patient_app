@@ -20,6 +20,7 @@ import 'package:patient_app/screens/shared/bottom-menu.dart';
 import 'package:patient_app/screens/shared/shared.dart';
 import 'package:patient_app/shared/toast.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 bool isLoggedIn = false;
@@ -446,11 +447,15 @@ class Shared {
   }
 
   onLogOut() async {
+    final navBarVisibility = Provider.of<NavBarVisibility>(navigatorKey.currentState!.overlay!.context, listen: false);
+
     Navigator.pop(navigatorKey.currentState!.overlay!.context);
 
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.remove("token");
     hideNavBar = true;
+    navBarVisibility.updateHideNavBar(true);
+
     showDialog(
       context: navigatorKey.currentState!.overlay!.context,
       builder: (BuildContext context) => StatefulBuilder(

@@ -88,6 +88,9 @@ import 'package:http/http.dart' as http;
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
+
+
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -315,7 +318,12 @@ main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await AppLocalizations.load(initialLocale);
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => NavBarVisibility(),
+      child: MyApp(),
+    ),
+  );
 }
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();

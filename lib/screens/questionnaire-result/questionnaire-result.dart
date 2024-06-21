@@ -5,6 +5,7 @@ import 'package:patient_app/colors/colors.dart';
 import 'package:patient_app/model/scale-size.dart';
 import 'package:patient_app/screens/main-menu/main-menu.dart';
 import 'package:patient_app/screens/shared/shared.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -404,6 +405,8 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   }
 
   sendValues() {
+    final navBarVisibility = Provider.of<NavBarVisibility>(context, listen: false);
+
     setState(() {
       isSendEP = true;
     });
@@ -417,6 +420,8 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
         builder: (context) => savedSuccessFully(context),
       ).then((value) {
         hideNavBar = false;
+        navBarVisibility.updateHideNavBar(false);
+
         Navigator.of(context).pop();
       });
     }, onError: (err) {
@@ -1129,6 +1134,8 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   }
 
   Widget exitQuestionnaire(BuildContext context) {
+    final navBarVisibility = Provider.of<NavBarVisibility>(context, listen: false);
+
     return AlertDialog(
       content: StatefulBuilder(
         builder: (BuildContext context, setState) {
@@ -1160,6 +1167,8 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
                                 const Color.fromARGB(255, 158, 158, 158)),
                         onPressed: () async {
                           hideNavBar = false;
+                          navBarVisibility.updateHideNavBar(false);
+
                           Navigator.of(context).pop(1);
                         },
                         child: Text(
