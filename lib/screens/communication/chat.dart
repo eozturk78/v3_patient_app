@@ -76,18 +76,17 @@ class _ChatPageState extends State<ChatPage> {
 
   final FocusNode _focusNode = FocusNode();
   void isActive() {
-    final navBarVisibility = Provider.of<NavBarVisibility>(context, listen: false);
+    final navBarVisibility =
+        Provider.of<NavBarVisibility>(context, listen: false);
 
     if (_focusNode.hasFocus) {
       debugPrint("Keyboard is active");
       hideNavBar = true;
       navBarVisibility.updateHideNavBar(true);
-
     } else {
       debugPrint("Keyboard is not active");
       hideNavBar = false;
       navBarVisibility.updateHideNavBar(false);
-
     }
   }
 
@@ -206,7 +205,7 @@ class _ChatPageState extends State<ChatPage> {
                     ? Center(
                         child: Text(sh.getLanguageResource("no_data_found")))
                     : Container(
-                        height: MediaQuery.of(context).size.height * 0.7,
+                        height: MediaQuery.of(context).size.height * 0.80,
                         child: SingleChildScrollView(
                           controller: controller,
                           child: ListView.builder(

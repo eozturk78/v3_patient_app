@@ -48,9 +48,9 @@ class _MessagesPageState extends State<MessagesPage> {
     sh.openPopUp(context, 'messages');
   }
 
-
   getNotificationList() async {
-    final navBarVisibility = Provider.of<NavBarVisibility>(context, listen: false);
+    final navBarVisibility =
+        Provider.of<NavBarVisibility>(context, listen: false);
 
     SharedPreferences pref = await SharedPreferences.getInstance();
     if (pref.getString('organizations') != null) {
@@ -88,7 +88,8 @@ class _MessagesPageState extends State<MessagesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final navBarVisibility = Provider.of<NavBarVisibility>(context, listen: false);
+    final navBarVisibility =
+        Provider.of<NavBarVisibility>(context, listen: false);
 
     final key = GlobalObjectKey<ExpandableFabState>(context);
     return Scaffold(
@@ -248,7 +249,8 @@ class _MessagesPageState extends State<MessagesPage> {
                                                             getNotificationList());
                                                   } else {
                                                     hideNavBar = true;
-                                                    navBarVisibility.updateHideNavBar(true);
+                                                    navBarVisibility
+                                                        .updateHideNavBar(true);
 
                                                     SharedPreferences pref =
                                                         await SharedPreferences
@@ -307,6 +309,8 @@ class _MessagesPageState extends State<MessagesPage> {
             FloatingActionButton.extended(
               heroTag: item.organization + item.name + item.hashCode.toString(),
               onPressed: () async {
+                hideNavBar = true;
+                navBarVisibility.updateHideNavBar(true);
                 SharedPreferences pref = await SharedPreferences.getInstance();
 
                 pref.setString("organization", item.organization);
@@ -326,7 +330,8 @@ class _MessagesPageState extends State<MessagesPage> {
                 if (thread != null)
                   pref.setString('thread', thread.thread.toString());
 
-                Navigator.pushNamed(context, '/chat');
+                Navigator.pushNamed(context, '/chat')
+                    .then((value) => getNotificationList());
               },
               icon: new Icon(Icons.medical_information),
               label: Text(item.name),
