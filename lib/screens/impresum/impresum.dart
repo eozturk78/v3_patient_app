@@ -19,14 +19,12 @@ class _ImpresumPageState extends State<ImpresumPage> {
   @override
   void initState() {
     // TODO: implement initState
-    checkRemeberMe();
+    
     super.initState();
     sh.openPopUp(context, 'impresum');
   }
 
-  checkRemeberMe() async {
-    setState(() {});
-  }
+
 
   @override
   Widget build(BuildContext context) {

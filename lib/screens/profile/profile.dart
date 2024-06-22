@@ -55,7 +55,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final navBarVisibility = Provider.of<NavBarVisibility>(context, listen: false);
+    final navBarVisibility =
+        Provider.of<NavBarVisibility>(context, listen: false);
 
     return Scaffold(
       appBar: leadingSubpage(sh.getLanguageResource("settings"), context),
@@ -373,7 +374,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   Divider(),
                   TextButton(
-                    onPressed: () async {
+                    onPressed: () {
                       Navigator.of(context).pushNamed("/language");
                     },
                     style: profileBtnStyle,

@@ -161,8 +161,7 @@ class _LanguagePageState extends State<LanguagePage> {
                       ],
                     ),
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-      bottomNavigationBar: BottomNavigatorBar(selectedIndex: 4),
+      ),
     );
   }
 }
