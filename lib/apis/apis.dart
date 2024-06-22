@@ -982,7 +982,7 @@ class Apis {
         throw Exception(body['message']);
       }
     } on Exception catch (err) {
-      if (result.statusCode != 401) showToast(err.toString());
+      // if (result.statusCode != 401) showToast(err.toString());
       //showToast(AppLocalizations.tr("Something went wrong"));
       navigatorKey.currentState?.pushReplacementNamed("/login");
       throw Exception(AppLocalizations.tr(

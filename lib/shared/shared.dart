@@ -306,19 +306,18 @@ class Shared {
   }
 
   redirectPatient(error, BuildContext? context) {
-    var errorStatus = error['error'] ?? "";
-    var _context = context;
-    if (context == null) _context = navigatorKey.currentContext;
-    // TODO: HANDLE FOLLOWING ERROR
-    //  [ERROR:flutter/runtime/dart_vm_initializer.cc(41)] Unhandled Exception: NoSuchMethodError: Class '_ClientSocketException' has no instance method '[]'.
-    // E/flutter (21469): Receiver: Instance of '_ClientSocketException'
+    try {
+      var errorStatus = error['error'] ?? "";
+      var _context = context;
+      if (context == null) _context = navigatorKey.currentContext;
 
-    if (errorStatus == "expired") {
-      // change password redirection
-      Navigator.of(_context!).pushNamed('/change-password');
-    } else if (errorStatus == 'tokenexpired') {
-      Navigator.of(_context!).pushNamed('/login');
-    }
+      if (errorStatus == "expired") {
+        // change password redirection
+        Navigator.of(_context!).pushNamed('/change-password');
+      } else if (errorStatus == 'tokenexpired') {
+        Navigator.of(_context!).pushNamed('/login');
+      }
+    } catch (e) {}
   }
 
   checkPermission(
@@ -447,7 +446,9 @@ class Shared {
   }
 
   onLogOut() async {
-    final navBarVisibility = Provider.of<NavBarVisibility>(navigatorKey.currentState!.overlay!.context, listen: false);
+    final navBarVisibility = Provider.of<NavBarVisibility>(
+        navigatorKey.currentState!.overlay!.context,
+        listen: false);
 
     Navigator.pop(navigatorKey.currentState!.overlay!.context);
 

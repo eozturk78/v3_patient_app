@@ -91,7 +91,10 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   fnHideNavBar() {
-    print(hideNavBar);
+    final navBarVisibility =
+        Provider.of<NavBarVisibility>(context, listen: false);
+    hideNavBar = true;
+    navBarVisibility.updateHideNavBar(true);
   }
 
   /* getUnReadMessageCount() {
@@ -119,11 +122,12 @@ class _ChatPageState extends State<ChatPage> {
         setState(() {
           var i = 0;
           for (var element in value['chat']) {
+            String? imageUrl = element['links'] != null &&
+                    element['links']['attachments']?.length > 0
+                ? element['links']['attachments'][0]['full']
+                : null;
             listMessages.add(Message(
-                image: element['links'] != null &&
-                        element['links']['attachments']?.length > 0
-                    ? element['links']['attachments'][0]['full']
-                    : null,
+                image: imageUrl,
                 text: element['body'] ?? "",
                 senderType:
                     element['sender']['type'] == "organization" ? 10 : 20,
@@ -225,6 +229,7 @@ class _ChatPageState extends State<ChatPage> {
                                       messageId:
                                           listMessages[index].messageId ?? "",
                                       messageType: 20,
+                                      index: (listMessages.length - 1) - index,
                                     )
                                   : null;
                             },
