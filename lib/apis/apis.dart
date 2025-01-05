@@ -19,7 +19,7 @@ class Apis {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   Shared sh = new Shared();
   String lang = 'de-DE';
-  /* String? baseUrl = 'https://v2test-api.imc-app.de/api';
+  /*String? baseUrl = 'https://v2test-api.imc-app.de/api';
   String? apiPublic = 'https://v2test-api.imc-app.de';
   String? othBaseUrl = 'https://praxiskamalmeo-test.oth.io';*/
 

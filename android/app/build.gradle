@@ -35,7 +35,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -58,8 +58,8 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
         minSdkVersion 21//flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 65//flutterVersionCode.toInteger()
-        versionName '1.0.70'//lutterVersionName
+        versionCode 70//flutterVersionCode.toInteger()
+        versionName '1.0.71'//lutterVersionName
     }
 
     signingConfigs {
