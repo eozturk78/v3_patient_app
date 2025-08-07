@@ -19,13 +19,18 @@ class Apis {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   Shared sh = new Shared();
   String lang = 'de-DE';
-  /*String? baseUrl = 'https://v2test-api.imc-app.de/api';
+  /*
+  String? baseUrl = 'https://v2dev-api.imc-app.de/api';
+  String? apiPublic = 'https://v2dev-api.imc-app.de';
+  String? othBaseUrl = 'https://praxiskamalmeo-test.oth.io';
+*/
+  String? baseUrl = 'https://v2test-api.imc-app.de/api';
   String? apiPublic = 'https://v2test-api.imc-app.de';
-  String? othBaseUrl = 'https://praxiskamalmeo-test.oth.io';*/
+  String? othBaseUrl = 'https://praxiskamalmeo-test.oth.io';
 
-  String? baseUrl = 'https://v2api.imc-app.de/api';
+  /* String? baseUrl = 'https://v2api.imc-app.de/api';
   String? apiPublic = 'https://v2api.imc-app.de';
-  String? othBaseUrl = 'https://app.telecard.io';
+  String? othBaseUrl = 'https://app.telecard.io';*/
 
   Future login(String email, String password, String? deviceToken) async {
     String finalUrl = '$baseUrl/patientlogin';

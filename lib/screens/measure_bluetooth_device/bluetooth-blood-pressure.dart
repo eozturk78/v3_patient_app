@@ -118,6 +118,7 @@ class _BluetoothBloodPressurePageState
   void discoverServices(DiscoveredDevice device) async {
     final services = await flutterReactiveBle.discoverServices(device.id);
     for (var service in services) {
+      print(service.serviceId);
       if (service.serviceId == Uuid.parse(BLOOD_PRESSURE_SERVICE_UUID)) {
         for (var characteristic in service.characteristics) {
           if (characteristic.characteristicId ==
