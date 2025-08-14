@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:patient_app/main.dart';
-import 'package:patient_app/screens/shared/shared.dart';
-import 'package:patient_app/shared/shared.dart';
+import 'package:v3_patient_app/main.dart';
+import 'package:v3_patient_app/screens/shared/shared.dart';
+import 'package:v3_patient_app/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../colors/colors.dart';

@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:patient_app/apis/apis.dart';
-import 'package:patient_app/screens/shared/list-box.dart';
-import 'package:patient_app/screens/shared/shared.dart';
+import 'package:v3_patient_app/apis/apis.dart';
+import 'package:v3_patient_app/screens/shared/list-box.dart';
+import 'package:v3_patient_app/screens/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 

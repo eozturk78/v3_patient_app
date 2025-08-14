@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:patient_app/apis/apis.dart';
-import 'package:patient_app/colors/colors.dart';
-import 'package:patient_app/screens/medication/interactive-medication-plan.dart';
-import 'package:patient_app/shared/shared.dart';
+import 'package:v3_patient_app/apis/apis.dart';
+import 'package:v3_patient_app/colors/colors.dart';
+import 'package:v3_patient_app/screens/medication/interactive-medication-plan.dart';
+import 'package:v3_patient_app/shared/shared.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 

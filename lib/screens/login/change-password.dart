@@ -5,9 +5,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:patient_app/colors/colors.dart';
-import 'package:patient_app/screens/shared/shared.dart';
-import 'package:patient_app/shared/toast.dart';
+import 'package:v3_patient_app/colors/colors.dart';
+import 'package:v3_patient_app/screens/shared/shared.dart';
+import 'package:v3_patient_app/shared/toast.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -152,7 +152,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           height: 5,
                         ),
                         Image.asset(
-                          "assets/images/logo-imedcom.png",
+                          "assets/images/logo-iMedCom v3.png",
                           width: 200,
                           height: 100,
                         ),
@@ -222,7 +222,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            minimumSize: const Size.fromHeight(30), backgroundColor: mainButtonColor,
+                            minimumSize: const Size.fromHeight(30),
+                            backgroundColor: mainButtonColor,
                           ),
                           onPressed: () async {
                             final isValid = _formKey.currentState?.validate();

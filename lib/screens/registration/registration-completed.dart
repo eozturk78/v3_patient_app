@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:patient_app/colors/colors.dart';
-import 'package:patient_app/shared/toast.dart';
+import 'package:v3_patient_app/colors/colors.dart';
+import 'package:v3_patient_app/shared/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../apis/apis.dart';

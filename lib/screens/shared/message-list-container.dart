@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:patient_app/colors/colors.dart';
+import 'package:v3_patient_app/colors/colors.dart';
 
 import '../../model/scale-size.dart';
 

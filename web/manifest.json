@@ -1,6 +1,6 @@
 {
-    "name": "patient_app",
-    "short_name": "patient_app",
+    "name": "v3_patient_app",
+    "short_name": "v3_patient_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

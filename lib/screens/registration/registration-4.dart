@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:patient_app/colors/colors.dart';
-import 'package:patient_app/shared/toast.dart';
+import 'package:v3_patient_app/colors/colors.dart';
+import 'package:v3_patient_app/shared/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../apis/apis.dart';
@@ -137,7 +137,8 @@ class _Registration4PageState extends State<Registration4Page> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
+                        minimumSize: const Size.fromHeight(40),
+                        backgroundColor: mainButtonColor,
                       ),
                       onPressed: () async {
                         final isValid = _formKey.currentState?.validate();

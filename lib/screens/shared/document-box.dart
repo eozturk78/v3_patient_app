@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:patient_app/colors/colors.dart';
+import 'package:v3_patient_app/colors/colors.dart';
 
 class CustomDocumentBox extends StatelessWidget {
   final IconData? iconData;

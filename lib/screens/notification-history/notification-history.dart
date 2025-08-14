@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:patient_app/colors/colors.dart';
-import 'package:patient_app/shared/toast.dart';
+import 'package:v3_patient_app/colors/colors.dart';
+import 'package:v3_patient_app/shared/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../apis/apis.dart';

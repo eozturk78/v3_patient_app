@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:patient_app/colors/colors.dart';
-import 'package:patient_app/screens/shared/shared.dart';
+import 'package:v3_patient_app/colors/colors.dart';
+import 'package:v3_patient_app/screens/shared/shared.dart';
 
 class CustomProfileMenu extends StatelessWidget {
   final IconData? iconData;
@@ -13,7 +13,7 @@ class CustomProfileMenu extends StatelessWidget {
     return Container(
       height: 75.0,
       margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.only(right: 5,left: 15),
+      padding: const EdgeInsets.only(right: 5, left: 15),
       decoration: menuBoxDecoration,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,

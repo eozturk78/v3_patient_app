@@ -148,7 +148,7 @@
 			dependencies = (
 			);
 			name = Runner;
-			productName = "iMedCom Patient App";
+			productName = "iMedCom v3 Patient App";
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -159,7 +159,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1510;
-				ORGANIZATIONNAME = iMedCom;
+				ORGANIZATIONNAME = iMedCom v3;
 				TargetAttributes = {
 					97C146ED1CF9000F007C117D = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -387,14 +387,14 @@
 				FLUTTER_BUILD_NAME = 1.0.27;
 				FLUTTER_BUILD_NUMBER = 27;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "iMedCom Patient App";
+				INFOPLIST_KEY_CFBundleDisplayName = "iMedCom v3 Patient App";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.medical";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.27;
-				PRODUCT_BUNDLE_IDENTIFIER = com.iMedCom.PatientApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iMedCom v3.PatientApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -526,14 +526,14 @@
 				FLUTTER_BUILD_NAME = 1.0.27;
 				FLUTTER_BUILD_NUMBER = 27;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "iMedCom Patient App";
+				INFOPLIST_KEY_CFBundleDisplayName = "iMedCom v3 Patient App";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.medical";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.27;
-				PRODUCT_BUNDLE_IDENTIFIER = com.iMedCom.PatientApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iMedCom v3.PatientApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -559,14 +559,14 @@
 				FLUTTER_BUILD_NAME = 1.0.27;
 				FLUTTER_BUILD_NUMBER = 27;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "iMedCom Patient App";
+				INFOPLIST_KEY_CFBundleDisplayName = "iMedCom v3 Patient App";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.medical";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.27;
-				PRODUCT_BUNDLE_IDENTIFIER = com.iMedCom.PatientApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iMedCom v3.PatientApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";

@@ -20,7 +20,7 @@
 		<string>en_US</string>
 	</array>
 	<key>CFBundleName</key>
-	<string>patient_app</string>
+	<string>v3_patient_app</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

@@ -5,9 +5,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:patient_app/colors/colors.dart';
-import 'package:patient_app/screens/shared/shared.dart';
-import 'package:patient_app/shared/toast.dart';
+import 'package:v3_patient_app/colors/colors.dart';
+import 'package:v3_patient_app/screens/shared/shared.dart';
+import 'package:v3_patient_app/shared/toast.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:local_auth/local_auth.dart';
@@ -246,7 +246,8 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
                               ),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size.fromHeight(30), backgroundColor: mainButtonColor,
+                                  minimumSize: const Size.fromHeight(30),
+                                  backgroundColor: mainButtonColor,
                                 ),
                                 onPressed: () async {
                                   final isValid =
@@ -328,7 +329,7 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
                                   supportPhoneNumber == null)
                                 Text(
                                   sh.getLanguageResource(
-                                      "contact_imedcom_support"),
+                                      "contact_iMedCom v3_support"),
                                 )
                             ],
                           ),

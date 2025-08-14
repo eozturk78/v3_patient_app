@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
-import 'package:patient_app/apis/apis.dart';
-import 'package:patient_app/model/medical-plan.dart';
-import 'package:patient_app/screens/shared/list-box.dart';
-import 'package:patient_app/screens/shared/shared.dart';
+import 'package:v3_patient_app/apis/apis.dart';
+import 'package:v3_patient_app/model/medical-plan.dart';
+import 'package:v3_patient_app/screens/shared/list-box.dart';
+import 'package:v3_patient_app/screens/shared/shared.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../colors/colors.dart';

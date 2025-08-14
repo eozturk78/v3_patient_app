@@ -1,15 +1,15 @@
 {
   "project_info": {
     "project_number": "870497548445",
-    "project_id": "imedcom-patient-app",
-    "storage_bucket": "imedcom-patient-app.appspot.com"
+    "project_id": "iMedCom v3-patient-app",
+    "storage_bucket": "iMedCom v3-patient-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:870497548445:android:95e9cd4109504c71107c74",
         "android_client_info": {
-          "package_name": "com.imedcom.patient_app"
+          "package_name": "com.iMedCom v3.v3_patient_app"
         }
       },
       "oauth_client": [

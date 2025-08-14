@@ -2,8 +2,8 @@ import 'package:bottom_picker/bottom_picker.dart';
 import 'package:bottom_picker/resources/arrays.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:patient_app/colors/colors.dart';
-import 'package:patient_app/shared/toast.dart';
+import 'package:v3_patient_app/colors/colors.dart';
+import 'package:v3_patient_app/shared/toast.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -466,7 +466,8 @@ class _Registration3PageState extends State<Registration3Page> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
+                          minimumSize: const Size.fromHeight(40),
+                          backgroundColor: mainButtonColor,
                         ),
                         onPressed: () async {
                           if (_selectedDate ==

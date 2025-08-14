@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:patient_app/colors/colors.dart';
-import 'package:patient_app/shared/toast.dart';
+import 'package:v3_patient_app/colors/colors.dart';
+import 'package:v3_patient_app/shared/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../apis/apis.dart';
@@ -19,12 +19,10 @@ class _ImpresumPageState extends State<ImpresumPage> {
   @override
   void initState() {
     // TODO: implement initState
-    
+
     super.initState();
     sh.openPopUp(context, 'impresum');
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +41,7 @@ class _ImpresumPageState extends State<ImpresumPage> {
                   height: 20,
                 ),
                 Image.asset(
-                  "assets/images/logo-imedcom.png",
+                  "assets/images/logo-iMedCom v3.png",
                   width: 160,
                   height: 70,
                 ),
@@ -51,7 +49,7 @@ class _ImpresumPageState extends State<ImpresumPage> {
                   height: 20,
                 ),
                 const Text(
-                  "iMedCom GmbH",
+                  "iMedCom v3 GmbH",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 const Text(
@@ -62,8 +60,8 @@ class _ImpresumPageState extends State<ImpresumPage> {
                 ),
                 Text('${sh.getLanguageResource("tel")} +49 345 57029440'),
                 Text(
-                    '${sh.getLanguageResource("internet")} https://imedcom.de/'),
-                Text('${sh.getLanguageResource("email")} info@imedcom.de'),
+                    '${sh.getLanguageResource("internet")} https://iMedCom v3.de/'),
+                Text('${sh.getLanguageResource("email")} info@iMedCom v3.de'),
                 SizedBox(
                   height: 20,
                 ),

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
-import 'package:patient_app/screens/bluetooth-example/bluetooth/ble_connection_handler.dart';
+import 'package:v3_patient_app/screens/bluetooth-example/bluetooth/ble_connection_handler.dart';
 import 'package:simple_logger/simple_logger.dart';
 import 'package:sprintf/sprintf.dart';
 

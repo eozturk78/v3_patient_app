@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:patient_app/shared/shared.dart';
+import 'package:v3_patient_app/shared/shared.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../main-menu/route_util.dart';
 

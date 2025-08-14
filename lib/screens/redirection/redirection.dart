@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:patient_app/colors/colors.dart';
-import 'package:patient_app/shared/toast.dart';
+import 'package:v3_patient_app/colors/colors.dart';
+import 'package:v3_patient_app/shared/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../apis/apis.dart';
@@ -43,7 +43,7 @@ class _RedirectionPageState extends State<RedirectionPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
-              "assets/images/logo-imedcom.png",
+              "assets/images/logo-iMedCom v3.png",
               width: 160,
               height: 70,
             ),
@@ -51,7 +51,7 @@ class _RedirectionPageState extends State<RedirectionPage> {
               height: 30,
             ),
             Text(
-              sh.getLanguageResource("welcome_imedcom"),
+              sh.getLanguageResource("welcome_iMedCom v3"),
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             SizedBox(

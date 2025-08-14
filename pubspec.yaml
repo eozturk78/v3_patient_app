@@ -1,5 +1,5 @@
-name: patient_app
-description: An iMedCom project.
+name: v3_patient_app
+description: An iMedCom v3 project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.

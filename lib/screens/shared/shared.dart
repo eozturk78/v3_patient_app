@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:patient_app/apis/apis.dart';
+import 'package:v3_patient_app/apis/apis.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:patient_app/screens/main-menu/main-menu.dart';
+import 'package:v3_patient_app/screens/main-menu/main-menu.dart';
 
 import '../../colors/colors.dart';
 import '../../model/scale-size.dart';
@@ -16,7 +16,6 @@ import '../../shared/shared.dart';
 import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'dart:convert';
 import 'package:provider/provider.dart';
-
 
 class NavBarVisibility extends ChangeNotifier {
   bool _hideNavBar = false;
@@ -34,7 +33,7 @@ class SvgIconData extends IconData {
       : super(
           0xe000, // This is a custom code point, we can use any unused one.
           fontFamily: 'SvgIcons',
-          fontPackage: 'iMedComSvgIcons', // package name
+          fontPackage: 'iMedCom v3SvgIcons', // package name
           matchTextDirection: true,
         );
 

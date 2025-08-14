@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:patient_app/colors/colors.dart';
+import 'package:v3_patient_app/colors/colors.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -36,8 +36,6 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
-
-
 
 PersistentTabController navcontroller =
     PersistentTabController(initialIndex: 0);
@@ -99,7 +97,6 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
 
     sh.openPopUp(context, 'main-menu');
     hideNavBar = false;
-
   }
 
   void _loadMenuItems() async {
@@ -300,7 +297,8 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   Timer? _debounce;
   Widget buildCustomizedMenuItemButtons(BuildContext context) {
-    final navBarVisibility = Provider.of<NavBarVisibility>(context, listen: false);
+    final navBarVisibility =
+        Provider.of<NavBarVisibility>(context, listen: false);
 
     return ResponsiveGridRow(
       children: [
@@ -326,7 +324,6 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
                       .then((value) {
                     hideNavBar = false;
                     navBarVisibility.updateHideNavBar(false);
-
                   });
                 },
               ),
@@ -621,7 +618,6 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
       },
     );
   }
-
 
   List<Widget> _buildScreens(BuildContext context) {
     return [

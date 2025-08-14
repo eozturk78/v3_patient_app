@@ -1,17 +1,16 @@
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
-import 'package:patient_app/colors/colors.dart';
-import 'package:patient_app/model/questionnaire-group.dart';
-import 'package:patient_app/screens/main-menu/main-menu.dart';
-import 'package:patient_app/screens/shared/shared.dart';
+import 'package:v3_patient_app/colors/colors.dart';
+import 'package:v3_patient_app/model/questionnaire-group.dart';
+import 'package:v3_patient_app/screens/main-menu/main-menu.dart';
+import 'package:v3_patient_app/screens/shared/shared.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../apis/apis.dart';
 import '../../shared/shared.dart';
-
 
 class QuestionnaireGroupPage extends StatefulWidget {
   const QuestionnaireGroupPage({super.key});
@@ -59,7 +58,8 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
   @override
   Widget build(BuildContext context) {
     final key = GlobalObjectKey<ExpandableFabState>(context);
-    final navBarVisibility = Provider.of<NavBarVisibility>(context, listen: false);
+    final navBarVisibility =
+        Provider.of<NavBarVisibility>(context, listen: false);
 
     String title = "MP";
     Shared sh = new Shared();
@@ -112,10 +112,12 @@ class _QuestionnaireGroupPageState extends State<QuestionnaireGroupPage> {
                                   children: [
                                     TextButton(
                                       onPressed: () async {
-                                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                                        WidgetsBinding.instance
+                                            .addPostFrameCallback((_) {
                                           // Display dialog after UI has rerendered
                                           setState(() {
-                                            navBarVisibility.updateHideNavBar(true);
+                                            navBarVisibility
+                                                .updateHideNavBar(true);
                                           });
                                         });
 

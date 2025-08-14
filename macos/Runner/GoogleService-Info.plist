@@ -13,11 +13,11 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.imedcom.patientApp</string>
+	<string>com.iMedCom v3.patientApp</string>
 	<key>PROJECT_ID</key>
-	<string>imedcom-patient-app</string>
+	<string>iMedCom v3-patient-app</string>
 	<key>STORAGE_BUCKET</key>
-	<string>imedcom-patient-app.appspot.com</string>
+	<string>iMedCom v3-patient-app.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>

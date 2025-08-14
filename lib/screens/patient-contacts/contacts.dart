@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:patient_app/shared/shared.dart';
-import 'package:patient_app/shared/toast.dart';
+import 'package:v3_patient_app/shared/shared.dart';
+import 'package:v3_patient_app/shared/toast.dart';
 import '../../apis/apis.dart';
 import '../shared/bottom-menu.dart';
 import '../shared/shared.dart';

@@ -1,10 +1,10 @@
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:patient_app/colors/colors.dart';
-import 'package:patient_app/model/scale-size.dart';
-import 'package:patient_app/screens/main-menu/main-menu.dart';
-import 'package:patient_app/screens/shared/shared.dart';
+import 'package:v3_patient_app/colors/colors.dart';
+import 'package:v3_patient_app/model/scale-size.dart';
+import 'package:v3_patient_app/screens/main-menu/main-menu.dart';
+import 'package:v3_patient_app/screens/shared/shared.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:responsive_framework/responsive_value.dart';
@@ -405,7 +405,8 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   }
 
   sendValues() {
-    final navBarVisibility = Provider.of<NavBarVisibility>(context, listen: false);
+    final navBarVisibility =
+        Provider.of<NavBarVisibility>(context, listen: false);
 
     setState(() {
       isSendEP = true;
@@ -1134,7 +1135,8 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   }
 
   Widget exitQuestionnaire(BuildContext context) {
-    final navBarVisibility = Provider.of<NavBarVisibility>(context, listen: false);
+    final navBarVisibility =
+        Provider.of<NavBarVisibility>(context, listen: false);
 
     return AlertDialog(
       content: StatefulBuilder(

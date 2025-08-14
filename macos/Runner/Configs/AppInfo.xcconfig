@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = patient_app
+PRODUCT_NAME = v3_patient_app
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.imedcom.patientApp
+PRODUCT_BUNDLE_IDENTIFIER = com.iMedCom v3.patientApp
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.imedcom. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2023 com.iMedCom v3. All rights reserved.

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:patient_app/colors/colors.dart';
+import 'package:v3_patient_app/colors/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../apis/apis.dart';
@@ -239,7 +239,8 @@ class _MedicineIntakeScreenState extends State<MedicineIntakeScreen> {
                       }),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(30), backgroundColor: mainButtonColor,
+                          minimumSize: const Size.fromHeight(30),
+                          backgroundColor: mainButtonColor,
                         ),
                         onPressed: () async {
                           saveMedicineIntake();

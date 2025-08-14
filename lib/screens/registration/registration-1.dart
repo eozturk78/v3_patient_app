@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:patient_app/colors/colors.dart';
+import 'package:v3_patient_app/colors/colors.dart';
 import '../../apis/apis.dart';
 import '../../shared/shared.dart';
 import '../shared/shared.dart';
@@ -138,7 +138,7 @@ class _Registration1PageState extends State<Registration1Page> {
                     ),
                     Flexible(
                         child: Text(
-                      sh.getLanguageResource("imedcom_info_2"),
+                      sh.getLanguageResource("iMedCom v3_info_2"),
                       style: TextStyle(fontSize: 16),
                     ))
                   ],
@@ -148,7 +148,8 @@ class _Registration1PageState extends State<Registration1Page> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
+                    minimumSize: const Size.fromHeight(40),
+                    backgroundColor: mainButtonColor,
                   ),
                   onPressed: () async {
                     if (check1 && check2 && check3 && check4) {

@@ -1,4 +1,4 @@
-import 'package:patient_app/shared/shared.dart';
+import 'package:v3_patient_app/shared/shared.dart';
 
 class QuestionnaireGroup {
   final String name;

@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:patient_app/screens/shared/list-box.dart';
-import 'package:patient_app/screens/shared/shared.dart';
-import 'package:patient_app/shared/shared.dart';
-import 'package:patient_app/shared/toast.dart';
+import 'package:v3_patient_app/screens/shared/list-box.dart';
+import 'package:v3_patient_app/screens/shared/shared.dart';
+import 'package:v3_patient_app/shared/shared.dart';
+import 'package:v3_patient_app/shared/toast.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:url_launcher/url_launcher.dart';
 

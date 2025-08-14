@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:patient_app/colors/colors.dart';
-import 'package:patient_app/model/language.dart';
-import 'package:patient_app/shared/toast.dart';
+import 'package:v3_patient_app/colors/colors.dart';
+import 'package:v3_patient_app/model/language.dart';
+import 'package:v3_patient_app/shared/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../apis/apis.dart';
@@ -131,12 +131,12 @@ class _AgreementsPageState extends State<AgreementsPage> {
                   height: 20,
                 ),
                 Image.asset(
-                  "assets/images/logo-imedcom.png",
+                  "assets/images/logo-iMedCom v3.png",
                   width: 160,
                   height: 70,
                 ),
                 Text(
-                  sh.getLanguageResource("welcome_to_imedcom"),
+                  sh.getLanguageResource("welcome_to_iMedCom v3"),
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 const SizedBox(
@@ -282,7 +282,8 @@ class _AgreementsPageState extends State<AgreementsPage> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
+                    minimumSize: const Size.fromHeight(40),
+                    backgroundColor: mainButtonColor,
                   ),
                   onPressed: () async {
                     if (check1 && check2 && check3) {
@@ -432,7 +433,8 @@ Widget languageDialog(
                 },
                 child: Text("OK"),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(40), backgroundColor: mainButtonColor,
+                  minimumSize: const Size.fromHeight(40),
+                  backgroundColor: mainButtonColor,
                 ),
               )
             ],

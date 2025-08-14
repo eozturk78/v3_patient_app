@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:patient_app/apis/apis.dart';
-import 'package:patient_app/main.dart';
-import 'package:patient_app/screens/main-menu/main-menu.dart';
-import 'package:patient_app/screens/shared/shared.dart';
-import 'package:patient_app/shared/shared.dart';
+import 'package:v3_patient_app/apis/apis.dart';
+import 'package:v3_patient_app/main.dart';
+import 'package:v3_patient_app/screens/main-menu/main-menu.dart';
+import 'package:v3_patient_app/screens/shared/shared.dart';
+import 'package:v3_patient_app/shared/shared.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

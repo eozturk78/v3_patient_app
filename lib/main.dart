@@ -4,79 +4,79 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
-import 'package:patient_app/apis/apis.dart';
-import 'package:patient_app/screens/agreements/agreements.dart';
-import 'package:patient_app/screens/agreements/edit-agreements.dart';
-import 'package:patient_app/screens/agreements/privacy-policy.dart';
-import 'package:patient_app/screens/agreements/terms-and-conditions.dart';
-import 'package:patient_app/screens/bluetooth-example/bluetooth-example-2.dart';
-import 'package:patient_app/screens/communication/calendar.dart';
-import 'package:patient_app/screens/communication/chat.dart';
-import 'package:patient_app/screens/communication/communication.dart';
-import 'package:patient_app/screens/communication/medical-plan-1.dart';
-import 'package:patient_app/screens/communication/messages.dart';
-import 'package:patient_app/screens/description/blutdruck-description.dart';
-import 'package:patient_app/screens/description/pulse-description.dart';
-import 'package:patient_app/screens/description/saturation-description.dart';
-import 'package:patient_app/screens/description/temperature-description.dart';
-import 'package:patient_app/screens/description/weight-description.dart';
-import 'package:patient_app/screens/diagnoses/diagnoses.dart';
-import 'package:patient_app/screens/extract-data/extract-data.dart';
-import 'package:patient_app/screens/forgot-password/forgot-password.dart';
-import 'package:patient_app/screens/forgot-password/answer-secret-question.dart';
-import 'package:patient_app/screens/forgot-password/reset-password.dart';
-import 'package:patient_app/screens/forgot-password/temporary-password.dart';
-import 'package:patient_app/screens/home/home.dart';
-import 'package:patient_app/screens/impresum/impresum.dart';
-import 'package:patient_app/screens/info/documents-details.dart';
-import 'package:patient_app/screens/info/documents.dart';
-import 'package:patient_app/screens/info/enlightenment.dart';
-import 'package:patient_app/screens/info/info.dart';
-import 'package:patient_app/screens/info/libraries.dart';
-import 'package:patient_app/screens/language/language.dart';
-import 'package:patient_app/screens/login/change-password.dart';
-import 'package:patient_app/screens/login/login.dart';
-import 'package:patient_app/screens/login/secret-question.dart';
-import 'package:patient_app/screens/login/successfully-changed-password.dart';
-import 'package:patient_app/screens/main-menu/main-menu.dart';
-import 'package:patient_app/screens/main-menu/main-sub-menu.dart';
-import 'package:patient_app/screens/measure_bluetooth_device/bluetooth-blood-pressure.dart';
-import 'package:patient_app/screens/measure_bluetooth_device/bluetooth-device-measurement-types.dart';
-import 'package:patient_app/screens/measurement-result/measurement-result-blutdruck.dart';
-import 'package:patient_app/screens/measurement-result/measurement-result-pulse.dart';
-import 'package:patient_app/screens/measurement-result/measurement-result-saturation.dart';
-import 'package:patient_app/screens/measurement-result/measurement-result-temperature.dart';
-import 'package:patient_app/screens/measurement-result/measurement-result-weight.dart';
-import 'package:patient_app/screens/medication/interactive-medication-plan.dart';
-import 'package:patient_app/screens/medication/medicine-intake-list.dart';
-import 'package:patient_app/screens/medication/medication-plan-list.dart';
-import 'package:patient_app/screens/medication/medication.dart';
-import 'package:patient_app/screens/medication/recipes.dart';
-import 'package:patient_app/screens/notification-history/notification-history.dart';
-import 'package:patient_app/screens/patient-contacts/contacts.dart';
-import 'package:patient_app/screens/profile/about-me/about-me.dart';
-import 'package:patient_app/screens/profile/profile.dart';
-import 'package:patient_app/screens/questionnaire-group/questionnaire-group.dart';
-import 'package:patient_app/screens/questionnaire-result/questionnaire-result.dart';
-import 'package:patient_app/screens/questionnaire/questionnaire-1.dart';
-import 'package:patient_app/screens/questionnaire/questionnaire-2.dart';
-import 'package:patient_app/screens/questionnaire/questionnaire-3.dart';
-import 'package:patient_app/screens/questionnaire/questionnaire-4.dart';
-import 'package:patient_app/screens/questionnaire/questionnaire-5.dart';
-import 'package:patient_app/screens/questionnaire/questionnaire-6.dart';
-import 'package:patient_app/screens/questionnaire/questionnaire-7.dart';
-import 'package:patient_app/screens/questionnaire/questionnaire-8.dart';
-import 'package:patient_app/screens/questionnaire/questionnaire-9.dart';
-import 'package:patient_app/screens/redirection/redirection.dart';
-import 'package:patient_app/screens/registration/registration-completed.dart';
-import 'package:patient_app/screens/registration/registration-1.dart';
-import 'package:patient_app/screens/registration/registration-2.dart';
-import 'package:patient_app/screens/registration/registration-3.dart';
-import 'package:patient_app/screens/registration/registration-4.dart';
-import 'package:patient_app/screens/settings/settings.dart';
-import 'package:patient_app/screens/shared/custom_menu.dart';
-import 'package:patient_app/screens/shared/customized_menu.dart';
-import 'package:patient_app/screens/shared/shared.dart';
+import 'package:v3_patient_app/apis/apis.dart';
+import 'package:v3_patient_app/screens/agreements/agreements.dart';
+import 'package:v3_patient_app/screens/agreements/edit-agreements.dart';
+import 'package:v3_patient_app/screens/agreements/privacy-policy.dart';
+import 'package:v3_patient_app/screens/agreements/terms-and-conditions.dart';
+import 'package:v3_patient_app/screens/bluetooth-example/bluetooth-example-2.dart';
+import 'package:v3_patient_app/screens/communication/calendar.dart';
+import 'package:v3_patient_app/screens/communication/chat.dart';
+import 'package:v3_patient_app/screens/communication/communication.dart';
+import 'package:v3_patient_app/screens/communication/medical-plan-1.dart';
+import 'package:v3_patient_app/screens/communication/messages.dart';
+import 'package:v3_patient_app/screens/description/blutdruck-description.dart';
+import 'package:v3_patient_app/screens/description/pulse-description.dart';
+import 'package:v3_patient_app/screens/description/saturation-description.dart';
+import 'package:v3_patient_app/screens/description/temperature-description.dart';
+import 'package:v3_patient_app/screens/description/weight-description.dart';
+import 'package:v3_patient_app/screens/diagnoses/diagnoses.dart';
+import 'package:v3_patient_app/screens/extract-data/extract-data.dart';
+import 'package:v3_patient_app/screens/forgot-password/forgot-password.dart';
+import 'package:v3_patient_app/screens/forgot-password/answer-secret-question.dart';
+import 'package:v3_patient_app/screens/forgot-password/reset-password.dart';
+import 'package:v3_patient_app/screens/forgot-password/temporary-password.dart';
+import 'package:v3_patient_app/screens/home/home.dart';
+import 'package:v3_patient_app/screens/impresum/impresum.dart';
+import 'package:v3_patient_app/screens/info/documents-details.dart';
+import 'package:v3_patient_app/screens/info/documents.dart';
+import 'package:v3_patient_app/screens/info/enlightenment.dart';
+import 'package:v3_patient_app/screens/info/info.dart';
+import 'package:v3_patient_app/screens/info/libraries.dart';
+import 'package:v3_patient_app/screens/language/language.dart';
+import 'package:v3_patient_app/screens/login/change-password.dart';
+import 'package:v3_patient_app/screens/login/login.dart';
+import 'package:v3_patient_app/screens/login/secret-question.dart';
+import 'package:v3_patient_app/screens/login/successfully-changed-password.dart';
+import 'package:v3_patient_app/screens/main-menu/main-menu.dart';
+import 'package:v3_patient_app/screens/main-menu/main-sub-menu.dart';
+import 'package:v3_patient_app/screens/measure_bluetooth_device/bluetooth-blood-pressure.dart';
+import 'package:v3_patient_app/screens/measure_bluetooth_device/bluetooth-device-measurement-types.dart';
+import 'package:v3_patient_app/screens/measurement-result/measurement-result-blutdruck.dart';
+import 'package:v3_patient_app/screens/measurement-result/measurement-result-pulse.dart';
+import 'package:v3_patient_app/screens/measurement-result/measurement-result-saturation.dart';
+import 'package:v3_patient_app/screens/measurement-result/measurement-result-temperature.dart';
+import 'package:v3_patient_app/screens/measurement-result/measurement-result-weight.dart';
+import 'package:v3_patient_app/screens/medication/interactive-medication-plan.dart';
+import 'package:v3_patient_app/screens/medication/medicine-intake-list.dart';
+import 'package:v3_patient_app/screens/medication/medication-plan-list.dart';
+import 'package:v3_patient_app/screens/medication/medication.dart';
+import 'package:v3_patient_app/screens/medication/recipes.dart';
+import 'package:v3_patient_app/screens/notification-history/notification-history.dart';
+import 'package:v3_patient_app/screens/patient-contacts/contacts.dart';
+import 'package:v3_patient_app/screens/profile/about-me/about-me.dart';
+import 'package:v3_patient_app/screens/profile/profile.dart';
+import 'package:v3_patient_app/screens/questionnaire-group/questionnaire-group.dart';
+import 'package:v3_patient_app/screens/questionnaire-result/questionnaire-result.dart';
+import 'package:v3_patient_app/screens/questionnaire/questionnaire-1.dart';
+import 'package:v3_patient_app/screens/questionnaire/questionnaire-2.dart';
+import 'package:v3_patient_app/screens/questionnaire/questionnaire-3.dart';
+import 'package:v3_patient_app/screens/questionnaire/questionnaire-4.dart';
+import 'package:v3_patient_app/screens/questionnaire/questionnaire-5.dart';
+import 'package:v3_patient_app/screens/questionnaire/questionnaire-6.dart';
+import 'package:v3_patient_app/screens/questionnaire/questionnaire-7.dart';
+import 'package:v3_patient_app/screens/questionnaire/questionnaire-8.dart';
+import 'package:v3_patient_app/screens/questionnaire/questionnaire-9.dart';
+import 'package:v3_patient_app/screens/redirection/redirection.dart';
+import 'package:v3_patient_app/screens/registration/registration-completed.dart';
+import 'package:v3_patient_app/screens/registration/registration-1.dart';
+import 'package:v3_patient_app/screens/registration/registration-2.dart';
+import 'package:v3_patient_app/screens/registration/registration-3.dart';
+import 'package:v3_patient_app/screens/registration/registration-4.dart';
+import 'package:v3_patient_app/screens/settings/settings.dart';
+import 'package:v3_patient_app/screens/shared/custom_menu.dart';
+import 'package:v3_patient_app/screens/shared/customized_menu.dart';
+import 'package:v3_patient_app/screens/shared/shared.dart';
 import 'package:responsive_framework/breakpoint.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -89,8 +89,6 @@ import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
-
-
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -355,7 +353,7 @@ class MyApp extends StatelessWidget {
       ],
       color: Color.fromARGB(0, 179, 55, 55),
       debugShowCheckedModeBanner: false,
-      title: 'iMedCom Patient App',
+      title: 'iMedCom v3 Patient App',
       theme: ThemeData(
         useMaterial3: false,
         appBarTheme:
@@ -363,7 +361,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
       ),
       navigatorKey: navigatorKey,
-      //home: const MyHomePage(title: 'iMedCom App Demo Home Page'),
+      //home: const MyHomePage(title: 'iMedCom v3 App Demo Home Page'),
       initialRoute: "/splash-screen",
 
       routes: routes,
@@ -451,7 +449,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
-              "assets/images/logo-imedcom.png",
+              "assets/images/logo-iMedCom v3.png",
               width: 200,
               height: 100,
             ),

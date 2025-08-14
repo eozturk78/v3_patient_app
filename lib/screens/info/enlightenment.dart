@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:patient_app/screens/shared/list-box.dart';
-import 'package:patient_app/screens/shared/shared.dart';
-import 'package:patient_app/shared/shared.dart';
+import 'package:v3_patient_app/screens/shared/list-box.dart';
+import 'package:v3_patient_app/screens/shared/shared.dart';
+import 'package:v3_patient_app/shared/shared.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 

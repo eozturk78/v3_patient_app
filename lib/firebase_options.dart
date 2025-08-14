@@ -47,9 +47,9 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyBMQ_8I1fabM0u956MnInJ9z8YGh6o1P_0',
     appId: '1:870497548445:web:439cfe132433a5e8107c74',
     messagingSenderId: '870497548445',
-    projectId: 'imedcom-patient-app',
-    authDomain: 'imedcom-patient-app.firebaseapp.com',
-    storageBucket: 'imedcom-patient-app.appspot.com',
+    projectId: 'iMedCom v3-patient-app',
+    authDomain: 'iMedCom v3-patient-app.firebaseapp.com',
+    storageBucket: 'iMedCom v3-patient-app.appspot.com',
     measurementId: 'G-EVG57L12C2',
   );
 
@@ -57,29 +57,29 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyCH8Tq4NrYFLvfENQAlDElkeNwju7IWFWM',
     appId: '1:870497548445:android:95e9cd4109504c71107c74',
     messagingSenderId: '870497548445',
-    projectId: 'imedcom-patient-app',
-    storageBucket: 'imedcom-patient-app.appspot.com',
+    projectId: 'iMedCom v3-patient-app',
+    storageBucket: 'iMedCom v3-patient-app.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBzEihoUy92NbU9qNf8lcPfpSf4dAA7WM0',
     appId: '1:870497548445:ios:e91195b0cc30d5ff107c74',
     messagingSenderId: '870497548445',
-    projectId: 'imedcom-patient-app',
-    storageBucket: 'imedcom-patient-app.appspot.com',
+    projectId: 'iMedCom v3-patient-app',
+    storageBucket: 'iMedCom v3-patient-app.appspot.com',
     iosClientId:
         '870497548445-vbnph7hjabh3ek1su1srl0q49qj8gcea.apps.googleusercontent.com',
-    iosBundleId: 'com.imedcom.iMedCom',
+    iosBundleId: 'com.iMedCom v3.iMedCom v3',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBzEihoUy92NbU9qNf8lcPfpSf4dAA7WM0',
     appId: '1:870497548445:ios:513fa33e3bef7ff4107c74',
     messagingSenderId: '870497548445',
-    projectId: 'imedcom-patient-app',
-    storageBucket: 'imedcom-patient-app.appspot.com',
+    projectId: 'iMedCom v3-patient-app',
+    storageBucket: 'iMedCom v3-patient-app.appspot.com',
     iosClientId:
         '870497548445-79vanc1ru1343v8efh06nmc7qkdrutqa.apps.googleusercontent.com',
-    iosBundleId: 'com.imedcom.patientApp',
+    iosBundleId: 'com.iMedCom v3.patientApp',
   );
 }

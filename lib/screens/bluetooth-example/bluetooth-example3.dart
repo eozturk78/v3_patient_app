@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
-import 'package:patient_app/screens/bluetooth-example/bluetooth/communication_handler.dart';
+import 'package:v3_patient_app/screens/bluetooth-example/bluetooth/communication_handler.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:simple_logger/simple_logger.dart';
 import 'package:collection/collection.dart';
