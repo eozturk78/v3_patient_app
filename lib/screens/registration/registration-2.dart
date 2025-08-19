@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:v3_patient_app/colors/colors.dart';
+import 'package:v3_patient_app/model/organization.dart';
 import 'package:v3_patient_app/shared/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,7 +17,9 @@ class Registration2Page extends StatefulWidget {
 }
 
 class _Registration2PageState extends State<Registration2Page> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  QRViewController? controller;
+  String qrText = '';
   TextEditingController firstNameController = new TextEditingController();
   TextEditingController lastNameController = new TextEditingController();
   Shared sh = new Shared();
@@ -31,24 +35,46 @@ class _Registration2PageState extends State<Registration2Page> {
     setState(() {});
   }
 
+  void _onQRViewCreated(QRViewController controller) {
+    this.controller = controller;
+    controller.scannedDataStream.listen((scanData) {
+      setState(() {
+        qrText = scanData.code!;
+        print(qrText);
+        getMobileOrganizationInfo(qrText);
+      });
+    });
+  }
+
+  Organization? organizationInfo;
+  getMobileOrganizationInfo(String organizationId) async {
+    Apis apis = Apis();
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    apis.getMobileOrganizationInfo(organizationId).then((value) {
+      organizationInfo = Organization.fromJson(value);
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingWithoutProfile(
           sh.getLanguageResource("registration_2"), context),
-      body: Padding(
-        padding: EdgeInsets.all(30),
-        child: SingleChildScrollView(
-            child: SizedBox(
-                width: double.infinity,
-                child: Form(
-                  key: _formKey,
+      body: organizationInfo == null
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(30),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        sh.getLanguageResource("personalisation"),
+                        sh.getLanguageResource(
+                            "please_scan_qrcode_organization"),
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -57,75 +83,81 @@ class _Registration2PageState extends State<Registration2Page> {
                       SizedBox(
                         height: 10,
                       ),
-                      Text(sh.getLanguageResource("let_us_customise"),
+                      Text(
+                          sh.getLanguageResource(
+                              "please_scan_qrcode_organization_desc"),
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      SizedBox(
-                        height: 60,
-                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: QRView(
+                    key: qrKey,
+                    onQRViewCreated: _onQRViewCreated,
+                  ),
+                )
+              ],
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(30),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Text(
-                        sh.getLanguageResource("first_name"),
-                        style: labelText,
-                      ),
-                      TextFormField(
-                        controller: firstNameController,
-                        obscureText: false,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText:
-                              sh.getLanguageResource("please_enter_your_name"),
-                        ),
-                        validator: (text) => sh.textValidator(text),
+                        organizationInfo!.organizationTitle,
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: mainButtonColor),
                       ),
                       SizedBox(
                         height: 10,
                       ),
-                      Divider(color: const Color.fromARGB(255, 134, 134, 134)),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        sh.getLanguageResource("last_name"),
-                        style: labelText,
-                      ),
-                      TextFormField(
-                        controller: lastNameController,
-                        obscureText: false,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText:
-                              sh.getLanguageResource("pleae_enter_surname"),
-                        ),
-                        validator: (text) => sh.textValidator(text),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Divider(color: const Color.fromARGB(255, 134, 134, 134)),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      Text(organizationInfo!.address,
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text(organizationInfo!.email,
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text(organizationInfo!.phoneNumber,
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      SizedBox(height: 100),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size.fromHeight(40),
                           backgroundColor: mainButtonColor,
                         ),
                         onPressed: () async {
-                          final isValid = _formKey.currentState?.validate();
-                          if (!isValid! || isSendEP) return;
                           SharedPreferences pref =
                               await SharedPreferences.getInstance();
-                          pref.setString('firstName', firstNameController.text);
-                          pref.setString('lastName', lastNameController.text);
+                          pref.setInt('organizationId',
+                              organizationInfo!.organizationId!);
                           Navigator.of(context).pushNamed('/registration-3');
                         },
-                        child: Text(
-                          sh.getLanguageResource("further"),
+                        child: Text(sh.getLanguageResource("further")),
+                      ),
+                      SizedBox(height: 50),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(40),
+                          backgroundColor: mainItemColor,
                         ),
+                        onPressed: () async {
+                          organizationInfo = null;
+                          setState(() {});
+                        },
+                        child: Text(sh
+                            .getLanguageResource("scan_another_organization")),
                       )
                     ],
                   ),
-                ))),
-      ),
+                )
+              ],
+            ),
     );
   }
 }

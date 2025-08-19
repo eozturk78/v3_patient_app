@@ -33,7 +33,7 @@ class SvgIconData extends IconData {
       : super(
           0xe000, // This is a custom code point, we can use any unused one.
           fontFamily: 'SvgIcons',
-          fontPackage: 'iMedCom v3SvgIcons', // package name
+          fontPackage: 'iMedComV3SvgIcons', // package name
           matchTextDirection: true,
         );
 

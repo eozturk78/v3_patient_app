@@ -152,7 +152,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           height: 5,
                         ),
                         Image.asset(
-                          "assets/images/logo-iMedCom v3.png",
+                          "assets/images/logo-iMedComV3.png",
                           width: 200,
                           height: 100,
                         ),

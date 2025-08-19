@@ -8,7 +8,7 @@
 PRODUCT_NAME = v3_patient_app
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.iMedCom v3.patientApp
+PRODUCT_BUNDLE_IDENTIFIER = com.iMedComV3.patientApp
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.iMedCom v3. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2023 com.iMedComV3. All rights reserved.

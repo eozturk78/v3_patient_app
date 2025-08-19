@@ -1,5 +1,5 @@
 name: v3_patient_app
-description: An iMedCom v3 project.
+description: An iMedComV3 project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -87,6 +87,7 @@ dependencies:
   sprintf: ^7.0.0
   provider: ^6.1.2
   visibility_detector: ^0.4.0+2
+  qr_code_scanner: ^1.0.0
 
 
 dev_dependencies:

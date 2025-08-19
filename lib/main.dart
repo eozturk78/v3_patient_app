@@ -68,11 +68,14 @@ import 'package:v3_patient_app/screens/questionnaire/questionnaire-7.dart';
 import 'package:v3_patient_app/screens/questionnaire/questionnaire-8.dart';
 import 'package:v3_patient_app/screens/questionnaire/questionnaire-9.dart';
 import 'package:v3_patient_app/screens/redirection/redirection.dart';
-import 'package:v3_patient_app/screens/registration/registration-completed.dart';
 import 'package:v3_patient_app/screens/registration/registration-1.dart';
 import 'package:v3_patient_app/screens/registration/registration-2.dart';
 import 'package:v3_patient_app/screens/registration/registration-3.dart';
 import 'package:v3_patient_app/screens/registration/registration-4.dart';
+import 'package:v3_patient_app/screens/registration/registration-5.dart';
+import 'package:v3_patient_app/screens/registration/registration-6.dart';
+import 'package:v3_patient_app/screens/registration/registration-completed.dart';
+
 import 'package:v3_patient_app/screens/settings/settings.dart';
 import 'package:v3_patient_app/screens/shared/custom_menu.dart';
 import 'package:v3_patient_app/screens/shared/customized_menu.dart';
@@ -160,6 +163,8 @@ final Map<String, WidgetBuilder> routes = {
   "/registration-2": (context) => const Registration2Page(),
   "/registration-3": (context) => const Registration3Page(),
   "/registration-4": (context) => const Registration4Page(),
+  "/registration-5": (context) => const Registration5Page(),
+  "/registration-6": (context) => const Registration6Page(),
   "/created-account-successfully": (context) =>
       const RegistrationCompletedPage(),
   "/diagnoses": (context) => const DiagnosesPage(),
@@ -218,14 +223,14 @@ main() async {
     else
       redirectionScreen = '/medicine-intake';
 
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    /*  SharedPreferences pref = await SharedPreferences.getInstance();
     apis.patientrenewtoken().then((value) async {
       tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
       tokenTimeOutSecond = value['tokenTimeOutSecond'];
       popUpAppearSecond = value['popUpAppearSecond'];
       pref.setString("token", value['token']);
       navigatorKey.currentState?.pushNamed(redirectionScreen.toString());
-    }, onError: (err) => sh.redirectPatient(err, null));
+    }, onError: (err) => sh.redirectPatient(err, null));*/
   }
 
   Future<void> onSelectNotification(payload) async {
@@ -248,7 +253,8 @@ main() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   // If permission is granted, get the FCM token
-  String? token = await messaging.getToken();
+  String? token = null;
+  //await messaging.getToken();
 
   FirebaseMessaging.instance.getInitialMessage().then((message) {
     if (message != null) {
@@ -353,7 +359,7 @@ class MyApp extends StatelessWidget {
       ],
       color: Color.fromARGB(0, 179, 55, 55),
       debugShowCheckedModeBanner: false,
-      title: 'iMedCom v3 Patient App',
+      title: 'iMedComV3 Patient App',
       theme: ThemeData(
         useMaterial3: false,
         appBarTheme:
@@ -361,7 +367,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
       ),
       navigatorKey: navigatorKey,
-      //home: const MyHomePage(title: 'iMedCom v3 App Demo Home Page'),
+      //home: const MyHomePage(title: 'iMedComV3 App Demo Home Page'),
       initialRoute: "/splash-screen",
 
       routes: routes,
@@ -449,7 +455,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
-              "assets/images/logo-iMedCom v3.png",
+              "assets/images/logo-imedcom.png",
               width: 200,
               height: 100,
             ),

@@ -43,7 +43,7 @@ class _RedirectionPageState extends State<RedirectionPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
-              "assets/images/logo-iMedCom v3.png",
+              "assets/images/logo-iMedComV3.png",
               width: 160,
               height: 70,
             ),
@@ -51,7 +51,7 @@ class _RedirectionPageState extends State<RedirectionPage> {
               height: 30,
             ),
             Text(
-              sh.getLanguageResource("welcome_iMedCom v3"),
+              sh.getLanguageResource("welcome_iMedComV3"),
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             SizedBox(

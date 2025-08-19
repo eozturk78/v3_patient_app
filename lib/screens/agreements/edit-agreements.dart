@@ -49,7 +49,7 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                   height: 20,
                 ),
                 Image.asset(
-                  "assets/images/logo-iMedCom v3.png",
+                  "assets/images/logo-imedcom.png",
                   width: 160,
                   height: 70,
                 ),
@@ -57,14 +57,14 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                   height: 7,
                 ),
                 const Text(
-                  "Willkommen bei iMedCom v3",
+                  "Willkommen bei iMedComV3",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
                 const Text(
-                  "Im Rahmen der iMedCom v3-App-Nutzung werden personenbezogene Daten  verarbeitet:",
+                  "Im Rahmen der iMedComV3-App-Nutzung werden personenbezogene Daten  verarbeitet:",
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -100,7 +100,7 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                       ),
                       const Flexible(
                           child: Text(
-                        "Ich möchte mit meinem Arzt bzw.  meiner Ärztin über „iMedCom v3-App“ kommunizieren und willige ein, dass meine personenbezogenen Gesundheitsdaten für den bestimmungsgemäßen Gebrauch verarbeitet werden. Ich kann meine Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen. Bitte beachten Sie jedoch, dass Ihr Benutzerkonto gelöscht wird, wenn Sie Ihre Einwilligung widerrufen, da die App ohne Ihre Einwilligung nicht genutzt werden darf. ",
+                        "Ich möchte mit meinem Arzt bzw.  meiner Ärztin über „iMedComV3-App“ kommunizieren und willige ein, dass meine personenbezogenen Gesundheitsdaten für den bestimmungsgemäßen Gebrauch verarbeitet werden. Ich kann meine Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen. Bitte beachten Sie jedoch, dass Ihr Benutzerkonto gelöscht wird, wenn Sie Ihre Einwilligung widerrufen, da die App ohne Ihre Einwilligung nicht genutzt werden darf. ",
                         style: TextStyle(fontSize: 16),
                       ))
                     ],
@@ -136,7 +136,7 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                       ),
                       const Flexible(
                           child: Text(
-                        "Ich willige ein, dass die iMedCom v3 GmbH, Weinbergweg 23, 06120 Halle an der Saale meine Daten verarbeiten darf, um die technische Funktionsfähigkeit und die Nutzerfreundlichkeit der App weiterzuentwickeln. Die Einwilligung ist jederzeit widerrufbar ohne Auswirkungen auf den Funktionsumfang der App. ",
+                        "Ich willige ein, dass die iMedComV3 GmbH, Weinbergweg 23, 06120 Halle an der Saale meine Daten verarbeiten darf, um die technische Funktionsfähigkeit und die Nutzerfreundlichkeit der App weiterzuentwickeln. Die Einwilligung ist jederzeit widerrufbar ohne Auswirkungen auf den Funktionsumfang der App. ",
                         style: TextStyle(fontSize: 16),
                       ))
                     ],
@@ -146,7 +146,7 @@ class _EditAgreementsPageState extends State<EditAgreementsPage> {
                   height: 20,
                 ),
                 const Text(
-                  "Damit Sie iMedCom v3 verwenden dürfen , müssen folgende Voraussetzungen erfüllt sein:",
+                  "Damit Sie iMedComV3 verwenden dürfen , müssen folgende Voraussetzungen erfüllt sein:",
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

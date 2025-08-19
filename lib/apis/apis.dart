@@ -23,15 +23,16 @@ class Apis {
   String? baseUrl = 'https://v2dev-api.imc-app.de/api';
   String? apiPublic = 'https://v2dev-api.imc-app.de';
   String? othBaseUrl = 'https://praxiskamalmeo-test.oth.io';
-*/
+
   String? baseUrl = 'https://v2test-api.imc-app.de/api';
   String? apiPublic = 'https://v2test-api.imc-app.de';
-  String? othBaseUrl = 'https://praxiskamalmeo-test.oth.io';
+  String? othBaseUrl = 'https://praxiskamalmeo-test.oth.io';*/
 
   /* String? baseUrl = 'https://v2api.imc-app.de/api';
   String? apiPublic = 'https://v2api.imc-app.de';
   String? othBaseUrl = 'https://app.telecard.io';*/
-
+  String? baseUrl = 'https://v3dev-api.imc-app.de/api';
+  String? apiPublic = 'https://v3dev-api.imc-app.de';
   Future login(String email, String password, String? deviceToken) async {
     String finalUrl = '$baseUrl/patientlogin';
     var params = {
@@ -64,11 +65,8 @@ class Apis {
   Future getLanguageResources(String lang) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/getlanguageresources?lang=$lang';
-    var result = await http.get(Uri.parse(finalUrl), headers: {
-      'Content-Type': 'application/text',
-      'lang': lang,
-      'token': pref.getString('token').toString()
-    });
+    var result = await http.get(Uri.parse(finalUrl),
+        headers: {'Content-Type': 'application/text', 'lang': lang});
     return getResponseFromApi(result);
   }
 
@@ -592,32 +590,50 @@ class Apis {
   }
 
   Future registerPatient(
-      String userName,
+      int organizationId,
+      String healthId,
       String firstName,
       String lastName,
+      int countryId,
+      int cityId,
+      String street,
+      String mobilePhoneNumber,
+      String postalCode,
       String birthDate,
-      String weight,
-      String height,
+      double weight,
+      double height,
       String gender,
       String email,
-      String password,
-      String sex) async {
+      String password) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String finalUrl = '$baseUrl/registerPatient';
     var params = {
-      'userName': userName,
-      'email': userName,
-      'password': password,
+      'organizationId': organizationId.toString(),
+      'healthId': healthId,
       'firstName': firstName,
       'lastName': lastName,
+      'countryId': countryId.toString(),
+      'cityId': cityId.toString(),
+      'mobilePhoneNumber': mobilePhoneNumber,
+      'street': street,
+      'postalCode': postalCode,
       'birthDate': birthDate.toString().substring(0, 10),
-      'weight': weight,
-      'height': height,
-      'sex': sex
+      'weight': weight.toString(),
+      'height': height.toString(),
+      'email': email,
+      'password': password,
+      'gender': gender
     };
-    lang = pref.getString("language")!;
-    var result = await http
-        .post(Uri.parse(finalUrl), body: params, headers: {'lang': lang}); /**/
+    //lang = pref.getString("language")!;
+    print(params);
+    var result = await http.post(
+      Uri.parse(finalUrl),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode(params),
+    ); /**/
     return getResponseFromApi(result);
   }
 
@@ -913,6 +929,12 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future getCountryList() async {
+    String finalUrl = '$baseUrl/getCountryList';
+    var result = await http.get(Uri.parse(finalUrl), headers: {'lang': lang});
+    return getResponseFromApi(result);
+  }
+
   Future setPatientLanguage(String language) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     lang = pref.getString("language")!;
@@ -944,6 +966,16 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future getMobileOrganizationInfo(String organizationId) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String finalUrl = '$baseUrl/getmobileorganizationinfo?id=${organizationId}';
+    print(finalUrl);
+    //lang = pref.getString("language")!;
+    var result = await http.get(Uri.parse(finalUrl),
+        headers: {'token': pref.getString('token').toString()});
+    return getResponseFromApi(result);
+  }
+
   getResponseFromApi(http.Response result) async {
     try {
       if (result.headers['token'] != null) {
@@ -963,12 +995,7 @@ class Apis {
               "Fehler bitte kontaktieren Sie den IT - Support"));
         }
       } else {
-        body = jsonDecode(body);
-        if (body['errors'] == null ||
-            (body['errors'] != null &&
-                    (body['errors'] as List).first['error'] != 'expired') &&
-                result.statusCode != 401)
-          showToast(AppLocalizations.tr(body['message']));
+        showToast(AppLocalizations.tr(body['message']));
 
         if (body['message'] == "Bitte melden Sie sich erneut an." ||
             result.statusCode == 401) {

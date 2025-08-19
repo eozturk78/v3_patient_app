@@ -55,9 +55,10 @@ class _LoginPageState extends State<LoginPage> {
     // TODO: implement initState
     FirebaseMessaging _firebaseMessaging =
         FirebaseMessaging.instance; // Change here
-    _firebaseMessaging.getToken().then((token) {
+
+    /*_firebaseMessaging.getToken().then((token) {
       if (token != null) deviceToken = token;
-    });
+    });*/
     checkRememberMe();
     _getAvailableBiometrics();
     //_authenticateWithBiometrics();
@@ -384,7 +385,7 @@ class _LoginPageState extends State<LoginPage> {
                             height: 5,
                           ),
                           Image.asset(
-                            "assets/images/logo-iMedCom v3.png",
+                            "assets/images/logo-imedcom.png",
                             width: 200,
                             height: 100,
                           ),
@@ -509,18 +510,32 @@ class _LoginPageState extends State<LoginPage> {
                               ],
                             ),
                           TextButton(
-                              onPressed: () async {
-                                await _listener.cancel();
-                                //if (this.isDiaglog) Navigator.of(context).pop();
-                                Navigator.of(context)
-                                    .pushNamed("/forgot-password");
-                              },
-                              child: Text(
-                                sh.getLanguageResource(
-                                    "i_have_forgotten_my_password"),
-                                //Text('Ich habe mein Passwort vergessen',
-                                style: TextStyle(color: mainButtonColor),
-                              ))
+                            onPressed: () async {
+                              await _listener.cancel();
+                              //if (this.isDiaglog) Navigator.of(context).pop();
+                              Navigator.of(context)
+                                  .pushNamed("/forgot-password");
+                            },
+                            child: Text(
+                              sh.getLanguageResource(
+                                  "i_have_forgotten_my_password"),
+                              //Text('Ich habe mein Passwort vergessen',
+                              style: TextStyle(color: mainButtonColor),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              await _listener.cancel();
+                              //if (this.isDiaglog) Navigator.of(context).pop();
+                              Navigator.of(context)
+                                  .pushNamed("/registration-1");
+                            },
+                            child: Text(
+                              sh.getLanguageResource("create_new_account"),
+                              //Text('Ich habe mein Passwort vergessen',
+                              style: TextStyle(color: mainButtonColor),
+                            ),
+                          )
                         ],
                       ),
                     ),

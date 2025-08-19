@@ -138,7 +138,7 @@ class _Registration1PageState extends State<Registration1Page> {
                     ),
                     Flexible(
                         child: Text(
-                      sh.getLanguageResource("iMedCom v3_info_2"),
+                      sh.getLanguageResource("imedcom_info_2"),
                       style: TextStyle(fontSize: 16),
                     ))
                   ],

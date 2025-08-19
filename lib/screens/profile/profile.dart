@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:v3_patient_app/apis/apis.dart';
-import 'package:v3_patient_app/main.dart';
 import 'package:v3_patient_app/screens/main-menu/main-menu.dart';
 import 'package:v3_patient_app/screens/shared/shared.dart';
 import 'package:v3_patient_app/shared/shared.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../colors/colors.dart';
 import '../../model/scale-size.dart';
-import '../shared/bottom-menu.dart';
-import '../shared/custom_menu.dart';
-import '../shared/profile-menu.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class ProfilePage extends StatefulWidget {

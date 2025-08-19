@@ -41,7 +41,7 @@ class _ImpresumPageState extends State<ImpresumPage> {
                   height: 20,
                 ),
                 Image.asset(
-                  "assets/images/logo-iMedCom v3.png",
+                  "assets/images/logo-iMedComV3.png",
                   width: 160,
                   height: 70,
                 ),
@@ -49,7 +49,7 @@ class _ImpresumPageState extends State<ImpresumPage> {
                   height: 20,
                 ),
                 const Text(
-                  "iMedCom v3 GmbH",
+                  "iMedComV3 GmbH",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 const Text(
@@ -60,8 +60,8 @@ class _ImpresumPageState extends State<ImpresumPage> {
                 ),
                 Text('${sh.getLanguageResource("tel")} +49 345 57029440'),
                 Text(
-                    '${sh.getLanguageResource("internet")} https://iMedCom v3.de/'),
-                Text('${sh.getLanguageResource("email")} info@iMedCom v3.de'),
+                    '${sh.getLanguageResource("internet")} https://iMedComV3.de/'),
+                Text('${sh.getLanguageResource("email")} info@iMedComV3.de'),
                 SizedBox(
                   height: 20,
                 ),

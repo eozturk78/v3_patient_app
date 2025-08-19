@@ -89,11 +89,11 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.iMedCom v3" "\0"
+            VALUE "CompanyName", "com.iMedComV3" "\0"
             VALUE "FileDescription", "v3_patient_app" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "v3_patient_app" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 com.iMedCom v3. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2023 com.iMedComV3. All rights reserved." "\0"
             VALUE "OriginalFilename", "v3_patient_app.exe" "\0"
             VALUE "ProductName", "v3_patient_app" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"

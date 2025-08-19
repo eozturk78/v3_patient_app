@@ -329,7 +329,7 @@ class _AnswerSecretQuestionPageState extends State<AnswerSecretQuestionPage> {
                                   supportPhoneNumber == null)
                                 Text(
                                   sh.getLanguageResource(
-                                      "contact_iMedCom v3_support"),
+                                      "contact_iMedComV3_support"),
                                 )
                             ],
                           ),

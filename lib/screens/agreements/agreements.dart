@@ -131,12 +131,12 @@ class _AgreementsPageState extends State<AgreementsPage> {
                   height: 20,
                 ),
                 Image.asset(
-                  "assets/images/logo-iMedCom v3.png",
+                  "assets/images/logo-imedcom.png",
                   width: 160,
                   height: 70,
                 ),
                 Text(
-                  sh.getLanguageResource("welcome_to_iMedCom v3"),
+                  sh.getLanguageResource("welcome_to_imedcom"),
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 const SizedBox(
