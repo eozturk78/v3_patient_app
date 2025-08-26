@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:v3_patient_app/apis/apis.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:responsive_framework/responsive_breakpoints.dart';
-import 'package:responsive_framework/responsive_value.dart';
+
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:v3_patient_app/screens/main-menu/main-menu.dart';
 

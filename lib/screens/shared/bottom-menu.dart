@@ -4,8 +4,8 @@ import 'package:v3_patient_app/apis/apis.dart';
 import 'package:v3_patient_app/colors/colors.dart';
 import 'package:v3_patient_app/screens/medication/interactive-medication-plan.dart';
 import 'package:v3_patient_app/shared/shared.dart';
-import 'package:responsive_framework/responsive_breakpoints.dart';
-import 'package:responsive_framework/responsive_value.dart';
+
+import 'package:responsive_framework/responsive_framework.dart';
 
 import 'package:badges/badges.dart' as badges;
 

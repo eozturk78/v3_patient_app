@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:v3_patient_app/apis/apis.dart';
 import 'package:v3_patient_app/model/medical-plan.dart';
@@ -25,7 +24,6 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
   Shared sh = Shared();
   List<MedicalPlan> mpLis = [];
 
-  PDFDocument? document;
   bool isStarted = true;
   @override
   void initState() {
@@ -210,7 +208,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                           var url =
                                               '${apis.apiPublic}/medicalplan-pdf-file?treatmentid=${item.treatmentId}&versionno=${item.versionNumber}';
 
-                                          PDFDocument.fromURL(url)
+                                          /* PDFDocument.fromURL(url)
                                               .then((value) {
                                             setState(() {
                                               showDialog(
@@ -221,7 +219,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
                                                     "${sh.getLanguageResource("medical_plan")}_${item.versionNumber}"),
                                               );
                                             });
-                                          });
+                                          });*/
                                         },
                                         child: Row(
                                           children: [
@@ -256,7 +254,7 @@ class _MedicationPlanListPageState extends State<MedicationPlanListPage> {
   }
 }
 
-Widget onOpenImage2(BuildContext context, PDFDocument document, String name) {
+Widget onOpenImage2(BuildContext context, String document, String name) {
   return AlertDialog(
     insetPadding: EdgeInsets.symmetric(
       horizontal: 0,
@@ -309,10 +307,7 @@ Widget onOpenImage2(BuildContext context, PDFDocument document, String name) {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.84,
                 width: double.infinity,
-                child: PDFViewer(
-                  scrollDirection: Axis.vertical,
-                  document: document!,
-                ),
+                child: Text(""),
               ),
             ],
           ),

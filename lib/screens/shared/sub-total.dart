@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:v3_patient_app/colors/colors.dart';
 import 'package:v3_patient_app/screens/shared/bottom-menu.dart';
 import 'package:v3_patient_app/screens/shared/shared.dart';
-import 'package:responsive_framework/responsive_breakpoints.dart';
-import 'package:responsive_framework/responsive_value.dart';
+
+import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../model/scale-size.dart';
 

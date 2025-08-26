@@ -8,8 +8,7 @@ import 'package:v3_patient_app/screens/main-menu/main-menu.dart';
 import 'package:v3_patient_app/screens/shared/message-list-container.dart';
 import 'package:v3_patient_app/screens/shared/shared.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive_framework/responsive_breakpoints.dart';
-import 'package:responsive_framework/responsive_value.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:badges/badges.dart' as badges;

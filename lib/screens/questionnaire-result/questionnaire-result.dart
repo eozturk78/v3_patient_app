@@ -1,4 +1,3 @@
-import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:v3_patient_app/colors/colors.dart';
@@ -6,8 +5,7 @@ import 'package:v3_patient_app/model/scale-size.dart';
 import 'package:v3_patient_app/screens/main-menu/main-menu.dart';
 import 'package:v3_patient_app/screens/shared/shared.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive_framework/responsive_breakpoints.dart';
-import 'package:responsive_framework/responsive_value.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_html/flutter_html.dart';
 
@@ -29,7 +27,6 @@ class _QuestionnaireResultPageState extends State<QuestionnaireResultPage> {
   Apis apis = Apis();
   Shared sh = Shared();
   bool isStarted = true;
-  PDFDocument? document;
   String? title;
   String? questionText;
   dynamic questions = [];

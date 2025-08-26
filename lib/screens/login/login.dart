@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
+//import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -11,8 +11,7 @@ import 'package:v3_patient_app/screens/main-menu/main-menu.dart';
 import 'package:v3_patient_app/screens/shared/shared.dart';
 import 'package:v3_patient_app/shared/toast.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive_framework/responsive_breakpoints.dart';
-import 'package:responsive_framework/responsive_value.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:local_auth/local_auth.dart';
 import '../../apis/apis.dart';
@@ -53,10 +52,10 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     // TODO: implement initState
-    FirebaseMessaging _firebaseMessaging =
+    /* FirebaseMessaging _firebaseMessaging =
         FirebaseMessaging.instance; // Change here
 
-    /*_firebaseMessaging.getToken().then((token) {
+    _firebaseMessaging.getToken().then((token) {
       if (token != null) deviceToken = token;
     });*/
     checkRememberMe();
