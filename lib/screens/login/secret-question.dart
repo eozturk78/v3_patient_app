@@ -29,7 +29,7 @@ class _SecretQuestionPageState extends State<SecretQuestionPage> {
   bool isSendEP = false;
   int? questionId;
   List<SecretQuestion> questionList = [];
-  bool isSelectedQuestion = false;
+  bool isSelectedQuestion = true;
   final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
@@ -52,8 +52,10 @@ class _SecretQuestionPageState extends State<SecretQuestionPage> {
                 (resp as List).map((e) => SecretQuestion.fromJson(e)).toList();
 
             questionList.add(SecretQuestion(
-                id: null,
+                secretQuestionId: null,
                 question: sh.getLanguageResource("define_own_question")));
+
+            print(questionList);
           });
         }
       },
@@ -75,6 +77,7 @@ class _SecretQuestionPageState extends State<SecretQuestionPage> {
     });
     var ownQuestion = null;
     if (!questionController.text.isEmpty) ownQuestion = questionController.text;
+
     apis
         .setSecretQuestion(null, questionId, ownQuestion, answerController.text)
         .then(
@@ -145,7 +148,7 @@ class _SecretQuestionPageState extends State<SecretQuestionPage> {
                                   child: Text(
                                     item.question,
                                   ),
-                                  value: item.id,
+                                  value: item.secretQuestionId,
                                 ))
                             .toList(),
                       ),
@@ -175,12 +178,13 @@ class _SecretQuestionPageState extends State<SecretQuestionPage> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(30),
+                        minimumSize: const Size.fromHeight(40),
                         backgroundColor: mainButtonColor,
                       ),
                       onPressed: () async {
                         final isValid = _formKey.currentState?.validate();
-                        if (!isValid! || isSendEP) return;
+                        print("=========");
+                        // if (!isValid! || isSendEP) return;
                         onSecretQuestion();
                       },
                       child: !isSendEP

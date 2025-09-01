@@ -58,6 +58,15 @@ class _Registration1PageState extends State<Registration1Page> {
                 Row(
                   children: [
                     Checkbox(
+                      fillColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return mainButtonColor; // Set to your login button color
+                          }
+                          return Color.fromARGB(136, 241, 241,
+                              241); // Change to your desired unselected color
+                        },
+                      ),
                       onChanged: (value) {
                         setState(() {
                           check1 = !check1;
@@ -78,6 +87,15 @@ class _Registration1PageState extends State<Registration1Page> {
                 Row(
                   children: [
                     Checkbox(
+                      fillColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return mainButtonColor; // Set to your login button color
+                          }
+                          return Color.fromARGB(136, 241, 241,
+                              241); // Change to your desired unselected color
+                        },
+                      ),
                       onChanged: (value) {
                         setState(() {
                           check2 = !check2;
@@ -109,6 +127,15 @@ class _Registration1PageState extends State<Registration1Page> {
                 Row(
                   children: [
                     Checkbox(
+                      fillColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return mainButtonColor; // Set to your login button color
+                          }
+                          return Color.fromARGB(136, 241, 241,
+                              241); // Change to your desired unselected color
+                        },
+                      ),
                       onChanged: (value) {
                         setState(() {
                           check3 = !check3;
@@ -129,6 +156,15 @@ class _Registration1PageState extends State<Registration1Page> {
                 Row(
                   children: [
                     Checkbox(
+                      fillColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return mainButtonColor; // Set to your login button color
+                          }
+                          return Color.fromARGB(136, 241, 241,
+                              241); // Change to your desired unselected color
+                        },
+                      ),
                       onChanged: (value) {
                         setState(() {
                           check4 = !check4;

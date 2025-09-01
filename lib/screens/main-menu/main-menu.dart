@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 
+import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:v3_patient_app/colors/colors.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -17,7 +19,7 @@ import '../../model/scale-size.dart';
 import '../../model/search-menu.dart';
 import '../communication/calendar.dart';
 import '../communication/communication.dart';
-//import '../info/info.dart';
+import '../info/info.dart';
 import '../medication/medication-plan-list.dart';
 import '../medication/medication.dart';
 import '../questionnaire-group/questionnaire-group.dart';
@@ -31,7 +33,6 @@ import 'main-sub-menu.dart';
 import 'route_util.dart';
 import '../shared/customized_menu.dart'; // Import the customized_menu.dart file
 import 'package:responsive_grid/responsive_grid.dart';
-import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
@@ -194,7 +195,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
   }
 
   bool isPdf = false;
-
+  PDFDocument? document;
   String? imageUrl;
   onOpenFile(item) async {
     var fileUrl = "";
@@ -204,13 +205,13 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
     if (item?.id.contains('treatmentid')) {
       await launch('${apis.apiPublic}/${item.id}');
     } else if (fileUrl.contains('pdf')) {
-      /* PDFDocument.fromURL(fileUrl).then((value) {
+      PDFDocument.fromURL(fileUrl).then((value) {
         setState(() {
           isPdf = true;
           document = value;
           openDialog(item);
         });
-      });*/
+      });
     } else {
       setState(() {
         isPdf = false;
@@ -267,14 +268,13 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
               ),
               if (isPdf)
                 SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.84,
-                    width: double.infinity,
-                    child:
-                        null /* PDFViewer(
+                  height: MediaQuery.of(context).size.height * 0.84,
+                  width: double.infinity,
+                  child: PDFViewer(
                     scrollDirection: Axis.vertical,
                     document: document!,
-                  ),*/
-                    ),
+                  ),
+                ),
               if (!isPdf && imageUrl != null)
                 Flexible(child: Image.network(imageUrl!))
             ]),
@@ -584,24 +584,24 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
       builder: (context, navBarVisibility, child) {
         return PersistentTabView(
           context,
-          //  padding: NavBarPadding.only(left: 0, right: 0),
+          padding: NavBarPadding.only(left: 0, right: 0),
           controller: navcontroller,
           screens: _buildScreens(context),
           items: _navBarsItems(),
-          //  confineInSafeArea: true,
-          //   hideNavigationBar: navBarVisibility.hideNavBar,
+          confineInSafeArea: true,
+          hideNavigationBar: navBarVisibility.hideNavBar,
           backgroundColor: Colors.white,
           handleAndroidBackButtonPress: true,
           resizeToAvoidBottomInset: false,
           stateManagement: false,
-          // hideNavigationBarWhenKeyboardShows: true,
+          hideNavigationBarWhenKeyboardShows: true,
           decoration: NavBarDecoration(
             borderRadius: BorderRadius.circular(10.0),
             colorBehindNavBar: Colors.white,
           ),
-          // popAllScreensOnTapOfSelectedTab: true,
-          // popActionScreens: PopActionScreensType.all,
-          /* itemAnimationProperties: ItemAnimationProperties(
+          popAllScreensOnTapOfSelectedTab: true,
+          popActionScreens: PopActionScreensType.all,
+          itemAnimationProperties: ItemAnimationProperties(
             duration: Duration(milliseconds: 200),
             curve: Curves.ease,
           ),
@@ -609,7 +609,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
             animateTabTransition: true,
             curve: Curves.ease,
             duration: Duration(milliseconds: 200),
-          ),*/
+          ),
           navBarStyle: NavBarStyle.simple,
           selectedTabScreenContext: (final context) {
             navContext = context!;
@@ -625,7 +625,7 @@ class _MainMenuPageState extends State<MainMenuPage> with RouteAware {
       MainSubMenuPage(),
       MedicationPage(),
       CommunicationPage(),
-      //  InfoPage()
+      InfoPage()
     ];
   }
 

@@ -1,0 +1,372 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:v3_patient_app/apis/apis.dart';
+import 'package:v3_patient_app/colors/colors.dart';
+import 'package:v3_patient_app/screens/shared/list-box.dart';
+import 'package:v3_patient_app/screens/shared/shared.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../../shared/shared.dart';
+import '../shared/bottom-menu.dart';
+import '../shared/sub-total.dart';
+
+class MeasurementResultPage extends StatefulWidget {
+  const MeasurementResultPage({super.key});
+
+  @override
+  State<MeasurementResultPage> createState() => _MeasurementResultPageState();
+}
+
+class _MeasurementResultPageState extends State<MeasurementResultPage> {
+  Apis apis = Apis();
+  Shared sh = Shared();
+  DateTime today = DateTime.now();
+  String todayValue = "~", yesterdayValue = "~";
+  @override
+  void initState() {
+    super.initState();
+    today = today.add(const Duration(days: -8));
+    onGetMeasurementList(today, 'blood_pressure');
+    sh.openPopUp(context, 'measurement-result');
+  }
+
+  onGetMeasurementList(DateTime date, String bp) {
+    List<_SalesData> data1 = [], data2 = [], data3 = [];
+    apis.getMeasurementList(date, bp).then(
+      (value) {
+        var results = value['results'] as List;
+        for (var result in results) {
+          var timestamp = sh.formatDate(result['timestamp']);
+          if (bp == 'blood_pressure') {
+            var systolic = result['measurement']['systolic'];
+            data1.add(_SalesData(timestamp, systolic));
+            var diastolic = result['measurement']['diastolic'];
+            data2.add(_SalesData(timestamp, diastolic));
+
+            if (sh.formatDate(DateTime.now().toString()) ==
+                sh.formatDate(result['timestamp'])) {
+              todayValue = "$systolic/$diastolic";
+            }
+            if (sh.formatDate(
+                    DateTime.now().add(Duration(days: -1)).toString()) ==
+                sh.formatDate(result['timestamp'])) {
+              yesterdayValue = "$systolic/$diastolic";
+            }
+          } else {
+            var pulse = result['measurement']['value'];
+            data3.add(_SalesData(timestamp, pulse));
+          }
+        }
+        setState(() {
+          if (bp == 'blood_pressure') {
+            dataS = data1;
+            dataD = data2;
+          } else {
+            dataPulse = data3;
+
+            if (dataS.length != dataPulse.length) {}
+          }
+        });
+        if (bp == "blood_pressure") onGetMeasurementList(date, 'pulse');
+      },
+      onError: (err) {
+        sh.redirectPatient(err, context);
+      },
+    );
+  }
+
+  int periodType = 10; // 10 week, 20 month, 30 year
+  List<_SalesData> dataS = [];
+  List<_SalesData> dataD = [];
+  List<_SalesData> dataPulse = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: leadingSubpage(sh.getLanguageResource("blood_pressure"), context),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(color: Colors.white),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            periodType = 10;
+                            var d =
+                                DateTime.now().add(const Duration(days: -8));
+
+                            dataD = [];
+                            dataS = [];
+                            dataPulse = [];
+                            onGetMeasurementList(d, 'blood_pressure');
+                          });
+                        },
+                        child: Container(
+                          decoration: periodType == 10
+                              ? BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(2),
+                                      bottomLeft: Radius.circular(2)),
+                                  color: mainButtonColor)
+                              : BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: mainButtonColor),
+                                ),
+                          height: 35,
+                          child: Center(
+                            child: Text(
+                              sh.getLanguageResource("one_week"),
+                              style: TextStyle(
+                                  color: periodType == 10
+                                      ? Colors.white
+                                      : mainButtonColor),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          setState(() {
+                            periodType = 20;
+                            var d =
+                                DateTime.now().add(const Duration(days: -91));
+
+                            dataD = [];
+                            dataS = [];
+                            dataPulse = [];
+                            onGetMeasurementList(d, 'blood_pressure');
+                          });
+                        },
+                        child: Container(
+                          decoration: periodType == 20
+                              ? BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(2),
+                                      bottomLeft: Radius.circular(2)),
+                                  color: mainButtonColor)
+                              : BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border(
+                                      bottom:
+                                          BorderSide(color: mainButtonColor),
+                                      top: BorderSide(color: mainButtonColor)),
+                                ),
+                          height: 35,
+                          child: Center(
+                            child: Text(
+                              sh.getLanguageResource("three_months"),
+                              style: TextStyle(
+                                  color: periodType == 20
+                                      ? Colors.white
+                                      : mainButtonColor),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            periodType = 30;
+                            var d =
+                                DateTime.now().add(const Duration(days: -366));
+
+                            dataD = [];
+                            dataS = [];
+                            dataPulse = [];
+                            onGetMeasurementList(d, 'blood_pressure');
+                            //
+                          });
+                        },
+                        child: Container(
+                          decoration: periodType == 30
+                              ? BoxDecoration(
+                                  color: mainButtonColor,
+                                  border: Border.all(color: mainButtonColor),
+                                )
+                              : BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: mainButtonColor),
+                                ),
+                          height: 35,
+                          child: Center(
+                            child: Text(
+                              sh.getLanguageResource("one_year"),
+                              style: TextStyle(
+                                  color: periodType == 30
+                                      ? Colors.white
+                                      : mainButtonColor),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //Initialize the chart widget
+                  SfCartesianChart(
+                    primaryXAxis:
+                        CategoryAxis(arrangeByIndex: true, isVisible: false),
+                    // Chart title
+                    title: ChartTitle(text: ''),
+                    // Enable legend
+                    legend: Legend(isVisible: false),
+                    // Enable tooltip
+                    tooltipBehavior: TooltipBehavior(enable: true),
+                    series: <CartesianSeries<_SalesData, String>>[
+                      LineSeries<_SalesData, String>(
+                          dataSource: dataS,
+                          xValueMapper: (_SalesData sales, _) =>
+                              sales.date.toString(),
+                          yValueMapper: (_SalesData sales, _) => sales.sales,
+                          name: sh.getLanguageResource("systolic"),
+                          // Enable data label
+                          dataLabelSettings:
+                              const DataLabelSettings(isVisible: false)),
+                      LineSeries<_SalesData, String>(
+                          dataSource: dataD,
+                          xValueMapper: (_SalesData sales, _) =>
+                              sales.date.toString(),
+                          yValueMapper: (_SalesData sales, _) => sales.sales,
+                          name: sh.getLanguageResource("diastolic"),
+                          // Enable data label
+                          dataLabelSettings:
+                              const DataLabelSettings(isVisible: false)),
+                      LineSeries<_SalesData, String>(
+                          dataSource: dataPulse,
+                          xValueMapper: (_SalesData sales, _) =>
+                              sales.date.toString(),
+                          yValueMapper: (_SalesData sales, _) => sales.sales,
+                          name: sh.getLanguageResource("pulse"),
+                          // Enable data label
+                          dataLabelSettings:
+                              const DataLabelSettings(isVisible: false))
+                    ],
+                  ),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: mainButtonColor),
+                            ),
+                            height: 45,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  sh.getLanguageResource("yesterday"),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  "$yesterdayValue mmHg",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            )),
+                      ),
+                      Expanded(
+                        child: Container(
+                            decoration: BoxDecoration(
+                              color: mainButtonColor,
+                              border: Border(
+                                  right: BorderSide(color: mainButtonColor),
+                                  top: BorderSide(color: mainButtonColor),
+                                  bottom: BorderSide(color: mainButtonColor)),
+                            ),
+                            height: 45,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  sh.getLanguageResource("today"),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                                Text(
+                                  "$todayValue mmHg",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                              ],
+                            )),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    sh.getLanguageResource("blood_pressure"),
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: mainButtonColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    sh.getLanguageResource("blood_pressure_desc"),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/blutdruck-description');
+                    },
+                    child: Text(
+                      sh.getLanguageResource("more_info"),
+                      softWrap: false,
+                      maxLines: 2,
+                      style: TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+      ////bottomNavigationBar: BottomNavigatorBar(selectedIndex: 0),
+    );
+  }
+}
+
+class _SalesData {
+  _SalesData(this.date, this.sales);
+
+  final String date;
+  final double sales;
+}

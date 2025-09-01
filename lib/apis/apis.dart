@@ -34,19 +34,16 @@ class Apis {
   String? baseUrl = 'https://v3dev-api.imc-app.de/api';
   String? apiPublic = 'https://v3dev-api.imc-app.de';
   Future login(String email, String password, String? deviceToken) async {
-    String finalUrl = '$baseUrl/patientlogin';
-    var params = {
-      'username': email.toString(),
-      'password': password.toString(),
-      'deviceToken': deviceToken
-    };
+    String finalUrl = '$baseUrl/login';
+    var params = {'email': email.toString(), 'password': password.toString()};
     SharedPreferences pref = await SharedPreferences.getInstance();
-    lang = pref.getString("language")!;
-    print(params);
-    //TODO: try-catch
+
     var result = await http.post(Uri.parse(finalUrl),
-        body: jsonEncode(params),
-        headers: {'Content-Type': 'application/text', 'lang': lang});
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode(params));
     return getResponseFromApi(result);
   }
 
@@ -767,20 +764,21 @@ class Apis {
   Future setSecretQuestion(int? patientAnswerId, int? questionId,
       String? ownQuestion, String answer) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    String finalUrl = '$baseUrl/setpatientsecretanswer';
+    String finalUrl = '$baseUrl/setPatientSecretAnswer';
     var params = {
-      'ownquestion': ownQuestion.toString(),
-      'answer': answer.toString()
+      'ownQuestion': ownQuestion.toString(),
+      'answer': answer.toString(),
+      'questionId': questionId
     };
-    if (patientAnswerId != null)
-      params['patientanswerid'] = patientAnswerId.toString();
 
-    if (questionId != null) params['secretquestionid'] = questionId.toString();
-
-    lang = pref.getString("language")!;
-    var result = await http.post(Uri.parse(finalUrl), body: params, headers: {
+    print(params);
+    // lang = pref.getString("language")!;
+    var result = await http
+        .post(Uri.parse(finalUrl), body: jsonEncode(params), headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
       'lang': lang,
-      'token': pref.getString('token').toString()
+      'authorization': 'Bearer ' + pref.getString('token').toString()
     }); /**/
     return getResponseFromApi(result);
   }
@@ -904,10 +902,15 @@ class Apis {
 
   Future getPatientSecretQuestions() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    lang = pref.getString("language")!;
-    String finalUrl = '$baseUrl/getpatientsecretquestionlist';
-    var result = await http.get(Uri.parse(finalUrl),
-        headers: {'lang': lang, 'token': pref.getString('token').toString()});
+    //lang = pref.getString("language")!;
+    String finalUrl = '$baseUrl/getPatientSecretQuestionList';
+    var result = await http.get(
+      Uri.parse(finalUrl),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+    );
     return getResponseFromApi(result);
   }
 
@@ -982,7 +985,6 @@ class Apis {
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('token', result.headers['token'].toString());
       }
-      print(result.body);
       var body = jsonDecode(result.body);
       if (result.statusCode == 200 || result.statusCode == 201) {
         tokenTimeOutSecond = tokenTimeOutSecondDB;

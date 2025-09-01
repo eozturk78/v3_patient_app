@@ -78,6 +78,10 @@ class _Registration3PageState extends State<Registration3Page> {
                         validator: (text) => sh.textValidator(text),
                       ),
                       SizedBox(
+                        height: 5,
+                      ),
+                      Divider(color: const Color.fromARGB(255, 134, 134, 134)),
+                      SizedBox(
                         height: 10,
                       ),
                       Text(
@@ -95,7 +99,7 @@ class _Registration3PageState extends State<Registration3Page> {
                         validator: (text) => sh.textValidator(text),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 5,
                       ),
                       Divider(color: const Color.fromARGB(255, 134, 134, 134)),
                       SizedBox(
@@ -116,7 +120,7 @@ class _Registration3PageState extends State<Registration3Page> {
                         validator: (text) => sh.textValidator(text),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 5,
                       ),
                       Divider(color: const Color.fromARGB(255, 134, 134, 134)),
                       SizedBox(

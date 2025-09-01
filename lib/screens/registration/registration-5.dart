@@ -153,11 +153,13 @@ class _Registration5PageState extends State<Registration5Page> {
                               }).then((value) async {
                             SharedPreferences pref =
                                 await SharedPreferences.getInstance();
-                            pref.setString(
-                                'birthDate', value.toString().substring(0, 10));
-                            _selectedDateLabel =
-                                value.toString().substring(0, 10);
-                            print(_selectedDateLabel);
+
+                            if (value != null) {
+                              pref.setString('birthDate',
+                                  value.toString().substring(0, 10));
+                              _selectedDateLabel =
+                                  value.toString().substring(0, 10);
+                            }
                           });
                         },
                       ),

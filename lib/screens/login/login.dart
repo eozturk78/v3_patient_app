@@ -255,6 +255,7 @@ class _LoginPageState extends State<LoginPage> {
       await apis
           .login(userNameController.text, passwordController.text, deviceToken)
           .then((value) async {
+        print(value);
         if (value != null) {
           // TODO: add else block to this if block
           setState(() {
@@ -264,10 +265,10 @@ class _LoginPageState extends State<LoginPage> {
           });
           pref.setString("patientTitle", value['firstName']);
           pref.setString('token', value['token']);
-          _isRequiredSecretQuestion = value['isRequiredSecretQuestion'];
-          tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
-          tokenTimeOutSecond = value['tokenTimeOutSecond'];
-          popUpAppearSecond = value['popUpAppearSecond'];
+
+          //tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
+          // tokenTimeOutSecond = value['tokenTimeOutSecond'];
+          // popUpAppearSecond = value['popUpAppearSecond'];
 
           checkRedirection();
         }
@@ -334,7 +335,9 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.of(context).pop(pref.getString("token")); /* */
         //
       } else
-        Navigator.of(context).pushNamed("/secret-question");
+        Navigator.of(context).pushNamed("/main-menu");
+
+      //Navigator.of(context).pushNamed("/secret-question");
     } else {
       Navigator.of(context).pushReplacementNamed("/agreements");
     }

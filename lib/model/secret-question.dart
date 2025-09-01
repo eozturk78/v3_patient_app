@@ -1,10 +1,11 @@
 class SecretQuestion {
-  final int? id;
+  final int? secretQuestionId;
   final String question;
 
-  SecretQuestion({required this.id, required this.question});
+  SecretQuestion({required this.secretQuestionId, required this.question});
 
   factory SecretQuestion.fromJson(Map<String, dynamic> json) {
-    return SecretQuestion(id: json['id'], question: json['question']);
+    return SecretQuestion(
+        secretQuestionId: json['secretQuestionId'], question: json['question']);
   }
 }

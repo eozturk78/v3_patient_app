@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-//import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:v3_patient_app/apis/apis.dart';
 import 'package:v3_patient_app/screens/agreements/agreements.dart';
 import 'package:v3_patient_app/screens/agreements/edit-agreements.dart';
@@ -26,11 +27,11 @@ import 'package:v3_patient_app/screens/forgot-password/reset-password.dart';
 import 'package:v3_patient_app/screens/forgot-password/temporary-password.dart';
 import 'package:v3_patient_app/screens/home/home.dart';
 import 'package:v3_patient_app/screens/impresum/impresum.dart';
-//import 'package:v3_patient_app/screens/info/documents-details.dart';
-//import 'package:v3_patient_app/screens/info/documents.dart';
-//import 'package:v3_patient_app/screens/info/enlightenment.dart';
-//import 'package:v3_patient_app/screens/info/info.dart';
-//import 'package:v3_patient_app/screens/info/libraries.dart';
+import 'package:v3_patient_app/screens/info/documents-details.dart';
+import 'package:v3_patient_app/screens/info/documents.dart';
+import 'package:v3_patient_app/screens/info/enlightenment.dart';
+import 'package:v3_patient_app/screens/info/info.dart';
+import 'package:v3_patient_app/screens/info/libraries.dart';
 import 'package:v3_patient_app/screens/language/language.dart';
 import 'package:v3_patient_app/screens/login/change-password.dart';
 import 'package:v3_patient_app/screens/login/login.dart';
@@ -38,12 +39,13 @@ import 'package:v3_patient_app/screens/login/secret-question.dart';
 import 'package:v3_patient_app/screens/login/successfully-changed-password.dart';
 import 'package:v3_patient_app/screens/main-menu/main-menu.dart';
 import 'package:v3_patient_app/screens/main-menu/main-sub-menu.dart';
-
-/*import 'package:v3_patient_app/screens/measurement-result/measurement-result-blutdruck.dart';
+import 'package:v3_patient_app/screens/measure_bluetooth_device/bluetooth-blood-pressure.dart';
+import 'package:v3_patient_app/screens/measure_bluetooth_device/bluetooth-device-measurement-types.dart';
+import 'package:v3_patient_app/screens/measurement-result/measurement-result-blutdruck.dart';
 import 'package:v3_patient_app/screens/measurement-result/measurement-result-pulse.dart';
 import 'package:v3_patient_app/screens/measurement-result/measurement-result-saturation.dart';
 import 'package:v3_patient_app/screens/measurement-result/measurement-result-temperature.dart';
-import 'package:v3_patient_app/screens/measurement-result/measurement-result-weight.dart';*/
+import 'package:v3_patient_app/screens/measurement-result/measurement-result-weight.dart';
 import 'package:v3_patient_app/screens/medication/interactive-medication-plan.dart';
 import 'package:v3_patient_app/screens/medication/medicine-intake-list.dart';
 import 'package:v3_patient_app/screens/medication/medication-plan-list.dart';
@@ -51,8 +53,8 @@ import 'package:v3_patient_app/screens/medication/medication.dart';
 import 'package:v3_patient_app/screens/medication/recipes.dart';
 import 'package:v3_patient_app/screens/notification-history/notification-history.dart';
 import 'package:v3_patient_app/screens/patient-contacts/contacts.dart';
-//import 'package:v3_patient_app/screens/profile/about-me/about-me.dart';
-//import 'package:v3_patient_app/screens/profile/profile.dart';
+import 'package:v3_patient_app/screens/profile/about-me/about-me.dart';
+import 'package:v3_patient_app/screens/profile/profile.dart';
 import 'package:v3_patient_app/screens/questionnaire-group/questionnaire-group.dart';
 import 'package:v3_patient_app/screens/questionnaire-result/questionnaire-result.dart';
 import 'package:v3_patient_app/screens/questionnaire/questionnaire-1.dart';
@@ -65,32 +67,30 @@ import 'package:v3_patient_app/screens/questionnaire/questionnaire-7.dart';
 import 'package:v3_patient_app/screens/questionnaire/questionnaire-8.dart';
 import 'package:v3_patient_app/screens/questionnaire/questionnaire-9.dart';
 import 'package:v3_patient_app/screens/redirection/redirection.dart';
+import 'package:v3_patient_app/screens/registration/registration-completed.dart';
 import 'package:v3_patient_app/screens/registration/registration-1.dart';
 import 'package:v3_patient_app/screens/registration/registration-2.dart';
 import 'package:v3_patient_app/screens/registration/registration-3.dart';
 import 'package:v3_patient_app/screens/registration/registration-4.dart';
-import 'package:v3_patient_app/screens/registration/registration-5.dart';
-import 'package:v3_patient_app/screens/registration/registration-6.dart';
-import 'package:v3_patient_app/screens/registration/registration-completed.dart';
-
 import 'package:v3_patient_app/screens/settings/settings.dart';
 import 'package:v3_patient_app/screens/shared/custom_menu.dart';
 import 'package:v3_patient_app/screens/shared/customized_menu.dart';
 import 'package:v3_patient_app/screens/shared/shared.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:responsive_framework/breakpoint.dart';
+//import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../shared/shared.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:http/http.dart' as http;
-
-// import 'package:firebase_messaging/firebase_messaging.dart';
-//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'firebase_options.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-/*const AndroidNotificationChannel channel = AndroidNotificationChannel(
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_importance_channel', // id
   'High Importance Notifications', // title
   description:
@@ -99,7 +99,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 );
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();*/
+    FlutterLocalNotificationsPlugin();
 
 String? redirectionScreen;
 dynamic languageResource;
@@ -114,7 +114,7 @@ final Map<String, WidgetBuilder> routes = {
         isDiaglog: false,
       ),
   "/change-password": (context) => const ChangePasswordPage(),
-  /*"/profile": (context) => const ProfilePage(),
+  "/profile": (context) => const ProfilePage(),
   "/measurement-result": (context) => const MeasurementResultPage(),
   "/measurement-result-weight": (context) =>
       const MeasurementResultWeightPage(),
@@ -122,9 +122,9 @@ final Map<String, WidgetBuilder> routes = {
   "/measurement-result-temperature": (context) =>
       const MeasurementResultTemperaturePage(),
   "/measurement-result-saturation": (context) =>
-      const MeasurementResultSaturationPage(),*/
+      const MeasurementResultSaturationPage(),
   "/communication": (context) => const CommunicationPage(),
-  //"/info": (context) => const InfoPage(),
+  "/info": (context) => const InfoPage(),
   "/medication": (context) => const MedicationPage(),
   "/quick-access": (context) => CustomizedMenuPage(),
   "/custom-menu": (context) => CustomMenuPage(menuItems: []),
@@ -136,10 +136,10 @@ final Map<String, WidgetBuilder> routes = {
   "/interactive-medication-plan": (context) => InteractiveMedicationPlanPage(),
   "/medicine-intake": (context) => MedicineIntakeScreen(),
   "/recipes": (context) => const RecipesPage(),
-  // "/libraries": (context) => const LibraryListPage(),
-  // "/enlightenment": (context) => const EnlightenmentPage(),
-  //"/documents": (context) => const DocumentListPage(),
-  //"/document-details": (context) => const DocumentDetailsPage(),
+  "/libraries": (context) => const LibraryListPage(),
+  "/enlightenment": (context) => const EnlightenmentPage(),
+  "/documents": (context) => const DocumentListPage(),
+  "/document-details": (context) => const DocumentDetailsPage(),
   "/questionnaire-1": (context) => const Questionnaire1Page(),
   "/questionnaire-2": (context) => const Questionnaire2Page(),
   "/questionnaire-3": (context) => const Questionnaire3Page(),
@@ -154,13 +154,11 @@ final Map<String, WidgetBuilder> routes = {
   "/saturation-description": (context) => const SaturationDescriptionPage(),
   "/pulse-description": (context) => const PulseDescriptionPage(),
   "/temperature-description": (context) => const TemperatureDescriptionPage(),
-  //"/about-me": (context) => const AboutMe(),
+  "/about-me": (context) => const AboutMe(),
   "/registration-1": (context) => const Registration1Page(),
   "/registration-2": (context) => const Registration2Page(),
   "/registration-3": (context) => const Registration3Page(),
   "/registration-4": (context) => const Registration4Page(),
-  "/registration-5": (context) => const Registration5Page(),
-  "/registration-6": (context) => const Registration6Page(),
   "/created-account-successfully": (context) =>
       const RegistrationCompletedPage(),
   "/diagnoses": (context) => const DiagnosesPage(),
@@ -168,7 +166,9 @@ final Map<String, WidgetBuilder> routes = {
   "/edit-agreements": (context) => const EditAgreementsPage(),
   "/redirection": (context) => const RedirectionPage(),
   "/questionnaire-group": (context) => const QuestionnaireGroupPage(),
-
+  "/bluetooth-device-measurement-types": (context) =>
+      const BluetoothDeviceMeasurementTypesPage(),
+  "/bluetooth-blood-pressure": (context) => const BluetoothBloodPressurePage(),
   "/questionnaire-result": (context) => const QuestionnaireResultPage(),
   "/privacy-policy": (context) => const PrivacyPolicyPage(),
   "/terms-and-conditions": (context) => const TermsAndConditionsPage(),
@@ -182,7 +182,6 @@ final Map<String, WidgetBuilder> routes = {
   '/answer-secret-question': (context) => AnswerSecretQuestionPage(),
   '/reset-password': (context) => ResetPasswordPage(),
   '/temporary-password': (context) => TemporaryPasswordPage(),
-
   '/successfully-changed-password': (context) =>
       SuccessfullyChangedPasswordPage(),
 };
@@ -190,7 +189,7 @@ final Map<String, WidgetBuilder> routes = {
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize the plugin
-  /* FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
   // For Android, create an Android Initialization Settings object
@@ -198,16 +197,13 @@ main() async {
       AndroidInitializationSettings('@drawable/ic_launcher');
 
   // For iOS, create an IOS Initialization Settings object
-  final DarwinInitializationSettings initializationSettingsDarwin =
-      DarwinInitializationSettings(
-    onDidReceiveLocalNotification: (id, title, body, payload) async {
-      // iOS 9 ve öncesi için (artık pek kullanılmıyor)
-    },
-  );
+  //IOSInitializationSettings iosInitializationSettings =
+  // IOSInitializationSettings();
 
-  final InitializationSettings initializationSettings = InitializationSettings(
-    android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-    iOS: initializationSettingsDarwin,
+  // Initialize the settings for each platform
+  /* InitializationSettings initializationSettings = InitializationSettings(
+    android: androidInitializationSettings,
+    iOS: iosInitializationSettings,
   );*/
 
   redirection(screenNumber) async {
@@ -220,14 +216,14 @@ main() async {
     else
       redirectionScreen = '/medicine-intake';
 
-    /*  SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     apis.patientrenewtoken().then((value) async {
       tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
       tokenTimeOutSecond = value['tokenTimeOutSecond'];
       popUpAppearSecond = value['popUpAppearSecond'];
       pref.setString("token", value['token']);
       navigatorKey.currentState?.pushNamed(redirectionScreen.toString());
-    }, onError: (err) => sh.redirectPatient(err, null));*/
+    }, onError: (err) => sh.redirectPatient(err, null));
   }
 
   Future<void> onSelectNotification(payload) async {
@@ -235,38 +231,24 @@ main() async {
   }
 
   // Initialize the plugin with the settings
-  /* await flutterLocalNotificationsPlugin.initialize(
-    initializationSettings,
-    onDidReceiveNotificationResponse: (NotificationResponse response) async {
-      final String? payload = response.payload;
-      if (payload != null) {
-        // Bildirim tıklandığında yapılacak şey
-        debugPrint('notification payload: $payload');
-        // örn: Navigator.push(...)
-      }
-    },
-  );*/
-  @pragma('vm:entry-point')
-  // void notificationTapBackground(NotificationResponse notificationResponse) {
-      // arka planda handle etme
-      // }
+  //await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+  //  onSelectNotification: onSelectNotification);
 
-      /* await flutterLocalNotificationsPlugin
+  await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);*/
+      ?.createNotificationChannel(channel);
 
-      /*await Firebase.initializeApp(
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );*/
+  );
 
-      //FirebaseMessaging messaging = FirebaseMessaging.instance;
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-      // If permission is granted, get the FCM token
-      String? token = null;
-  //await messaging.getToken();
+  // If permission is granted, get the FCM token
+  String? token = await messaging.getToken();
 
-  /*FirebaseMessaging.instance.getInitialMessage().then((message) {
+  FirebaseMessaging.instance.getInitialMessage().then((message) {
     if (message != null) {
       var data = message.data;
       var payload = data['screen'];
@@ -326,9 +308,10 @@ main() async {
           payload: payload);
     }
     // _saveMessages(message);
-  });*/
+  });
 
   Locale initialLocale = Locale("de", "DE");
+  WidgetsFlutterBinding.ensureInitialized();
 
   await AppLocalizations.load(initialLocale);
   runApp(
@@ -363,12 +346,13 @@ class MyApp extends StatelessWidget {
           const Breakpoint(start: 1025, end: double.infinity, name: DESKTOP),
         ],
       ),
+      /**/
       supportedLocales: [
         const Locale('de', 'DE'), // German
       ],
       color: Color.fromARGB(0, 179, 55, 55),
       debugShowCheckedModeBanner: false,
-      title: 'iMedComV3 Patient App',
+      title: 'iMedCom Patient App',
       theme: ThemeData(
         useMaterial3: false,
         appBarTheme:
@@ -376,7 +360,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
       ),
       navigatorKey: navigatorKey,
-      //home: const MyHomePage(title: 'iMedComV3 App Demo Home Page'),
+      //home: const MyHomePage(title: 'iMedCom App Demo Home Page'),
       initialRoute: "/splash-screen",
 
       routes: routes,
