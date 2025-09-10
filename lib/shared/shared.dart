@@ -78,7 +78,7 @@ class Shared {
       return '* Pflichfeld';
     }
     if (pass1 != pass2) {
-      return 'Passwords dont match';
+      return 'Passwörter stimmen nicht überein.';
     }
     return null;
   }

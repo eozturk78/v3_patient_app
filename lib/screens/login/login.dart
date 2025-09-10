@@ -266,6 +266,8 @@ class _LoginPageState extends State<LoginPage> {
           pref.setString("patientTitle", value['firstName']);
           pref.setString('token', value['token']);
 
+          print(value);
+          _isRequiredSecretQuestion = value['isSecretQuestionRequired'];
           //tokenTimeOutSecondDB = value['tokenTimeOutSecond'];
           // tokenTimeOutSecond = value['tokenTimeOutSecond'];
           // popUpAppearSecond = value['popUpAppearSecond'];
@@ -319,28 +321,17 @@ class _LoginPageState extends State<LoginPage> {
 
   checkRedirection() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    var user = pref.getString("userName");
+    isLoggedIn = true;
 
-    if (pref.getBool("agreementAccepted") == true) {
-      pref.remove("agreementAccepted");
-      pref.setBool("${userNameController.text}_isAgreementRead", true);
-    } else if (pref.getBool('${user}_isAgreementRead') == true) {
-      isLoggedIn = true;
-
-      if (_isRequiredSecretQuestion) {
-        if (!Navigator.canPop(context))
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              '/main-menu', ModalRoute.withName('/main-menu'));
-        else
-          Navigator.of(context).pop(pref.getString("token")); /* */
-        //
-      } else
-        Navigator.of(context).pushNamed("/main-menu");
-
-      //Navigator.of(context).pushNamed("/secret-question");
-    } else {
-      Navigator.of(context).pushReplacementNamed("/agreements");
-    }
+    if (!_isRequiredSecretQuestion) {
+      if (!Navigator.canPop(context))
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            '/main-menu', ModalRoute.withName('/main-menu'));
+      else
+        Navigator.of(context).pop(pref.getString("token")); /* */
+      //
+    } else
+      Navigator.of(context).pushNamed("/secret-question");
   }
 
   bool obSecuredText = false;
@@ -530,7 +521,7 @@ class _LoginPageState extends State<LoginPage> {
                               await _listener.cancel();
                               //if (this.isDiaglog) Navigator.of(context).pop();
                               Navigator.of(context)
-                                  .pushNamed("/registration-1");
+                                  .pushNamed("/registration-2");
                             },
                             child: Text(
                               sh.getLanguageResource("create_new_account"),

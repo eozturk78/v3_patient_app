@@ -60,7 +60,7 @@ class _Registration2PageState extends State<Registration2Page> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingWithoutProfile(
-          sh.getLanguageResource("registration_2"), context),
+          sh.getLanguageResource("registration_1"), context),
       body: organizationInfo == null
           ? Column(
               mainAxisAlignment: MainAxisAlignment.start,

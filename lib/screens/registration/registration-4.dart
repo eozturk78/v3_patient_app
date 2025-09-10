@@ -2,8 +2,10 @@ import 'package:bottom_picker/bottom_picker.dart';
 import 'package:bottom_picker/resources/arrays.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:v3_patient_app/colors/colors.dart';
 import 'package:v3_patient_app/model/country.dart';
+import 'package:v3_patient_app/model/postalCode.dart';
 import 'package:v3_patient_app/shared/toast.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,6 +24,8 @@ class Registration4Page extends StatefulWidget {
 class _Registration4PageState extends State<Registration4Page> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController streetController = new TextEditingController();
+  TextEditingController houseNumberController = new TextEditingController();
+
   TextEditingController postalCodeContrller = new TextEditingController();
   TextEditingController mobilePhoneNumberController =
       new TextEditingController();
@@ -58,6 +62,8 @@ class _Registration4PageState extends State<Registration4Page> {
                 .where((a) => a.countryId == selectedCountryId)
                 .first
                 .cities;
+
+            onGetPostalCodeListByCity(selectedCityId!);
           });
         }
       },
@@ -72,13 +78,36 @@ class _Registration4PageState extends State<Registration4Page> {
     );
   }
 
+  List<PostalCode> postalCodeList = [];
+  onGetPostalCodeListByCity(int cityId) {
+    apis.getPostalCodeListByCity(cityId).then(
+      (resp) {
+        if (resp != null) {
+          print(resp);
+          postalCodeList =
+              (resp as List).map((e) => PostalCode.fromJson(e)).toList();
+        }
+      },
+      onError: (err) {
+        sh.redirectPatient(err, context);
+        setState(
+          () {
+            isSendEP = false;
+          },
+        );
+      },
+    );
+  }
+
+  PhoneNumber number = PhoneNumber(isoCode: 'DE');
+
   int selectedCountryId = 79;
   int? selectedCityId = 1041;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingWithoutProfile(
-          sh.getLanguageResource("registration_4"), context),
+          sh.getLanguageResource("registration_3"), context),
       body: Padding(
         padding: EdgeInsets.all(30),
         child: isSendEP
@@ -159,7 +188,7 @@ class _Registration4PageState extends State<Registration4Page> {
                             onChanged: (newValue) {
                               setState(() {
                                 selectedCityId = newValue!;
-                                print(selectedCityId);
+                                onGetPostalCodeListByCity(selectedCityId!);
                               });
                             },
                             isExpanded: true,
@@ -176,19 +205,56 @@ class _Registration4PageState extends State<Registration4Page> {
                         SizedBox(
                           height: 30,
                         ),
-                        Text(
-                          sh.getLanguageResource("street"),
-                          style: labelText,
-                        ),
-                        TextFormField(
-                          controller: streetController,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText:
-                                sh.getLanguageResource("please_enter_street"),
-                          ),
-                          validator: (text) => sh.textValidator(text),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    sh.getLanguageResource("street"),
+                                    style: labelText,
+                                  ),
+                                  TextFormField(
+                                    controller: streetController,
+                                    obscureText: false,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: sh.getLanguageResource(
+                                          "please_enter_street"),
+                                    ),
+                                    validator: (text) => sh.textValidator(text),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    sh.getLanguageResource("house_number"),
+                                    style: labelText,
+                                  ),
+                                  TextFormField(
+                                    controller: houseNumberController,
+                                    obscureText: false,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: sh.getLanguageResource(
+                                          "please_enter_house_number"),
+                                    ),
+                                    validator: (text) => sh.textValidator(text),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                         SizedBox(
                           height: 5,
@@ -205,12 +271,22 @@ class _Registration4PageState extends State<Registration4Page> {
                         TextFormField(
                           controller: postalCodeContrller,
                           obscureText: false,
+                          keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: sh.getLanguageResource(
                                 "please_enter_postal_code"),
                           ),
-                          validator: (text) => sh.textValidator(text),
+                          validator: (value) {
+                            if (value!.isNotEmpty &&
+                                postalCodeList.length > 0 &&
+                                postalCodeList
+                                    .where((a) => a.postalCode == value)
+                                    .isEmpty) {
+                              return "Ungültige Postleitzahl";
+                            }
+                            return null;
+                          },
                         ),
                         SizedBox(
                           height: 5,
@@ -224,21 +300,27 @@ class _Registration4PageState extends State<Registration4Page> {
                           sh.getLanguageResource("phone_number"),
                           style: labelText,
                         ),
-                        TextFormField(
-                          controller: mobilePhoneNumberController,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
+                        InternationalPhoneNumberInput(
+                          onInputChanged: (PhoneNumber num) {
+                            number = num;
+                          },
+                          selectorConfig: SelectorConfig(
+                            selectorType: PhoneInputSelectorType.DIALOG,
+                            setSelectorButtonAsPrefixIcon:
+                                true, // ✅ bayrak hizalanır
+                            leadingPadding: 0,
+                          ),
+                          initialValue: number,
+                          textFieldController: mobilePhoneNumberController,
+                          inputDecoration: InputDecoration(
                             hintText: sh.getLanguageResource(
                                 "please_enter_phone_number"),
+                            border: InputBorder.none,
+                            isDense:
+                                true, // ✅ input'u küçültüp hizalar/ ✅ dikey hizalama
                           ),
-                          validator: (text) => sh.textValidator(text),
+                          validator: (value) => sh.textValidator(value),
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Divider(
-                            color: const Color.fromARGB(255, 134, 134, 134)),
                         SizedBox(
                           height: 10,
                         ),
@@ -248,13 +330,16 @@ class _Registration4PageState extends State<Registration4Page> {
                             backgroundColor: mainButtonColor,
                           ),
                           onPressed: () async {
+                            final isValid = _formKey.currentState?.validate();
+                            if (!isValid! || isSendEP) return;
                             SharedPreferences pref =
                                 await SharedPreferences.getInstance();
 
                             pref.setInt('countryId', selectedCountryId);
                             pref.setInt('cityId', selectedCityId!);
                             pref.setString('street', streetController.text);
-                            pref.setString('street', streetController.text);
+                            pref.setString(
+                                'houseNumber', houseNumberController.text);
                             pref.setString(
                                 'postalCode', postalCodeContrller.text);
                             pref.setString('mobilePhoneNumber',

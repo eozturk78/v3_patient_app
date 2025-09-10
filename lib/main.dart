@@ -67,6 +67,8 @@ import 'package:v3_patient_app/screens/questionnaire/questionnaire-7.dart';
 import 'package:v3_patient_app/screens/questionnaire/questionnaire-8.dart';
 import 'package:v3_patient_app/screens/questionnaire/questionnaire-9.dart';
 import 'package:v3_patient_app/screens/redirection/redirection.dart';
+import 'package:v3_patient_app/screens/registration/registration-5.dart';
+import 'package:v3_patient_app/screens/registration/registration-6.dart';
 import 'package:v3_patient_app/screens/registration/registration-completed.dart';
 import 'package:v3_patient_app/screens/registration/registration-1.dart';
 import 'package:v3_patient_app/screens/registration/registration-2.dart';
@@ -159,6 +161,8 @@ final Map<String, WidgetBuilder> routes = {
   "/registration-2": (context) => const Registration2Page(),
   "/registration-3": (context) => const Registration3Page(),
   "/registration-4": (context) => const Registration4Page(),
+  "/registration-5": (context) => const Registration5Page(),
+  "/registration-6": (context) => const Registration6Page(),
   "/created-account-successfully": (context) =>
       const RegistrationCompletedPage(),
   "/diagnoses": (context) => const DiagnosesPage(),
@@ -424,14 +428,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
     var url = '${apis.apiPublic}/resources/$lang.json';
 
+    print(" token ====");
+    print(pref.getBool('isAgreementRead'));
     apis.getLanguageResources(lang).then((resp) {
       languageResource = jsonEncode(resp);
-      var user = pref.getString("userName");
       if (pref.getString("token") != null &&
           pref.getString("token") != "" &&
           pref.getString("token") != "null") {
         redirectToInside();
-      } else if (pref.getBool('${user}_isAgreementRead') == true)
+      } else if (pref.getBool('isAgreementRead') == true)
         Navigator.of(context).pushReplacementNamed("/login");
       else {
         Navigator.of(context).pushReplacementNamed("/agreements");

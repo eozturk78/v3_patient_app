@@ -594,6 +594,7 @@ class Apis {
       int countryId,
       int cityId,
       String street,
+      String houseNumber,
       String mobilePhoneNumber,
       String postalCode,
       String birthDate,
@@ -613,6 +614,7 @@ class Apis {
       'cityId': cityId.toString(),
       'mobilePhoneNumber': mobilePhoneNumber,
       'street': street,
+      'houseNumber': houseNumber,
       'postalCode': postalCode,
       'birthDate': birthDate.toString().substring(0, 10),
       'weight': weight.toString(),
@@ -938,6 +940,12 @@ class Apis {
     return getResponseFromApi(result);
   }
 
+  Future getPostalCodeListByCity(int cityId) async {
+    String finalUrl = '$baseUrl/getPostalCodeListByCity?id=$cityId';
+    var result = await http.get(Uri.parse(finalUrl), headers: {'lang': lang});
+    return getResponseFromApi(result);
+  }
+
   Future setPatientLanguage(String language) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     lang = pref.getString("language")!;
@@ -986,6 +994,7 @@ class Apis {
         pref.setString('token', result.headers['token'].toString());
       }
       var body = jsonDecode(result.body);
+      print(body);
       if (result.statusCode == 200 || result.statusCode == 201) {
         tokenTimeOutSecond = tokenTimeOutSecondDB;
         try {

@@ -36,7 +36,7 @@ class _Registration3PageState extends State<Registration3Page> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: leadingWithoutProfile(
-          sh.getLanguageResource("registration_3"), context),
+          sh.getLanguageResource("registration_2"), context),
       body: Padding(
         padding: EdgeInsets.all(30),
         child: SingleChildScrollView(

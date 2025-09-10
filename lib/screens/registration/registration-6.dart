@@ -168,11 +168,14 @@ class _Registration6PageState extends State<Registration6Page> {
                                 pref.getInt("countryId")!,
                                 pref.getInt("cityId")!,
                                 pref.getString("street").toString(),
+                                pref.getString("houseNumber").toString(),
                                 pref.getString("mobilePhoneNumber").toString(),
                                 pref.getString("postalCode").toString(),
                                 pref.getString("birthDate").toString(),
-                                double.parse(pref.getString("weight").toString()),
-                                double.parse(pref.getString("height").toString()),
+                                double.parse(
+                                    pref.getString("weight").toString()),
+                                double.parse(
+                                    pref.getString("height").toString()),
                                 pref.getString("sex").toString(),
                                 emailController.text,
                                 passwordController.text)

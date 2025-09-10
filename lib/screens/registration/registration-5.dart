@@ -210,13 +210,13 @@ class _Registration5PageState extends State<Registration5Page> {
                                         TextButton(
                                             onPressed: () {
                                               setState(() {
-                                                _selectedGender = 'Unbekannt';
+                                                _selectedGender = 'Divers';
                                                 _selectedSex = 'unknown';
                                                 Navigator.of(context).pop();
                                               });
                                             },
                                             child: Text(
-                                              sh.getLanguageResource("unknowm"),
+                                              sh.getLanguageResource("unknown"),
                                               style: selectionLabel,
                                             )),
                                         Divider(

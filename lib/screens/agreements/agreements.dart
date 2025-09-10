@@ -290,13 +290,8 @@ class _AgreementsPageState extends State<AgreementsPage> {
                       SharedPreferences pref =
                           await SharedPreferences.getInstance();
 
-                      var user = pref.getString("userName");
-                      if (user != null && user != "null" && user != "")
-                        pref.setBool("${user}_isAgreementRead", true);
-                      else {
-                        pref.setBool("agreementAccepted", true);
-                      }
-
+                      pref.setBool("isAgreementRead", true);
+                      pref.setBool("agreementAccepted", true);
                       var token = pref.getString("token");
                       if (token != null && token != "null" && token != "")
                         Navigator.of(context).pushNamedAndRemoveUntil(
